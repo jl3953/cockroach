@@ -4,8 +4,8 @@ import subprocess
 import sys
 import time
 
-CR_NODES = ["192.168.1.2", "192.168.1.3", "192.168.1.4"]
-CR_EXE = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach"
+NODES = ["192.168.1.2", "192.168.1.3", "192.168.1.4"]
+EXE = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach"
 
 
 def call(cmd, err_msg):
@@ -20,7 +20,7 @@ def call(cmd, err_msg):
 
 
 def call_remote(host, cmd, err_msg):
-    cmd = "ssh -t {0} '{1}'".format(host, cmd)
+    cmd = "sudo ssh -t {0} '{1}'".format(host, cmd)
     return call(cmd, err_msg)
 
 
@@ -30,7 +30,8 @@ def kill_cockroach_node(host):
 
 
 def start_cockroach_node(host, listen, join=None):
-    cmd = "{0} start --insecure --background --listen-addr={1}:26257".format(CR_EXE, listen)
+    cmd = ("{0} start --insecure --background"
+           " --listen-addr={1}:26257").format(EXE, listen)
 
     if join:
         cmd = "{0} --join={1}:26257".format(cmd, join)
@@ -39,21 +40,21 @@ def start_cockroach_node(host, listen, join=None):
 
 
 def kill_cluster():
-    for n in CR_NODES:
+    for n in NODES:
         kill_cockroach_node(n)
 
 
 def start_cluster():
-    first = CR_NODES[0]
+    first = NODES[0]
 
     start_cockroach_node(first, first)
-    for n in CR_NODES[1:]:
+    for n in NODES[1:]:
         start_cockroach_node(n, n, join=first)
 
 
 def main():
     kill_cluster()
-    time.sleep(20)
+    time.sleep(10)
     start_cluster()
 
 
