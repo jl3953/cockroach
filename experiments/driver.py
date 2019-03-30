@@ -2,6 +2,7 @@
 
 import subprocess
 import sys
+import time
 
 CR_NODES = ["192.168.1.2", "192.168.1.3", "192.168.1.4"]
 CR_EXE = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach"
@@ -24,7 +25,7 @@ def call_remote(host, cmd, err_msg):
 
 
 def kill_cockroach_node(host):
-    cmd = '(! pgrep cockroach) || (sudo killall -q cockroach && sleep 2)'
+    cmd = '(! pgrep cockroach) || sudo killall -q cockroach'
     call_remote(host, cmd, 'Failed to kill cockroach node.')
 
 
@@ -52,6 +53,7 @@ def start_cluster():
 
 def main():
     kill_cluster()
+    time.sleep(20)
     start_cluster()
 
 
