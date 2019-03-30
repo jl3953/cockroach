@@ -19,7 +19,7 @@ def call(cmd, err_msg):
 
 
 def call_remote(host, cmd, err_msg):
-    cmd = "ssh {0} '{1}'".format(host, cmd)
+    cmd = "ssh -t {0} '{1}'".format(host, cmd)
     return call(cmd, err_msg)
 
 
@@ -29,7 +29,7 @@ def start_cockroach_node(host, listen, join=None):
     if join:
         cmd = "{0} --join={0}:26257".format(cmd, join)
 
-    return call_remote(host, cmd)
+    return call_remote(host, cmd, "Failed to start cockroach node.")
 
 
 def start_cluster():
