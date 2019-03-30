@@ -23,6 +23,11 @@ def call_remote(host, cmd, err_msg):
     return call(cmd, err_msg)
 
 
+def kill_cockroach_node(host):
+    cmd = '(! pgrep cockroach) || (sudo killall -q cockroach && sleep 2)'
+    call_remote(host, cmd, 'Failed to kill cockroach node.')
+
+
 def start_cockroach_node(host, listen, join=None):
     cmd = "{0} start --insecure --background --listen-addr={1}:26257".format(CR_EXE, listen)
 
@@ -30,6 +35,11 @@ def start_cockroach_node(host, listen, join=None):
         cmd = "{0} --join={1}:26257".format(cmd, join)
 
     return call_remote(host, cmd, "Failed to start cockroach node.")
+
+
+def kill_cluster():
+    for n in CR_NODES:
+        kill_cockroach_node(n)
 
 
 def start_cluster():
@@ -41,6 +51,7 @@ def start_cluster():
 
 
 def main():
+    kill_cluster()
     start_cluster()
 
 
