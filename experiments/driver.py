@@ -27,7 +27,7 @@ def start_cockroach_node(host, listen, join=None):
     cmd = "{0} start --insecure --background --listen-addr={1}:26257".format(CR_EXE, listen)
 
     if join:
-        cmd = "{0} --join={0}:26257".format(cmd, join)
+        cmd = "{0} --join={1}:26257".format(cmd, join)
 
     return call_remote(host, cmd, "Failed to start cockroach node.")
 
