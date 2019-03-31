@@ -94,7 +94,7 @@ var kvMeta = workload.Meta{
 			`Number of blocks to read/insert in a single SQL statement.`)
 		g.flags.IntVar(&g.minBlockSizeBytes, `min-block-bytes`, 1,
 			`Minimum amount of raw data written with each insertion.`)
-		g.flags.IntVar(&g.maxBlockSizeBytes, `max-block-bytes`, 1,
+		g.flags.IntVar(&g.maxBlockSizeBytes, `max-block-bytes`, 2,
 			`Maximum amount of raw data written with each insertion`)
 		g.flags.Int64Var(&g.cycleLength, `cycle-length`, math.MaxInt64,
 			`Number of keys repeatedly accessed by each writer through upserts.`)
@@ -156,9 +156,26 @@ func (w *kv) Hooks() workload.Hooks {
 
 // Tables implements the Generator interface.
 func (w *kv) Tables() []workload.Table {
+	const ROWS = 1000 // rows in the table
+	const HOT_THRESHOLD = 0.1 // 10% of our keys are hot
+	const HOT_DEFAULT = 1000 // hot keys have this default value
+	const WARM_DEFAULT = 0 // warm keys have this default value
+
 	table := workload.Table{
 		Name: `kv`,
 		// TODO(dan): Support initializing kv with data.
+		// ^ doing that now.
+		Schema: kvSchema,
+		InitialRows: workload.Tuples(
+			ROWS,
+			func(rowIdx int) []interface{} {
+				// first few keys are hot, the rest are warm
+				if rowIdx < HOT_THRESHOLD * ROWS {
+					return []interface{}{rowIdx, HOT_DEFAULT}
+				} else {
+					return []interface{}{rowIdx, WARM_DEFAULT}
+				}
+			}),
 		Splits: workload.Tuples(
 			w.splits,
 			func(splitIdx int) []interface{} {
@@ -168,11 +185,12 @@ func (w *kv) Tables() []workload.Table {
 			},
 		),
 	}
-	if w.secondaryIndex {
+	// only need kvSchema
+	/*if w.secondaryIndex {
 		table.Schema = kvSchemaWithIndex
 	} else {
 		table.Schema = kvSchema
-	}
+	}*/
 	return []workload.Table{table}
 }
 
@@ -491,7 +509,7 @@ func (g *zipfGenerator) sequence() int64 {
 }
 
 func randomBlock(config *kv, r *rand.Rand) []byte {
-	blockSize := r.Intn(config.maxBlockSizeBytes-config.minBlockSizeBytes+1) + config.minBlockSizeBytes
+	blockSize := r.Intn(config.maxBlockSizeBytes-config.minBlockSizeBytes) + config.minBlockSizeBytes
 	blockData := make([]byte, blockSize)
 	uniqueSize := int(float64(blockSize) / config.targetCompressionRatio)
 	if uniqueSize < 1 {
