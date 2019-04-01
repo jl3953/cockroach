@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import subprocess
 import sys
 import time
@@ -52,10 +53,17 @@ def start_cluster():
         start_cockroach_node(n, n, join=first)
 
 
-def main():
-    kill_cluster()
-    time.sleep(10)
-    start_cluster()
+def main():	
+    parser = argparse.ArgumentParser(description='Start and kill script for cockroach.')
+    parser.add_argument('--kill', action='store_true', help='kills cluster, if specified')
+
+    args = parser.parse_args()
+    if args.kill:
+        kill_cluster()
+    else:
+        kill_cluster()
+        time.sleep(10)
+        start_cluster()
 
 
 if __name__ == "__main__":
