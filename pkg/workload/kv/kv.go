@@ -156,9 +156,27 @@ func (w *kv) Hooks() workload.Hooks {
 
 // Tables implements the Generator interface.
 func (w *kv) Tables() []workload.Table {
+	const ROWS = 1000
+	const HOT_THRESHOLD = 0.1 // fraction of keys are hot
+	const NODES = 3 // # of nodes in cluster
+	const HOT_DEFAULT = 1000
+	const WARM_DEFAULT = 0
+
 	table := workload.Table{
 		Name: `kv`,
 		// TODO(dan): Support initializing kv with data.
+
+		// ^ on it.
+		InitialRows: workload.Tuples(
+			ROWS,
+			func(rowIdx int) []interface{} {
+				if rowIdx < HOT_THRESHOLD * ROWS {
+					return []interface{}{rowIdx, HOT_DEFAULT}
+				} else {
+					return []interface{}{rowIdx, WARM_DEFAULT}
+				}
+			},
+		),
 		Splits: workload.Tuples(
 			w.splits,
 			func(splitIdx int) []interface{} {
@@ -168,11 +186,13 @@ func (w *kv) Tables() []workload.Table {
 			},
 		),
 	}
-	if w.secondaryIndex {
+
+	// Don't need this choosing of code
+	/*if w.secondaryIndex {
 		table.Schema = kvSchemaWithIndex
 	} else {
 		table.Schema = kvSchema
-	}
+	}*/
 	return []workload.Table{table}
 }
 
