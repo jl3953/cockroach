@@ -31,7 +31,7 @@ def kill_cockroach_node(host):
 
 def start_cockroach_node(host, listen, join=None):
     cmd = ("{0} start --insecure --background"
-           " --listen-addr={1}:26257").format(EXE, listen)
+           " --listen-addr={1}:26257 --store=/data").format(EXE, listen)
 
     if join:
         cmd = "{0} --join={1}:26257".format(cmd, join)
