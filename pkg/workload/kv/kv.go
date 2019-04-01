@@ -178,10 +178,19 @@ func (w *kv) Tables() []workload.Table {
 			},
 		),
 		Splits: workload.Tuples(
-			w.splits,
+			NODES - 1,
 			func(splitIdx int) []interface{} {
-				stride := (float64(w.cycleLength) - float64(math.MinInt64)) / float64(w.splits+1)
-				splitPoint := int(math.MinInt64 + float64(splitIdx+1)*stride)
+
+				hotRowOffset := int(HOT_THRESHOLD * ROWS)
+
+				if splitIdx == 0 {
+					return []interface{}{hotRowOffset}
+				}
+
+				remainingRows := ROWS - hotRowOffset
+				rowsPerSplit := int(remainingRows / (NODES - 1))
+				splitPoint := splitIdx * rowsPerSplit + hotRowOffset
+
 				return []interface{}{splitPoint}
 			},
 		),
