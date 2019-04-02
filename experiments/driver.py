@@ -32,7 +32,7 @@ def kill_cockroach_node(host):
 
     time.sleep(1)
 
-    cmd = 'sudo rm -rf {0}'.format(STORE_DIR)
+    cmd = 'sudo rm -rf {0}'.format(os.path.join(STORE_DIR, "*"))
     call_remote(host, cmd, 'Failed to remove cockroach data.')
 
 
