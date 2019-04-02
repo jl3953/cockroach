@@ -7,6 +7,7 @@ import time
 
 NODES = ["192.168.1.2", "192.168.1.3", "192.168.1.4"]
 EXE = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach"
+STORE_DIR = "/data"
 
 
 def call(cmd, err_msg):
@@ -29,10 +30,16 @@ def kill_cockroach_node(host):
     cmd = '(! pgrep cockroach) || sudo killall -q cockroach'
     call_remote(host, cmd, 'Failed to kill cockroach node.')
 
+    time.sleep(1)
+
+    cmd = 'sudo rm -rf {0}'.format(STORE_DIR)
+    call_remote(host, cmd, 'Failed to remove cockroach data.')
+
 
 def start_cockroach_node(host, listen, join=None):
     cmd = ("{0} start --insecure --background"
-           " --listen-addr={1}:26257 --store=/data").format(EXE, listen)
+           " --listen-addr={2}:26257 --store={1}") \
+           .format(EXE, STORE_DIR, listen)
 
     if join:
         cmd = "{0} --join={1}:26257".format(cmd, join)
@@ -62,7 +69,7 @@ def main():
         kill_cluster()
     else:
         kill_cluster()
-        time.sleep(10)
+        time.sleep(5)
         start_cluster()
 
 
