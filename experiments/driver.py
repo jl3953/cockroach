@@ -96,8 +96,9 @@ def main():
     else:
         kill_cluster()
 
-        run_tpcc(NODES[0], DURATION_S, N_WAREHOUSES)
         start_cluster()
+
+        run_tpcc(NODES[0], DURATION_S, N_WAREHOUSES)
 
 
 if __name__ == "__main__":
