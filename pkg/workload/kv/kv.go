@@ -59,6 +59,7 @@ type kv struct {
 	writeSeq                             string
 	sequential                           bool
 	zipfian                              bool
+	skew			   	     float64
 	splits                               int
 	secondaryIndex                       bool
 	useOpt                               bool
@@ -105,6 +106,8 @@ var kvMeta = workload.Meta{
 		g.flags.Int64Var(&g.seed, `seed`, 1, `Key hash seed.`)
 		g.flags.BoolVar(&g.zipfian, `zipfian`, false,
 			`Pick keys in a zipfian distribution instead of randomly.`)
+		g.flags.Float64Var(&g.skew, `skew`, 1.0,
+			`Specify skew parameter for zipfian distribution.`)
 		g.flags.BoolVar(&g.sequential, `sequential`, false,
 			`Pick keys sequentially instead of randomly.`)
 		g.flags.StringVar(&g.writeSeq, `write-seq`, "",
@@ -166,7 +169,7 @@ func (w *kv) Tables() []workload.Table {
 		Name: `kv`,
 		// TODO(dan): Support initializing kv with data.
 
-		// ^ on it.
+		// ^ on it...but doesn't seem to get called. TODO (Jennifer)
 		InitialRows: workload.Tuples(
 			ROWS,
 			func(rowIdx int) []interface{} {
@@ -290,7 +293,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq)
+			op.g = newZipfianGenerator(seq, w.skew)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -481,12 +484,12 @@ type zipfGenerator struct {
 }
 
 // Creates a new zipfian generator.
-func newZipfianGenerator(seq *sequence) *zipfGenerator {
+func newZipfianGenerator(seq *sequence, skew float64) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
-		zipf:   newZipf(1.1, 1, uint64(math.MaxInt64)),
+		zipf:   newZipf(skew, 1, uint64(math.MaxInt64)),
 	}
 }
 
