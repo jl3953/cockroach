@@ -59,7 +59,7 @@ type kv struct {
 	writeSeq                             string
 	sequential                           bool
 	zipfian                              bool
-	skew			   	     float64
+	skew                                 float64
 	splits                               int
 	secondaryIndex                       bool
 	useOpt                               bool
@@ -161,19 +161,20 @@ func (w *kv) Hooks() workload.Hooks {
 func (w *kv) Tables() []workload.Table {
 	const ROWS = 1000
 	const HOT_THRESHOLD = 0.1 // fraction of keys are hot
-	const NODES = 3 // # of nodes in cluster
+	const NODES = 3           // # of nodes in cluster
 	const HOT_DEFAULT = 1000
 	const WARM_DEFAULT = 0
 
 	table := workload.Table{
-		Name: `kv`,
+		Name:   `kv`,
+		Schema: kvSchema,
 		// TODO(dan): Support initializing kv with data.
 
 		// ^ on it...but doesn't seem to get called. TODO (Jennifer)
 		InitialRows: workload.Tuples(
 			ROWS,
 			func(rowIdx int) []interface{} {
-				if rowIdx < HOT_THRESHOLD * ROWS {
+				if rowIdx < HOT_THRESHOLD*ROWS {
 					return []interface{}{rowIdx, HOT_DEFAULT}
 				} else {
 					return []interface{}{rowIdx, WARM_DEFAULT}
@@ -181,7 +182,7 @@ func (w *kv) Tables() []workload.Table {
 			},
 		),
 		Splits: workload.Tuples(
-			NODES - 1,
+			NODES-1,
 			func(splitIdx int) []interface{} {
 
 				hotRowOffset := int(HOT_THRESHOLD * ROWS)
@@ -192,7 +193,7 @@ func (w *kv) Tables() []workload.Table {
 
 				remainingRows := ROWS - hotRowOffset
 				rowsPerSplit := int(remainingRows / (NODES - 1))
-				splitPoint := splitIdx * rowsPerSplit + hotRowOffset
+				splitPoint := splitIdx*rowsPerSplit + hotRowOffset
 
 				return []interface{}{splitPoint}
 			},
