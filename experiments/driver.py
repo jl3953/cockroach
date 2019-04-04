@@ -115,10 +115,11 @@ def run_kvbench(config):
 
     duration = config["duration"]
     distribution = config["distribution"]
+    dist_params = distribution["params"]
 
     args = "'postgresql://root@{0}:26257?sslmode=disable' --duration={1}s".format(ip, duration)
     if distribution["type"] == "zipf":
-        args = "{0} --zipfian={1}".format(args, distribution["skew"])
+        args = "{0} --zipfian={1}".format(args, dist_params["skew"])
 
     out = run_bench(name, args)
     out_dir = config["out_dir"]
