@@ -9,6 +9,7 @@ import time
 
 # Constants
 NODES = ["192.168.1.2", "192.168.1.3", "192.168.1.4"]
+REGIONS = ["newyork", "london", "tokyo"] # correspond directly to each node
 EXE = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach"
 STORE_DIR = "/data"
 
@@ -56,10 +57,11 @@ def kill_cockroach_node(host):
     call_remote(host, cmd, 'Failed to remove cockroach data.')
 
 
-def start_cockroach_node(host, listen, join=None):
+def start_cockroach_node(host, listen, region, join=None):
     cmd = ("{0} start --insecure --background"
-           " --listen-addr={2}:26257 --store={1}") \
-           .format(EXE, STORE_DIR, listen)
+           " --listen-addr={2}:26257 --store={1}"
+	   " --locality=region={3}") \
+           .format(EXE, STORE_DIR, listen, region)
 
     if join:
         cmd = "{0} --join={1}:26257".format(cmd, join)
@@ -77,9 +79,9 @@ def kill_cluster():
 def start_cluster():
     first = NODES[0]
 
-    start_cockroach_node(first, first)
-    for n in NODES[1:]:
-        start_cockroach_node(n, n, join=first)
+    start_cockroach_node(first, first, REGIONS[0])
+    for n, r in zip(NODES[1:], REGIONS[1:]):
+        start_cockroach_node(n, n, r, join=first)
 
 
 def init_bench(name, args=""):
@@ -141,6 +143,8 @@ def save_params(exp_params, out_dir):
 def main():
     parser = argparse.ArgumentParser(description='Start and kill script for cockroach.')
     parser.add_argument('--kill', action='store_true', help='kills cluster, if specified')
+    parser.add_argument('--benchmark', nargs='+', choices=['kv', 'tpcc'],
+		    	help='runs specified benchmark')
 
     args = parser.parse_args()
     if args.kill:
@@ -155,13 +159,13 @@ def main():
 
         kill_cluster()
         start_cluster()
-
-        bench = EXP["benchmark"]
-        if bench == "tpcc":
-            run_tpcc(EXP)
-        elif bench == "kv":
-            run_kvbench(EXP)
-
+        
+        if args.benchmark:
+            for bench in args.benchmark:
+                if bench == "tpcc":
+                    run_tpcc(bench)
+                elif bench == "kv":
+                    run_kvbench(bench)
 
 if __name__ == "__main__":
     main()
