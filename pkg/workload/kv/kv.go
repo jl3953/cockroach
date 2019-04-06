@@ -290,23 +290,21 @@ type kvOp struct {
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
-	if statementProbability < o.config.readPercent {
-		args := make([]interface{}, o.config.batchSize)
-		for i := 0; i < o.config.batchSize; i++ {
-			args[i] = o.g.readKey()
-		}
-		start := timeutil.Now()
+    tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable})
+    const STATEMENTS_PER_TXN = 10
 
-        tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable})
-        const STATEMENTS_PER_TXN = 10
+	if statementProbability < o.config.readPercent {
+		start := timeutil.Now()
 
 	    if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
         func() error {
 
             var returnErr error
             for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
+                args := make([]interface{}, o.config.batchSize)
                 for i := 0; i < o.config.batchSize; i++ {
                     args[i] = o.g.readKey()
+                    //fmt.Printf("%d=%d\n", i, args[i])
                 }
 		        rows, err := o.readStmt.QueryTx(ctx, tx, args...)
 		        if err != nil {
@@ -342,14 +340,27 @@ func (o *kvOp) run(ctx context.Context) error {
 		return err
 	}
 	const argCount = 2
-	args := make([]interface{}, argCount*o.config.batchSize)
-	for i := 0; i < o.config.batchSize; i++ {
-		j := i * argCount
-		args[j+0] = o.g.writeKey()
-		args[j+1] = randomBlock(o.config, o.g.rand())
-	}
+	if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
+    func() error {
+
+        for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
+            args := make([]interface{}, argCount*o.config.batchSize)
+            for i := 0; i < o.config.batchSize; i++ {
+                j := i * argCount
+                args[j+0] = o.g.writeKey()
+                args[j+1] = randomBlock(o.config, o.g.rand())
+            }
+            //fmt.Printf("txn baby\n")
+	        _, err := o.writeStmt.ExecTx(ctx, tx, args...)
+		    if err != nil {
+			    return err
+		    }
+        }
+        return nil
+	}); err != nil {
+        return err
+    }
 	start := timeutil.Now()
-	_, err := o.writeStmt.Exec(ctx, args...)
 	elapsed := timeutil.Since(start)
 	o.hists.Get(`write`).Record(elapsed)
 	return err
