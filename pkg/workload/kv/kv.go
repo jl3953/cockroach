@@ -27,11 +27,15 @@ import (
 	"strings"
 	"sync/atomic"
 
+    "github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
+
+    "github.com/jackc/pgx"
+
 )
 
 const (
@@ -59,7 +63,6 @@ type kv struct {
 	writeSeq                             string
 	sequential                           bool
 	zipfian                              bool
-	skew                                 float64
 	splits                               int
 	secondaryIndex                       bool
 	useOpt                               bool
@@ -106,8 +109,6 @@ var kvMeta = workload.Meta{
 		g.flags.Int64Var(&g.seed, `seed`, 1, `Key hash seed.`)
 		g.flags.BoolVar(&g.zipfian, `zipfian`, false,
 			`Pick keys in a zipfian distribution instead of randomly.`)
-		g.flags.Float64Var(&g.skew, `skew`, 1.0,
-			`Specify skew parameter for zipfian distribution.`)
 		g.flags.BoolVar(&g.sequential, `sequential`, false,
 			`Pick keys sequentially instead of randomly.`)
 		g.flags.StringVar(&g.writeSeq, `write-seq`, "",
@@ -159,53 +160,23 @@ func (w *kv) Hooks() workload.Hooks {
 
 // Tables implements the Generator interface.
 func (w *kv) Tables() []workload.Table {
-	const ROWS = 1000
-	const HOT_THRESHOLD = 0.1 // fraction of keys are hot
-	const NODES = 3           // # of nodes in cluster
-	const HOT_DEFAULT = 1000
-	const WARM_DEFAULT = 0
-
 	table := workload.Table{
-		Name:   `kv`,
-		Schema: kvSchema,
+		Name: `kv`,
 		// TODO(dan): Support initializing kv with data.
-
-		// ^ on it...but doesn't seem to get called. TODO (Jennifer)
-		InitialRows: workload.Tuples(
-			ROWS,
-			func(rowIdx int) []interface{} {
-				if rowIdx < HOT_THRESHOLD*ROWS {
-					return []interface{}{rowIdx, HOT_DEFAULT}
-				} else {
-					return []interface{}{rowIdx, WARM_DEFAULT}
-				}
-			},
-		),
 		Splits: workload.Tuples(
-			NODES-1,
+			w.splits,
 			func(splitIdx int) []interface{} {
-
-				hotRowOffset := int(HOT_THRESHOLD * ROWS)
-
-				if splitIdx == 0 {
-					return []interface{}{hotRowOffset}
-				}
-
-				remainingRows := ROWS - hotRowOffset
-				rowsPerSplit := int(remainingRows / (NODES - 1))
-				splitPoint := splitIdx*rowsPerSplit + hotRowOffset
-
+				stride := (float64(w.cycleLength) - float64(math.MinInt64)) / float64(w.splits+1)
+				splitPoint := int(math.MinInt64 + float64(splitIdx+1)*stride)
 				return []interface{}{splitPoint}
 			},
 		),
 	}
-
-	// Don't need this choosing of code
-	/*if w.secondaryIndex {
+	if w.secondaryIndex {
 		table.Schema = kvSchemaWithIndex
 	} else {
 		table.Schema = kvSchema
-	}*/
+	}
 	return []workload.Table{table}
 }
 
@@ -284,6 +255,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 			config:          w,
 			hists:           reg.GetHandle(),
 			numEmptyResults: numEmptyResults,
+            mcp:             mcp,
 		}
 		op.readStmt = op.sr.Define(readStmtStr)
 		op.writeStmt = op.sr.Define(writeStmtStr)
@@ -294,7 +266,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq, w.skew)
+			op.g = newZipfianGenerator(seq)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -313,6 +285,7 @@ type kvOp struct {
 	spanStmt        workload.StmtHandle
 	g               keyGenerator
 	numEmptyResults *int64 // accessed atomically
+    mcp             *workload.MultiConnPool
 }
 
 func (o *kvOp) run(ctx context.Context) error {
@@ -323,20 +296,40 @@ func (o *kvOp) run(ctx context.Context) error {
 			args[i] = o.g.readKey()
 		}
 		start := timeutil.Now()
-		rows, err := o.readStmt.Query(ctx, args...)
-		if err != nil {
-			return err
-		}
-		empty := true
-		for rows.Next() {
-			empty = false
-		}
-		if empty {
-			atomic.AddInt64(o.numEmptyResults, 1)
-		}
+
+        tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable})
+        const STATEMENTS_PER_TXN = 10
+
+	    if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
+        func() error {
+
+            var returnErr error
+            for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
+                for i := 0; i < o.config.batchSize; i++ {
+                    args[i] = o.g.readKey()
+                }
+		        rows, err := o.readStmt.QueryTx(ctx, tx, args...)
+		        if err != nil {
+			        return err
+		        }
+                empty := true
+                for rows.Next() {
+                    empty = false
+                }
+                if empty {
+                    atomic.AddInt64(o.numEmptyResults, 1)
+                }
+                returnErr = rows.Err()
+            }
+
+            return returnErr;
+		}); err != nil {
+            return err
+        }
+
 		elapsed := timeutil.Since(start)
 		o.hists.Get(`read`).Record(elapsed)
-		return rows.Err()
+		return err
 	}
 	// Since we know the statement is not a read, we recalibrate
 	// statementProbability to only consider the other statements.
@@ -485,12 +478,12 @@ type zipfGenerator struct {
 }
 
 // Creates a new zipfian generator.
-func newZipfianGenerator(seq *sequence, skew float64) *zipfGenerator {
+func newZipfianGenerator(seq *sequence) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
-		zipf:   newZipf(skew, 1, uint64(math.MaxInt64)),
+		zipf:   newZipf(1.1, 1, uint64(math.MaxInt64)),
 	}
 }
 
