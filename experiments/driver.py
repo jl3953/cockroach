@@ -107,16 +107,18 @@ def start_cluster(nodes):
 
 
 def build_cockroach(nodes, commit):
-    cmd = "cd {0} && git checkout {1} && make build".format(COCKROACH_DIR, commit)
+    cmd = ("export GOPATH=/usr/local/temp/go "
+           "&& cd {0} && git checkout {1}"
+           "&& (make build || (make clean && make build))") \
+           .format(COCKROACH_DIR, commit)
+
     for n in nodes:
         call_remote(n["ip"], cmd, "Failed to build cockroach")
     
 
 def init_experiment(config):
     kill_cluster(EXP["nodes"])
-
     build_cockroach(EXP["nodes"], config["cockroach_commit"])
-
     start_cluster(EXP["nodes"])
     
         
