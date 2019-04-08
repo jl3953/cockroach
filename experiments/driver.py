@@ -8,7 +8,8 @@ import sys
 import time
 
 # Constants
-EXE = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach"
+COCKROACH_DIR = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach"
+EXE = os.path.join(COCKROACH_DIR, "cockroach")
 STORE_DIR = "/data"
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
@@ -17,6 +18,7 @@ LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 
 EXP = {
     "out_dir": os.path.join(LOGS_DIR, "kv"),
+    "cockroach_commit": "hot_or_not",
     "coordinator": "192.168.1.2",
     "nodes": [
         {
@@ -106,6 +108,20 @@ def start_cluster(nodes):
         start_cockroach_node(n, join=first["ip"])
 
 
+def build_cockroach(nodes, commit):
+    cmd = "git checkout {0} && make build".format(commit)
+    for n in nodes:
+        call_remote(n["ip"], cmd)
+    
+
+def init_experiment(config):
+    kill_cluster(EXP["nodes"])
+
+    build_cockroach(EXP["nodes"], config["cockroach_commit"])
+
+    start_cluster(EXP["nodes"])
+    
+        
 def init_bench(name, args=""):
     cmd = "{0} workload init {1} {2}".format(EXE, name, args)
     return call(cmd, "Failed to initialize benchmark")
@@ -179,8 +195,7 @@ def main():
 
         save_params(EXP, out_dir)
 
-        kill_cluster(EXP["nodes"])
-        start_cluster(EXP["nodes"])
+        init_experiment(EXP)
         
         if args.benchmark:
             for bench in args.benchmark:
