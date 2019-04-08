@@ -70,7 +70,7 @@ def kill_cockroach_node(node):
     store = node["store"]
 
     cmd = ("PID=$(! pgrep cockroach) "
-           "|| sudo killall -q cockroach; while ps -p $PID; do sleep 1;done;")
+           "|| (sudo killall -q cockroach; while ps -p $PID;do sleep 1;done;)")
     call_remote(ip, cmd, "Failed to kill cockroach node.")
 
     cmd = "sudo rm -rf {0}".format(os.path.join(store, "*"))
