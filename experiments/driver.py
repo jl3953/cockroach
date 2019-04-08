@@ -97,8 +97,6 @@ def kill_cluster(nodes):
     for n in nodes:
         kill_cockroach_node(n)
 
-    time.sleep(10)
-
 
 def start_cluster(nodes):
     first = nodes[0]
@@ -109,7 +107,7 @@ def start_cluster(nodes):
 
 
 def build_cockroach(nodes, commit):
-    cmd = "git checkout {0} && make build".format(commit)
+    cmd = "cd {0} && git checkout {1} && make build".format(COCKROACH_DIR, commit)
     for n in nodes:
         call_remote(n["ip"], cmd, "Failed to build cockroach")
     
