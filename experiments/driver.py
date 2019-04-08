@@ -70,7 +70,7 @@ def kill_cockroach_node(node):
     store = node["store"]
 
     cmd = ("PID=$(! pgrep cockroach) "
-           "|| (sudo killall -q cockroach; while ps -p $PID;do sleep 1;done;)")
+           "|| (sudo pkill -9 cockroach; while ps -p $PID;do sleep 1;done;)")
     call_remote(ip, cmd, "Failed to kill cockroach node.")
 
     cmd = "sudo rm -rf {0}".format(os.path.join(store, "*"))
@@ -102,7 +102,7 @@ def start_cluster(nodes):
     first = nodes[0]
 
     start_cockroach_node(first)
-    for n in nodes:
+    for n in nodes[1:]:
         start_cockroach_node(n, join=first["ip"])
 
 
