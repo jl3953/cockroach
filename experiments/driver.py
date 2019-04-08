@@ -68,13 +68,11 @@ def call_remote(host, cmd, err_msg):
 def kill_cockroach_node(node):
     ip = node["ip"]
     store = node["store"]
+
+    cmd = "{0} quit --insecure --host={1} || true".format(EXE, ip)
+    call(cmd, "Failed to kill cockroach node")
     
-    cmd = '(! pgrep cockroach) || sudo killall -q cockroach'
-    call_remote(ip, cmd, 'Failed to kill cockroach node.')
-
-    time.sleep(1)
-
-    cmd = 'sudo rm -rf {0}'.format(os.path.join(store, "*"))
+    cmd = "sudo rm -rf {0}".format(os.path.join(store, "*"))
     call_remote(ip, cmd, 'Failed to remove cockroach data.')
 
 
