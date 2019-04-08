@@ -206,9 +206,9 @@ def main():
         if args.benchmark:
             for bench in args.benchmark:
                 if bench == "tpcc":
-                    run_tpcc(bench)
+                    run_tpcc(EXP)
                 elif bench == "kv":
-                    run_kvbench(bench)
+                    run_kvbench(EXP)
 
 if __name__ == "__main__":
     main()
