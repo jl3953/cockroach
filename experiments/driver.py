@@ -6,6 +6,7 @@ import os
 import subprocess
 import sys
 import time
+import threading
 
 # Constants
 COCKROACH_DIR = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach"
@@ -112,8 +113,13 @@ def build_cockroach(nodes, commit):
            "&& (make build || (make clean && make build))") \
            .format(COCKROACH_DIR, commit)
 
+    ts = []
     for n in nodes:
-        call_remote(n["ip"], cmd, "Failed to build cockroach")
+        t = threading.Thread(target=call_remote, args=(n["ip"], cmd, "Failed to build cockroach"))
+        ts.append(t)
+
+    for t in ts:
+        t.join()
     
 
 def init_experiment(config):
