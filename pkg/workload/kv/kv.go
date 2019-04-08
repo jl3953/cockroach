@@ -27,15 +27,14 @@ import (
 	"strings"
 	"sync/atomic"
 
-    "github.com/cockroachdb/cockroach-go/crdb"
+	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 
-    "github.com/jackc/pgx"
-
+	"github.com/jackc/pgx"
 )
 
 const (
@@ -255,7 +254,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 			config:          w,
 			hists:           reg.GetHandle(),
 			numEmptyResults: numEmptyResults,
-            mcp:             mcp,
+			mcp:             mcp,
 		}
 		op.readStmt = op.sr.Define(readStmtStr)
 		op.writeStmt = op.sr.Define(writeStmtStr)
@@ -285,45 +284,45 @@ type kvOp struct {
 	spanStmt        workload.StmtHandle
 	g               keyGenerator
 	numEmptyResults *int64 // accessed atomically
-    mcp             *workload.MultiConnPool
+	mcp             *workload.MultiConnPool
 }
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
-    tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable})
-    const STATEMENTS_PER_TXN = 10
+	tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable})
+	const STATEMENTS_PER_TXN = 5
 
 	if statementProbability < o.config.readPercent {
 		start := timeutil.Now()
 
-	    if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
-        func() error {
+		if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
+			func() error {
 
-            var returnErr error
-            for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
-                args := make([]interface{}, o.config.batchSize)
-                for i := 0; i < o.config.batchSize; i++ {
-                    args[i] = o.g.readKey()
-                    //fmt.Printf("%d=%d\n", i, args[i])
-                }
-		        rows, err := o.readStmt.QueryTx(ctx, tx, args...)
-		        if err != nil {
-			        return err
-		        }
-                empty := true
-                for rows.Next() {
-                    empty = false
-                }
-                if empty {
-                    atomic.AddInt64(o.numEmptyResults, 1)
-                }
-                returnErr = rows.Err()
-            }
+				var returnErr error
+				for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
+					args := make([]interface{}, o.config.batchSize)
+					for i := 0; i < o.config.batchSize; i++ {
+						args[i] = o.g.readKey()
+						//fmt.Printf("%d=%d\n", i, args[i])
+					}
+					rows, err := o.readStmt.QueryTx(ctx, tx, args...)
+					if err != nil {
+						return err
+					}
+					empty := true
+					for rows.Next() {
+						empty = false
+					}
+					if empty {
+						atomic.AddInt64(o.numEmptyResults, 1)
+					}
+					returnErr = rows.Err()
+				}
 
-            return returnErr;
-		}); err != nil {
-            return err
-        }
+				return returnErr
+			}); err != nil {
+			return err
+		}
 
 		elapsed := timeutil.Since(start)
 		o.hists.Get(`read`).Record(elapsed)
@@ -341,25 +340,25 @@ func (o *kvOp) run(ctx context.Context) error {
 	}
 	const argCount = 2
 	if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
-    func() error {
+		func() error {
 
-        for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
-            args := make([]interface{}, argCount*o.config.batchSize)
-            for i := 0; i < o.config.batchSize; i++ {
-                j := i * argCount
-                args[j+0] = o.g.writeKey()
-                args[j+1] = randomBlock(o.config, o.g.rand())
-            }
-            //fmt.Printf("txn baby\n")
-	        _, err := o.writeStmt.ExecTx(ctx, tx, args...)
-		    if err != nil {
-			    return err
-		    }
-        }
-        return nil
-	}); err != nil {
-        return err
-    }
+			for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
+				args := make([]interface{}, argCount*o.config.batchSize)
+				for i := 0; i < o.config.batchSize; i++ {
+					j := i * argCount
+					args[j+0] = o.g.writeKey()
+					args[j+1] = randomBlock(o.config, o.g.rand())
+				}
+				//fmt.Printf("txn baby\n")
+				_, err := o.writeStmt.ExecTx(ctx, tx, args...)
+				if err != nil {
+					return err
+				}
+			}
+			return nil
+		}); err != nil {
+		return err
+	}
 	start := timeutil.Now()
 	elapsed := timeutil.Since(start)
 	o.hists.Get(`write`).Record(elapsed)
