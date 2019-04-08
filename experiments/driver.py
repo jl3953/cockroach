@@ -32,7 +32,7 @@ EXP = {
             "store": STORE_DIR,
         },
         {
-            "ip": "192.168.1.4"
+            "ip": "192.168.1.4",
             "region": "tokyo",
             "store": STORE_DIR,
         },
@@ -111,7 +111,7 @@ def start_cluster(nodes):
 def build_cockroach(nodes, commit):
     cmd = "git checkout {0} && make build".format(commit)
     for n in nodes:
-        call_remote(n["ip"], cmd)
+        call_remote(n["ip"], cmd, "Failed to build cockroach")
     
 
 def init_experiment(config):
