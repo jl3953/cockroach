@@ -109,13 +109,14 @@ def start_cluster(nodes):
 
 def build_cockroach(nodes, commit):
     cmd = ("export GOPATH=/usr/local/temp/go "
-           "&& cd {0} && git checkout {1}"
+           "&& cd {0} && git pull && git checkout {1}"
            "&& (make build || (make clean && make build))") \
            .format(COCKROACH_DIR, commit)
 
     ts = []
     for n in nodes:
         t = threading.Thread(target=call_remote, args=(n["ip"], cmd, "Failed to build cockroach"))
+        t.start()
         ts.append(t)
 
     for t in ts:
