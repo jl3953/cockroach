@@ -8,8 +8,6 @@ import sys
 import time
 
 # Constants
-NODES = ["192.168.1.2", "192.168.1.3", "192.168.1.4"]
-REGIONS = ["newyork", "london", "tokyo"] # correspond directly to each node
 EXE = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach"
 STORE_DIR = "/data"
 
@@ -19,7 +17,24 @@ LOGS_DIR = os.path.join(BASE_DIR, 'logs')
 
 EXP = {
     "out_dir": os.path.join(LOGS_DIR, "kv"),
-    "coordinator": NODES[0],
+    "coordinator": "192.168.1.2",
+    "nodes": [
+        {
+            "ip": "192.168.1.2",
+            "region": "newyork",
+            "store": STORE_DIR,
+        },
+        {
+            "ip": "192.168.1.3",
+            "region": "london",
+            "store": STORE_DIR,
+        },
+        {
+            "ip": "192.168.1.4"
+            "region": "tokyo",
+            "store": STORE_DIR,
+        },
+    ],
     "benchmark": "kv",
     "duration": 30,
     "distribution": {
@@ -47,41 +62,48 @@ def call_remote(host, cmd, err_msg):
     return call(cmd, err_msg)
 
 
-def kill_cockroach_node(host):
+def kill_cockroach_node(node):
+    ip = node["ip"]
+    store = node["store"]
+    
     cmd = '(! pgrep cockroach) || sudo killall -q cockroach'
-    call_remote(host, cmd, 'Failed to kill cockroach node.')
+    call_remote(ip, cmd, 'Failed to kill cockroach node.')
 
     time.sleep(1)
 
-    cmd = 'sudo rm -rf {0}'.format(os.path.join(STORE_DIR, "*"))
-    call_remote(host, cmd, 'Failed to remove cockroach data.')
+    cmd = 'sudo rm -rf {0}'.format(os.path.join(store, "*"))
+    call_remote(ip, cmd, 'Failed to remove cockroach data.')
 
 
-def start_cockroach_node(host, listen, region, join=None):
+def start_cockroach_node(node, join=None):
+    ip = node["ip"]
+    region = node["region"]
+    store = node["store"]
+    
     cmd = ("{0} start --insecure --background"
            " --listen-addr={2}:26257 --store={1}"
 	   " --locality=region={3}") \
-           .format(EXE, STORE_DIR, listen, region)
+           .format(EXE, store, ip, region)
 
     if join:
         cmd = "{0} --join={1}:26257".format(cmd, join)
 
-    return call_remote(host, cmd, "Failed to start cockroach node.")
+    return call_remote(ip, cmd, "Failed to start cockroach node.")
 
 
-def kill_cluster():
-    for n in NODES:
+def kill_cluster(nodes):
+    for n in nodes:
         kill_cockroach_node(n)
 
     time.sleep(10)
 
 
-def start_cluster():
-    first = NODES[0]
+def start_cluster(nodes):
+    first = nodes[0]
 
-    start_cockroach_node(first, first, REGIONS[0])
-    for n, r in zip(NODES[1:], REGIONS[1:]):
-        start_cockroach_node(n, n, r, join=first)
+    start_cockroach_node(first)
+    for n in nodes:
+        start_cockroach_node(n, join=first["ip"])
 
 
 def init_bench(name, args=""):
@@ -148,7 +170,7 @@ def main():
 
     args = parser.parse_args()
     if args.kill:
-        kill_cluster()
+        kill_cluster(EXP["nodes"])
     else:
 
         out_dir = EXP["out_dir"]
@@ -157,8 +179,8 @@ def main():
 
         save_params(EXP, out_dir)
 
-        kill_cluster()
-        start_cluster()
+        kill_cluster(EXP["nodes"])
+        start_cluster(EXP["nodes"])
         
         if args.benchmark:
             for bench in args.benchmark:
