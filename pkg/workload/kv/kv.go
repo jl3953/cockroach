@@ -299,13 +299,17 @@ func (o *kvOp) run(ctx context.Context) error {
 			func() error {
 
 				var returnErr error
+                                var rows *pgx.Rows
 				for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
 					args := make([]interface{}, o.config.batchSize)
 					for i := 0; i < o.config.batchSize; i++ {
 						args[i] = o.g.readKey()
 						//fmt.Printf("%d=%d\n", i, args[i])
 					}
-					rows, err := o.readStmt.QueryTx(ctx, tx, args...)
+                                        var err error
+                                        fmt.Printf("%d where you locking si %d\n", rand.Intn(1000), statement_index)
+					rows, err = o.readStmt.QueryTx(ctx, tx, args...)
+                                        fmt.Printf("%d how you like me now si %d\n", rand.Intn(1000), statement_index)
 					if err != nil {
 						return err
 					}
@@ -318,8 +322,11 @@ func (o *kvOp) run(ctx context.Context) error {
 					}
 					returnErr = rows.Err()
 				}
-
+                                if returnErr == nil {
+                                    rows.Close()
+                                }
 				return returnErr
+
 			}); err != nil {
 			return err
 		}
