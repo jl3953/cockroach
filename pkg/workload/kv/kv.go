@@ -66,6 +66,7 @@ type kv struct {
 	secondaryIndex                       bool
 	useOpt                               bool
 	targetCompressionRatio               float64
+        stmtPerTxn                           int
 }
 
 func init() {
@@ -121,6 +122,8 @@ var kvMeta = workload.Meta{
 		g.flags.BoolVar(&g.useOpt, `use-opt`, true, `Use cost-based optimizer`)
 		g.flags.Float64Var(&g.targetCompressionRatio, `target-compression-ratio`, 1.0,
 			`Target compression ratio for data blocks. Must be >= 1.0`)
+                g.flags.IntVar(&g.stmtPerTxn, `stmt-per-txn`, 10,
+                        `Statements per transaction to execute. Default=10`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
 		return g
 	},
@@ -292,7 +295,7 @@ type kvOp struct {
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
-	const STATEMENTS_PER_TXN = 5
+        STATEMENTS_PER_TXN := o.config.stmtPerTxn
 
 	if statementProbability < o.config.readPercent {
 		start := timeutil.Now()
@@ -307,7 +310,7 @@ func (o *kvOp) run(ctx context.Context) error {
 				for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
 					args := make([]interface{}, o.config.batchSize)
 					for i := 0; i < o.config.batchSize; i++ {
-						args[i] = o.g.readKey()
+						args[i] = 1
 						//fmt.Printf("%d=%d\n", i, args[i])
                                                 if args[i] == 0 {
                                                     args[i] = 1
@@ -384,7 +387,7 @@ func (o *kvOp) run(ctx context.Context) error {
 					args[j+1] = randomBlock(o.config, o.g.rand())
 				}
 				//fmt.Printf("txn baby\n")
-                                hurdur := fmt.Sprintf("UPSERT INTO kv (k, v) VALUES (%d, 'a')", args[0])
+                                hurdur := fmt.Sprintf("UPSERT INTO kv (k, v) VALUES (1, 'a')")
                                 fmt.Printf("%d %s\n", rando, hurdur)
 				_, err := tx.ExecEx(ctx, hurdur, nil)
 				if err != nil {
