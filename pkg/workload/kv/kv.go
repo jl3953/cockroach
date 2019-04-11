@@ -289,7 +289,7 @@ func (o *kvOp) run(ctx context.Context) error {
                     for rows.Next() {
                         var temp int
                         if err := rows.Scan(&temp); err != nil {
-                            fmt.Printf("%d row iteration %v\n", rando, err)
+                            errors.Wrap(err, "row iteration %v\n")
                             rows.Close()
                             return err
                         }
@@ -300,7 +300,7 @@ func (o *kvOp) run(ctx context.Context) error {
                 return nil
 
             }); err != nil {
-                fmt.Printf("%d reads suck %v\n", rando, err)
+                fmt.Printf("reads suck\n")
                 return err
             }
 
@@ -329,7 +329,7 @@ func (o *kvOp) run(ctx context.Context) error {
             for i := 0; i < STATEMENTS_PER_TXN; i++ {
                 stmt := fmt.Sprintf("UPSERT INTO kv (k, v) VALUES (%d, 'A')", o.g.writeKey())
                 if _, err := tx.Exec(stmt); err != nil {
-                    fmt.Printf("%d aw shucks query: %s, %v\n", rando, stmt, err)
+                    errors.Wrap(err, "aw shucks query:\n")
                     return err
                 }
             }
