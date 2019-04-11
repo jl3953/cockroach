@@ -20,6 +20,7 @@ import (
 	"crypto/sha1"
 	"encoding/binary"
 	"fmt"
+        "database/sql"
 	"hash"
 	"math"
 	"math/rand"
@@ -34,7 +35,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 
-	"github.com/jackc/pgx"
+	//"github.com/jackc/pgx"
 )
 
 const (
@@ -205,50 +206,24 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		}
 	}
 
-	ctx := context.Background()
+        // sanitize your urls
+	//ctx := context.Background()
 	sqlDatabase, err := workload.SanitizeUrls(w, w.connFlags.DBOverride, urls)
 	if err != nil {
 		return workload.QueryLoad{}, err
 	}
-	mcp, err := workload.NewMultiConnPool(w.connFlags.Concurrency+1, urls...)
+
+        // open db connections
+	db, err := sql.Open(`cockroach`, strings.Join(urls, ` `))
 	if err != nil {
 		return workload.QueryLoad{}, err
 	}
+	// Allow a maximum of concurrency+1 connections to the database.
+	db.SetMaxOpenConns(w.connFlags.Concurrency + 1)
+	db.SetMaxIdleConns(w.connFlags.Concurrency + 1)
 
-	if !w.useOpt {
-		_, err := mcp.Get().Exec("SET optimizer=off")
-		if err != nil {
-			return workload.QueryLoad{}, err
-		}
-	}
 
-	// Read statement
-	var buf strings.Builder
-	buf.WriteString(`SELECT k, v FROM kv WHERE k IN (`)
-	for i := 0; i < w.batchSize; i++ {
-		if i > 0 {
-			buf.WriteString(", ")
-		}
-		fmt.Fprintf(&buf, `$%d`, i+1)
-	}
-	buf.WriteString(`)`)
-	readStmtStr := buf.String()
-
-	// Write statement
-	buf.Reset()
-	buf.WriteString(`UPSERT INTO kv (k, v) VALUES`)
-	for i := 0; i < w.batchSize; i++ {
-		j := i * 2
-		if i > 0 {
-			buf.WriteString(", ")
-		}
-		fmt.Fprintf(&buf, ` ($%d, $%d)`, j+1, j+2)
-	}
-	writeStmtStr := buf.String()
-
-	// Span statement
-	spanStmtStr := "SELECT count(v) FROM kv"
-
+        // figuring out workload stuff
 	ql := workload.QueryLoad{SQLDatabase: sqlDatabase}
 	seq := &sequence{config: w, val: int64(writeSeq)}
 	numEmptyResults := new(int64)
@@ -258,14 +233,8 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 			config:          w,
 			hists:           reg.GetHandle(),
 			numEmptyResults: numEmptyResults,
-			mcp:             mcp,
-		}
-		op.readStmt = op.sr.Define(readStmtStr)
-		op.writeStmt = op.sr.Define(writeStmtStr)
-                op.rollbackStmt = op.sr.Define("ROLLBACK TRANSACTION")
-		op.spanStmt = op.sr.Define(spanStmtStr)
-		if err := op.sr.Init(ctx, "kv", mcp, w.connFlags); err != nil {
-			return workload.QueryLoad{}, err
+			//mcp:             mcp,
+                        db:              db,
 		}
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
@@ -291,77 +260,53 @@ type kvOp struct {
 	g               keyGenerator
 	numEmptyResults *int64 // accessed atomically
 	mcp             *workload.MultiConnPool
+        db              *sql.DB
 }
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
         STATEMENTS_PER_TXN := o.config.stmtPerTxn
+        rando := rand.Intn(1000)
 
+        // transaction TODO(jenn) PROBABLY FATAL 
 	if statementProbability < o.config.readPercent {
-		start := timeutil.Now()
-                tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable})
+            start := timeutil.Now()
 
-		if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
-			func() error {
+            if err := crdb.ExecuteTx(ctx,
+                                    o.db,
+                                    &sql.TxOptions{
+                                        //Isolation: sql.LevelLinearizable,
+                                        ReadOnly: true,
+                                    }, func(tx *sql.Tx) error {
 
-				var returnErr error
-                                var rows *pgx.Rows
-                                rando := rand.Intn(1000)
-				for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
-					args := make([]interface{}, o.config.batchSize)
-					for i := 0; i < o.config.batchSize; i++ {
-						args[i] = 1
-						//fmt.Printf("%d=%d\n", i, args[i])
-                                                if args[i] == 0 {
-                                                    args[i] = 1
-                                                }
-					}
-                                        var err error
-					//rows, err = o.readStmt.QueryEx(ctx, tx, args...)
-                                        //TODO(jennifer--modify to have batches)
-                                        um := fmt.Sprintf("SELECT k, v FROM kv WHERE k IN (%d)", args[0])
-                                        fmt.Printf("%d %s\n", rando, um)
-                                        rows, err = tx.QueryEx(ctx,
-                                            um,
-                                            nil,
-                                        )
-					if err != nil {
-						return err
-					}
-					empty := true
-					for rows.Next() {
-						empty = false
-                                                /*var k int
-                                                var v pgtype.Bytea{}
-                                                err := rows.Scan(&k, &v)*/
-                                                if err != nil {
-                                                    fmt.Printf("you dun goofed\n")
-                                                    rows.Close()
-                                                    return err
-                                                }
-					}
-					if empty {
-						atomic.AddInt64(o.numEmptyResults, 1)
-					}
-					returnErr = rows.Err()
-				}
-                                if returnErr == nil {
-                                    rows.Close()
-                                    fmt.Printf("%d closing rows\n", rando)
-                                } else {
-                                    fmt.Printf("%d jenndebug fml %v\n", rando, returnErr)
-                                    //_, err := o.rollbackStmt.ExecTx(ctx, tx)
-                                    //returnErr = err
-                                }
-				return nil
 
-			}); err != nil {
-			return err
-		}
+                for i := 0; i < STATEMENTS_PER_TXN; i++ {
+                    stmt := fmt.Sprintf("SELECT k from kv WHERE k IN (%d)", o.g.readKey())
+                    rows, err := tx.Query(stmt)
+                    if err != nil {
+                            return err
+                    }
+                    for rows.Next() {
+                        var temp int
+                        if err := rows.Scan(&temp); err != nil {
+                            fmt.Printf("%d row iteration %v\n", rando, err)
+                            rows.Close()
+                            return err
+                        }
+                    }
+                    rows.Close()
+                }
 
-		elapsed := timeutil.Since(start)
-		o.hists.Get(`read`).Record(elapsed)
-		return err
+                return nil
+
+            }); err != nil {
+                fmt.Printf("%d reads suck %v\n", rando, err)
+                return err
+            }
+
+	    elapsed := timeutil.Since(start)
+	    o.hists.Get(`read`).Record(elapsed)
+	    return nil
 	}
 	// Since we know the statement is not a read, we recalibrate
 	// statementProbability to only consider the other statements.
@@ -373,38 +318,30 @@ func (o *kvOp) run(ctx context.Context) error {
 		o.hists.Get(`span`).Record(elapsed)
 		return err
 	}
-	const argCount = 2
-        tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable})
-	if err := crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx),
-		func() error {
-                    rando := rand.Intn(1000)
 
-			for statement_index := 0; statement_index < STATEMENTS_PER_TXN; statement_index++ {
-				args := make([]interface{}, argCount*o.config.batchSize)
-				for i := 0; i < o.config.batchSize; i++ {
-					j := i * argCount
-					args[j+0] = o.g.writeKey()
-					args[j+1] = randomBlock(o.config, o.g.rand())
-				}
-				//fmt.Printf("txn baby\n")
-                                hurdur := fmt.Sprintf("UPSERT INTO kv (k, v) VALUES (1, 'a')")
-                                fmt.Printf("%d %s\n", rando, hurdur)
-				_, err := tx.ExecEx(ctx, hurdur, nil)
-				if err != nil {
-                                    fmt.Printf("%d write error\n", rando)
-                                    return err
-				} else {
-                                    fmt.Printf("%d no write error\n", rando)
-                                }
-			}
-			return nil
-		}); err != nil {
-		return err
-	}
+        // writes
+        if err := crdb.ExecuteTx(ctx,
+                                o.db,
+                                &sql.TxOptions{
+                                    //Isolation: sql.LevelLinearizable,
+                                    ReadOnly: false,
+                                }, func(tx *sql.Tx) error{
+            for i := 0; i < STATEMENTS_PER_TXN; i++ {
+                stmt := fmt.Sprintf("UPSERT INTO kv (k, v) VALUES (%d, 'A')", o.g.writeKey())
+                if _, err := tx.Exec(stmt); err != nil {
+                    fmt.Printf("%d aw shucks query: %s, %v\n", rando, stmt, err)
+                    return err
+                }
+            }
+            return nil
+        }); err != nil {
+            fmt.Printf("%d writes returned err\n", rando)
+            return err
+        }
 	start := timeutil.Now()
 	elapsed := timeutil.Since(start)
 	o.hists.Get(`write`).Record(elapsed)
-	return err
+	return nil
 }
 
 func (o *kvOp) close(context.Context) {

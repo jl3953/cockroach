@@ -208,10 +208,14 @@ func (g *ycsb) Tables() []workload.Table {
 
 // Ops implements the Opser interface.
 func (g *ycsb) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, error) {
+
+        // sanitize your urls
 	sqlDatabase, err := workload.SanitizeUrls(g, g.connFlags.DBOverride, urls)
 	if err != nil {
 		return workload.QueryLoad{}, err
 	}
+
+        // open db connections
 	db, err := gosql.Open(`cockroach`, strings.Join(urls, ` `))
 	if err != nil {
 		return workload.QueryLoad{}, err
