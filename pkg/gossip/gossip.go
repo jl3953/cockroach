@@ -276,6 +276,8 @@ type Gossip struct {
 	localityTierMap map[string]struct{}
 
 	lastConnectivity string
+
+	hotNodeAddress util.UnresolvedAddr
 }
 
 // New creates an instance of a gossip node.
@@ -317,6 +319,7 @@ func New(
 		resolverAddrs:     map[util.UnresolvedAddr]resolver.Resolver{},
 		bootstrapAddrs:    map[util.UnresolvedAddr]roachpb.NodeID{},
 		localityTierMap:   map[string]struct{}{},
+		hotNodeAddress:    util.MakeUnresolvedAddr("tcp", "192.168.1.2:26257"),
 	}
 
 	for _, loc := range locality.Tiers {
@@ -911,10 +914,22 @@ func (g *Gossip) recomputeMaxPeersLocked() {
 	g.outgoing.setMaxSize(maxPeers)
 }
 
+func (g *Gossip) getHotNodeDescriptor() *roachpb.NodeDescriptor {
+	return &roachpb.NodeDescriptor{
+		NodeID:  roachpb.HotNodeID,
+		Address: g.hotNodeAddress,
+	}
+}
+
 // getNodeDescriptorLocked looks up the descriptor of the node by ID. The mutex
 // is assumed held by the caller. This method is called externally via
 // GetNodeDescriptor and internally by getNodeIDAddressLocked.
 func (g *Gossip) getNodeDescriptorLocked(nodeID roachpb.NodeID) (*roachpb.NodeDescriptor, error) {
+	if nodeID == roachpb.HotNodeID {
+		nd := g.getHotNodeDescriptor()
+		return nd, nil
+	}
+
 	if desc, ok := g.nodeDescs[nodeID]; ok {
 		if desc.Address.IsEmpty() {
 			log.Fatalf(g.AnnotateCtx(context.Background()), "n%d has an empty address", nodeID)

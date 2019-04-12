@@ -423,6 +423,9 @@ func (v *planVisitor) visitInternal(plan planNode, name string) {
 	case *splitNode:
 		n.rows = v.visit(n.rows)
 
+	case *hotKeyNode:
+		n.rows = v.visit(n.rows)
+
 	case *relocateNode:
 		n.rows = v.visit(n.rows)
 
@@ -776,6 +779,7 @@ var planNodeNames = map[reflect.Type]string{
 	reflect.TypeOf(&showZoneConfigNode{}):       "show zone configuration",
 	reflect.TypeOf(&sortNode{}):                 "sort",
 	reflect.TypeOf(&splitNode{}):                "split",
+	reflect.TypeOf(&hotKeyNode{}):               "hotkey",
 	reflect.TypeOf(&spoolNode{}):                "spool",
 	reflect.TypeOf(&truncateNode{}):             "truncate",
 	reflect.TypeOf(&unaryNode{}):                "emptyrow",

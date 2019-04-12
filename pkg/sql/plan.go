@@ -211,6 +211,7 @@ var _ planNode = &showFingerprintsNode{}
 var _ planNode = &showTraceNode{}
 var _ planNode = &sortNode{}
 var _ planNode = &splitNode{}
+var _ planNode = &hotKeyNode{}
 var _ planNode = &truncateNode{}
 var _ planNode = &unaryNode{}
 var _ planNode = &unionNode{}
@@ -669,6 +670,8 @@ func (p *planner) newPlan(
 		return p.DropUser(ctx, n)
 	case *tree.Explain:
 		return p.Explain(ctx, n)
+	case *tree.HotKey:
+		return p.HotKey(ctx, n)
 	case *tree.Grant:
 		return p.Grant(ctx, n)
 	case *tree.Insert:

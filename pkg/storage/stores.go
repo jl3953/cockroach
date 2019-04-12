@@ -53,6 +53,7 @@ type Stores struct {
 		biLatestTS hlc.Timestamp         // Timestamp of gossip bootstrap info
 		latestBI   *gossip.BootstrapInfo // Latest cached bootstrap info
 	}
+	db *client.DB
 }
 
 var _ client.Sender = &Stores{}  // Stores implements the client.Sender interface
@@ -69,6 +70,10 @@ func NewStores(
 		minSupportedVersion: minVersion,
 		serverVersion:       serverVersion,
 	}
+}
+
+func (ls *Stores) SetDBClient(db *client.DB) {
+	ls.db = db
 }
 
 // GetStoreCount returns the number of stores this node is exporting.
@@ -175,6 +180,27 @@ func (ls *Stores) Send(
 		log.Fatal(ctx, "batch request missing range ID")
 	} else if ba.Replica.StoreID == 0 {
 		log.Fatal(ctx, "batch request missing store ID")
+	}
+
+	if ba.Header.IsHotRequest {
+		fmt.Println("Batch:", ba)
+		fmt.Println("RangeID:", ba.RangeID)
+		fmt.Println("StoreID:", ba.Replica.StoreID)
+
+		fmt.Println("Txn: ", ba.Header.Txn)
+
+		defer fmt.Println("Finished sending hot request to self!")
+
+		ba.Header.IsHotRequest = false
+		f := ls.db.GetFactory()
+		if txn := ba.Header.Txn; txn != nil {
+			meta := roachpb.MakeTxnCoordMeta(*ba.Header.Txn)
+			tcs := f.TransactionalSender(client.LeafTxn, meta)
+			return tcs.Send(ctx, ba)
+		} else {
+			nts := f.NonTransactionalSender()
+			return nts.Send(ctx, ba)
+		}
 	}
 
 	store, err := ls.GetStore(ba.Replica.StoreID)

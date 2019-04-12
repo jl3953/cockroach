@@ -17,6 +17,7 @@ package roachpb
 import (
 	"bytes"
 	"fmt"
+	"math"
 	"sort"
 	"strconv"
 	"strings"
@@ -29,6 +30,8 @@ import (
 // NodeID is a custom type for a cockroach node ID. (not a raft node ID)
 // 0 is not a valid NodeID.
 type NodeID int32
+
+const HotNodeID = NodeID(math.MaxInt32)
 
 // String implements the fmt.Stringer interface.
 // It is used to format the ID for use in Gossip keys.

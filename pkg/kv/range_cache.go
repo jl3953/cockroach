@@ -267,6 +267,7 @@ func (rdc *RangeDescriptorCache) lookupRangeDescriptorInternal(
 	useReverseScan bool,
 	wg *sync.WaitGroup,
 ) (*roachpb.RangeDescriptor, *EvictionToken, error) {
+
 	doneWg := func() {
 		if wg != nil {
 			wg.Done()

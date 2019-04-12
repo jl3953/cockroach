@@ -138,3 +138,7 @@ ignored = [
   [[prune.project]]
     name = "github.com/knz/go-libedit"
     unused-packages = false
+
+[[constraint]]
+  name = "github.com/spf13/pflag"
+  revision = "24fa6976df40757dce6aea913e7b81ade90530e1"

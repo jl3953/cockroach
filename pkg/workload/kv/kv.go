@@ -18,9 +18,9 @@ package kv
 import (
 	"context"
 	"crypto/sha1"
+	"database/sql"
 	"encoding/binary"
 	"fmt"
-        "database/sql"
 	"hash"
 	"math"
 	"math/rand"
@@ -32,10 +32,8 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
-	"github.com/cockroachdb/cockroach/pkg/util/log"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
-
 	//"github.com/jackc/pgx"
 )
 
@@ -68,8 +66,9 @@ type kv struct {
 	secondaryIndex                       bool
 	useOpt                               bool
 	targetCompressionRatio               float64
-        stmtPerTxn                           int
-        skew                                 float64
+	stmtPerTxn                           int
+	skew                                 float64
+	hotKeys                              []int64
 }
 
 func init() {
@@ -125,10 +124,12 @@ var kvMeta = workload.Meta{
 		g.flags.BoolVar(&g.useOpt, `use-opt`, true, `Use cost-based optimizer`)
 		g.flags.Float64Var(&g.targetCompressionRatio, `target-compression-ratio`, 1.0,
 			`Target compression ratio for data blocks. Must be >= 1.0`)
-                g.flags.IntVar(&g.stmtPerTxn, `stmt-per-txn`, 10,
-                        `Statements per transaction to execute. Default=10`)
-                g.flags.Float64Var(&g.skew, `skew`, 1.1,
-                        `Skew for zipfian distribution. Default=1.1`)
+		g.flags.IntVar(&g.stmtPerTxn, `stmt-per-txn`, 10,
+			`Statements per transaction to execute. Default=10`)
+		g.flags.Float64Var(&g.skew, `skew`, 1.1,
+			`Skew for zipfian distribution. Default=1.1`)
+		g.flags.Int64SliceVar(&g.hotKeys, `hot-keys`, nil,
+			`List of hot keys that will be store on hot shard`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
 		return g
 	},
@@ -160,6 +161,9 @@ func (w *kv) Hooks() workload.Hooks {
 			if w.targetCompressionRatio < 1.0 || math.IsNaN(w.targetCompressionRatio) {
 				return errors.New("'target-compression-ratio' must be a number >= 1.0")
 			}
+			if w.splits > 0 && len(w.hotKeys) > 0 {
+				return errors.New("Can only specify one of `splits` or `hot-keys`")
+			}
 			return nil
 		},
 	}
@@ -167,15 +171,31 @@ func (w *kv) Hooks() workload.Hooks {
 
 // Tables implements the Generator interface.
 func (w *kv) Tables() []workload.Table {
+	var nsplits int
+	if w.splits > 0 {
+		nsplits = w.splits
+	} else {
+		nsplits = 2 * len(w.hotKeys)
+	}
+
 	table := workload.Table{
 		Name: `kv`,
 		// TODO(dan): Support initializing kv with data.
 		Splits: workload.Tuples(
-			w.splits,
+			nsplits,
 			func(splitIdx int) []interface{} {
-				stride := (float64(w.cycleLength) - float64(math.MinInt64)) / float64(w.splits+1)
-				splitPoint := int(math.MinInt64 + float64(splitIdx+1)*stride)
+				var splitPoint int
+				if w.splits > 0 {
+					stride := (float64(w.cycleLength) - float64(math.MinInt64)) / float64(nsplits+1)
+					splitPoint = int(math.MinInt64 + float64(splitIdx+1)*stride)
+				} else {
+					hotKeyIdx := splitIdx / 2
+					plusZeroOrOne := splitIdx % 2
+					splitPoint = int(w.hotKeys[hotKeyIdx] + int64(plusZeroOrOne))
+				}
+
 				return []interface{}{splitPoint}
+
 			},
 		),
 	}
@@ -210,14 +230,14 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		}
 	}
 
-        // sanitize your urls
+	// sanitize your urls
 	//ctx := context.Background()
 	sqlDatabase, err := workload.SanitizeUrls(w, w.connFlags.DBOverride, urls)
 	if err != nil {
 		return workload.QueryLoad{}, err
 	}
 
-        // open db connections
+	// open db connections
 	db, err := sql.Open(`cockroach`, strings.Join(urls, ` `))
 	if err != nil {
 		return workload.QueryLoad{}, err
@@ -226,19 +246,18 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	db.SetMaxOpenConns(w.connFlags.Concurrency + 1)
 	db.SetMaxIdleConns(w.connFlags.Concurrency + 1)
 
-
-        // figuring out workload stuff
+	// figuring out workload stuff
 	ql := workload.QueryLoad{SQLDatabase: sqlDatabase}
 	seq := &sequence{config: w, val: int64(writeSeq)}
 	numEmptyResults := new(int64)
-        //fmt.Printf("concurrency %d\n", w.connFlags.Concurrency)
+	//fmt.Printf("concurrency %d\n", w.connFlags.Concurrency)
 	for i := 0; i < w.connFlags.Concurrency; i++ {
 		op := &kvOp{
 			config:          w,
 			hists:           reg.GetHandle(),
 			numEmptyResults: numEmptyResults,
 			//mcp:             mcp,
-                        db:              db,
+			db: db,
 		}
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
@@ -259,77 +278,76 @@ type kvOp struct {
 	sr              workload.SQLRunner
 	readStmt        workload.StmtHandle
 	writeStmt       workload.StmtHandle
-        rollbackStmt    workload.StmtHandle
+	rollbackStmt    workload.StmtHandle
 	spanStmt        workload.StmtHandle
 	g               keyGenerator
 	numEmptyResults *int64 // accessed atomically
 	mcp             *workload.MultiConnPool
-        db              *sql.DB
+	db              *sql.DB
 }
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
-        STATEMENTS_PER_TXN := o.config.stmtPerTxn
-        rando := rand.Intn(1000)
+	STATEMENTS_PER_TXN := o.config.stmtPerTxn
+	rando := rand.Intn(1000)
 
-        // transaction TODO(jenn) PROBABLY FATAL--follows default
-        // of db
+	// transaction TODO(jenn) PROBABLY FATAL--follows default
+	// of db
 	if statementProbability < o.config.readPercent {
-            start := timeutil.Now()
+		start := timeutil.Now()
 
-            if err := crdb.ExecuteTx(ctx,
-                                    o.db,
-                                    &sql.TxOptions{
-                                        //Isolation: sql.LevelLinearizable,
-                                        ReadOnly: true,
-                                    }, func(tx *sql.Tx) error {
+		if err := crdb.ExecuteTx(ctx,
+			o.db,
+			&sql.TxOptions{
+				//Isolation: sql.LevelLinearizable,
+				ReadOnly: true,
+			}, func(tx *sql.Tx) error {
 
+				for i := 0; i < STATEMENTS_PER_TXN; i++ {
 
-                for i := 0; i < STATEMENTS_PER_TXN; i++ {
+					// construct query
+					args := make([]interface{}, o.config.batchSize)
+					stmt := "SELECT k from kv WHERE k IN ("
+					for batch := 0; batch < o.config.batchSize; batch++ {
+						if batch > 0 {
+							stmt += ", "
+						}
+						stmt += "%d"
+						args[batch] = o.g.readKey()
+					}
+					stmt += ")"
+					stmt = fmt.Sprintf(stmt, args...)
+					//log.Warningf(ctx, "jenndebug ro txn %s\n", stmt)
+					//fmt.Println(stmt)
+					rows, err := tx.Query(stmt)
+					if err != nil {
+						return err
+					}
+					for rows.Next() {
+						var temp int
+						if err := rows.Scan(&temp); err != nil {
+							errors.Wrap(err, "row iteration %v\n")
+							rows.Close()
+							return err
+						}
+					}
+					rows.Close()
+				}
 
-                    // construct query
-                    args := make([]interface{}, o.config.batchSize)
-                    stmt := "SELECT k from kv WHERE k IN ("
-                    for batch := 0; batch < o.config.batchSize; batch++ {
-                        if batch > 0 {
-                            stmt += ", "
-                        }
-                        stmt += "%d"
-                        args[batch] = o.g.readKey()
-                    }
-                    stmt += ")"
-                    stmt = fmt.Sprintf(stmt, args...)
-		    //log.Warningf(ctx, "jenndebug ro txn %s\n", stmt)
-                    //fmt.Println(stmt)
-                    rows, err := tx.Query(stmt)
-                    if err != nil {
-                            return err
-                    }
-                    for rows.Next() {
-                        var temp int
-                        if err := rows.Scan(&temp); err != nil {
-                            errors.Wrap(err, "row iteration %v\n")
-                            rows.Close()
-                            return err
-                        }
-                    }
-                    rows.Close()
-                }
+				return nil
 
-                return nil
+			}); err != nil {
+			fmt.Printf("reads suck\n")
+			return err
+		}
 
-            }); err != nil {
-                fmt.Printf("reads suck\n")
-                return err
-            }
-
-	    elapsed := timeutil.Since(start)
-	    o.hists.Get(`read`).Record(elapsed)
-	    return nil
+		elapsed := timeutil.Since(start)
+		o.hists.Get(`read`).Record(elapsed)
+		return nil
 	}
 	// Since we know the statement is not a read, we recalibrate
 	// statementProbability to only consider the other statements.
-        // TODO(jenn) this portion is useless, delete from code
+	// TODO(jenn) this portion is useless, delete from code
 	statementProbability -= o.config.readPercent
 	if statementProbability < o.config.spanPercent {
 		start := timeutil.Now()
@@ -341,36 +359,36 @@ func (o *kvOp) run(ctx context.Context) error {
 
 	start := timeutil.Now()
 
-        // writes
-        if err := crdb.ExecuteTx(ctx,
-                                o.db,
-                                &sql.TxOptions{
-                                    //Isolation: sql.LevelLinearizable,
-                                    ReadOnly: false,
-                                }, func(tx *sql.Tx) error{
-            for i := 0; i < STATEMENTS_PER_TXN; i++ {
-                args := make([]interface{}, o.config.batchSize)
-                stmt := "UPSERT INTO kv (k, v) VALUES "
-                for batch := 0; batch < o.config.batchSize; batch++ {
-                    if batch > 0 {
-                        stmt += ", "
-                    }
-                    stmt += "(%d, 'JennTheLam')"
-                    args[batch] = o.g.writeKey()
-                }
-                stmt = fmt.Sprintf(stmt,  args...)
-		//log.Warningf(ctx, "jenndebug wo txn %s\n", stmt)
-                //fmt.Println(stmt)
-                if _, err := tx.Exec(stmt); err != nil {
-                    errors.Wrap(err, "aw shucks query:\n")
-                    return err
-                }
-            }
-            return nil
-        }); err != nil {
-            fmt.Printf("%d writes returned err\n", rando)
-            return err
-        }
+	// writes
+	if err := crdb.ExecuteTx(ctx,
+		o.db,
+		&sql.TxOptions{
+			//Isolation: sql.LevelLinearizable,
+			ReadOnly: false,
+		}, func(tx *sql.Tx) error {
+			for i := 0; i < STATEMENTS_PER_TXN; i++ {
+				args := make([]interface{}, o.config.batchSize)
+				stmt := "UPSERT INTO kv (k, v) VALUES "
+				for batch := 0; batch < o.config.batchSize; batch++ {
+					if batch > 0 {
+						stmt += ", "
+					}
+					stmt += "(%d, 'JennTheLam')"
+					args[batch] = o.g.writeKey()
+				}
+				stmt = fmt.Sprintf(stmt, args...)
+				//log.Warningf(ctx, "jenndebug wo txn %s\n", stmt)
+				//fmt.Println(stmt)
+				if _, err := tx.Exec(stmt); err != nil {
+					errors.Wrap(err, "aw shucks query:\n")
+					return err
+				}
+			}
+			return nil
+		}); err != nil {
+		fmt.Printf("%d writes returned err\n", rando)
+		return err
+	}
 
 	elapsed := timeutil.Since(start)
 	o.hists.Get(`write`).Record(elapsed)

@@ -504,6 +504,7 @@ func newNameFromStr(s string) *tree.Name {
 %token <str> FALSE FAMILY FETCH FETCHVAL FETCHTEXT FETCHVAL_PATH FETCHTEXT_PATH
 %token <str> FILES FILTER
 %token <str> FIRST FLOAT FLOAT4 FLOAT8 FLOORDIV FOLLOWING FOR FORCE_INDEX FOREIGN FROM FULL FUNCTION
+%token <str> HOTKEY
 
 %token <str> GLOBAL GRANT GRANTS GREATEST GROUP GROUPING GROUPS
 
@@ -603,6 +604,7 @@ func newNameFromStr(s string) *tree.Name {
 // ALTER TABLE
 %type <tree.Statement> alter_onetable_stmt
 %type <tree.Statement> alter_split_stmt
+%type <tree.Statement> alter_hotkey_stmt
 %type <tree.Statement> alter_rename_table_stmt
 %type <tree.Statement> alter_scatter_stmt
 %type <tree.Statement> alter_relocate_stmt
@@ -1106,6 +1108,7 @@ alter_ddl_stmt:
 //   ALTER TABLE ... RENAME [COLUMN] <colname> TO <newname>
 //   ALTER TABLE ... VALIDATE CONSTRAINT <constraintname>
 //   ALTER TABLE ... SPLIT AT <selectclause>
+//   ALTER TABLE ... HOTKEY AT <selectclause>
 //   ALTER TABLE ... SCATTER [ FROM ( <exprs...> ) TO ( <exprs...> ) ]
 //   ALTER TABLE ... INJECT STATISTICS ...  (experimental)
 //   ALTER TABLE ... PARTITION BY RANGE ( <name...> ) ( <rangespec> )
@@ -1132,6 +1135,7 @@ alter_table_stmt:
 | alter_relocate_stmt
 | alter_relocate_lease_stmt
 | alter_split_stmt
+| alter_hotkey_stmt
 | alter_scatter_stmt
 | alter_zone_table_stmt
 | alter_rename_table_stmt
@@ -1268,6 +1272,13 @@ alter_split_stmt:
   {
     name := $3.unresolvedObjectName().ToTableName()
     $$.val = &tree.Split{Table: &name, Rows: $6.slct()}
+  }
+
+alter_hotkey_stmt:
+  ALTER TABLE table_name HOTKEY AT select_stmt
+  {
+    name := $3.unresolvedObjectName().ToTableName()
+    $$.val = &tree.HotKey{Table: &name, Rows: $6.slct()}
   }
 
 alter_split_index_stmt:
@@ -8802,6 +8813,7 @@ unreserved_keyword:
 | HIGH
 | HISTOGRAM
 | HOUR
+| HOTKEY
 | IMMEDIATE
 | IMPORT
 | INCREMENT

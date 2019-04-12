@@ -77,8 +77,8 @@ def start_cockroach_node(node, join=None):
 
 def set_cluster_settings(node):
     ip = node["ip"]
-    cmd = ('echo '
-           '"set cluster setting kv.raft_log.synchronize=false;'
+    cmd = ('echo "'
+           'set cluster setting kv.range_merge.queue_enabled = false;'
            'alter range default configure zone using num_replicas = 1;'
            '" | {0} sql --insecure '
            '--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
@@ -98,8 +98,9 @@ def start_cluster(nodes):
 
 def build_cockroach(node, commit):
     cmd = ("ssh -t {0} 'export GOPATH=/usr/local/temp/go "
-           "&& cd {1} && git pull && git checkout {2}"
-           "&& (make build || (make clean && make build))'") \
+           "&& cd {1} && git pull && git checkout {2} "
+           "&& (make build || "
+           "(./bin/dep ensure && make clean && make build))'") \
            .format(node["ip"], COCKROACH_DIR, commit)
 
     return subprocess.Popen(shlex.split(cmd))
@@ -113,14 +114,27 @@ def build_cockroach_commit(nodes, commit):
 
 
 def cleanup_previous_experiment(config):
-    for n in config["nodes"]:
+    for n in config["workload_nodes"]:
+        kill_cockroach_node(n)
+        # No need to clean up store
+
+    for n in config["hot_nodes"]:
+        kill_cockroach_node(n)
+        cleanup_store(n)
+
+    for n in config["warm_nodes"]:
         kill_cockroach_node(n)
         cleanup_store(n)
 
 
 def init_experiment(config):
-    build_cockroach_commit(config["nodes"], config["cockroach_commit"])
-    start_cluster(config["nodes"])
+    nodes = config["workload_nodes"] \
+            + config["warm_nodes"] \
+            + config["hot_nodes"]
+
+    build_cockroach_commit(nodes, config["cockroach_commit"])
+    start_cluster(config["hot_nodes"])
+    start_cluster(config["warm_nodes"])
 
 
 def save_params(exp_params, out_dir):
@@ -148,6 +162,11 @@ def parse_bench_args(bench_config):
     if "read_percent" in bench_config:
         args.append("--read-percent={}".format(bench_config["read_percent"]))
 
+    if "hot_keys" in bench_config:
+        keys = map(lambda k: "{}".format(k), bench_config["hot_keys"])
+        keys = ",".join(keys)
+        args.append("--hot-keys={}".format(keys))
+
     if "distribution" in bench_config:
         d = bench_config["distribution"]
         params = d["params"]
@@ -159,7 +178,7 @@ def parse_bench_args(bench_config):
 
 
 def run_bench(config):
-    nodes = config["nodes"]
+    nodes = config["warm_nodes"]
     out_dir = config["out_dir"]
     b = config["benchmark"]
 
@@ -175,6 +194,7 @@ def run_bench(config):
 
     args = parse_bench_args(b["run_args"])
     cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
+    print(cmd)
 
     path = os.path.join(out_dir, "bench_out.txt")
     print(path)

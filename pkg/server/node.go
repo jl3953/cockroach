@@ -268,6 +268,7 @@ func NewNode(
 		eventLogger: eventLogger,
 		clusterID:   clusterID,
 	}
+	n.stores.SetDBClient(cfg.DB)
 	n.perReplicaServer = storage.MakeServer(&n.Descriptor, n.stores)
 	return n
 }

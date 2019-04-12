@@ -234,6 +234,9 @@ func setNeededColumns(plan planNode, needed []bool) {
 	case *splitNode:
 		setNeededColumns(n.rows, allColumns(n.rows))
 
+	case *hotKeyNode:
+		setNeededColumns(n.rows, allColumns(n.rows))
+
 	case *relocateNode:
 		setNeededColumns(n.rows, allColumns(n.rows))
 

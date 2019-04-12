@@ -109,7 +109,7 @@ func CanWriteData(stmt Statement) bool {
 	case *CopyFrom, *Import, *Restore:
 		return true
 	// CockroachDB extensions.
-	case *Split, *Relocate, *Scatter:
+	case *Split, *HotKey, *Relocate, *Scatter:
 		return true
 	}
 	return false
@@ -827,6 +827,12 @@ func (*Split) StatementType() StatementType { return Rows }
 func (*Split) StatementTag() string { return "SPLIT" }
 
 // StatementType implements the Statement interface.
+func (*HotKey) StatementType() StatementType { return Rows }
+
+// StatementTag returns a short string identifying the type of statement.
+func (*HotKey) StatementTag() string { return "HOTKEY" }
+
+// StatementType implements the Statement interface.
 func (*Truncate) StatementType() StatementType { return Ack }
 
 // StatementTag returns a short string identifying the type of statement.
@@ -953,6 +959,7 @@ func (n *ShowVar) String() string                   { return AsString(n) }
 func (n *ShowZoneConfig) String() string            { return AsString(n) }
 func (n *ShowFingerprints) String() string          { return AsString(n) }
 func (n *Split) String() string                     { return AsString(n) }
+func (n *HotKey) String() string                    { return AsString(n) }
 func (n *Truncate) String() string                  { return AsString(n) }
 func (n *UnionClause) String() string               { return AsString(n) }
 func (n *Update) String() string                    { return AsString(n) }

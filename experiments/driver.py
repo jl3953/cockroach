@@ -11,13 +11,20 @@ LOGS_DIR = os.path.join(BASE_DIR, "logs")
 
 EXP = {
     "out_dir": os.path.join(LOGS_DIR, "kv"),
-    "cockroach_commit": "release-2.1",
-    "nodes": [
+    "cockroach_commit": "hot-shard",
+    "workload_nodes": [
+        {
+            "ip": "192.168.1.1",
+        },
+    ],
+    "hot_nodes": [
         {
             "ip": "192.168.1.2",
             "region": "newyork",
             "store": lib.STORE_DIR,
         },
+    ],
+    "warm_nodes": [
         {
             "ip": "192.168.1.3",
             "region": "london",
@@ -91,11 +98,12 @@ EXP = {
     ],
     "benchmark": {
         "name": "kv",
-        "init_args": {},
+        "init_args": {
+        },
         "run_args": {
             "n_clients": 512,
             "duration": 30,
-            "splits": 1000,
+            "hot_keys": [1],
             "read_percent": 95,
         }
     }

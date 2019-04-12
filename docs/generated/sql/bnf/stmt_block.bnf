@@ -630,6 +630,7 @@ unreserved_keyword ::=
 	| 'HIGH'
 	| 'HISTOGRAM'
 	| 'HOUR'
+	| 'HOTKEY'
 	| 'IMMEDIATE'
 	| 'IMPORT'
 	| 'INCREMENT'
@@ -902,6 +903,7 @@ opt_abort_mod ::=
 alter_table_stmt ::=
 	alter_onetable_stmt
 	| alter_split_stmt
+	| alter_hotkey_stmt
 	| alter_scatter_stmt
 	| alter_zone_table_stmt
 	| alter_rename_table_stmt
@@ -1216,6 +1218,9 @@ alter_onetable_stmt ::=
 
 alter_split_stmt ::=
 	'ALTER' 'TABLE' table_name 'SPLIT' 'AT' select_stmt
+
+alter_hotkey_stmt ::=
+	'ALTER' 'TABLE' table_name 'HOTKEY' 'AT' select_stmt
 
 alter_scatter_stmt ::=
 	'ALTER' 'TABLE' table_name 'SCATTER'

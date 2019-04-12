@@ -29,6 +29,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/rpc/nodedialer"
 	"github.com/cockroachdb/cockroach/pkg/settings"
 	"github.com/cockroachdb/cockroach/pkg/settings/cluster"
+	"github.com/cockroachdb/cockroach/pkg/util"
 	"github.com/cockroachdb/cockroach/pkg/util/grpcutil"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
 	"github.com/cockroachdb/cockroach/pkg/util/log"
@@ -196,6 +197,11 @@ type DistSender struct {
 	// gossip. Used by tests which want finer control of the contents of the
 	// range cache.
 	disableFirstRangeUpdates int32
+
+	// Set of hot keys
+	hotKeySet map[string]struct{}
+
+	hotNodeAddress util.UnresolvedAddr
 }
 
 var _ client.Sender = &DistSender{}
@@ -226,11 +232,13 @@ type DistSenderConfig struct {
 // defaults will be used.
 func NewDistSender(cfg DistSenderConfig, g *gossip.Gossip) *DistSender {
 	ds := &DistSender{
-		st:         cfg.Settings,
-		clock:      cfg.Clock,
-		gossip:     g,
-		metrics:    makeDistSenderMetrics(),
-		nodeDialer: cfg.NodeDialer,
+		st:             cfg.Settings,
+		clock:          cfg.Clock,
+		gossip:         g,
+		metrics:        makeDistSenderMetrics(),
+		nodeDialer:     cfg.NodeDialer,
+		hotKeySet:      make(map[string]struct{}),
+		hotNodeAddress: util.MakeUnresolvedAddr("tcp", "192.168.1.2:26257"),
 	}
 	if ds.st == nil {
 		ds.st = cluster.MakeTestingClusterSettings()
@@ -460,41 +468,101 @@ func (ds *DistSender) getDescriptor(
 		return nil, returnToken, err
 	}
 
+	if ds.IsHotKey(roachpb.Key(descKey)) {
+		startKey := roachpb.Key(desc.StartKey)
+		endKey := roachpb.Key(desc.EndKey)
+
+		// Only start returning hot key once range contains only that key
+		if startKey.PrefixEnd().Equal(endKey) {
+			fmt.Println("Received request for hot key: ", descKey)
+
+			replicaID := roachpb.ReplicaID(1)
+			replicas := []roachpb.ReplicaDescriptor{
+				roachpb.ReplicaDescriptor{
+					NodeID:    roachpb.HotNodeID,
+					StoreID:   roachpb.StoreID(1),
+					ReplicaID: replicaID,
+				},
+			}
+
+			desc = &roachpb.RangeDescriptor{
+				RangeID:              desc.RangeID,
+				StartKey:             desc.StartKey,
+				EndKey:               desc.EndKey,
+				Replicas:             replicas,
+				NextReplicaID:        replicaID,
+				Generation:           desc.Generation,
+				XXX_NoUnkeyedLiteral: desc.XXX_NoUnkeyedLiteral,
+				XXX_sizecache:        desc.XXX_sizecache,
+			}
+		}
+
+	}
+
 	return desc, returnToken, nil
+}
+
+func (ds *DistSender) getHotNodeDescriptor() *roachpb.NodeDescriptor {
+	return &roachpb.NodeDescriptor{
+		NodeID:  roachpb.HotNodeID,
+		Address: ds.hotNodeAddress,
+	}
 }
 
 // sendSingleRange gathers and rearranges the replicas, and makes an RPC call.
 func (ds *DistSender) sendSingleRange(
 	ctx context.Context, ba roachpb.BatchRequest, desc *roachpb.RangeDescriptor,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
-	// Try to send the call.
-	replicas := NewReplicaSlice(ds.gossip, desc)
 
-	// If this request needs to go to a lease holder and we know who that is, move
-	// it to the front.
+	var replicas ReplicaSlice
 	var cachedLeaseHolder roachpb.ReplicaDescriptor
-	canSendToFollower := ds.clusterID != nil &&
-		CanSendToFollower(ds.clusterID.Get(), ds.st, ba)
-	if !canSendToFollower && ba.RequiresLeaseHolder() {
-		if storeID, ok := ds.leaseHolderCache.Lookup(ctx, desc.RangeID); ok {
-			if i := replicas.FindReplica(storeID); i >= 0 {
-				replicas.MoveToFront(i)
-				cachedLeaseHolder = replicas[0].ReplicaDescriptor
+	if len(desc.Replicas) > 0 &&
+		desc.Replicas[0].NodeID == roachpb.HotNodeID {
+
+		r := desc.Replicas[0]
+		nd := ds.getHotNodeDescriptor()
+		replica := ReplicaInfo{
+			ReplicaDescriptor: r,
+			NodeDesc:          nd,
+		}
+
+		replicas = make(ReplicaSlice, 0, len(desc.Replicas))
+		replicas = append(replicas, replica)
+
+		cachedLeaseHolder = r
+
+		ba.Header.IsHotRequest = true
+		fmt.Println("Sending batch to hot node!")
+	} else {
+		// Try to send the call.
+		replicas = NewReplicaSlice(ds.gossip, desc)
+		// If this request needs to go to a lease holder and we know who that is, move
+		// it to the front.
+		canSendToFollower := ds.clusterID != nil &&
+			CanSendToFollower(ds.clusterID.Get(), ds.st, ba)
+		if !canSendToFollower && ba.RequiresLeaseHolder() {
+			if storeID, ok := ds.leaseHolderCache.Lookup(ctx, desc.RangeID); ok {
+				if i := replicas.FindReplica(storeID); i >= 0 {
+					replicas.MoveToFront(i)
+					cachedLeaseHolder = replicas[0].ReplicaDescriptor
+				}
 			}
 		}
-	}
-	if (cachedLeaseHolder == roachpb.ReplicaDescriptor{}) {
-		// Rearrange the replicas so that they're ordered in expectation of
-		// request latency.
-		var latencyFn LatencyFunc
-		if ds.rpcContext != nil {
-			latencyFn = ds.rpcContext.RemoteClocks.Latency
+		if (cachedLeaseHolder == roachpb.ReplicaDescriptor{}) {
+			// Rearrange the replicas so that they're ordered in expectation of
+			// request latency.
+			var latencyFn LatencyFunc
+			if ds.rpcContext != nil {
+				latencyFn = ds.rpcContext.RemoteClocks.Latency
+			}
+			replicas.OptimizeReplicaOrder(ds.getNodeDescriptor(), latencyFn)
 		}
-		replicas.OptimizeReplicaOrder(ds.getNodeDescriptor(), latencyFn)
+
 	}
 
 	br, err := ds.sendRPC(ctx, desc.RangeID, replicas, ba, cachedLeaseHolder)
 	if err != nil {
+		fmt.Println("Error 1: ", err)
 		log.VErrEvent(ctx, 2, err.Error())
 		return nil, roachpb.NewError(err)
 	}
@@ -1136,6 +1204,7 @@ func (ds *DistSender) sendPartialBatch(
 				log.VErrEventf(ctx, 1, "range descriptor re-lookup failed: %s", err)
 				continue
 			}
+
 		}
 
 		reply, pErr = ds.sendSingleRange(ctx, ba, desc)
@@ -1520,5 +1589,26 @@ func (ds *DistSender) sendToReplicas(
 		curReplica = transport.NextReplica()
 		log.VEventf(ctx, 2, "error: %v %v; trying next peer %s", br, err, curReplica)
 		br, err = transport.SendNext(ctx, ba)
+	}
+}
+
+func (ds *DistSender) AddHotKey(key roachpb.Key) error {
+	ds.hotKeySet[key.String()] = struct{}{}
+	return nil
+}
+
+func (ds *DistSender) IsHotKey(key roachpb.Key) bool {
+	k := key.String()
+	_, ok := ds.hotKeySet[k]
+	return ok
+}
+
+func (ds *DistSender) RemoveHotKey(key roachpb.Key) error {
+	k := key.String()
+	if _, ok := ds.hotKeySet[k]; ok {
+		delete(ds.hotKeySet, k)
+		return nil
+	} else {
+		return errors.New(fmt.Sprintf("Attempted to remove non-existent hot key: %s", k))
 	}
 }

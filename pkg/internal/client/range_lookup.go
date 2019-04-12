@@ -16,6 +16,7 @@ package client
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/cockroachdb/cockroach/pkg/keys"
@@ -189,6 +190,17 @@ func RangeLookup(
 		InitialBackoff: 1 * time.Millisecond,
 		MaxBackoff:     500 * time.Millisecond,
 		Multiplier:     2,
+	}
+
+	hotKeys := []string{
+		"/Table/53/1/1",
+	}
+
+	keyStr := key.String()
+	for _, k := range hotKeys {
+		if keyStr == k {
+			fmt.Println("Matched hot key: ", k)
+		}
 	}
 
 	for r := retry.StartWithCtx(ctx, opts); r.Next(); {

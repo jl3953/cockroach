@@ -24,7 +24,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/settings/cluster"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
-	"github.com/cockroachdb/cockroach/pkg/util/uuid"
+	// "github.com/cockroachdb/cockroach/pkg/util/uuid"
 	"github.com/pkg/errors"
 )
 
@@ -80,12 +80,12 @@ func checkVersion(
 // with the requester's address.
 func (hs *HeartbeatService) Ping(ctx context.Context, args *PingRequest) (*PingResponse, error) {
 	// Check that cluster IDs match.
-	clusterID := hs.clusterID.Get()
-	if args.ClusterID != nil && *args.ClusterID != uuid.Nil && clusterID != uuid.Nil &&
-		*args.ClusterID != clusterID {
-		return nil, errors.Errorf(
-			"client cluster ID %q doesn't match server cluster ID %q", args.ClusterID, clusterID)
-	}
+	// clusterID := hs.clusterID.Get()
+	// if args.ClusterID != nil && *args.ClusterID != uuid.Nil && clusterID != uuid.Nil &&
+	// 	*args.ClusterID != clusterID {
+	// 	return nil, errors.Errorf(
+	// 		"client cluster ID %q doesn't match server cluster ID %q", args.ClusterID, clusterID)
+	// }
 
 	// Check version compatibility.
 	if err := checkVersion(hs.version, args.ServerVersion); err != nil {
