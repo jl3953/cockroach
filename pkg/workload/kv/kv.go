@@ -268,7 +268,8 @@ func (o *kvOp) run(ctx context.Context) error {
         STATEMENTS_PER_TXN := o.config.stmtPerTxn
         rando := rand.Intn(1000)
 
-        // transaction TODO(jenn) PROBABLY FATAL 
+        // transaction TODO(jenn) PROBABLY FATAL--follows default
+        // of db
 	if statementProbability < o.config.readPercent {
             start := timeutil.Now()
 
@@ -281,7 +282,20 @@ func (o *kvOp) run(ctx context.Context) error {
 
 
                 for i := 0; i < STATEMENTS_PER_TXN; i++ {
-                    stmt := fmt.Sprintf("SELECT k from kv WHERE k IN (%d)", o.g.readKey())
+
+                    // construct query
+                    args := make([]interface{}, o.config.batchSize)
+                    stmt := "SELECT k from kv WHERE k IN ("
+                    for batch := 0; batch < o.config.batchSize; batch++ {
+                        if batch > 0 {
+                            stmt += ", "
+                        }
+                        stmt += "%d"
+                        args[batch] = o.g.readKey()
+                    }
+                    stmt += ")"
+                    stmt = fmt.Sprintf(stmt, args...)
+                    fmt.Println(stmt)
                     rows, err := tx.Query(stmt)
                     if err != nil {
                             return err
@@ -310,6 +324,7 @@ func (o *kvOp) run(ctx context.Context) error {
 	}
 	// Since we know the statement is not a read, we recalibrate
 	// statementProbability to only consider the other statements.
+        // TODO(jenn) this portion is useless, delete from code
 	statementProbability -= o.config.readPercent
 	if statementProbability < o.config.spanPercent {
 		start := timeutil.Now()
@@ -319,6 +334,8 @@ func (o *kvOp) run(ctx context.Context) error {
 		return err
 	}
 
+	start := timeutil.Now()
+
         // writes
         if err := crdb.ExecuteTx(ctx,
                                 o.db,
@@ -327,7 +344,17 @@ func (o *kvOp) run(ctx context.Context) error {
                                     ReadOnly: false,
                                 }, func(tx *sql.Tx) error{
             for i := 0; i < STATEMENTS_PER_TXN; i++ {
-                stmt := fmt.Sprintf("UPSERT INTO kv (k, v) VALUES (%d, 'A')", o.g.writeKey())
+                args := make([]interface{}, o.config.batchSize)
+                stmt := "UPSERT INTO kv (k, v) VALUES "
+                for batch := 0; batch < o.config.batchSize; batch++ {
+                    if batch > 0 {
+                        stmt += ", "
+                    }
+                    stmt += "(%d, 'JennTheLam')"
+                    args[batch] = o.g.writeKey()
+                }
+                stmt = fmt.Sprintf(stmt,  args...)
+                fmt.Println(stmt)
                 if _, err := tx.Exec(stmt); err != nil {
                     errors.Wrap(err, "aw shucks query:\n")
                     return err
@@ -338,7 +365,7 @@ func (o *kvOp) run(ctx context.Context) error {
             fmt.Printf("%d writes returned err\n", rando)
             return err
         }
-	start := timeutil.Now()
+
 	elapsed := timeutil.Since(start)
 	o.hists.Get(`write`).Record(elapsed)
 	return nil
