@@ -227,7 +227,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	ql := workload.QueryLoad{SQLDatabase: sqlDatabase}
 	seq := &sequence{config: w, val: int64(writeSeq)}
 	numEmptyResults := new(int64)
-        fmt.Printf("concurrency %d\n", w.connFlags.Concurrency)
+        //fmt.Printf("concurrency %d\n", w.connFlags.Concurrency)
 	for i := 0; i < w.connFlags.Concurrency; i++ {
 		op := &kvOp{
 			config:          w,
@@ -295,7 +295,7 @@ func (o *kvOp) run(ctx context.Context) error {
                     }
                     stmt += ")"
                     stmt = fmt.Sprintf(stmt, args...)
-                    fmt.Println(stmt)
+                    //fmt.Println(stmt)
                     rows, err := tx.Query(stmt)
                     if err != nil {
                             return err
@@ -354,7 +354,7 @@ func (o *kvOp) run(ctx context.Context) error {
                     args[batch] = o.g.writeKey()
                 }
                 stmt = fmt.Sprintf(stmt,  args...)
-                fmt.Println(stmt)
+                //fmt.Println(stmt)
                 if _, err := tx.Exec(stmt); err != nil {
                     errors.Wrap(err, "aw shucks query:\n")
                     return err
