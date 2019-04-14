@@ -49,7 +49,7 @@ def main():
 
     args = parser.parse_args()
     if args.kill:
-        lib.kill_cluster(EXP["nodes"])
+        lib.cleanup_previous_experiment(EXP)
     else:
 
         out_dir = EXP["out_dir"]
