@@ -206,7 +206,6 @@ func newGuard(spans *spanset.SpanSet, ts hlc.Timestamp) *Guard {
 func (m *Manager) Acquire(
 	ctx context.Context, spans *spanset.SpanSet, ts hlc.Timestamp,
 ) (*Guard, error) {
-    fmt.Println("don't be afraid")
 	lg, snap := m.sequence(spans, ts)
 	defer snap.close()
 
@@ -338,7 +337,6 @@ func ifGlobal(ts hlc.Timestamp, s spanset.SpanScope) hlc.Timestamp {
 // wait waits for all interfering latches in the provided snapshot to complete
 // before returning.
 func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
-    fmt.Println("hey jenn")
 	timer := timeutil.NewTimer()
 	timer.Reset(base.SlowRequestThreshold)
 	defer timer.Stop()
@@ -350,13 +348,13 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 			for i := range latches {
 				latch := &latches[i]
                                 tracker := rand.Intn(1000)
-                                log.Fatalf(ctx, "%d, latch on %+v attempted at %v\n", tracker, latch.span, timeutil.Now())
+                                log.Warningf(ctx, "%d, jenndebug latch on %+v attempted at %v\n", tracker, latch.span, timeutil.Now())
 				switch a {
 				case spanset.SpanReadOnly:
 					// Wait for writes at equal or lower timestamps.
 					it := tr[spanset.SpanReadWrite].MakeIter()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreLater); err != nil {
-                                                log.Fatalf(ctx, "%d, RO latch on %+v failed at %v\n", tracker, latch.span, timeutil.Now())
+                                                log.Warningf(ctx, "%d, jenndebug RO latch on %+v failed at %v\n", tracker, latch.span, timeutil.Now())
 						return err
 					}
 				case spanset.SpanReadWrite:
@@ -368,19 +366,19 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 					// to release their latches, so we wait on them first.
 					it := tr[spanset.SpanReadWrite].MakeIter()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreNothing); err != nil {
-                                                log.Fatalf(ctx, "%d, RW latch on %+v failed at %v\n", tracker, latch.span, timeutil.Now())
+                                                log.Warningf(ctx, "%d, jenndebug RW latch on %+v failed at %v\n", tracker, latch.span, timeutil.Now())
 						return err
 					}
 					// Wait for reads at equal or higher timestamps.
 					it = tr[spanset.SpanReadOnly].MakeIter()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreEarlier); err != nil {
-                                                log.Fatalf(ctx, "%d, RW latch on %+v failed at %v 2\n", tracker, latch.span, timeutil.Now())
+                                                log.Warningf(ctx, "%d, jenndebug RW latch on %+v failed at %v 2\n", tracker, latch.span, timeutil.Now())
 						return err
 					}
 				default:
 					panic("unknown access")
 				}
-                                log.Fatalf(ctx, "%d, latch on %+v acquired at %v\n", tracker, latch.span, timeutil.Now())
+                                log.Warningf(ctx, "%d, jenndebug latch on %+v acquired at %v\n", tracker, latch.span, timeutil.Now())
 			}
 		}
 	}
