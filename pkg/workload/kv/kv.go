@@ -68,6 +68,7 @@ type kv struct {
 	useOpt                               bool
 	targetCompressionRatio               float64
         stmtPerTxn                           int
+        skew                                 float64
 }
 
 func init() {
@@ -125,6 +126,8 @@ var kvMeta = workload.Meta{
 			`Target compression ratio for data blocks. Must be >= 1.0`)
                 g.flags.IntVar(&g.stmtPerTxn, `stmt-per-txn`, 10,
                         `Statements per transaction to execute. Default=10`)
+                g.flags.Float64Var(&g.skew, `skew`, 1.1,
+                        `Skew for zipfian distribution. Default=1.1`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
 		return g
 	},
@@ -239,7 +242,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq)
+			op.g = newZipfianGenerator(seq, w.skew)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -494,12 +497,12 @@ type zipfGenerator struct {
 }
 
 // Creates a new zipfian generator.
-func newZipfianGenerator(seq *sequence) *zipfGenerator {
+func newZipfianGenerator(seq *sequence, skew float64) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
-		zipf:   newZipf(1.1, 1, uint64(math.MaxInt64)),
+		zipf:   newZipf(skew, 1, uint64(math.MaxInt64)),
 	}
 }
 
