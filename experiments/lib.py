@@ -177,5 +177,6 @@ def run_bench(config):
     cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
 
     path = os.path.join(out_dir, "bench_out.txt")
+    print(path)
     with open(path, "w") as f:
         subprocess.Popen(shlex.split(cmd), stdout=f).wait()
