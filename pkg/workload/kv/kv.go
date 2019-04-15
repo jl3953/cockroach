@@ -32,6 +32,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
+	"github.com/cockroachdb/cockroach/pkg/util/log"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 
@@ -298,6 +299,7 @@ func (o *kvOp) run(ctx context.Context) error {
                     }
                     stmt += ")"
                     stmt = fmt.Sprintf(stmt, args...)
+		    log.Warningf(ctx, "jenndebug ro txn %s\n", stmt)
                     //fmt.Println(stmt)
                     rows, err := tx.Query(stmt)
                     if err != nil {
@@ -357,6 +359,7 @@ func (o *kvOp) run(ctx context.Context) error {
                     args[batch] = o.g.writeKey()
                 }
                 stmt = fmt.Sprintf(stmt,  args...)
+		log.Warningf(ctx, "jenndebug wo txn %s\n", stmt)
                 //fmt.Println(stmt)
                 if _, err := tx.Exec(stmt); err != nil {
                     errors.Wrap(err, "aw shucks query:\n")
