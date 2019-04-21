@@ -19,6 +19,7 @@ import (
 	"fmt"
 	"unsafe"
         "math/rand"
+        "time"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/roachpb"
@@ -93,6 +94,8 @@ type latch struct {
 	ts         hlc.Timestamp
 	done       *signal
 	next, prev *latch // readSet linked-list.
+        acquired    time.Time
+        ctx         context.Context
 }
 
 func (la *latch) String() string {
@@ -379,6 +382,8 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 					panic("unknown access")
 				}
                                 log.Warningf(ctx, "%d, jenndebug latchSuccess %+v\n", tracker, latch.span)
+                                latch.acquired = timeutil.Now()
+                                latch.ctx = ctx
 			}
 		}
 	}
@@ -452,7 +457,11 @@ func (m *Manager) removeLocked(lg *Guard) {
 		for a := spanset.SpanAccess(0); a < spanset.NumSpanAccess; a++ {
 			latches := lg.latches(s, a)
 			for i := range latches {
+                                tracker := rand.Intn(1000)
 				latch := &latches[i]
+                                duration := timeutil.Since(latch.acquired)
+                                log.Warningf(latch.ctx, "%d jenndebug latchRelease %+v duration %v\n",
+                                            tracker, latch.span, duration)
 				if latch.inReadSet() {
 					sm.readSet.remove(latch)
 				} else {
