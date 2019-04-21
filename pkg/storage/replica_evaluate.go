@@ -387,7 +387,7 @@ func evaluateCommand(
 			Stats:   ms,
 		}
 		pd, err = cmd.Eval(ctx, batch, cArgs, reply)
-                log.Warningf("jennDEBUG cmd:[%+v], args.Method():[%+v]\n", cmd, args.Method())
+                log.Warningf(ctx, "jennDEBUG cmd:[%+v], args.Method():[%+v]\n", cmd, args.Method())
 	} else {
 		err = errors.Errorf("unrecognized command %s", args.Method())
 	}
