@@ -564,6 +564,7 @@ func (q *Queue) MaybeWaitForPush(
 			pusheeTxnTimer.Reset(expiration.Sub(now))
 
 		case updatedPusher := <-queryPusherCh:
+                    log.Warningf(ctx, "JENNDEBUG, pusher_txn:[%+v]\n", updatedPusher)
 			switch updatedPusher.Status {
 			case roachpb.COMMITTED:
 				log.VEventf(ctx, 1, "pusher committed: %v", updatedPusher)

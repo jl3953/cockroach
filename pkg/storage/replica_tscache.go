@@ -23,6 +23,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/storage/tscache"
 	"github.com/cockroachdb/cockroach/pkg/util"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
+        "github.com/cockroachdb/cockroach/pkg/util/log"
 	"github.com/cockroachdb/cockroach/pkg/util/uuid"
 )
 
@@ -240,6 +241,8 @@ func (r *Replica) applyTimestampCache(
 						txn := ba.Txn.Clone()
 						bumped = txn.Timestamp.Forward(nextTS) || bumped
 						ba.Txn = txn
+                                                log.Warningf(ctx, "JENNDEBUG, key:[%+v, %+v], misc:[ts bumped for read]\n",
+                                                    header.Key, header.EndKey)
 					}
 				}
 			} else {
@@ -258,6 +261,8 @@ func (r *Replica) applyTimestampCache(
 						bumped = txn.Timestamp.Forward(wTS.Next()) || bumped
 						txn.WriteTooOld = true
 						ba.Txn = txn
+                                                log.Warningf(ctx, "JENNDEBUG, key:[%+v, %+v], misc:[ts bumped for write]\n",
+                                                    header.Key, header.EndKey)
 					}
 				}
 			} else {

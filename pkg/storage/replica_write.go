@@ -16,6 +16,7 @@ package storage
 
 import (
 	"context"
+        "math/rand"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/roachpb"
@@ -130,12 +131,14 @@ func (r *Replica) executeWriteBatch(
 		// of writing, they always seem to be set. Since that is a
 		// likely target of future micro-optimization, this assertion is
 		// meant to protect against future correctness anomalies.
+                rando := rand.Intn(1000)
+                log.Warningf(ctx, "JENNDEBUG, rand:[%d], write_status:[unknown], misc:[Did I crash?]\n", rando)
 		defer func() {
 			if br != nil && ba.Txn != nil && br.Txn == nil {
-				log.Fatalf(ctx, "assertion failed: transaction updated by "+
+                            log.Fatalf(ctx, "JENNDEBUG, rand:[%d], assertion failed: transaction updated by "+
 					"timestamp cache, but transaction returned in response; "+
 					"updated timestamp would have been lost (recovered): "+
-					"%s in batch %s", ba.Txn, ba,
+					"%s in batch %s", rando, ba.Txn, ba,
 				)
 			}
 		}()

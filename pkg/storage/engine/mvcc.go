@@ -1377,8 +1377,10 @@ func mvccPutInternal(
 			if txn == nil || meta.Txn.ID != txn.ID {
 				// The current Put operation does not come from the same
 				// transaction.
+                                log.Warningf(ctx, "JENNDEBUG, key:[%+v], write_status:[retry], reason:[uncommitted write intent]\n", key)
 				return &roachpb.WriteIntentError{Intents: []roachpb.Intent{{Span: roachpb.Span{Key: key}, Status: roachpb.PENDING, Txn: *meta.Txn}}}
 			} else if txn.Epoch < meta.Txn.Epoch {
+                                log.Warningf(ctx, "JENNDEBUG, key:[%+v], write_status:[retry], reason:[newer committed value?]\n,", key)
 				return errors.Errorf("put with epoch %d came after put with epoch %d in txn %s",
 					txn.Epoch, meta.Txn.Epoch, txn.ID)
 			} else if txn.Epoch == meta.Txn.Epoch && txn.Sequence <= meta.Txn.Sequence {
@@ -1596,6 +1598,8 @@ func mvccPutInternal(
 		logicalOpDetails.Txn = *txn
 	}
 	engine.LogLogicalOp(logicalOp, logicalOpDetails)
+
+        log.Warningf(ctx, "JENNDEBUG, key:[%+v], write_status:[success]\n", key)
 
 	return maybeTooOldErr
 }
