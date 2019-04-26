@@ -459,8 +459,10 @@ func (m *Manager) removeLocked(lg *Guard) {
 			for i := range latches {
 				latch := &latches[i]
                                 duration := timeutil.Since(latch.acquired)
-                                log.Warningf(latch.ctx, "JENNDEBUG, type:[latchRelease], key:[%+v], duration:[%v]\n",
-                                        latch.span, duration)
+                                if latch.ctx != nil {
+                                    log.Warningf(latch.ctx, "JENNDEBUG, type:[latchRelease], key:[%+v], duration:[%v]\n",
+                                            latch.span, duration)
+                                }
 				if latch.inReadSet() {
 					sm.readSet.remove(latch)
 				} else {
