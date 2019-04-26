@@ -1,5 +1,4 @@
-// Copyright 2018 The Cockroach Authors.
-//
+// Copyright 2018 The Cockroach Authors.  //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -241,7 +240,7 @@ func (r *Replica) applyTimestampCache(
 						txn := ba.Txn.Clone()
 						bumped = txn.Timestamp.Forward(nextTS) || bumped
 						ba.Txn = txn
-                                                log.Warningf(ctx, "JENNDEBUG, key:[%+v, %+v], misc:[ts bumped for read]\n",
+                                                log.Warningf(ctx, "JENNDEBUG, key:[%+v, %+v], type:[ts_bumped_for_read]\n",
                                                     header.Key, header.EndKey)
 					}
 				}
@@ -261,7 +260,7 @@ func (r *Replica) applyTimestampCache(
 						bumped = txn.Timestamp.Forward(wTS.Next()) || bumped
 						txn.WriteTooOld = true
 						ba.Txn = txn
-                                                log.Warningf(ctx, "JENNDEBUG, key:[%+v, %+v], misc:[ts bumped for write]\n",
+                                                log.Warningf(ctx, "JENNDEBUG, key:[%+v, %+v], type:[ts_bumped_for_write]\n",
                                                     header.Key, header.EndKey)
 					}
 				}
