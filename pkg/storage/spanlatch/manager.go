@@ -457,11 +457,10 @@ func (m *Manager) removeLocked(lg *Guard) {
 		for a := spanset.SpanAccess(0); a < spanset.NumSpanAccess; a++ {
 			latches := lg.latches(s, a)
 			for i := range latches {
-                                tracker := rand.Intn(1000)
 				latch := &latches[i]
                                 duration := timeutil.Since(latch.acquired)
-                                log.Warningf(latch.ctx, "%d jenndebug latchRelease %+v duration %v\n",
-                                            tracker, latch.span, duration)
+                                log.Warningf(latch.ctx, "JENNDEBUG, type:[latchRelease], key:[%+v], duration:[%v]\n",
+                                        latch.span, duration)
 				if latch.inReadSet() {
 					sm.readSet.remove(latch)
 				} else {

@@ -490,6 +490,12 @@ func (q *Queue) MaybeWaitForPush(
 	// itself up after the pusher saw an intent but before it entered this
 	// queue.
 	pusheeTxnTimer.Reset(0)
+        defer func() {
+            log.Warningf(ctx, "JENNDEBUG, pusher:[%+v], pushee:[%+v], duration waited:[%+v]\n",
+                req.PusherTxn, req.PusheeTxn, timeutil.Since(tBegin).Seconds(),
+            )
+        }()
+
 	for {
 		select {
 		case <-slowTimer.C:
