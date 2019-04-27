@@ -1,0 +1,6 @@
+# Node node-3
+node_3 = request.RawPC('node-3')
+node_3.hardware_type = 'm510'
+node_3.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface3 = node_3.addInterface('interface-3', pg.IPv4Address('192.168.1.4','255.255.255.0'))
+node_3.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))

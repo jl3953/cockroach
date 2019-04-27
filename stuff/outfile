@@ -1,0 +1,196 @@
+# Node node-5
+node_5 = request.RawPC('node-5')
+node_5.hardware_type = 'm510'
+node_5.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface5 = node_5.addInterface('interface-5', pg.IPv4Address('192.168.1.6','255.255.255.0'))
+node_5.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-6
+node_6 = request.RawPC('node-6')
+node_6.hardware_type = 'm510'
+node_6.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface6 = node_6.addInterface('interface-6', pg.IPv4Address('192.168.1.7','255.255.255.0'))
+node_6.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-7
+node_7 = request.RawPC('node-7')
+node_7.hardware_type = 'm510'
+node_7.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface7 = node_7.addInterface('interface-7', pg.IPv4Address('192.168.1.8','255.255.255.0'))
+node_7.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-8
+node_8 = request.RawPC('node-8')
+node_8.hardware_type = 'm510'
+node_8.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface8 = node_8.addInterface('interface-8', pg.IPv4Address('192.168.1.9','255.255.255.0'))
+node_8.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-9
+node_9 = request.RawPC('node-9')
+node_9.hardware_type = 'm510'
+node_9.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface9 = node_9.addInterface('interface-9', pg.IPv4Address('192.168.1.10','255.255.255.0'))
+node_9.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-10
+node_10 = request.RawPC('node-10')
+node_10.hardware_type = 'm510'
+node_10.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface10 = node_10.addInterface('interface-10', pg.IPv4Address('192.168.1.11','255.255.255.0'))
+node_10.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-11
+node_11 = request.RawPC('node-11')
+node_11.hardware_type = 'm510'
+node_11.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface11 = node_11.addInterface('interface-11', pg.IPv4Address('192.168.1.12','255.255.255.0'))
+node_11.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-12
+node_12 = request.RawPC('node-12')
+node_12.hardware_type = 'm510'
+node_12.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface12 = node_12.addInterface('interface-12', pg.IPv4Address('192.168.1.13','255.255.255.0'))
+node_12.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-13
+node_13 = request.RawPC('node-13')
+node_13.hardware_type = 'm510'
+node_13.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface13 = node_13.addInterface('interface-13', pg.IPv4Address('192.168.1.14','255.255.255.0'))
+node_13.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-14
+node_14 = request.RawPC('node-14')
+node_14.hardware_type = 'm510'
+node_14.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface14 = node_14.addInterface('interface-14', pg.IPv4Address('192.168.1.15','255.255.255.0'))
+node_14.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-15
+node_15 = request.RawPC('node-15')
+node_15.hardware_type = 'm510'
+node_15.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface15 = node_15.addInterface('interface-15', pg.IPv4Address('192.168.1.16','255.255.255.0'))
+node_15.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-16
+node_16 = request.RawPC('node-16')
+node_16.hardware_type = 'm510'
+node_16.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface16 = node_16.addInterface('interface-16', pg.IPv4Address('192.168.1.17','255.255.255.0'))
+node_16.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-17
+node_17 = request.RawPC('node-17')
+node_17.hardware_type = 'm510'
+node_17.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface17 = node_17.addInterface('interface-17', pg.IPv4Address('192.168.1.18','255.255.255.0'))
+node_17.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-18
+node_18 = request.RawPC('node-18')
+node_18.hardware_type = 'm510'
+node_18.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface18 = node_18.addInterface('interface-18', pg.IPv4Address('192.168.1.19','255.255.255.0'))
+node_18.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-19
+node_19 = request.RawPC('node-19')
+node_19.hardware_type = 'm510'
+node_19.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface19 = node_19.addInterface('interface-19', pg.IPv4Address('192.168.1.20','255.255.255.0'))
+node_19.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-20
+node_20 = request.RawPC('node-20')
+node_20.hardware_type = 'm510'
+node_20.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface20 = node_20.addInterface('interface-20', pg.IPv4Address('192.168.1.21','255.255.255.0'))
+node_20.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-21
+node_21 = request.RawPC('node-21')
+node_21.hardware_type = 'm510'
+node_21.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface21 = node_21.addInterface('interface-21', pg.IPv4Address('192.168.1.22','255.255.255.0'))
+node_21.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-22
+node_22 = request.RawPC('node-22')
+node_22.hardware_type = 'm510'
+node_22.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface22 = node_22.addInterface('interface-22', pg.IPv4Address('192.168.1.23','255.255.255.0'))
+node_22.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-23
+node_23 = request.RawPC('node-23')
+node_23.hardware_type = 'm510'
+node_23.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface23 = node_23.addInterface('interface-23', pg.IPv4Address('192.168.1.24','255.255.255.0'))
+node_23.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-24
+node_24 = request.RawPC('node-24')
+node_24.hardware_type = 'm510'
+node_24.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface24 = node_24.addInterface('interface-24', pg.IPv4Address('192.168.1.25','255.255.255.0'))
+node_24.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-25
+node_25 = request.RawPC('node-25')
+node_25.hardware_type = 'm510'
+node_25.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface25 = node_25.addInterface('interface-25', pg.IPv4Address('192.168.1.26','255.255.255.0'))
+node_25.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-26
+node_26 = request.RawPC('node-26')
+node_26.hardware_type = 'm510'
+node_26.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface26 = node_26.addInterface('interface-26', pg.IPv4Address('192.168.1.27','255.255.255.0'))
+node_26.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-27
+node_27 = request.RawPC('node-27')
+node_27.hardware_type = 'm510'
+node_27.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface27 = node_27.addInterface('interface-27', pg.IPv4Address('192.168.1.28','255.255.255.0'))
+node_27.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-28
+node_28 = request.RawPC('node-28')
+node_28.hardware_type = 'm510'
+node_28.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface28 = node_28.addInterface('interface-28', pg.IPv4Address('192.168.1.29','255.255.255.0'))
+node_28.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-29
+node_29 = request.RawPC('node-29')
+node_29.hardware_type = 'm510'
+node_29.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface29 = node_29.addInterface('interface-29', pg.IPv4Address('192.168.1.30','255.255.255.0'))
+node_29.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-30
+node_30 = request.RawPC('node-30')
+node_30.hardware_type = 'm510'
+node_30.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface30 = node_30.addInterface('interface-30', pg.IPv4Address('192.168.1.31','255.255.255.0'))
+node_30.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-31
+node_31 = request.RawPC('node-31')
+node_31.hardware_type = 'm510'
+node_31.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface31 = node_31.addInterface('interface-31', pg.IPv4Address('192.168.1.32','255.255.255.0'))
+node_31.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
+# Node node-32
+node_32 = request.RawPC('node-32')
+node_32.hardware_type = 'm510'
+node_32.disk_image = 'urn:publicid:IDN+utah.cloudlab.us+image+cops-PG0:cockroachdb.node-0'
+iface32 = node_32.addInterface('interface-32', pg.IPv4Address('192.168.1.33','255.255.255.0'))
+node_32.addService(rspec.Execute(shell="bash", command="/usr/local/bin/setup"))
+
