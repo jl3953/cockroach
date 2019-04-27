@@ -340,6 +340,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		return err
 	}
 
+        jennKeys := make([]interface{}, 0)
 	start := timeutil.Now()
 
         // writes
@@ -358,6 +359,7 @@ func (o *kvOp) run(ctx context.Context) error {
                     }
                     stmt += "(%d, 'JennTheLam')"
                     args[batch] = o.g.writeKey()
+                    jennKeys = append(jennKeys, args[batch])
                 }
                 stmt = fmt.Sprintf(stmt,  args...)
                 //fmt.Println(stmt)
@@ -373,6 +375,7 @@ func (o *kvOp) run(ctx context.Context) error {
         }
 
 	elapsed := timeutil.Since(start)
+        log.Warningf(ctx, "JENNDEBUG, keys:[%+v], elapsed:[%+v]\n", jennKeys, elapsed)
 	o.hists.Get(`write`).Record(elapsed)
 	return nil
 }
