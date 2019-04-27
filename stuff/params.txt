@@ -1,0 +1,13 @@
+reg.score()=0.213882442378
+total_accesses 3.25755490133
+bumped_read -333.784528945
+failed_accesses 441.886862762
+uncommitted_intents 645.054932569
+newer_committed_values -203.168069806
+avg(spanlatch_wait) 170.834596977
+med(spanlatch_wait) 97.2368682079
+max(spanlatch_wait) -3.64434500142
+avg(txnqueue_wait) -4.73494121491
+med(txnqueue_wait) 3.23753715269
+max(txnqueue_wait) 0.373229097492
+4863.35002699

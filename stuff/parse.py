@@ -22,7 +22,7 @@ def parse_key(k):
     key = k
     test = k.split()
     if len(test) > 1:
-       key = test[3].split('=')[1]
+        key = test[3].split('=')[1]
 
     components = key.split('/')
     if len(components) < 6:
@@ -65,7 +65,34 @@ def parse_ts(ts):
     dt = datetime.datetime.strptime(ts, "%H:%M:%S.%f")
     dt.replace(year=2019, month=4, day=27)
     return dt
-        
+
+
+def parse_latencies(line):
+
+    tokens = line.split(',')
+    def parse_keys(token):
+        keys = [int(i) for i in token.strip(" keys:[[").strip("]]").split()]
+        return keys
+    def parse_elapsed(token):
+        elapsed = token.strip(" elapsed:[").strip().strip("]")
+        print(elapsed)
+        try:
+            return float(elapsed.strip("s")) * 1000
+        except:
+            return float(elapsed.strip("ms"))
+
+    keys = parse_keys(tokens[1])
+    elapsed = parsed_elapsed(tokens[2])
+
+    tokens = line.split()
+    timestamp = parse_ts(tokens[1])
+
+    result = []
+    for k in keys:
+        result.append((k, timestamp, elapsed))
+
+    return result
+
 
 def parse_line(line):
 
@@ -92,10 +119,12 @@ def parse_line(line):
             }
 
 
-def calculate_stats(extracts, frequency):
+def calculate_stats(extracts, frequency, latencies):
 
     results = []
+    extracts.update(latencies)
     df = pandas.DataFrame.from_records(extracts)
+
     for name, group in df.groupby(pandas.Grouper(key="timestamp", freq=frequency)):
         successful_accesses = len(group[group["typ"] == Action.ACCESS_SUCCESS])
         uncommitted_intents = len(group[group["typ"] == Action.UNCOMMITTED_INTENT])
@@ -103,10 +132,11 @@ def calculate_stats(extracts, frequency):
         spanlatch_waits = group[group["typ"] == Action.SPANLATCH_WAIT]
         txnqueue_waits = group[group["typ"] == Action.TXNQUEUE_WAIT]
         bumped_for_read = len(group[group["typ"] == Action.TS_BUMPED_READ])
+        latencies = group[group["latency"].notnull()]
 
         failed_accesses = uncommitted_intents + newer_committed_values
         total_accesses = successful_accesses + failed_accesses
-        
+
         result = "total_accesses=%d" % total_accesses
         result += ", bumped_read={0}".format(bumped_for_read)
         if total_accesses > 0:
@@ -115,10 +145,13 @@ def calculate_stats(extracts, frequency):
             result += ", newer_committed_values={0}".format(float(newer_committed_values)/total_accesses)
         result += ", avg(spanlatch_wait)={0}".format(spanlatch_waits.val.mean())
         result += ", med(spanlatch_wait)={0}".format(spanlatch_waits["val"].agg(np.median))
-        result += ", max(spanlatch_wait)={0}".format(spanlatch_waits.val.quantile(.99))
+        result += ", p99(spanlatch_wait)={0}".format(spanlatch_waits.val.quantile(.99))
         result += ", avg(txnqueue_wait)={0}".format(txnqueue_waits["val"].agg(np.mean))
         result += ", med(txnqueue_wait)={0}".format(txnqueue_waits["val"].agg(np.median))
-        result += ", max(txnqueue_wait)={0}".format(txnqueue_waits["val"].agg(np.max))
+        result += ", p99(txnqueue_wait)={0}".format(txnqueue_waits.val.quantile(0.99))
+        result += ", avg(latency)={0}".format(latencies.latency.mean())
+        result += ", med(latency)={0}".format(latencies.latency.median())
+        result += ", p99(latency)={0}".format(latencies.latency.quantile(0.99))
 
         results.append(result)
 
@@ -128,24 +161,39 @@ def calculate_stats(extracts, frequency):
 def main():
 
     parser = argparse.ArgumentParser(description='Parses out features for prediction contention')
-    parser.add_argument('logfiles', nargs="+", help="Logfiles to be parsed")
+    parser.add_argument('logfile', help="Logfiles to be parsed")
+    parser.add_argument('latencyfile', help="Latency file to be parsed")
     parser.add_argument('--outfile', type=str, default="outfile", help="outfile to be written to")
     parser.add_argument('--frequency', nargs="+", choices=["1s", "10s", "100s", "1000s"], default=["1s"], help="frequencies at which to aggregate")
 
     args = parser.parse_args()
 
     keys_to_features = collections.defaultdict(list)
-    for logfile in args.logfiles:
-        with open(logfile, 'r') as f:
-            for line in f:
-                key, feature_dict = parse_line(line)
-                keys_to_features[key].append(feature_dict)
+    with open(arg.logfile, 'r') as f:
+        for line in f:
+            key, feature_dict = parse_line(line)
+            keys_to_features[key].append(feature_dict)
 
 
-    for freq in args.frequency:
-        with open(args.outfile + freq + ".csv", "w") as f:
-            for key, value in keys_to_features.items():
-                for stat in calculate_stats(value, freq):
+    keys_to_latencies = collections.defaultdict(list)
+    with open(args.latencyfile, 'r') as f:
+        for line in f:
+            # key, timestamp, latenc
+            tuples = parse_latencies(line)
+            for key, ts, latency in tuples:
+                keys_to_latencies[key].append({
+                    "timestamp": ts,
+                    "latency": latency
+                    })
+
+                for freq in args.frequency:
+                    with open(args.outfile + freq + ".csv", "w") as f:
+                        for key, value in keys_to_features.items():
+                            if key not in keys_to_latencies:
+                                continue
+
+                latencies = keys_to_latencies[key]
+                for stat in calculate_stats(value, freq, latencies):
                     f.write(key + ", " + stat + "\n")
 
 
