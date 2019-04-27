@@ -1,0 +1,44 @@
+avg
+R^2=0.0492982729297
+avg(spanlatch_wait) -25.7921232651
+avg(txnqueue_wait) -3.71914704976
+bumped_read -9.89034409926e-11
+failed_accesses -766.989306512
+med(spanlatch_wait) 39.7125592723
+med(txnqueue_wait) 1.39906327908
+newer_committed_values -2402.64049996
+p99(spanlatch_wait) -4.1730542003
+p99(txnqueue_wait) 2.29195710026
+total_accesses 0.315224173799
+uncommitted_intents 1635.65119345
+4825.71698539
+
+med
+R^2=0.0451210605368
+avg(spanlatch_wait) -6.13935024907
+avg(txnqueue_wait) -3.40534493811
+bumped_read -1.36783029347e-10
+failed_accesses -1323.80678511
+med(spanlatch_wait) 27.4260219875
+med(txnqueue_wait) 1.1666702053
+newer_committed_values -2398.77091508
+p99(spanlatch_wait) -8.48428990759
+p99(txnqueue_wait) 2.25247481842
+total_accesses -0.57330373269
+uncommitted_intents 1074.96412997
+4773.75067592
+
+p99
+R^2=0.302048246637
+avg(spanlatch_wait) -168.123306653
+avg(txnqueue_wait) -5.27454160891
+bumped_read 5.48174838855e-10
+failed_accesses 7189.25487334
+med(spanlatch_wait) 165.072348539
+med(txnqueue_wait) 2.76990832264
+newer_committed_values 3031.4524151
+p99(spanlatch_wait) 15.7857596156
+p99(txnqueue_wait) 2.64803194811
+total_accesses 14.9404490924
+uncommitted_intents 4157.80245824
+5034.9460617
