@@ -1377,7 +1377,7 @@ func mvccPutInternal(
 			if txn == nil || meta.Txn.ID != txn.ID {
 				// The current Put operation does not come from the same
 				// transaction.
-				log.Warningf(ctx, "JENNDEBUG, key:[%+v], write_status:[retry], reason:[uncommitted write intent]\n", key)
+                                log.Warningf(ctx, "JENNDEBUG, key:[%+v], type:[uncommitted_write_intent]\n", key)
 				return &roachpb.WriteIntentError{Intents: []roachpb.Intent{{Span: roachpb.Span{Key: key}, Status: roachpb.PENDING, Txn: *meta.Txn}}}
 			} else if txn.Epoch < meta.Txn.Epoch {
 				return errors.Errorf("put with epoch %d came after put with epoch %d in txn %s",
@@ -1497,8 +1497,7 @@ func mvccPutInternal(
 			// by ensuring that they propagate WriteTooOld errors immediately
 			// instead of allowing their transactions to continue and be retried
 			// before committing.
-			log.Warningf(ctx, "JENNDEBUG, key:[%+v], write_status:[retry], reason:[newer committed value]\n",
-				key)
+                        log.Warningf(ctx, "JENNDEBUG, key:[%+v], type:[newer_committed_value]\n", key)
 			writeTimestamp.Forward(metaTimestamp.Next())
 			maybeTooOldErr = &roachpb.WriteTooOldError{
 				Timestamp: readTimestamp, ActualTimestamp: writeTimestamp,
@@ -1600,7 +1599,7 @@ func mvccPutInternal(
 	}
 	engine.LogLogicalOp(logicalOp, logicalOpDetails)
 
-	log.Warningf(ctx, "JENNDEBUG, key:[%+v], write_status:[success]\n", key)
+	log.Warningf(ctx, "JENNDEBUG, key:[%+v], type:[write_success]\n", key)
 
 	return maybeTooOldErr
 }

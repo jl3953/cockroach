@@ -491,8 +491,8 @@ func (q *Queue) MaybeWaitForPush(
 	// queue.
 	pusheeTxnTimer.Reset(0)
         defer func() {
-            log.Warningf(ctx, "JENNDEBUG, pusher:[%+v], pushee:[%+v], duration waited:[%+v]\n",
-                req.PusherTxn, req.PusheeTxn, timeutil.Since(tBegin).Seconds(),
+            log.Warningf(ctx, "JENNDEBUG, key:[%+v], type:[txn_wait_queue], value:[%+v]\n",
+                req.PusherTxn, timeutil.Since(tBegin).Seconds() * 1000,
             )
         }()
 
@@ -570,7 +570,7 @@ func (q *Queue) MaybeWaitForPush(
 			pusheeTxnTimer.Reset(expiration.Sub(now))
 
 		case updatedPusher := <-queryPusherCh:
-                    log.Warningf(ctx, "JENNDEBUG, pusher_txn:[%+v]\n", updatedPusher)
+                    //log.Warningf(ctx, "JENNDEBUG, pusher_txn:[%+v]\n", updatedPusher)
 			switch updatedPusher.Status {
 			case roachpb.COMMITTED:
 				log.VEventf(ctx, 1, "pusher committed: %v", updatedPusher)
