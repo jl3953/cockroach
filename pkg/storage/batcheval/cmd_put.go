@@ -21,6 +21,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/storage/batcheval/result"
 	"github.com/cockroachdb/cockroach/pkg/storage/engine"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
+	"github.com/cockroachdb/cockroach/pkg/util/log"
 )
 
 func init() {
@@ -48,6 +49,7 @@ func Put(
 			defer batch.Close()
 		}
 	}
+	log.Warningf(ctx, "JENNDEBUGHA put key:[%+v], val:[%+v]\n", args.Key, args.Value)
 	if args.Blind {
 		return result.Result{}, engine.MVCCBlindPut(ctx, batch, ms, args.Key, ts, args.Value, h.Txn)
 	}

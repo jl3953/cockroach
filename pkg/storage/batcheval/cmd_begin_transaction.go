@@ -24,6 +24,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/storage/engine"
 	"github.com/cockroachdb/cockroach/pkg/storage/spanset"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
+	"github.com/cockroachdb/cockroach/pkg/util/log"
 )
 
 func init() {
@@ -117,6 +118,8 @@ func BeginTransaction(
 			)
 		}
 	}
+
+	log.Warningf(ctx, "JENNDEBUGHA BEGIN\n")
 
 	// Write the txn record.
 	txnRecord := reply.Txn.AsRecord()
