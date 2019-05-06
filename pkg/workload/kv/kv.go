@@ -337,7 +337,7 @@ func (o *kvOp) run(ctx context.Context) error {
 				return nil
 
 			}); err != nil {
-			fmt.Printf("reads suck\n")
+			// fmt.Printf("reads suck\n")
 			return err
 		}
 

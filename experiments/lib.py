@@ -79,6 +79,7 @@ def set_cluster_settings(node):
     ip = node["ip"]
     cmd = ('echo "'
            'set cluster setting kv.range_merge.queue_enabled = false;'
+           'set cluster setting kv.raft_log.disable_synchronization_unsafe = true;'
            'alter range default configure zone using num_replicas = 1;'
            '" | {0} sql --insecure '
            '--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
@@ -87,6 +88,9 @@ def set_cluster_settings(node):
 
 
 def start_cluster(nodes):
+    if len(nodes) == 0:
+        return
+
     first = nodes[0]
 
     start_cockroach_node(first)
@@ -153,6 +157,9 @@ def parse_bench_args(bench_config):
     if "duration" in bench_config:
         args.append("--duration={}s".format(bench_config["duration"]))
 
+    if "drop" in bench_config and bench_config["drop"] is True:
+        args.append("--drop")
+
     if "n_clients" in bench_config:
         args.append("--concurrency={}".format(bench_config["n_clients"]))
 
@@ -162,6 +169,12 @@ def parse_bench_args(bench_config):
     if "read_percent" in bench_config:
         args.append("--read-percent={}".format(bench_config["read_percent"]))
 
+    if "n_statements_per_txn" in bench_config:
+        args.append("--stmt-per-txn={}".format(bench_config["n_statements_per_txn"]))
+
+    if "n_keys_per_statement" in bench_config:
+        args.append("--batch={}".format(bench_config["n_keys_per_statement"]))
+        
     if "hot_keys" in bench_config:
         keys = map(lambda k: "{}".format(k), bench_config["hot_keys"])
         keys = ",".join(keys)
@@ -188,15 +201,36 @@ def run_bench(config):
             for n in nodes]
     urls = " ".join(urls)
 
+    workload_nodes = config["workload_nodes"]
+
+    if len(workload_nodes) == 0:
+        print("No workload nodes!")
+        return
+    
     args = parse_bench_args(b["init_args"])
     cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
-    call(cmd, "Failed to initialize benchmark")
 
-    args = parse_bench_args(b["run_args"])
-    cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
-    print(cmd)
+    ip = workload_nodes[0]["ip"]
+    call_remote(ip, cmd, "Failed to initialize benchmark")
 
-    path = os.path.join(out_dir, "bench_out.txt")
-    print(path)
-    with open(path, "w") as f:
-        subprocess.Popen(shlex.split(cmd), stdout=f).wait()
+    i = 0
+    ps = []
+    for wn in workload_nodes:
+        args = parse_bench_args(b["run_args"])
+        cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
+
+        # Call remote
+        ip = wn["ip"]
+        cmd = "sudo ssh -t {0} '{1}'".format(ip, cmd)
+        print(cmd)
+
+        path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
+        print(path)
+        with open(path, "w") as f:
+            ps.append(subprocess.Popen(shlex.split(cmd), stdout=f))
+
+        i += 1
+
+    for p in ps:
+        p.wait()
+
