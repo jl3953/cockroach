@@ -8,9 +8,11 @@ import os
 FPATH = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.join(FPATH, "..")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
+OUT_DIR = os.path.join(LOGS_DIR, "kv-skew")
+SKEWS = [round(x * 0.1, 2) for x in range(1, 3)]
 
 EXP = {
-    "out_dir": os.path.join(LOGS_DIR, "kv"),
+    "out_dir": OUT_DIR,
     "cockroach_commit": "hot_or_not",
     "workload_nodes": [
         {
@@ -123,28 +125,15 @@ def main():
     parser.add_argument('--kill', action='store_true', help='kills cluster, if specified')
     parser.add_argument('--benchmark', action='store_true', help='runs specified benchmark')
 
-    parser.add_argument("--runbenchmark", action="store_true", help="actually runs benchmark")
-
     args = parser.parse_args()
-    if args.runbenchmark:
-        lib.run_bench(EXP)
-        return 0
+    if args.benchmark:
+        exps = lib.vary_zipf_skew(EXP, SKEWS)
+        for e in exps:
+            if args.kill:
+                lib.cleanup_previous_experiment(EXP)
+                lib.init_experiment(EXP)
 
-    if args.kill:
-        lib.cleanup_previous_experiment(EXP)
-    else:
-
-        out_dir = EXP["out_dir"]
-        if not os.path.exists(out_dir):
-            os.makedirs(out_dir)
-
-        lib.save_params(EXP, out_dir)
-
-        lib.cleanup_previous_experiment(EXP)
-        lib.init_experiment(EXP)
-
-        if args.benchmark:
-            lib.run_bench(EXP)
+            lib.run_bench(e)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
+import copy
 import json
 import os
 import shlex
@@ -150,6 +151,31 @@ def save_params(exp_params, out_dir):
     with open(path, "w") as f:
         json.dump(params, f, indent=4)
 
+def vary_zipf_skew(config, skews):
+    if ("benchmark" in config and
+        "run_args" in config["benchmark"] and
+        "distribution" in config["benchmark"]["run_args"] and
+        "type" in config["benchmark"]["run_args"]["distribution"] and
+        config["benchmark"]["run_args"]["distribution"]["type"] == "zipf"):
+
+        out_dir = config["out_dir"]
+        exps = []
+        i = 0
+        for s in skews:
+            e = copy.deepcopy(config)
+            if "params" not in e["benchmark"]["run_args"]["distribution"]:
+                e["benchmark"]["run_args"]["distribution"]["params"] = {}
+
+            e["benchmark"]["run_args"]["distribution"]["params"]["skew"] = s
+            e["out_dir"] = os.path.join(out_dir, "skew-{0}".format(i))
+            exps.append(e)
+            i += 1
+
+        return exps
+
+    else:
+        raise ValueError("Passed experiment that does not use Zipf distribution!")
+
 
 def parse_bench_args(bench_config):
     args = []
@@ -192,6 +218,12 @@ def parse_bench_args(bench_config):
 
 
 def run_bench(config):
+    out_dir = config["out_dir"]
+    if not os.path.exists(out_dir):
+        os.makedirs(out_dir)
+
+    save_params(config, out_dir)
+
     nodes = config["warm_nodes"]
     out_dir = config["out_dir"]
     b = config["benchmark"]
