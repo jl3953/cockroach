@@ -70,9 +70,9 @@ def parse_kvbench_log(path):
             if match:
                 result["time_secs"].append(float(match.group(1)))
                 result["errors"].append(float(match.group(2)))
-                result["ops/sec"].append(float(match.group(3)))
 
                 if sample_type == "interval":
+                    result["ops/sec"].append(float(match.group(3)))
                     result["p50_ms"].append(float(match.group(5)))
                     result["p95_ms"].append(float(match.group(6)))
                     result["p99_ms"].append(float(match.group(7)))
@@ -80,6 +80,7 @@ def parse_kvbench_log(path):
                     result["op_type"].append(match.group(9))
 
                 elif sample_type == "total" or sample_type == "total_aggregate":
+                    result["ops/sec"].append(float(match.group(4)))
                     result["p50_ms"].append(float(match.group(6)))
                     result["p95_ms"].append(float(match.group(7)))
                     result["p99_ms"].append(float(match.group(8)))
