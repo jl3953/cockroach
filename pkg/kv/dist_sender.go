@@ -1041,6 +1041,13 @@ func (ds *DistSender) divideAndSendBatchToRanges(
 		// Send the next partial batch to the first range in the "rs" span.
 		// If we can reserve one of the limited goroutines available for parallel
 		// batch RPCs, send asynchronously.
+		strs := make([]string, 0)
+		for _, derp := range ba.Requests {
+			strs = append(strs, fmt.Sprintf("method:[%+v] key:[%+v],", derp.GetInner().Method(),
+				derp.GetInner().Header().Key))
+		}
+		log.Warningf(ctx, "JENNDEBUGYAY seekkey:[%+v], requests:[%+v], replica:[%+v]\n",
+			seekKey, strings.Join(strs, ""), ba.Replica.NodeID)
 		if canParallelize && !lastRange && ds.rpcContext != nil &&
 			ds.sendPartialBatchAsync(ctx, ba, rs, ri.Desc(), ri.Token(), batchIdx, responseCh) {
 			log.Warningf(ctx, "JENNDEBUGYAY to parallelize seekkey %+v\n", seekKey)
