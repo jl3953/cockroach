@@ -66,20 +66,29 @@ def parse_kvbench_log(path):
                     sample_type = "total_aggregate"
 
             # Parse data lines
-            match = re.match(r"^\s+([\d\.]+)s\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+(\w*)", line)
+            match = re.match(r"^\s+([\d\.]+)s\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]*)\s*(\w*)", line)
             if match:
                 result["time_secs"].append(float(match.group(1)))
                 result["errors"].append(float(match.group(2)))
                 result["ops/sec"].append(float(match.group(3)))
-                result["p50_ms"].append(float(match.group(5)))
-                result["p95_ms"].append(float(match.group(6)))
-                result["p99_ms"].append(float(match.group(7)))
-                result["pmax_ms"].append(float(match.group(8)))
 
-                if len(match.groups()) == 9:
+                if sample_type == "interval":
+                    result["p50_ms"].append(float(match.group(5)))
+                    result["p95_ms"].append(float(match.group(6)))
+                    result["p99_ms"].append(float(match.group(7)))
+                    result["pmax_ms"].append(float(match.group(8)))
                     result["op_type"].append(match.group(9))
-                else:
-                    result["op_type"].append("aggregate")
+
+                elif sample_type == "total" or sample_type == "total_aggregate":
+                    result["p50_ms"].append(float(match.group(6)))
+                    result["p95_ms"].append(float(match.group(7)))
+                    result["p99_ms"].append(float(match.group(8)))
+                    result["pmax_ms"].append(float(match.group(9)))
+
+                    if match.group(10):
+                        result["op_type"].append(match.group(10))
+                    else:
+                        result["op_type"].append("aggregate")
 
                 result["sample_type"].append(sample_type)
 
