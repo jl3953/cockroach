@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"strings"
 	"sync/atomic"
 	"unsafe"
 
@@ -744,10 +745,12 @@ func (ds *DistSender) Send(
 	var rplChunks []*roachpb.BatchResponse
 	splitET := false
 	var require1PC bool
-	rando := rand.Intn(100)
+	rando := rand.Intn(10000)
+	strs := make([]string, 0)
 	for _, request := range ba.Requests {
-		log.Warningf(ctx, "JENNDEBUGYAY request:[%+v], rando:[%d]\n", request.GetInner().Method(), rando)
+		strs = append(strs, fmt.Sprintf("request[%+v] ", request.GetInner().Method()))
 	}
+	log.Warningf(ctx, "JENNDEBUG, %s\n, rando %d", strings.Join(strs, ""), rando)
 	lastReq := ba.Requests[len(ba.Requests)-1].GetInner()
 	if et, ok := lastReq.(*roachpb.EndTransactionRequest); ok && et.Require1PC {
 		require1PC = true
@@ -759,13 +762,14 @@ func (ds *DistSender) Send(
 		splitET = true
 	}
 	parts := splitBatchAndCheckForRefreshSpans(ba, splitET)
+	strs = make([]string, 0)
 	for _, part := range parts {
-		log.Warningf(ctx, "JENNDEBUG part rando %d\n", rando)
-
+		strs = append(strs, "=====")
 		for _, p := range part {
-			log.Warningf(ctx, "JENNDEBUGYAY part:[%+v], rando:[%d]\n", p.GetInner().Method(), rando)
+			strs = append(strs, fmt.Sprintf("part:[%+v] ", p.GetInner().Method()))
 		}
 	}
+	log.Warningf(ctx, "JENNDEBUG parts %s rando %d\n", strs, rando)
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
 		// Such a batch should never need splitting.
