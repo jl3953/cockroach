@@ -748,7 +748,8 @@ func (ds *DistSender) Send(
 	rando := rand.Intn(10000)
 	strs := make([]string, 0)
 	for _, request := range ba.Requests {
-		strs = append(strs, fmt.Sprintf("request[%+v] ", request.GetInner().Method()))
+		strs = append(strs, fmt.Sprintf("request[%+v, key %+v, %+v] ", request.GetInner().Method(),
+			request.GetInner().Header().Key, request.GetInner().Header().EndKey))
 	}
 	log.Warningf(ctx, "JENNDEBUG, %s\n, rando %d", strings.Join(strs, ""), rando)
 	lastReq := ba.Requests[len(ba.Requests)-1].GetInner()
