@@ -983,7 +983,7 @@ func (ds *DistSender) divideAndSendBatchToRanges(
 	canParallelize := (ba.Header.MaxSpanRequestKeys == 0) && !stopAtRangeBoundary
 
 	for ; ri.Valid(); ri.Seek(ctx, seekKey, scanDir) {
-		log.Warningf(ctx, "JENNDEBUGYAY seekkey:[%+v]\n", seekKey)
+		log.Warningf(ctx, "JENNDEBUGYAY seekkey:[%+v], rs: [%+v, %+v]\n", seekKey, rs.Key, rs.EndKey)
 		responseCh := make(chan response, 1)
 		responseChs = append(responseChs, responseCh)
 
