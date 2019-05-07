@@ -17,6 +17,7 @@ package kv
 import (
 	"context"
 	"fmt"
+	"runtime/debug"
 	"sync/atomic"
 	"unsafe"
 
@@ -731,6 +732,7 @@ func (ds *DistSender) Send(
 	ds.metrics.BatchCount.Inc(1)
 
 	tracing.AnnotateTrace()
+	debug.PrintStack()
 
 	if pErr := ds.initAndVerifyBatch(ctx, &ba); pErr != nil {
 		return nil, pErr
