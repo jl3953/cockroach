@@ -743,6 +743,9 @@ func (ds *DistSender) Send(
 	var rplChunks []*roachpb.BatchResponse
 	splitET := false
 	var require1PC bool
+	for _, request := range ba.Requests {
+		log.Warningf(ctx, "JENNDEBUGYAY request:[%+v]\n", request)
+	}
 	lastReq := ba.Requests[len(ba.Requests)-1].GetInner()
 	if et, ok := lastReq.(*roachpb.EndTransactionRequest); ok && et.Require1PC {
 		require1PC = true
@@ -754,6 +757,9 @@ func (ds *DistSender) Send(
 		splitET = true
 	}
 	parts := splitBatchAndCheckForRefreshSpans(ba, splitET)
+	for _, part := range parts {
+		log.Warningf(ctx, "JENNDEBUGYAY part:[%+v]\n", part)
+	}
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
 		// Such a batch should never need splitting.
