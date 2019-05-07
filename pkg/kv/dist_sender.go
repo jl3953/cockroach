@@ -18,6 +18,7 @@ import (
 	"context"
 	"fmt"
 	"math/rand"
+	"runtime/debug"
 	"strings"
 	"sync/atomic"
 	"unsafe"
@@ -733,6 +734,7 @@ func (ds *DistSender) Send(
 	ds.metrics.BatchCount.Inc(1)
 
 	tracing.AnnotateTrace()
+	debug.PrintStack()
 
 	if pErr := ds.initAndVerifyBatch(ctx, &ba); pErr != nil {
 		return nil, pErr
