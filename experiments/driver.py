@@ -2,6 +2,7 @@
 
 import argparse
 import lib
+import logs
 import os
 
 
@@ -124,8 +125,10 @@ def main():
     parser = argparse.ArgumentParser(description='Start and kill script for cockroach.')
     parser.add_argument('--kill', action='store_true', help='kills cluster, if specified')
     parser.add_argument('--benchmark', action='store_true', help='runs specified benchmark')
+    parser.add_argument('--logs', action='store_true', help='parses benchmark logs')
 
     args = parser.parse_args()
+
     if args.benchmark:
         exps = lib.vary_zipf_skew(EXP, SKEWS)
         for e in exps:
@@ -134,6 +137,9 @@ def main():
                 lib.init_experiment(EXP)
 
             lib.run_bench(e)
+
+    if args.logs:
+        logs.parse_kvbench_logs(OUT_DIR)
 
 
 if __name__ == "__main__":

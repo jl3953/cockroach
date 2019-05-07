@@ -151,6 +151,13 @@ def save_params(exp_params, out_dir):
     with open(path, "w") as f:
         json.dump(params, f, indent=4)
 
+
+def read_params(out_dir):
+    path = os.path.join(out_dir, "params.json")
+    with open(path, "r") as f:
+        params = json.load(f)
+        return params["exp_params"]
+
 def vary_zipf_skew(config, skews):
     if ("benchmark" in config and
         "run_args" in config["benchmark"] and
