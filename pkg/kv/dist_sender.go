@@ -17,6 +17,7 @@ package kv
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"sync/atomic"
 	"unsafe"
 
@@ -743,8 +744,9 @@ func (ds *DistSender) Send(
 	var rplChunks []*roachpb.BatchResponse
 	splitET := false
 	var require1PC bool
+	rando := rand.Intn(100)
 	for _, request := range ba.Requests {
-		log.Warningf(ctx, "JENNDEBUGYAY request:[%+v]\n", request.GetInner().Method())
+		log.Warningf(ctx, "JENNDEBUGYAY request:[%+v], rando:[%d]\n", request.GetInner().Method(), rando)
 	}
 	lastReq := ba.Requests[len(ba.Requests)-1].GetInner()
 	if et, ok := lastReq.(*roachpb.EndTransactionRequest); ok && et.Require1PC {
@@ -758,7 +760,11 @@ func (ds *DistSender) Send(
 	}
 	parts := splitBatchAndCheckForRefreshSpans(ba, splitET)
 	for _, part := range parts {
-		log.Warningf(ctx, "JENNDEBUGYAY part:[%+v]\n", part)
+		log.Warningf(ctx, "JENNDEBUG part rando %d\n", rando)
+
+		for _, p := range part {
+			log.Warningf(ctx, "JENNDEBUGYAY part:[%+v], rando:[%d]\n", p.GetInner().Method(), rando)
+		}
 	}
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
