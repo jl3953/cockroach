@@ -10,7 +10,7 @@ FPATH = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.join(FPATH, "..")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 OUT_DIR = os.path.join(LOGS_DIR, "kv-skew")
-SKEWS = [round(x * 0.1, 2) for x in range(1, 3)]
+SKEWS = [round(x * 0.1, 2) for x in range(1, 21)]
 
 EXP = {
     "out_dir": OUT_DIR,
@@ -104,7 +104,7 @@ EXP = {
         },
         "run_args": {
             "n_clients": 128,
-            "duration": 10,
+            "duration": 240,
             "splits": 1000,
             "drop": True,
             "read_percent": 90,

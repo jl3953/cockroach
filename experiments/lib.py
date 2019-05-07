@@ -173,6 +173,9 @@ def vary_zipf_skew(config, skews):
             if "params" not in e["benchmark"]["run_args"]["distribution"]:
                 e["benchmark"]["run_args"]["distribution"]["params"] = {}
 
+            if "skew" in e["benchmark"]["run_args"]["distribution"]["params"]:
+                print("WARNING: Overwriting skew param in experiment config!")
+
             e["benchmark"]["run_args"]["distribution"]["params"]["skew"] = s
             e["out_dir"] = os.path.join(out_dir, "skew-{0}".format(i))
             exps.append(e)
