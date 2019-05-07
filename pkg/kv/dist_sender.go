@@ -983,6 +983,7 @@ func (ds *DistSender) divideAndSendBatchToRanges(
 	canParallelize := (ba.Header.MaxSpanRequestKeys == 0) && !stopAtRangeBoundary
 
 	for ; ri.Valid(); ri.Seek(ctx, seekKey, scanDir) {
+		log.Warningf(ctx, "JENNDEBUGYAY seekkey:[%+v]\n", seekKey)
 		responseCh := make(chan response, 1)
 		responseChs = append(responseChs, responseCh)
 
@@ -1042,8 +1043,10 @@ func (ds *DistSender) divideAndSendBatchToRanges(
 		// batch RPCs, send asynchronously.
 		if canParallelize && !lastRange && ds.rpcContext != nil &&
 			ds.sendPartialBatchAsync(ctx, ba, rs, ri.Desc(), ri.Token(), batchIdx, responseCh) {
+			log.Warningf(ctx, "JENNDEBUGYAY to parallelize seekkey %+v\n", seekKey)
 			// Sent the batch asynchronously.
 		} else {
+			log.Warningf(ctx, "JENNDEBUGYAY tis the question %+v\n", seekKey)
 			resp := ds.sendPartialBatch(ctx, ba, rs, ri.Desc(), ri.Token(), batchIdx, true /* needsTruncate */)
 			responseCh <- resp
 			if resp.pErr != nil {
