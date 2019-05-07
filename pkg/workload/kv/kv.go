@@ -131,6 +131,7 @@ var kvMeta = workload.Meta{
 		g.flags.Int64SliceVar(&g.hotKeys, `hot-keys`, nil,
 			`List of hot keys that will be store on hot shard`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
+
 		return g
 	},
 }
@@ -289,7 +290,7 @@ type kvOp struct {
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
 	STATEMENTS_PER_TXN := o.config.stmtPerTxn
-	rando := rand.Intn(1000)
+	// rando := rand.Intn(1000)
 
 	// transaction TODO(jenn) PROBABLY FATAL--follows default
 	// of db
@@ -307,18 +308,19 @@ func (o *kvOp) run(ctx context.Context) error {
 
 					// construct query
 					args := make([]interface{}, o.config.batchSize)
-					stmt := "SELECT k from kv WHERE k IN ("
+					stmt := "SELECT k from kv.kv WHERE k IN ("
 					for batch := 0; batch < o.config.batchSize; batch++ {
 						if batch > 0 {
 							stmt += ", "
 						}
 						stmt += "%d"
-						args[batch] = o.g.readKey()
+						k := o.g.readKey()
+						args[batch] = k
 					}
 					stmt += ")"
 					stmt = fmt.Sprintf(stmt, args...)
 					//log.Warningf(ctx, "jenndebug ro txn %s\n", stmt)
-					//fmt.Println(stmt)
+					// fmt.Println(stmt)
 					rows, err := tx.Query(stmt)
 					if err != nil {
 						return err
@@ -345,17 +347,6 @@ func (o *kvOp) run(ctx context.Context) error {
 		o.hists.Get(`read`).Record(elapsed)
 		return nil
 	}
-	// Since we know the statement is not a read, we recalibrate
-	// statementProbability to only consider the other statements.
-	// TODO(jenn) this portion is useless, delete from code
-	statementProbability -= o.config.readPercent
-	if statementProbability < o.config.spanPercent {
-		start := timeutil.Now()
-		_, err := o.spanStmt.Exec(ctx)
-		elapsed := timeutil.Since(start)
-		o.hists.Get(`span`).Record(elapsed)
-		return err
-	}
 
 	start := timeutil.Now()
 
@@ -368,17 +359,18 @@ func (o *kvOp) run(ctx context.Context) error {
 		}, func(tx *sql.Tx) error {
 			for i := 0; i < STATEMENTS_PER_TXN; i++ {
 				args := make([]interface{}, o.config.batchSize)
-				stmt := "UPSERT INTO kv (k, v) VALUES "
+				stmt := "UPSERT INTO kv.kv (k, v) VALUES "
 				for batch := 0; batch < o.config.batchSize; batch++ {
 					if batch > 0 {
 						stmt += ", "
 					}
 					stmt += "(%d, 'JennTheLam')"
-					args[batch] = o.g.writeKey()
+					k := o.g.writeKey()
+					args[batch] = k
 				}
 				stmt = fmt.Sprintf(stmt, args...)
 				//log.Warningf(ctx, "jenndebug wo txn %s\n", stmt)
-				//fmt.Println(stmt)
+				// fmt.Println(stmt)
 				if _, err := tx.Exec(stmt); err != nil {
 					errors.Wrap(err, "aw shucks query:\n")
 					return err
@@ -386,7 +378,7 @@ func (o *kvOp) run(ctx context.Context) error {
 			}
 			return nil
 		}); err != nil {
-		fmt.Printf("%d writes returned err\n", rando)
+		// fmt.Printf("%d writes returned err\n", rando)
 		return err
 	}
 
@@ -530,8 +522,8 @@ func newZipfianGenerator(seq *sequence, skew float64) *zipfGenerator {
 // Get a random number seeded by v that follows the
 // zipfian distribution.
 func (g *zipfGenerator) zipfian(seed int64) int64 {
-	randomWithSeed := rand.New(rand.NewSource(seed))
-	return int64(g.zipf.Uint64(randomWithSeed))
+
+	return int64(g.zipf.Uint64(g.random))
 }
 
 // Get a zipf write key appropriately.
@@ -541,11 +533,7 @@ func (g *zipfGenerator) writeKey() int64 {
 
 // Get a zipf read key appropriately.
 func (g *zipfGenerator) readKey() int64 {
-	v := g.seq.read()
-	if v == 0 {
-		return 0
-	}
-	return g.zipfian(g.random.Int63n(v))
+	return g.zipfian(g.seq.read())
 }
 
 func (g *zipfGenerator) rand() *rand.Rand {

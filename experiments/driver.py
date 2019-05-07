@@ -100,13 +100,19 @@ EXP = {
         "init_args": {
         },
         "run_args": {
-            "n_clients": 256,
+            "n_clients": 128,
             "duration": 10,
             "splits": 1000,
             "drop": True,
             "read_percent": 90,
             "n_statements_per_txn": 1,
             "n_keys_per_statement": 10,
+            "distribution": {
+                "type": "zipf",
+                "params": {
+                    "skew": 0.5,
+                },
+            }
         }
     }
 }

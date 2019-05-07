@@ -48,7 +48,7 @@ func (z *zipf) hinv(x float64) float64 {
 // Requirements: s > 1 and v >= 1.
 func newZipf(s float64, v float64, imax uint64) *zipf {
 	z := new(zipf)
-	if s <= 1.0 || v < 1 {
+	if s <= 0 || v < 0 {
 		return nil
 	}
 	z.imax = float64(imax)
