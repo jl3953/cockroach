@@ -744,7 +744,7 @@ func (ds *DistSender) Send(
 	splitET := false
 	var require1PC bool
 	for _, request := range ba.Requests {
-		log.Warningf(ctx, "JENNDEBUGYAY request:[%+v]\n", request)
+		log.Warningf(ctx, "JENNDEBUGYAY request:[%+v]\n", request.GetInner().Method())
 	}
 	lastReq := ba.Requests[len(ba.Requests)-1].GetInner()
 	if et, ok := lastReq.(*roachpb.EndTransactionRequest); ok && et.Require1PC {
