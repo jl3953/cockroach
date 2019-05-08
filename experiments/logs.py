@@ -138,7 +138,7 @@ def parse_kvbench_logs(out_dir):
         assert(len(results[k1]) == len(results[k2]))
 
     path = os.path.join(out_dir, "kvbench_results.csv")
-    with open(path, "w") as f:
+    with open(path, "w+") as f:
         writer = csv.writer(f, delimiter=",")
 
         # Write headers

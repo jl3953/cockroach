@@ -10,11 +10,11 @@ FPATH = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.join(FPATH, "..")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 OUT_DIR = os.path.join(LOGS_DIR, "kv-skew")
-SKEWS = [round(x * 0.1, 2) for x in range(1, 21)]
+SKEWS = [1.000001, 1.00001, 1.0001, 1.001, 1.01, 1.1, 2]
 
 EXP = {
     "out_dir": OUT_DIR,
-    "cockroach_commit": "hot_or_not",
+    "cockroach_commit": "hot_or_not-jeff",
     "workload_nodes": [
         {
             "ip": "192.168.1.1",
@@ -97,6 +97,11 @@ EXP = {
             "region": "singapore",
             "store": lib.STORE_DIR,
         },
+        {
+            "ip": "192.168.1.17",
+            "region": "singapore",
+            "store": lib.STORE_DIR,
+        },
     ],
     "benchmark": {
         "name": "kv",
@@ -113,7 +118,7 @@ EXP = {
             "distribution": {
                 "type": "zipf",
                 "params": {
-                    "skew": 0.5,
+                    # "skew": 0.5,
                 },
             }
         }

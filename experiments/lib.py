@@ -27,7 +27,7 @@ def call(cmd, err_msg):
 
 
 def call_remote(host, cmd, err_msg):
-    cmd = "sudo ssh -t {0} '{1}'".format(host, cmd)
+    cmd = "sudo ssh {0} '{1}'".format(host, cmd)
     return call(cmd, err_msg)
 
 
@@ -42,19 +42,23 @@ def init_store(node):
     call_remote(ip, cmd, "Failed to initialize store")
 
 
-def cleanup_store(node):
-    ip = node["ip"]
-    store = node["store"]
-    cmd = "sudo rm -rf {0}".format(os.path.join(store, "*"))
-    call_remote(ip, cmd, "Failed to remove cockroach data.")
-
-
 def kill_cockroach_node(node):
     ip = node["ip"]
 
+    if "store" in node:
+        store = node["store"]
+    else:
+        store = None
+
     cmd = ("PID=$(! pgrep cockroach) "
            "|| (sudo pkill -9 cockroach; while ps -p $PID;do sleep 1;done;)")
-    call_remote(ip, cmd, "Failed to kill cockroach node.")
+
+    if store:
+        cmd = "({0}) && {1}".format(cmd, "sudo rm -rf {0}".format(os.path.join(store, "*")))
+
+    cmd = "ssh {0} '{1}'".format(ip, cmd)
+    print(cmd)
+    return subprocess.Popen(shlex.split(cmd))
 
 
 def start_cockroach_node(node, join=None):
@@ -73,7 +77,9 @@ def start_cockroach_node(node, join=None):
     if join:
         cmd = "{0} --join={1}:26257".format(cmd, join)
 
-    return call_remote(ip, cmd, "Failed to start cockroach node.")
+    cmd = "ssh -tt {0} '{1}' && stty sane".format(ip, cmd)
+    print(cmd)
+    return subprocess.Popen(cmd, shell=True)
 
 
 def set_cluster_settings(node):
@@ -93,16 +99,20 @@ def start_cluster(nodes):
         return
 
     first = nodes[0]
+    start_cockroach_node(first).wait()
 
-    start_cockroach_node(first)
+    ps = []
     for n in nodes[1:]:
-        start_cockroach_node(n, join=first["ip"])
+        ps.append(start_cockroach_node(n, join=first["ip"]))
+
+    for p in ps:
+        p.wait()
 
     set_cluster_settings(first)
 
 
 def build_cockroach(node, commit):
-    cmd = ("ssh -t {0} 'export GOPATH=/usr/local/temp/go "
+    cmd = ("ssh {0} 'export GOPATH=/usr/local/temp/go "
            "&& cd {1} && git pull && git checkout {2} "
            "&& (make build || "
            "(./bin/dep ensure && make clean && make build))'") \
@@ -119,17 +129,17 @@ def build_cockroach_commit(nodes, commit):
 
 
 def cleanup_previous_experiment(config):
+    ps = []
     for n in config["workload_nodes"]:
-        kill_cockroach_node(n)
-        # No need to clean up store
+        p = kill_cockroach_node(n)
+        ps.append(p)
 
-    for n in config["hot_nodes"]:
-        kill_cockroach_node(n)
-        cleanup_store(n)
+    for n in config["hot_nodes"] + config["warm_nodes"]:
+        p = kill_cockroach_node(n)
+        ps.append(p)
 
-    for n in config["warm_nodes"]:
-        kill_cockroach_node(n)
-        cleanup_store(n)
+    for p in ps:
+        p.wait()
 
 
 def init_experiment(config):
@@ -264,7 +274,7 @@ def run_bench(config):
 
         # Call remote
         ip = wn["ip"]
-        cmd = "sudo ssh -t {0} '{1}'".format(ip, cmd)
+        cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
         print(cmd)
 
         path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
