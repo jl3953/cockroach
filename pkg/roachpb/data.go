@@ -23,7 +23,6 @@ import (
 	"hash"
 	"hash/crc32"
 	"math"
-	"math/rand"
 	"sort"
 	"strconv"
 	"sync"
@@ -842,7 +841,7 @@ func MakePriority(userPriority UserPriority) enginepb.TxnPriority {
 	// be set by specifying priority < 1. The explicit priority is
 	// simply -userPriority in this case. This is hacky, but currently
 	// used for unittesting. Perhaps this should be documented and allowed.
-	if userPriority < 0 {
+	/* if userPriority < 0 {
 		if -userPriority > UserPriority(math.MaxInt32) {
 			panic(fmt.Sprintf("cannot set explicit priority to a value less than -%d", math.MaxInt32))
 		}
@@ -909,6 +908,9 @@ func MakePriority(userPriority UserPriority) enginepb.TxnPriority {
 		return enginepb.MaxTxnPriority - 1
 	}
 	return enginepb.TxnPriority(val)
+	*/
+
+	return enginepb.TxnPriority(enginepb.MinTxnPriority + 1)
 }
 
 // Restart reconfigures a transaction for restart. The epoch is
