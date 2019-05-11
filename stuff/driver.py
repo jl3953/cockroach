@@ -437,9 +437,9 @@ def run_iteration(a, train_dur, inf_dur):
     feature_log, train_features = parse_training_features(begin, end)
     features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
     avg_model, med_model, p99_model = train_model(features, avg_labels, med_labels, p99_labels)
-    train_avg_r2 = score_model(avg_model, train_features, train_latencies)
-    train_med_r2 = score_model(med_model, train_features, train_latencies)
-    train_p99_r2 = score_model(p99_model, train_features, train_latencies)
+    train_avg_r2 = score_model(avg_model, features, avg_labels)
+    train_med_r2 = score_model(med_model, features, med_labels)
+    train_p99_r2 = score_model(p99_model, features, p99_labels)
 
 
     # run inference round
