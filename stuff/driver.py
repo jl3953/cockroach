@@ -443,9 +443,9 @@ def run_iteration(a, train_dur, inf_dur):
 
 
     # run inference round
-    begin, end = execute_round(inf_dur, inf_logfile)
+    begin, end = execute_round(a, inf_dur, inf_logfile)
     inf_latencies = parse_latencies(inf_logfile)
-    inf_features = parse_inference_features(begin, end)
+    inf_feature_log, inf_features = parse_inference_features(begin, end)
     features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
     inf_avg_r2 = score_model(avg_model, features, avg_labels)
     inf_med_r2 = score_model(med_model, features, med_labels)
