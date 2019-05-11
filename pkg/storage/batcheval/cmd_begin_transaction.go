@@ -119,7 +119,7 @@ func BeginTransaction(
 		}
 	}
 
-	log.Warningf(ctx, "JENNDEBUGHA BEGIN\n")
+	log.Warningf(ctx, "jennDEBUGHA BEGIN\n")
 
 	// Write the txn record.
 	txnRecord := reply.Txn.AsRecord()

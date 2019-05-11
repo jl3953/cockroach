@@ -16,7 +16,16 @@ STORE_DIR = "/data"
 LOGS_DIR = os.path.join(STORE_DIR, 'logs')
 GREP_PHRASE = "JENNDEBUG"
 
-NODES = ["node-1", "node-2", "node-3"]
+NODES = [{
+            "node": "node-1",
+            "ip": "192.168.1.2",
+        }, {
+            "node": "node-2",
+            "ip": "192.168.1.3",
+        }, {
+            "node": "node-3",
+            "ip": "192.168.1.4"
+        }]
 
 
 class Action(enum.Enum):
@@ -60,6 +69,17 @@ def call(cmd, err_msg):
     else:
         return p.stdout
 
+def call_with_redirect(cmd, err_msg, logfile):
+    print(cmd)
+    with open(logfile, "w") as out:
+        p = subprocess.run(cmd, universal_newlines=True, shell=True, stdout=out, stderr=out)
+        if p.returncode:
+            print(p.stderr)
+            print(err_msg)
+            sys.exit(1)
+        else:
+            return p.stdout
+
 
 def call_remote(host, cmd, err_msg):
     cmd = "sudo ssh -t {0} '{1}'".format(host, cmd)
@@ -86,9 +106,12 @@ def execute_round(a, dur, logfile):
     """
 
     begin_ts = datetime.datetime.now()
-    cmd = " ".join(EXE, "workload run kv --zipfian --skew {0} --duration {1}s &> {2}".format(
-        a, dur, logfile))
-    call(cmd, "failed to run kv benchmark")
+    cmd = " ".join(["sudo", EXE, "workload run kv --zipfian --skew {0} --duration {1}s".format(a, dur)])
+    for node in NODES:
+        postgres = " postgresql://root@{0}:26257?sslmode=disable".format(node["ip"])
+        cmd += postgres
+
+    call_with_redirect(cmd, "failed to run kv benchmark", logfile)
     end_ts = datetime.datetime.now()
 
     return begin_ts, end_ts
@@ -104,8 +127,8 @@ def parse_latencies(logfile):
         keys to a list of timestamps and latencies (collections.defaultdict)
     """
 
-    cmd = "cat {0} | grep {1} &> {2}".format(logfile, GREP_PHRASE, logfile + ".tmp")
-    call(cmd, "parse latencies failed")
+    cmd = "cat {0} | grep {1}".format(logfile + ".tmp", GREP_PHRASE)
+    call_with_redirect(cmd, "parse latencies failed", logfile)
 
     def parse(line):
         tokens = line.split(',')
@@ -163,26 +186,24 @@ def parse_features(begin, end, logfile):
     """
 
     logs = []
-    for ip in NODES:
+    for node in NODES:
+        ip = node["node"]
 
         # composing log file
         temp_log = make_logfile_name("temp", begin, ip)
         logs.append(temp_log)
 
         # grepping for lines between two timestamps
-        awk = "awk -v \"from={0}\" -v \"to={1}\" -F ' ' '{ if ($2 >= from && $2 <= to) print }'".format(
+        awk = "awk -v \"from={0}\" -v \"to={1}\" -F ' ' '{{ if ($2 > from && $2 <= to) print }}'".format(
             begin.strftime("%H:%M:%S"), end.strftime("%H:%M:%S"))
 
         # filter for grep phrase and redirect all output to composed logfile
-        filter_cmd = "cat /data/logs/cockroach.log | {0} | grep {1} &> {2};".format(
-            awk, GREP_PHRASE, temp_log)
-        call_remote(ip, filter_cmd, "woops, fucked")
+        filter_cmd = "sudo ssh -t {2} 'cat /data/logs/cockroach.log' | {0} | grep {1}".format(
+            awk, GREP_PHRASE, ip)
+        call_with_redirect(filter_cmd, "Could not filter logfile", temp_log)
 
-        # bring that file over to this machine
-        scp = "scp {0}:{1} .".format(ip, temp_log)
-        call(scp, "scp fucked")
 
-    call("sort temp* &> {0}".format(logfile), "that fucked too")
+    call_with_redirect("sort temp*", "that fucked too", logfile)
 
 
     def parse(line):
@@ -403,7 +424,7 @@ def run_iteration(a, train_dur, inf_dur):
     inf_logfile = make_logfile_name("inf", ts, a, train_dur, inf_dur)
 
     # run training round
-    begin, end = execute_round(a, train_dur, train_logfile)
+    begin, end = execute_round(a, train_dur, train_logfile + ".tmp")
     train_latencies = parse_latencies(train_logfile)
     feature_log, train_features = parse_training_features(begin, end)
     features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
@@ -428,7 +449,7 @@ def run_iteration(a, train_dur, inf_dur):
 def main():
 
     skew = 1.1 # alpha
-    train_dur = 10 # seconds
+    train_dur = 5 # seconds
     inf_dur = 60 # seconds
 
     print(run_iteration(skew, train_dur, inf_dur))

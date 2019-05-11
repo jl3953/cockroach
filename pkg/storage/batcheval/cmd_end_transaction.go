@@ -159,7 +159,7 @@ func evalEndTransaction(
 	ms := cArgs.Stats
 	reply := resp.(*roachpb.EndTransactionResponse)
 
-	log.Warningf(ctx, "JENNDEBUGHA end_txn\n");
+	log.Warningf(ctx, "jennDEBUGHA end_txn\n");
 	if err := VerifyTransaction(h, args); err != nil {
 		return result.Result{}, err
 	}

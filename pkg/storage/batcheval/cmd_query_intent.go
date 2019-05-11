@@ -42,7 +42,7 @@ func QueryIntent(
 	// Read at the specified key at the maximum timestamp. This ensures that we
 	// see an intent if one exists, regardless of what timestamp it is written
 	// at.
-	log.Warningf(ctx, "JENNDEBUGHA query_intent key:[%+v]\n", args.Key)
+	log.Warningf(ctx, "jennDEBUGHA query_intent key:[%+v]\n", args.Key)
 	_, intent, err := engine.MVCCGet(ctx, batch, args.Key, hlc.MaxTimestamp, engine.MVCCGetOptions{
 		// Perform an inconsistent read so that intents are returned instead of
 		// causing WriteIntentErrors.
