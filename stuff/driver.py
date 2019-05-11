@@ -109,7 +109,7 @@ def execute_round(a, dur, logfile):
     """
 
     begin_ts = datetime.datetime.utcnow()
-    cmd = " ".join(["sudo", EXE, "workload run kv --zipfian --skew {0} --duration {1}s".format(a, dur)])
+    cmd = " ".join(["sudo", EXE, "workload run kv --zipfian --skew {0} --duration {1}s --stmt-per-txn 1".format(a, dur)])
     for node in NODES:
         postgres = " postgresql://root@{0}:26257?sslmode=disable".format(node["ip"])
         cmd += postgres
