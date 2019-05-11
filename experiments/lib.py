@@ -86,6 +86,7 @@ def set_cluster_settings(node):
     ip = node["ip"]
     cmd = ('echo "'
            'set cluster setting kv.range_merge.queue_enabled = false;'
+           # 'set cluster setting kv.range_split.by_load_enabled = false;'
            'set cluster setting kv.raft_log.disable_synchronization_unsafe = true;'
            'alter range default configure zone using num_replicas = 1;'
            '" | {0} sql --insecure '
@@ -142,12 +143,30 @@ def cleanup_previous_experiment(config):
         p.wait()
 
 
+def set_hot_keys(nodes, keys):
+    if len(keys) == 0:
+        return
+
+    values = ', '.join(map(lambda k: "({})".format(k), keys))
+
+    for n in nodes:
+        ip = n["ip"]
+        cmd = ('echo "'
+               'alter table kv.kv hotkey at values {2};'
+               '" | {0} sql --insecure '
+               '--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip, values)
+
+        call_remote(ip, cmd, "Failed to set cluster settings.")
+
+
 def init_experiment(config):
     nodes = config["workload_nodes"] \
             + config["warm_nodes"] \
             + config["hot_nodes"]
 
     build_cockroach_commit(nodes, config["cockroach_commit"])
+
+    # Start hot node separately from warm nodes
     start_cluster(config["hot_nodes"])
     start_cluster(config["warm_nodes"])
 
@@ -221,11 +240,6 @@ def parse_bench_args(bench_config):
     if "n_keys_per_statement" in bench_config:
         args.append("--batch={}".format(bench_config["n_keys_per_statement"]))
         
-    if "hot_keys" in bench_config:
-        keys = map(lambda k: "{}".format(k), bench_config["hot_keys"])
-        keys = ",".join(keys)
-        args.append("--hot-keys={}".format(keys))
-
     if "distribution" in bench_config:
         d = bench_config["distribution"]
         params = d["params"]
@@ -259,13 +273,20 @@ def run_bench(config):
     if len(workload_nodes) == 0:
         print("No workload nodes!")
         return
-    
+
+    if len(nodes) == 0:
+        print("No cluster nodes!")
+        return
+
     args = parse_bench_args(b["init_args"])
     cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
 
     ip = workload_nodes[0]["ip"]
     call_remote(ip, cmd, "Failed to initialize benchmark")
 
+    if "hot_keys" in b["init_args"]:
+        set_hot_keys(nodes, b["init_args"]["hot_keys"])
+    
     i = 0
     ps = []
     for wn in workload_nodes:
