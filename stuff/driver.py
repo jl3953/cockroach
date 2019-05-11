@@ -108,14 +108,14 @@ def execute_round(a, dur, logfile):
         begin_ts, end_ts
     """
 
-    begin_ts = datetime.datetime.now()
+    begin_ts = datetime.datetime.utcnow()
     cmd = " ".join(["sudo", EXE, "workload run kv --zipfian --skew {0} --duration {1}s".format(a, dur)])
     for node in NODES:
         postgres = " postgresql://root@{0}:26257?sslmode=disable".format(node["ip"])
         cmd += postgres
 
     call_with_redirect(cmd, "failed to run kv benchmark", logfile)
-    end_ts = datetime.datetime.now()
+    end_ts = datetime.datetime.utcnow()
 
     return begin_ts, end_ts
 
