@@ -187,8 +187,8 @@ func (ls *Stores) Send(
 		}
 		ba.RangeID = rangeID
 		ba.Replica = repDesc
-		log.Infof(ctx, "Looked up rangeID %s and storeID %s for hot request",
-			rangeID, repDesc)
+		// log.Infof(ctx, "Looked up rangeID %s and storeID %s for hot request",
+		// 	rangeID, repDesc)
 	}
 	if ba.RangeID == 0 {
 		log.Fatal(ctx, "batch request missing range ID")
