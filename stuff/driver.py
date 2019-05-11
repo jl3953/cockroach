@@ -490,7 +490,7 @@ def run_iteration(a, train_dur, inf_dur, param_file):
             print ("parsed latencies")
             inf_feature_log, inf_features = parse_inference_features(begin, end)
             print ("parsed inference features")
-            features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
+            _, features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
             print("process pandas df")
             inf_avg_r2 = score_model(avg_model, features, avg_labels)
             inf_med_r2 = score_model(med_model, features, med_labels)
@@ -518,7 +518,8 @@ def main():
             for t in train_dur:
                 for a in skews:
                     ta, tm, tp, ia, im, ip = run_iteration(a, t, i, paramfile)
-                    f.write([a, t, i, ta, tm, tp, ia, im, ip])
+                    writer.writerow([a, t, i, ta, tm, tp, ia, im, ip])
+                    f.flush()
 
     return 0
 
