@@ -281,7 +281,12 @@ def parse_features(begin, end, logfile):
                 }
 
     keys_to_features = collections.defaultdict(list)
+    line_count = 0
     with open(logfile, 'r') as f:
+        line_count += 1
+        if line_count % 2000 == 0:
+            print ("still parsing")
+            line_count = 0
         bad_lines = 0
         for line in f:
             try:
@@ -458,12 +463,14 @@ def run_iteration(a, train_dur, inf_dur, param_file):
 
             with open(param_file, "w") as w:
                 i = 1
-                for model in [avg_model, med_model, p99_model]:
+                for model, r2 in zip([avg_model, med_model, p99_model], [train_avg_r2, train_med_r2, train_p99_r2]):
                     w.write("model: " + str(i) + "\n")
-                    w.write("skew: " + str(a) + ", training_time: " + str(train_dur) + ", inf_dur: " + str(inf_dur) + "\n");
+                    w.write("skew: " + str(a) + ", training_time: " + str(train_dur) + ", inf_dur: " + str(inf_dur) + ", r2: " + r2 + "\n")
                     for name, coeff in zip(list(features_df), model.coef_):
                         w.write(name + ": " + str(coeff) + "\n")
                     i += 1
+                    w.write("intercept: " + str(model.intercept_) + "\n")
+                    w.write("\n")
             break
         except RuntimeError as e:
             print(e)
@@ -476,11 +483,15 @@ def run_iteration(a, train_dur, inf_dur, param_file):
         try:
             begin, end = execute_round(a, inf_dur, inf_logfile + ".tmp")
             inf_latencies = parse_latencies(inf_logfile)
+            print ("parsed latencies")
             inf_feature_log, inf_features = parse_inference_features(begin, end)
+            print ("parsed inference features")
             features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
+            print("process pandas df")
             inf_avg_r2 = score_model(avg_model, features, avg_labels)
             inf_med_r2 = score_model(med_model, features, med_labels)
             inf_p99_r2 = score_model(p99_model, features, p99_labels)
+            print ("scored models")
             break
         except Exception as e:
             print(e)
@@ -497,7 +508,7 @@ def main():
 
     skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
     train_dur = [1, 10, 60, 100]
-    inf_dur = [60]
+    inf_dur = [30]
 
     ts = datetime.datetime.now()
     paramfile = make_logfile_name("params", ts)
