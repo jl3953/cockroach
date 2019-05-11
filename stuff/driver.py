@@ -360,6 +360,7 @@ def calculate_stats(extracts, frequency, latencies):
                 }
 
         results.append(result)
+        return results
 
 
 def process(keys_to_features, keys_to_latencies):
