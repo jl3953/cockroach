@@ -341,13 +341,17 @@ def calculate_stats(extracts, frequency, latencies):
     # print(extracts)
     df = pandas.DataFrame.from_records(extracts)
 
+    i = 0
     for name, group in df.groupby(pandas.Grouper(key="timestamp", freq=frequency)):
+        i += 1
+        if i % 100 == 0:
+            print("still processing dataframes")
         successful_accesses = len(group[group["typ"] == Action.ACCESS_SUCCESS])
         uncommitted_intents = len(group[group["typ"] == Action.UNCOMMITTED_INTENT])
         newer_committed_values = len(group[group["typ"] == Action.NEWER_COMMITTED_VALUE])
         spanlatch_waits = group[group["typ"] == Action.SPANLATCH_WAIT]
         txnqueue_waits = group[group["typ"] == Action.TXNQUEUE_WAIT]
-        bumped_for_read = len(group[group["typ"] == Action.TS_BUMPED_READ])
+        # bumped_for_read = len(group[group["typ"] == Action.TS_BUMPED_READ])
         #latencies = group[group["latency"].notnull()]
 
         failed_accesses = uncommitted_intents + newer_committed_values
@@ -355,12 +359,12 @@ def calculate_stats(extracts, frequency, latencies):
 
         result = {
                 "total_accesses": total_accesses,
-                "bumped_read": bumped_for_read,
+                # "bumped_read": bumped_for_read,
                 "failed_accesses": None if total_accesses == 0 else float(failed_accesses)/total_accesses,
                 "uncommitted_intents": None if total_accesses == 0 else float(uncommitted_intents)/total_accesses,
                 "newer_committed_values": None if total_accesses == 0 else float(newer_committed_values)/total_accesses,
                 "avg(spanlatch_wait)": spanlatch_waits["val"].mean(),
-                "med(spanlatch_wait)": spanlatch_waits["val"].median(),
+                # "med(spanlatch_wait)": spanlatch_waits["val"].median(),
                 "p99(spanlatch_wait)": spanlatch_waits["val"].quantile(0.99),
                 "avg(txnqueue_wait)": txnqueue_waits["val"].mean(),
                 "med(txnqueue_wait)": txnqueue_waits["val"].median(),
@@ -465,7 +469,7 @@ def run_iteration(a, train_dur, inf_dur, param_file):
                 i = 1
                 for model, r2 in zip([avg_model, med_model, p99_model], [train_avg_r2, train_med_r2, train_p99_r2]):
                     w.write("model: " + str(i) + "\n")
-                    w.write("skew: " + str(a) + ", training_time: " + str(train_dur) + ", inf_dur: " + str(inf_dur) + ", r2: " + r2 + "\n")
+                    w.write("skew: " + str(a) + ", training_time: " + str(train_dur) + ", inf_dur: " + str(inf_dur) + ", r2: " + str(r2) + "\n")
                     for name, coeff in zip(list(features_df), model.coef_):
                         w.write(name + ": " + str(coeff) + "\n")
                     i += 1
@@ -493,7 +497,7 @@ def run_iteration(a, train_dur, inf_dur, param_file):
             inf_p99_r2 = score_model(p99_model, features, p99_labels)
             print ("scored models")
             break
-        except Exception as e:
+        except RuntimeError as e:
             print(e)
             print("Inference round failed, try again")
 
@@ -502,13 +506,9 @@ def run_iteration(a, train_dur, inf_dur, param_file):
 
 def main():
 
-    skew = 1.1 # alpha
-    train_dur = 5 # seconds
-    inf_dur = 5 # seconds
-
     skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
     train_dur = [1, 10, 60, 100]
-    inf_dur = [30]
+    inf_dur = [5]
 
     ts = datetime.datetime.now()
     paramfile = make_logfile_name("params", ts)
