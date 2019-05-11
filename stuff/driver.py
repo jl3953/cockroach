@@ -206,7 +206,8 @@ def parse_features(begin, end, logfile):
         call_with_redirect(filter_cmd, "Could not filter logfile", temp_log)
 
 
-    call_with_redirect("sort temp*", "that fucked too", logfile)
+    sort = "sort {0}".format(make_logfile_name("temp", begin, "*"))
+    call_with_redirect(sort, "sorting failed.", logfile)
 
 
     def parse(line):
@@ -281,8 +282,11 @@ def parse_features(begin, end, logfile):
     keys_to_features = collections.defaultdict(list)
     with open(logfile, 'r') as f:
         for line in f:
-            key, feature_dict = parse(line)
-            keys_to_features[key].append(feature_dict)
+            try:
+                key, feature_dict = parse(line)
+                keys_to_features[key].append(feature_dict)
+            except:
+                print("Cannot parse line:", line)
 
     return keys_to_features
 
