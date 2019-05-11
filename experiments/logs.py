@@ -19,7 +19,16 @@ def extract_exp_summary(params):
 
     result["benchmark_name"] = b["name"]
 
-    run_args = b["run_args"]
+    if "init_args" in b:
+        init_args = b["init_args"]
+    else:
+        init_args = {}
+
+    if "run_args" in b:
+        run_args = b["run_args"]
+    else:
+        run_args = {}
+
     if "n_clients" in run_args:
         result["n_clients_per_workload_node"] = run_args["n_clients"]
 
@@ -45,6 +54,11 @@ def extract_exp_summary(params):
         if d["type"] == "zipf":
             p = d["params"]
             result["key_dist_skew"] = p["skew"]
+
+    if "hot_keys" in init_args:
+        result["n_hot_keys"] = len(init_args["hot_keys"])
+    else:
+        result["n_hot_keys"] = 0
 
     return result
 
