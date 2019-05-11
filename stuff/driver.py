@@ -290,7 +290,7 @@ def parse_features(begin, end, logfile):
             except:
                 print("Cannot parse line:", line)
                 bad_lines += 1
-                if bad_lines > 10:
+                if bad_lines > 40:
                     print ("Too many bad lines")
                     raise RuntimeError("Too many bad lines")
 
@@ -419,7 +419,7 @@ def score_model(model, features, labels):
     return model.score(features, labels)
 
 
-def run_iteration(a, train_dur, inf_dur):
+def run_iteration(a, train_dur, inf_dur, param_file):
 
     """ Runs an iteration of tests.
 
@@ -444,14 +444,29 @@ def run_iteration(a, train_dur, inf_dur):
         try:
             begin, end = execute_round(a, train_dur, train_logfile + ".tmp")
             train_latencies = parse_latencies(train_logfile)
+            print("Parsed latencies")
             feature_log, train_features = parse_training_features(begin, end)
+            print("Parsed training features")
             features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
+            print ("Processed into dataframes")
             avg_model, med_model, p99_model = train_model(features, avg_labels, med_labels, p99_labels)
+            print("Trained models")
             train_avg_r2 = score_model(avg_model, features, avg_labels)
             train_med_r2 = score_model(med_model, features, med_labels)
             train_p99_r2 = score_model(p99_model, features, p99_labels)
+            print ("Scored models")
+
+            with open(param_file, "w") as f:
+                i = 1
+                for model in [avg_model, med_model, p99_model]:
+                    w.write(model + str(i) + "\n")
+                    w.write("skew: " + str(a) + ", training_time: " + str(train_dur) + ", inf_dur: " + str(inf_dur) + "\n");
+                    for name, coeff in zip(list(features), model):
+                        w.write(name + ": " + str(coeff) + "\n")
+                    i += 1
             break
-        except:
+        except Exception as e:
+            print(e)
             print("Training round failed, try again")
 
 
@@ -467,7 +482,8 @@ def run_iteration(a, train_dur, inf_dur):
             inf_med_r2 = score_model(med_model, features, med_labels)
             inf_p99_r2 = score_model(p99_model, features, p99_labels)
             break
-        except:
+        except Exception as e:
+            print(e)
             print("Inference round failed, try again")
 
     return train_avg_r2, train_med_r2, train_p99_r2, inf_avg_r2, inf_med_r2, inf_p99_r2
@@ -483,12 +499,14 @@ def main():
     train_dur = [1, 10, 60, 100]
     inf_dur = [60]
 
-    with open(make_logfile_name("experiment", datetime.datetime.now()), "w") as f:
+    ts = datetime.datetime.now()
+    paramfile = make_logfile_name("params", ts)
+    with open(make_logfile_name("experiment", ts), "w") as f:
         writer = csv.writer(f, delimiter=',')
-        for a in skews:
+        for i in inf_dur:
             for t in train_dur:
-                for i in inf_dur:
-                    ta, tm, tp, ia, im, ip = run_iteration(a, t, i)
+                for a in skews:
+                    ta, tm, tp, ia, im, ip = run_iteration(a, t, i, paramfile)
                     f.write([a, t, i, ta, tm, tp, ia, im, ip])
 
     return 0
