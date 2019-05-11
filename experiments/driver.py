@@ -11,8 +11,14 @@ LOGS_DIR = os.path.join(BASE_DIR, "logs")
 
 EXP = {
     "out_dir": os.path.join(LOGS_DIR, "kv"),
-    "cockroach_commit": "release-2.1",
-    "nodes": [
+    "cockroach_commit": "jenn-instrument",
+    "workload_nodes": [
+        {
+            "ip": "192.168.1.1",
+        },
+    ],
+    "hot_nodes": [],
+    "warm_nodes": [
         {
             "ip": "192.168.1.2",
             "region": "newyork",
@@ -47,7 +53,13 @@ def main():
     parser.add_argument('--kill', action='store_true', help='kills cluster, if specified')
     parser.add_argument('--benchmark', action='store_true', help='runs specified benchmark')
 
+    parser.add_argument("--runbenchmark", action="store_true", help="actually runs benchmark")
+
     args = parser.parse_args()
+    if args.runbenchmark:
+        lib.run_bench(EXP)
+        return 0
+
     if args.kill:
         lib.cleanup_previous_experiment(EXP)
     else:
