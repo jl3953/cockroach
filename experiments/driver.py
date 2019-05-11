@@ -34,6 +34,11 @@ EXP = {
             "region": "tokyo",
             "store": lib.STORE_DIR,
         },
+        {
+            "ip": "192.168.1.5",
+            "region": "singapore",
+            "store": lib.STORE_DIR,
+        },
     ],
     "benchmark": {
         "name": "kv",
