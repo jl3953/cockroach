@@ -69,7 +69,7 @@ def call(cmd, err_msg):
     if p.returncode:
         print(p.stderr)
         print(err_msg)
-        sys.exit(1)
+        raise RuntimeError('nothing to parse')
     else:
         return p.stdout
 
@@ -428,7 +428,7 @@ def score_model(model, features, labels):
     return model.score(features, labels)
 
 
-def run_iteration(a, train_dur, inf_dur, param_file):
+def run_iteration(a, train_dur, inf_dur, param_file, inf_features, inf_avg_labels, inf_med_labels, inf_p99_labels):
 
     """ Runs an iteration of tests.
 
@@ -465,7 +465,7 @@ def run_iteration(a, train_dur, inf_dur, param_file):
             train_p99_r2 = score_model(p99_model, features, p99_labels)
             print ("Scored models")
 
-            with open(param_file, "w") as w:
+            with open(param_file, "a+") as w:
                 i = 1
                 for model, r2 in zip([avg_model, med_model, p99_model], [train_avg_r2, train_med_r2, train_p99_r2]):
                     w.write("model: " + str(i) + "\n")
@@ -476,7 +476,7 @@ def run_iteration(a, train_dur, inf_dur, param_file):
                     w.write("intercept: " + str(model.intercept_) + "\n")
                     w.write("\n")
             break
-        except RuntimeError as e:
+        except Exception as e:
             print(e)
             print("Training round failed, try again")
 
@@ -485,19 +485,19 @@ def run_iteration(a, train_dur, inf_dur, param_file):
     # run inference round
     while True:
         try:
-            begin, end = execute_round(a, inf_dur, inf_logfile + ".tmp")
-            inf_latencies = parse_latencies(inf_logfile)
-            print ("parsed latencies")
-            inf_feature_log, inf_features = parse_inference_features(begin, end)
-            print ("parsed inference features")
-            _, features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
-            print("process pandas df")
-            inf_avg_r2 = score_model(avg_model, features, avg_labels)
-            inf_med_r2 = score_model(med_model, features, med_labels)
-            inf_p99_r2 = score_model(p99_model, features, p99_labels)
+            # begin, end = execute_round(a, inf_dur, inf_logfile + ".tmp")
+            # inf_latencies = parse_latencies(inf_logfile)
+            # print ("parsed latencies")
+            # inf_feature_log, inf_features = parse_inference_features(begin, end)
+            # print ("parsed inference features")
+            # _, features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
+            # print("process pandas df")
+            inf_avg_r2 = score_model(avg_model, inf_features, inf_avg_labels)
+            inf_med_r2 = score_model(med_model, inf_features, inf_med_labels)
+            inf_p99_r2 = score_model(p99_model, inf_features, inf_p99_labels)
             print ("scored models")
             break
-        except RuntimeError as e:
+        except Exception as e:
             print(e)
             print("Inference round failed, try again")
 
@@ -506,20 +506,36 @@ def run_iteration(a, train_dur, inf_dur, param_file):
 
 def main():
 
-    skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
-    train_dur = [1, 10, 60, 100]
-    inf_dur = [5]
+    # skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+    # train_dur = [1, 5, 10, 30, 60]
+    # inf_dur = [5]
+
+    skews = [1.1, 1.2, 1.3]
+    train_dur = [1, 2, 3]
+    inf_dur = [1, 1]
+
 
     ts = datetime.datetime.now()
     paramfile = make_logfile_name("params", ts)
     with open(make_logfile_name("experiment", ts), "w") as f:
         writer = csv.writer(f, delimiter=',')
-        for i in inf_dur:
-            for t in train_dur:
-                for a in skews:
-                    ta, tm, tp, ia, im, ip = run_iteration(a, t, i, paramfile)
-                    writer.writerow([a, t, i, ta, tm, tp, ia, im, ip])
-                    f.flush()
+        for a in skews:
+            for i in inf_dur:
+                while True:
+                    try:
+                        inf_logfile = make_logfile_name("inf", ts)
+                        begin_inf, end_inf = execute_round(a, i, inf_logfile + ".tmp")
+                        inf_latencies = parse_latencies(inf_logfile)
+                        _, inf_features = parse_inference_features(begin_inf, end_inf)
+                        _, features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
+                        for t in train_dur:
+                            ta, tm, tp, ia, im, ip = run_iteration(a, t, i, paramfile, features, avg_labels, med_labels, p99_labels)
+                            writer.writerow([a, t, i, ta, tm, tp, ia, im, ip])
+                            f.flush()
+                        break
+                    except Exception as e:
+                        print(e)
+                        print("maybe inference round failed, try again")
 
     return 0
 
