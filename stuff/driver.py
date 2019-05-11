@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import collections
+import csv
 import datetime
 import enum
 import os
@@ -281,12 +282,17 @@ def parse_features(begin, end, logfile):
 
     keys_to_features = collections.defaultdict(list)
     with open(logfile, 'r') as f:
+        bad_lines = 0
         for line in f:
             try:
                 key, feature_dict = parse(line)
                 keys_to_features[key].append(feature_dict)
             except:
                 print("Cannot parse line:", line)
+                bad_lines += 1
+                if bad_lines > 10:
+                    print ("Too many bad lines")
+                    raise RuntimeError("Too many bad lines")
 
     return keys_to_features
 
@@ -431,25 +437,38 @@ def run_iteration(a, train_dur, inf_dur):
     train_logfile = make_logfile_name("train", ts, a, train_dur, inf_dur)
     inf_logfile = make_logfile_name("inf", ts, a, train_dur, inf_dur)
 
+    avg_model = med_model = p99_model = train_avg_r2 = train_med_r2 = train_p99_r2 = inf_avg_r2 = inf_med_r2 = inf_p99_r2 = None
+
     # run training round
-    begin, end = execute_round(a, train_dur, train_logfile + ".tmp")
-    train_latencies = parse_latencies(train_logfile)
-    feature_log, train_features = parse_training_features(begin, end)
-    features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
-    avg_model, med_model, p99_model = train_model(features, avg_labels, med_labels, p99_labels)
-    train_avg_r2 = score_model(avg_model, features, avg_labels)
-    train_med_r2 = score_model(med_model, features, med_labels)
-    train_p99_r2 = score_model(p99_model, features, p99_labels)
+    while True:
+        try:
+            begin, end = execute_round(a, train_dur, train_logfile + ".tmp")
+            train_latencies = parse_latencies(train_logfile)
+            feature_log, train_features = parse_training_features(begin, end)
+            features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
+            avg_model, med_model, p99_model = train_model(features, avg_labels, med_labels, p99_labels)
+            train_avg_r2 = score_model(avg_model, features, avg_labels)
+            train_med_r2 = score_model(med_model, features, med_labels)
+            train_p99_r2 = score_model(p99_model, features, p99_labels)
+            break
+        except:
+            print("Training round failed, try again")
+
 
 
     # run inference round
-    begin, end = execute_round(a, inf_dur, inf_logfile + ".tmp")
-    inf_latencies = parse_latencies(inf_logfile)
-    inf_feature_log, inf_features = parse_inference_features(begin, end)
-    features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
-    inf_avg_r2 = score_model(avg_model, features, avg_labels)
-    inf_med_r2 = score_model(med_model, features, med_labels)
-    inf_p99_r2 = score_model(p99_model, features, p99_labels)
+    while True:
+        try:
+            begin, end = execute_round(a, inf_dur, inf_logfile + ".tmp")
+            inf_latencies = parse_latencies(inf_logfile)
+            inf_feature_log, inf_features = parse_inference_features(begin, end)
+            features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
+            inf_avg_r2 = score_model(avg_model, features, avg_labels)
+            inf_med_r2 = score_model(med_model, features, med_labels)
+            inf_p99_r2 = score_model(p99_model, features, p99_labels)
+            break
+        except:
+            print("Inference round failed, try again")
 
     return train_avg_r2, train_med_r2, train_p99_r2, inf_avg_r2, inf_med_r2, inf_p99_r2
 
@@ -460,7 +479,17 @@ def main():
     train_dur = 5 # seconds
     inf_dur = 5 # seconds
 
-    print(run_iteration(skew, train_dur, inf_dur))
+    skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+    train_dur = [1, 10, 60, 100]
+    inf_dur = [60]
+
+    with open(make_logfile_name("experiment", datetime.datetime.now()), "w") as f:
+        writer = csv.writer(f, delimiter=',')
+        for a in skews:
+            for t in train_dur:
+                for i in inf_dur:
+                    ta, tm, tp, ia, im, ip = run_iteration(a, t, i)
+                    f.write([a, t, i, ta, tm, tp, ia, im, ip])
 
     return 0
 
