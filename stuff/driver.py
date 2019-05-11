@@ -373,7 +373,7 @@ def process(keys_to_features, keys_to_latencies):
         for stat in calculate_stats(value, freq, latencies):
             stat["key"] = key
             final.append(stat)
-        df = pandas.DataFrame.from_records(final).dropna()
+    df = pandas.DataFrame.from_records(final).dropna()
     features = df.drop(columns=["avg(latency)", "med(latency)", "p99(latency)"])
 
     X = features.values
