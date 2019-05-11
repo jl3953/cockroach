@@ -388,7 +388,7 @@ def process(keys_to_features, keys_to_latencies):
     medy = df["med(latency)"].values
     p99y = df["p99(latency)"].values
 
-    return X, avgy, medy, p99y
+    return features, X, avgy, medy, p99y
 
 
 def train_model(X, avgy, medy, p99y):
@@ -447,7 +447,7 @@ def run_iteration(a, train_dur, inf_dur, param_file):
             print("Parsed latencies")
             feature_log, train_features = parse_training_features(begin, end)
             print("Parsed training features")
-            features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
+            features_df, features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
             print ("Processed into dataframes")
             avg_model, med_model, p99_model = train_model(features, avg_labels, med_labels, p99_labels)
             print("Trained models")
@@ -456,16 +456,16 @@ def run_iteration(a, train_dur, inf_dur, param_file):
             train_p99_r2 = score_model(p99_model, features, p99_labels)
             print ("Scored models")
 
-            with open(param_file, "w") as f:
+            with open(param_file, "w") as w:
                 i = 1
                 for model in [avg_model, med_model, p99_model]:
-                    w.write(model + str(i) + "\n")
+                    w.write("model: " + str(i) + "\n")
                     w.write("skew: " + str(a) + ", training_time: " + str(train_dur) + ", inf_dur: " + str(inf_dur) + "\n");
-                    for name, coeff in zip(list(features), model):
+                    for name, coeff in zip(list(features_df), model.coef_):
                         w.write(name + ": " + str(coeff) + "\n")
                     i += 1
             break
-        except Exception as e:
+        except RuntimeError as e:
             print(e)
             print("Training round failed, try again")
 
