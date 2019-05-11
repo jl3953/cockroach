@@ -2,7 +2,10 @@
 
 import collections
 import datetime
+import enum
 import os
+import pandas
+import sklearn.linear_model
 import subprocess
 import sys
 
@@ -13,7 +16,16 @@ STORE_DIR = "/data"
 LOGS_DIR = os.path.join(STORE_DIR, 'logs')
 GREP_PHRASE = "JENNDEBUG"
 
-NODES = ["node-1", "node-2", "node-3", "node-4"]
+NODES = ["node-1", "node-2", "node-3"]
+
+
+class Action(enum.Enum):
+    SPANLATCH_WAIT = 0
+    ACCESS_SUCCESS = 1
+    UNCOMMITTED_INTENT = 2
+    NEWER_COMMITTED_VALUE = 3
+    TXNQUEUE_WAIT = 4
+    TS_BUMPED_READ = 5
 
 
 def make_logfile_name(name, timestamp, *argv):
@@ -71,8 +83,8 @@ def execute_round(a, dur, logfile):
 
     Returns:
         begin_ts, end_ts
-
     """
+
     begin_ts = datetime.datetime.now()
     cmd = " ".join(EXE, "workload run kv --zipfian --skew {0} --duration {1}s &> {2}".format(
         a, dur, logfile))
@@ -136,13 +148,14 @@ def parse_latencies(logfile):
     return keys_to_latencies
 
 
-def parse_training_features(begin, end):
+def parse_features(begin, end, logfile):
 
     """ Parses training features per node.
 
     Args:
         begin (datetime.datetime object): begin timestamp
         end (datetime.datetime object): end timestamp
+        logfile (str): logfile to write features to
 
     Returns:
         keys to features (collection.dict(list))
@@ -169,8 +182,7 @@ def parse_training_features(begin, end):
         scp = "scp {0}:{1} .".format(ip, temp_log)
         call(scp, "scp fucked")
 
-    feature_log = make_logfile_name("features", begin)
-    call("sort temp* &> {0}".format(feature_log), "that fucked too")
+    call("sort temp* &> {0}".format(logfile), "that fucked too")
 
 
     def parse(line):
@@ -243,13 +255,133 @@ def parse_training_features(begin, end):
                 }
 
     keys_to_features = collections.defaultdict(list)
-    with open(feature_log, 'r') as f:
+    with open(logfile, 'r') as f:
         for line in f:
             key, feature_dict = parse(line)
             keys_to_features[key].append(feature_dict)
 
     return keys_to_features
 
+
+def parse_training_features(begin, end):
+
+    """ Parses training features
+
+    Args:
+        begin (datetime.datetime obj): time at which training began
+        end (datetime.datetime obj): time at which training run ended.
+
+    Returns:
+        logfile to which features are written (str), keys_to_features map.
+    """
+
+    feature_log = make_logfile_name("trainfeatures", begin)
+    return feature_log, parse_features(begin, end, feature_log)
+
+
+def parse_inference_features(begin, end):
+
+    """ Parses inference features.
+
+    Args:
+        begin (datetime.datetime obj): time at which inference run began.
+        end (datetime.datetime obj): time at which inference run ended.
+
+    Returns:
+        logfile to which features are written (Str), keys_to_features map.
+    """
+
+    feature_log = make_logfile_name("inferencefeatures", begin)
+    return feature_log, parse_features(begin, end, feature_log)
+
+
+def calculate_stats(extracts, frequency, latencies):
+
+    results = []
+    extracts += latencies
+    # print(extracts)
+    df = pandas.DataFrame.from_records(extracts)
+
+    for name, group in df.groupby(pandas.Grouper(key="timestamp", freq=frequency)):
+        successful_accesses = len(group[group["typ"] == Action.ACCESS_SUCCESS])
+        uncommitted_intents = len(group[group["typ"] == Action.UNCOMMITTED_INTENT])
+        newer_committed_values = len(group[group["typ"] == Action.NEWER_COMMITTED_VALUE])
+        spanlatch_waits = group[group["typ"] == Action.SPANLATCH_WAIT]
+        txnqueue_waits = group[group["typ"] == Action.TXNQUEUE_WAIT]
+        bumped_for_read = len(group[group["typ"] == Action.TS_BUMPED_READ])
+        #latencies = group[group["latency"].notnull()]
+
+        failed_accesses = uncommitted_intents + newer_committed_values
+        total_accesses = successful_accesses + failed_accesses
+
+        result = {
+                "total_accesses": total_accesses,
+                "bumped_read": bumped_for_read,
+                "failed_accesses": None if total_accesses == 0 else float(failed_accesses)/total_accesses,
+                "uncommitted_intents": None if total_accesses == 0 else float(uncommitted_intents)/total_accesses,
+                "newer_committed_values": None if total_accesses == 0 else float(newer_committed_values)/total_accesses,
+                "avg(spanlatch_wait)": spanlatch_waits["val"].mean(),
+                "med(spanlatch_wait)": spanlatch_waits["val"].median(),
+                "p99(spanlatch_wait)": spanlatch_waits["val"].quantile(0.99),
+                "avg(txnqueue_wait)": txnqueue_waits["val"].mean(),
+                "med(txnqueue_wait)": txnqueue_waits["val"].median(),
+                "p99(txnqueue_wait)": txnqueue_waits["val"].quantile(0.99),
+                "avg(latency)": group["latency"].mean(),
+                "med(latency)": group["latency"].median(),
+                "p99(latency)": group["latency"].quantile(0.99)
+                }
+
+        results.append(result)
+
+
+def process(keys_to_features, keys_to_latencies):
+    freq = "10s"
+    final = []
+    for key, value in keys_to_features.items():
+        if key not in keys_to_latencies:
+            continue
+
+        latencies = keys_to_latencies[key]
+        for stat in calculate_stats(value, freq, latencies):
+            stat["key"] = key
+            final.append(stat)
+        df = pandas.DataFrame.from_records(final).dropna()
+    features = df.drop(columns=["avg(latency)", "med(latency)", "p99(latency)"])
+
+    X = features.values
+    avgy = df["avg(latency)"].values
+    medy = df["med(latency)"].values
+    p99y = df["p99(latency)"].values
+
+    return X, avgy, medy, p99y
+
+
+def train_model(X, avgy, medy, p99y):
+
+    """ Creates and trains a model.
+
+    Args:
+        features (keys_to_features collections.defaultdict(list)): features
+        Y (keys_to_latencies collections.defaultdict(list)): results.
+
+    Returns:
+        avg_model, med_model, p99_model
+    """
+
+    # avg
+    avg_model = sklearn.linear_model.LinearRegression().fit(X, avgy)
+
+    # med
+    med_model = sklearn.linear_model.LinearRegression().fit(X, medy)
+
+    # p99
+    p99_model = sklearn.linear_model.LinearRegression().fit(X, p99y)
+
+    return avg_model, med_model, p99_model
+
+
+def score_model(model, features, labels):
+    return model.score(features, labels)
 
 
 def run_iteration(a, train_dur, inf_dur):
@@ -273,14 +405,36 @@ def run_iteration(a, train_dur, inf_dur):
     # run training round
     begin, end = execute_round(a, train_dur, train_logfile)
     train_latencies = parse_latencies(train_logfile)
-    train_features = parse_training_features(begin, end)
-    model = train_model(train_features, train_latencies)
-    train_r2 = score_mode(model, train_features, train_latencies)
+    feature_log, train_features = parse_training_features(begin, end)
+    features, avg_labels, med_labels, p99_labels = process(train_features, train_latencies)
+    avg_model, med_model, p99_model = train_model(features, avg_labels, med_labels, p99_labels)
+    train_avg_r2 = score_model(avg_model, train_features, train_latencies)
+    train_med_r2 = score_model(med_model, train_features, train_latencies)
+    train_p99_r2 = score_model(p99_model, train_features, train_latencies)
+
 
     # run inference round
     begin, end = execute_round(inf_dur, inf_logfile)
-    inf_latencies = parse_inference(inf_logfile)
-    inf_features = parse_inference(begin, end)
-    inf_r2 = score_model(model, inf_features, inf_latencies)
+    inf_latencies = parse_latencies(inf_logfile)
+    inf_features = parse_inference_features(begin, end)
+    features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
+    inf_avg_r2 = score_model(avg_model, features, avg_labels)
+    inf_med_r2 = score_model(med_model, features, med_labels)
+    inf_p99_r2 = score_model(p99_model, features, p99_labels)
 
-    return train_r2, inf_r2
+    return train_avg_r2, train_med_r2, train_p99_r2, inf_avg_r2, inf_med_r2, inf_p99_r2
+
+
+def main():
+
+    skew = 1.1 # alpha
+    train_dur = 10 # seconds
+    inf_dur = 60 # seconds
+
+    print(run_iteration(skew, train_dur, inf_dur))
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
