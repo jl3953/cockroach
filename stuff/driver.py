@@ -201,7 +201,7 @@ def parse_features(begin, end, logfile):
             begin.strftime("%H:%M:%S"), end.strftime("%H:%M:%S"))
 
         # filter for grep phrase and redirect all output to composed logfile
-        filter_cmd = "sudo ssh -t {2} 'cat /data/logs/cockroach.log' | {0} | grep {1}".format(
+        filter_cmd = "sudo ssh -t {2} 'cat /data/logs/cockroach.log' | {0} | grep {1} | grep -v System | grep -v Local".format(
             awk, GREP_PHRASE, ip)
         call_with_redirect(filter_cmd, "Could not filter logfile", temp_log)
 
@@ -443,7 +443,7 @@ def run_iteration(a, train_dur, inf_dur):
 
 
     # run inference round
-    begin, end = execute_round(a, inf_dur, inf_logfile)
+    begin, end = execute_round(a, inf_dur, inf_logfile + ".tmp")
     inf_latencies = parse_latencies(inf_logfile)
     inf_feature_log, inf_features = parse_inference_features(begin, end)
     features, avg_labels, med_labels, p99_labels = process(inf_latencies, inf_features)
