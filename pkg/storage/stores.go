@@ -176,32 +176,46 @@ func (ls *Stores) Send(
 	// the request was missing its range or store IDs. It was too easy to rely on
 	// this in production code paths, though, so it's now a fatal error if either
 	// the range or store ID is missing.
+	if ba.IsHotRequest {
+		rs, err := keys.Range(ba)
+		if err != nil {
+			return nil, roachpb.NewError(err)
+		}
+		rangeID, repDesc, err := ls.LookupReplica(rs.Key, rs.EndKey)
+		if err != nil {
+			return nil, roachpb.NewError(err)
+		}
+		ba.RangeID = rangeID
+		ba.Replica = repDesc
+		log.Infof(ctx, "Looked up rangeID %s and storeID %s for hot request",
+			rangeID, repDesc)
+	}
 	if ba.RangeID == 0 {
 		log.Fatal(ctx, "batch request missing range ID")
 	} else if ba.Replica.StoreID == 0 {
 		log.Fatal(ctx, "batch request missing store ID")
 	}
 
-	if ba.Header.IsHotRequest {
-		fmt.Println("Batch:", ba)
-		fmt.Println("RangeID:", ba.RangeID)
-		fmt.Println("StoreID:", ba.Replica.StoreID)
+	// if ba.Header.IsHotRequest {
+	// 	fmt.Println("Batch:", ba)
+	// 	fmt.Println("RangeID:", ba.RangeID)
+	// 	fmt.Println("StoreID:", ba.Replica.StoreID)
 
-		fmt.Println("Txn: ", ba.Header.Txn)
+	// 	fmt.Println("Txn: ", ba.Header.Txn)
 
-		defer fmt.Println("Finished sending hot request to self!")
+	// 	defer fmt.Println("Finished sending hot request to self!")
 
-		ba.Header.IsHotRequest = false
-		f := ls.db.GetFactory()
-		if txn := ba.Header.Txn; txn != nil {
-			meta := roachpb.MakeTxnCoordMeta(*ba.Header.Txn)
-			tcs := f.TransactionalSender(client.LeafTxn, meta)
-			return tcs.Send(ctx, ba)
-		} else {
-			nts := f.NonTransactionalSender()
-			return nts.Send(ctx, ba)
-		}
-	}
+	// 	ba.Header.IsHotRequest = false
+	// 	f := ls.db.GetFactory()
+	// 	if txn := ba.Header.Txn; txn != nil {
+	// 		meta := roachpb.MakeTxnCoordMeta(*ba.Header.Txn)
+	// 		tcs := f.TransactionalSender(client.RootTxn, meta)
+	// 		return tcs.Send(ctx, ba)
+	// 	} else {
+	// 		nts := f.NonTransactionalSender()
+	// 		return nts.Send(ctx, ba)
+	// 	}
+	// }
 
 	store, err := ls.GetStore(ba.Replica.StoreID)
 	if err != nil {
@@ -213,6 +227,67 @@ func (ls *Stores) Send(
 		panic(roachpb.ErrorUnexpectedlySet(store, br))
 	}
 	return br, pErr
+}
+
+// LookupReplica looks up replica by key [range]. Lookups are done
+// by consulting each store in turn via Store.LookupReplica(key).
+// Returns RangeID and replica on success; RangeKeyMismatch error
+// if not found.
+// If end is nil, a replica containing start is looked up.
+// This is only for testing usage; performance doesn't matter.
+func (ls *Stores) LookupReplica(
+	start, end roachpb.RKey,
+) (roachpb.RangeID, roachpb.ReplicaDescriptor, error) {
+	var rangeID roachpb.RangeID
+	var repDesc roachpb.ReplicaDescriptor
+	var repDescFound bool
+	var err error
+	ls.storeMap.Range(func(k int64, v unsafe.Pointer) bool {
+		store := (*Store)(v)
+		replica := store.LookupReplica(start)
+		if replica == nil {
+			return true
+		}
+
+		// Verify that the descriptor contains the entire range.
+		if desc := replica.Desc(); !desc.ContainsKeyRange(start, end) {
+			ctx := ls.AnnotateCtx(context.TODO())
+			log.Warningf(ctx, "range not contained in one range: [%s,%s), but have [%s,%s)",
+				start, end, desc.StartKey, desc.EndKey)
+			err = roachpb.NewRangeKeyMismatchError(start.AsRawKey(), end.AsRawKey(), desc)
+			return false
+		}
+
+		rangeID = replica.RangeID
+
+		repDesc, err = replica.GetReplicaDescriptor()
+		if err != nil {
+			if _, ok := err.(*roachpb.RangeNotFoundError); ok {
+				// We are not holding a lock across this block; the replica could have
+				// been removed from the range (via down-replication) between the
+				// LookupReplica and the GetReplicaDescriptor calls. In this case just
+				// ignore this replica.
+				err = nil
+			}
+			return err == nil
+		}
+
+		if repDescFound {
+			// We already found the range; this should never happen outside of tests.
+			err = errors.Errorf("range %+v exists on additional store: %+v", replica, store)
+			return false
+		}
+
+		repDescFound = true
+		return true // loop to see if another store also contains the replica
+	})
+	if err != nil {
+		return 0, roachpb.ReplicaDescriptor{}, err
+	}
+	if !repDescFound {
+		return 0, roachpb.ReplicaDescriptor{}, roachpb.NewRangeNotFoundError(roachpb.RangeID(0), roachpb.StoreID(0))
+	}
+	return rangeID, repDesc, nil
 }
 
 // RangeFeed registers a rangefeed over the specified span. It sends updates to
