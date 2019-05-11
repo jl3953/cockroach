@@ -458,7 +458,7 @@ def main():
 
     skew = 1.1 # alpha
     train_dur = 5 # seconds
-    inf_dur = 60 # seconds
+    inf_dur = 5 # seconds
 
     print(run_iteration(skew, train_dur, inf_dur))
 
