@@ -80,7 +80,6 @@ def call_with_redirect(cmd, err_msg, logfile):
         if p.returncode:
             print(p.stderr)
             print(err_msg)
-            sys.exit(1)
         else:
             return p.stdout
 
@@ -297,7 +296,7 @@ def parse_features(begin, end, logfile):
                 bad_lines += 1
                 if bad_lines > 40:
                     print ("Too many bad lines")
-                    raise RuntimeError("Too many bad lines")
+                    #raise RuntimeError("Too many bad lines")
 
     return keys_to_features
 
@@ -506,7 +505,7 @@ def run_iteration(a, train_dur, inf_dur, param_file, inf_features, inf_avg_label
 
 def main():
 
-    skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+    skews = [1.3, 1.5, 1.9]
     train_dur = [1, 5, 10, 30, 60]
     inf_dur = [5, 10, 30]
 
