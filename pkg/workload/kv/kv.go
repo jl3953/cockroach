@@ -367,20 +367,40 @@ func (o *kvOp) run(ctx context.Context) error {
 			ReadOnly: false,
 		}, func(tx *sql.Tx) error {
 			for i := 0; i < STATEMENTS_PER_TXN; i++ {
-				args := make([]interface{}, o.config.batchSize)
+				args := make([]interface{}, 0)
+				hotArgs := make([]interface{}, 0)
 				stmt := "UPSERT INTO kv (k, v) VALUES "
+				hotStmt := stmt
+				hotBatch := 0
+				b := 0
 				for batch := 0; batch < o.config.batchSize; batch++ {
-					if batch > 0 {
-						stmt += ", "
+					key := o.g.writeKey()
+					if key >= 0 && key <= 5 { // probably a hotkey
+						if hotBatch > 0 {
+							hotStmt += ", "
+						}
+						hotStmt += "(%d, 'JennTheLamHotKey')"
+						hotArgs = append(hotArgs, key)
+						hotBatch += 1
+					} else {
+						if b > 0 {
+							stmt += ", "
+						}
+						stmt += "(%d, 'JennTheLam')"
+						args = append(args, key)
+						b += 1
 					}
-					stmt += "(%d, 'JennTheLam')"
-					args[batch] = o.g.writeKey()
 				}
 				stmt = fmt.Sprintf(stmt, args...)
 				//log.Warningf(ctx, "jenndebug wo txn %s\n", stmt)
 				//fmt.Println(stmt)
 				if _, err := tx.Exec(stmt); err != nil {
 					errors.Wrap(err, "aw shucks query:\n")
+					return err
+				}
+				hotStmt = fmt.Sprintf(hotStmt, hotArgs...)
+				if _, err := tx.Exec(stmt); err != nil {
+					errors.Wrap(err, "hotkeys failed jennjenn\n")
 					return err
 				}
 			}
