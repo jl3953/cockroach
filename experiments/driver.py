@@ -137,9 +137,6 @@ def main():
 
     args = parser.parse_args()
 
-    lib.cleanup_previous_experiment(EXP)
-    lib.init_experiment(EXP)
-
     if args.benchmark:
         exps = lib.vary_zipf_skew(EXP, SKEWS)
         for e in exps:
