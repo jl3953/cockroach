@@ -1,0 +1,810 @@
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 175.907848912
+avg(txnqueue_wait): -529.10239734
+med(spanlatch_wait): 0.260960230455
+med(txnqueue_wait): 775.684299263
+p99(spanlatch_wait): -557.86279306
+intercept: 726.368421978
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 2.93607637136
+avg(txnqueue_wait): -7.59828819808
+med(spanlatch_wait): -0.000493491703668
+med(txnqueue_wait): 11.3638523329
+p99(spanlatch_wait): -8.78757257066
+intercept: 17.3507643357
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 940.327458371
+avg(txnqueue_wait): -2413.6775298
+med(spanlatch_wait): -5.11820627222
+med(txnqueue_wait): 3846.7815975
+p99(spanlatch_wait): -2874.64579955
+intercept: 3444.87325649
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 13.370823
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 13.370823
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 13.370823
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1085.7900072
+avg(txnqueue_wait): 251.602370323
+med(spanlatch_wait): -135.680612729
+med(txnqueue_wait): -169.610785155
+p99(spanlatch_wait): -243.855095967
+intercept: 962.440059071
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -14.2403998381
+avg(txnqueue_wait): 3.36968389873
+med(spanlatch_wait): -1.78026649126
+med(txnqueue_wait): -2.12975527617
+p99(spanlatch_wait): -3.2593823817
+intercept: 18.3515115057
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -6973.14599938
+avg(txnqueue_wait): 1613.77713154
+med(spanlatch_wait): -871.278147323
+med(txnqueue_wait): -1095.12549141
+p99(spanlatch_wait): -1555.77514642
+intercept: 6154.37069301
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -615.397967905
+avg(txnqueue_wait): 17.5645876804
+med(spanlatch_wait): -47.3036159465
+med(txnqueue_wait): -9.91049218382
+p99(spanlatch_wait): 181.835233507
+intercept: -41.4197822773
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -4.54094357926
+avg(txnqueue_wait): -0.463339323596
+med(spanlatch_wait): -0.370436242229
+med(txnqueue_wait): 0.411575769837
+p99(spanlatch_wait): 1.88414120078
+intercept: 4.91587518215
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -4184.21058833
+avg(txnqueue_wait): 153.601222202
+med(spanlatch_wait): -320.50629341
+med(txnqueue_wait): -103.32570179
+p99(spanlatch_wait): 1228.55295411
+intercept: -288.365319735
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -7.43627067791
+avg(txnqueue_wait): -1.83105827926
+med(spanlatch_wait): -0.200034970827
+med(txnqueue_wait): -1.83105827926
+p99(spanlatch_wait): -8.73215584887
+intercept: 49.4909683991
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 18.4818342456
+avg(txnqueue_wait): 1.84670909171
+med(spanlatch_wait): 0.847764264808
+med(txnqueue_wait): 1.84670909171
+p99(spanlatch_wait): 1.60860938253
+intercept: -8.63377782115
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -23.799938654
+avg(txnqueue_wait): -2.33274942622
+med(spanlatch_wait): -0.891305028149
+med(txnqueue_wait): -2.33274942622
+p99(spanlatch_wait): -15.0016515429
+intercept: 93.2159055034
+
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -180.993943091
+avg(txnqueue_wait): 26.9202323493
+med(spanlatch_wait): -13.3591465925
+med(txnqueue_wait): 83.2523866879
+p99(spanlatch_wait): 188.809609619
+intercept: -489.774523412
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -2.72460870046
+avg(txnqueue_wait): 0.0740900400471
+med(spanlatch_wait): -0.191698454538
+med(txnqueue_wait): 1.1230439043
+p99(spanlatch_wait): 2.36511820699
+intercept: 0.447432850348
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -960.346983849
+avg(txnqueue_wait): 144.565740743
+med(spanlatch_wait): -70.9978426742
+med(txnqueue_wait): 418.323688254
+p99(spanlatch_wait): 1014.94915105
+intercept: -2599.56049171
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -352.678920731
+avg(txnqueue_wait): 575.055270727
+med(spanlatch_wait): -78.4934591881
+med(txnqueue_wait): -215.312485649
+p99(spanlatch_wait): 565.962676998
+intercept: -1526.83177036
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -3.14002885002
+avg(txnqueue_wait): 5.5259520219
+med(spanlatch_wait): -0.808667105551
+med(txnqueue_wait): -1.68234192329
+p99(spanlatch_wait): 7.36200447467
+intercept: -13.4995332474
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -2213.8872644
+avg(txnqueue_wait): 3609.87869269
+med(spanlatch_wait): -494.461884222
+med(txnqueue_wait): -1351.9838816
+p99(spanlatch_wait): 3593.86244192
+intercept: -9686.08082683
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -198.798995211
+avg(txnqueue_wait): 179.265619934
+med(spanlatch_wait): -23.9061753099
+med(txnqueue_wait): 249.130521546
+p99(spanlatch_wait): 155.174113433
+intercept: -867.643583306
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.91568256312
+avg(txnqueue_wait): 4.55038733613
+med(spanlatch_wait): -0.0958750673541
+med(txnqueue_wait): 1.59249210105
+p99(spanlatch_wait): 0.863142290631
+intercept: -4.39425306596
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1229.62794661
+avg(txnqueue_wait): 845.941515935
+med(spanlatch_wait): -154.252657977
+med(txnqueue_wait): 1540.59563397
+p99(spanlatch_wait): 893.788290808
+intercept: -4833.32473494
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 95.7461013514
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 7.215636
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 541.42212824
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 6.53456160563
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 5.8133645
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+p99(spanlatch_wait): 0.0
+intercept: 30.63445269
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -403.658048732
+avg(txnqueue_wait): 278.85113127
+med(spanlatch_wait): -25.4301634849
+med(txnqueue_wait): -244.44755001
+p99(spanlatch_wait): 359.789268145
+intercept: -598.697202141
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -10.5894923989
+avg(txnqueue_wait): 6.1003827506
+med(spanlatch_wait): -0.635733550877
+med(txnqueue_wait): -5.69988528576
+p99(spanlatch_wait): 5.75823664173
+intercept: -1.47649183383
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -3252.48126453
+avg(txnqueue_wait): 2244.09329558
+med(spanlatch_wait): -204.812940854
+med(txnqueue_wait): -1966.54805381
+p99(spanlatch_wait): 2887.82232713
+intercept: -4829.94701625
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 963.782023295
+avg(txnqueue_wait): 160.658809313
+med(spanlatch_wait): -67.9531461968
+med(txnqueue_wait): -466.18209956
+p99(spanlatch_wait): -317.898064701
+intercept: 940.500343146
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 31.2047513529
+avg(txnqueue_wait): 6.88330322893
+med(spanlatch_wait): -2.17200534731
+med(txnqueue_wait): -14.7405413773
+p99(spanlatch_wait): -8.64774452724
+intercept: 28.2346356664
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 8144.2458928
+avg(txnqueue_wait): 1403.00281446
+med(spanlatch_wait): -575.680999578
+med(txnqueue_wait): -4009.86006504
+p99(spanlatch_wait): -2547.62745722
+intercept: 7635.81207753
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 463.282145254
+avg(txnqueue_wait): -106.433211159
+med(spanlatch_wait): 1.01773889954
+med(txnqueue_wait): 60.3350684931
+p99(spanlatch_wait): 250.286785292
+intercept: -536.946092975
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 11.1092150464
+avg(txnqueue_wait): -2.3518817715
+med(spanlatch_wait): 0.0703292655107
+med(txnqueue_wait): 1.72654793285
+p99(spanlatch_wait): 2.29885583863
+intercept: -0.340338210089
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3407.78022879
+avg(txnqueue_wait): -783.489929698
+med(spanlatch_wait): 6.90651905583
+med(txnqueue_wait): 442.401708615
+p99(spanlatch_wait): 1888.96821046
+intercept: -4067.69742911
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 9.8727140784
+avg(txnqueue_wait): 19.357776632
+med(spanlatch_wait): -0.585916015988
+med(txnqueue_wait): 2.58584689545
+p99(spanlatch_wait): -4.65128059609
+intercept: -13.0077002
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 5.6643953272
+avg(txnqueue_wait): 5.25905083596
+med(spanlatch_wait): -0.0579289365752
+med(txnqueue_wait): -3.00429787729
+p99(spanlatch_wait): 0.988187248691
+intercept: -0.84164901623
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 28.516023645
+avg(txnqueue_wait): 111.130669091
+med(spanlatch_wait): -4.73940439697
+med(txnqueue_wait): 50.9540928768
+p99(spanlatch_wait): -83.4910496443
+intercept: -19.132219587
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 106.860892174
+avg(txnqueue_wait): 109.662440745
+med(spanlatch_wait): 5.43025991857
+med(txnqueue_wait): -64.4024711824
+p99(spanlatch_wait): 165.877200785
+intercept: -382.387159518
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0984969682594
+avg(txnqueue_wait): 0.346679685073
+med(spanlatch_wait): -0.0439035174496
+med(txnqueue_wait): 1.01517160309
+p99(spanlatch_wait): 3.13069622675
+intercept: -1.42969743061
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 827.405591929
+avg(txnqueue_wait): 865.850076037
+med(spanlatch_wait): 43.3409941591
+med(txnqueue_wait): -509.348773419
+p99(spanlatch_wait): 1214.29900602
+intercept: -2870.71918103
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -13.1253240085
+avg(txnqueue_wait): 75.6404903229
+med(spanlatch_wait): -11.1652360929
+med(txnqueue_wait): -79.9232102942
+p99(spanlatch_wait): -243.618465557
+intercept: 580.588276421
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.184738548206
+avg(txnqueue_wait): 0.755084153139
+med(spanlatch_wait): -0.139662004284
+med(txnqueue_wait): -1.04486486866
+p99(spanlatch_wait): -3.42301422683
+intercept: 14.4467811972
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -106.032824463
+avg(txnqueue_wait): 600.270567363
+med(spanlatch_wait): -89.3809584149
+med(txnqueue_wait): -648.218492799
+p99(spanlatch_wait): -1950.79816414
+intercept: 4647.01667327
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -22.3219419687
+avg(txnqueue_wait): -312.750512873
+med(spanlatch_wait): -50.7005739198
+med(txnqueue_wait): 508.873992313
+p99(spanlatch_wait): 138.058238259
+intercept: -455.326637553
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.141814479531
+avg(txnqueue_wait): -3.34530339435
+med(spanlatch_wait): -0.0207433763455
+med(txnqueue_wait): 5.36562254177
+p99(spanlatch_wait): 1.16502341188
+intercept: 1.70274251052
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -183.987187955
+avg(txnqueue_wait): -2419.69484782
+med(spanlatch_wait): -417.572426776
+med(txnqueue_wait): 3927.35426046
+p99(spanlatch_wait): 1058.64767333
+intercept: -3513.84506171
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 69.5454560912
+avg(txnqueue_wait): -46.2690902657
+med(spanlatch_wait): 5.70083503874
+med(txnqueue_wait): 156.505188032
+p99(spanlatch_wait): 44.0425633573
+intercept: -282.635176162
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 2.65191641065
+avg(txnqueue_wait): -1.4968883891
+med(spanlatch_wait): 0.229143505622
+med(txnqueue_wait): 6.57304661374
+p99(spanlatch_wait): 2.98475909723
+intercept: -9.52297148671
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 427.861977655
+avg(txnqueue_wait): -306.806516235
+med(spanlatch_wait): 34.7158089971
+med(txnqueue_wait): 920.205288027
+p99(spanlatch_wait): 232.05485119
+intercept: -1575.20966985
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -779.359976109
+avg(txnqueue_wait): 290.055223887
+med(spanlatch_wait): -90.0523960814
+med(txnqueue_wait): 1.87150327591
+p99(spanlatch_wait): 437.287200326
+intercept: -935.654688487
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -6.52437443058
+avg(txnqueue_wait): 3.45552940766
+med(spanlatch_wait): -0.911644320603
+med(txnqueue_wait): 1.31264185701
+p99(spanlatch_wait): 7.98488295046
+intercept: -14.2753526854
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -5505.43837888
+avg(txnqueue_wait): 2032.05067222
+med(spanlatch_wait): -634.608487299
+med(txnqueue_wait): -5.56627660344
+p99(spanlatch_wait): 3052.32937301
+intercept: -6506.43412026
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 92.040857696
+avg(txnqueue_wait): 98.2979789201
+med(spanlatch_wait): -2.39207162593
+med(txnqueue_wait): 20.9092848894
+p99(spanlatch_wait): 286.225718102
+intercept: -729.922209217
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.89211668432
+avg(txnqueue_wait): 0.745774185863
+med(spanlatch_wait): -0.019962719005
+med(txnqueue_wait): 0.028501988545
+p99(spanlatch_wait): 2.65926866019
+intercept: -0.321595987937
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 839.993377337
+avg(txnqueue_wait): 914.430488231
+med(spanlatch_wait): -22.1006458301
+med(txnqueue_wait): 205.408497195
+p99(spanlatch_wait): 2621.81489099
+intercept: -6756.38593407
+
+model: 1
+skew: 1.9, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3.83489249735
+avg(txnqueue_wait): 8.97038260854
+med(spanlatch_wait): 5.47338870778
+med(txnqueue_wait): 7.74208743163
+p99(spanlatch_wait): 2.4858603532
+intercept: -21.4351573898
+
+model: 2
+skew: 1.9, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 10.3305997791
+avg(txnqueue_wait): -1.52653882918
+med(spanlatch_wait): -0.539016086728
+med(txnqueue_wait): 4.36560159943
+p99(spanlatch_wait): 1.72201994103
+intercept: -5.8477950194
+
+model: 3
+skew: 1.9, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 43.7713316181
+avg(txnqueue_wait): 60.7435496739
+med(spanlatch_wait): -16.6398448764
+med(txnqueue_wait): 65.672727328
+p99(spanlatch_wait): 11.0312932232
+intercept: -211.303474691
+
+model: 1
+skew: 1.9, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 932.487755466
+avg(txnqueue_wait): -342.392035471
+med(spanlatch_wait): -730.582102556
+med(txnqueue_wait): 366.363773994
+p99(spanlatch_wait): -470.719805569
+intercept: 739.903337861
+
+model: 2
+skew: 1.9, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3.66873944822
+avg(txnqueue_wait): -6.57476479833
+med(spanlatch_wait): -4.95528929215
+med(txnqueue_wait): 2.2477638059
+p99(spanlatch_wait): -6.5087209688
+intercept: 27.4642837758
+
+model: 3
+skew: 1.9, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 5438.76596119
+avg(txnqueue_wait): -2018.51249161
+med(spanlatch_wait): -4267.49356144
+med(txnqueue_wait): 2165.86396771
+p99(spanlatch_wait): -2716.04280842
+intercept: 4210.58790603
+
+model: 1
+skew: 1.9, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1323.18685005
+avg(txnqueue_wait): 1175.59733272
+med(spanlatch_wait): -483.598859275
+med(txnqueue_wait): -1063.2437922
+p99(spanlatch_wait): 15.9595642483
+intercept: 340.941767069
+
+model: 2
+skew: 1.9, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -11.9826961231
+avg(txnqueue_wait): 10.7559712961
+med(spanlatch_wait): -4.39815809215
+med(txnqueue_wait): -9.67775510231
+p99(spanlatch_wait): 0.452738171087
+intercept: 8.23715230171
+
+model: 3
+skew: 1.9, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -10916.840589
+avg(txnqueue_wait): 9698.01880155
+med(spanlatch_wait): -3989.54754816
+med(txnqueue_wait): -8770.44290648
+p99(spanlatch_wait): 124.644474436
+intercept: 2798.38552266
+
+model: 1
+skew: 1.9, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -238.258014388
+avg(txnqueue_wait): -257.450249592
+med(spanlatch_wait): -32.3191269308
+med(txnqueue_wait): -33.1904398478
+p99(spanlatch_wait): 370.445233676
+intercept: -43.89138389
+
+model: 2
+skew: 1.9, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.3383726758
+avg(txnqueue_wait): -2.12686765375
+med(spanlatch_wait): -0.225311120059
+med(txnqueue_wait): 0.368064098216
+p99(spanlatch_wait): 2.89426197061
+intercept: 4.67909860172
+
+model: 3
+skew: 1.9, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1768.70912612
+avg(txnqueue_wait): -1962.85990383
+med(spanlatch_wait): -242.361801391
+med(txnqueue_wait): -234.0167251
+p99(spanlatch_wait): 2782.25876267
+intercept: -326.396124139
+
+model: 1
+skew: 1.9, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -317.223220494
+avg(txnqueue_wait): 381.404063397
+med(spanlatch_wait): -48.5524525819
+med(txnqueue_wait): -488.53183443
+p99(spanlatch_wait): -136.005040327
+intercept: 640.812167127
+
+model: 2
+skew: 1.9, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -3.28237389991
+avg(txnqueue_wait): 4.33055068314
+med(spanlatch_wait): -0.521001276374
+med(txnqueue_wait): -5.15463217786
+p99(spanlatch_wait): -1.78848779899
+intercept: 12.8056397419
+
+model: 3
+skew: 1.9, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -2279.14891526
+avg(txnqueue_wait): 2712.99502323
+med(spanlatch_wait): -347.431970577
+med(txnqueue_wait): -3501.50848645
+p99(spanlatch_wait): -946.776847018
+intercept: 4555.57537808
+
+model: 1
+skew: 1.9, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -33.6074284301
+avg(txnqueue_wait): 29.1273544669
+med(spanlatch_wait): -1.25137582538
+med(txnqueue_wait): -35.6519529242
+p99(spanlatch_wait): -12.5708808455
+intercept: 71.0935433183
+
+model: 2
+skew: 1.9, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.71082187881
+avg(txnqueue_wait): -1.70900723826
+med(spanlatch_wait): 0.173701096428
+med(txnqueue_wait): -0.120571053391
+p99(spanlatch_wait): -7.17446819448
+intercept: 27.9736563044
+
+model: 3
+skew: 1.9, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -176.339264234
+avg(txnqueue_wait): 218.477666176
+med(spanlatch_wait): -11.6090226977
+med(txnqueue_wait): -225.592327326
+p99(spanlatch_wait): 72.8009538363
+intercept: -26.3153420732
+
+model: 1
+skew: 1.9, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -784.080565007
+avg(txnqueue_wait): -711.095661363
+med(spanlatch_wait): -160.206970193
+med(txnqueue_wait): 406.85933584
+p99(spanlatch_wait): 139.292615904
+intercept: 733.517422474
+
+model: 2
+skew: 1.9, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -5.46318353931
+avg(txnqueue_wait): -4.69728064648
+med(spanlatch_wait): -1.13554904652
+med(txnqueue_wait): 3.84475575159
+p99(spanlatch_wait): 0.279646939478
+intercept: 10.6110125632
+
+model: 3
+skew: 1.9, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -5888.68913934
+avg(txnqueue_wait): -5338.83189988
+med(spanlatch_wait): -1203.10282391
+med(txnqueue_wait): 3061.24777547
+p99(spanlatch_wait): 1014.80964288
+intercept: 5543.90019776
+
+model: 1
+skew: 1.9, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 41.7388324148
+avg(txnqueue_wait): 403.552168351
+med(spanlatch_wait): -31.2880907101
+med(txnqueue_wait): -418.467908878
+p99(spanlatch_wait): -85.077365968
+intercept: 238.357437623
+
+model: 2
+skew: 1.9, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0152615987417
+avg(txnqueue_wait): 4.39374960872
+med(spanlatch_wait): -0.192463053927
+med(txnqueue_wait): -0.67158725233
+p99(spanlatch_wait): -4.48538522027
+intercept: 8.95959632342
+
+model: 3
+skew: 1.9, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 325.103595189
+avg(txnqueue_wait): 3154.79301014
+med(spanlatch_wait): -245.10968928
+med(txnqueue_wait): -3281.6545677
+p99(spanlatch_wait): -678.67671478
+intercept: 1891.17883862
+
+model: 1
+skew: 1.9, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -643.908152786
+avg(txnqueue_wait): 27.6635910108
+med(spanlatch_wait): -56.8019931914
+med(txnqueue_wait): -176.484980159
+p99(spanlatch_wait): 105.440090138
+intercept: 369.806656031
+
+model: 2
+skew: 1.9, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -2.38519490968
+avg(txnqueue_wait): -0.576526891066
+med(spanlatch_wait): -0.224304345463
+med(txnqueue_wait): -1.3733077006
+p99(spanlatch_wait): 0.248265549697
+intercept: 10.6382843137
+
+model: 3
+skew: 1.9, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -4726.74489308
+avg(txnqueue_wait): 206.659691822
+med(spanlatch_wait): -416.885538779
+med(txnqueue_wait): -1291.60889375
+p99(spanlatch_wait): 772.53580209
+intercept: 2678.41438473
+
+model: 1
+skew: 1.9, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -105.715611272
+avg(txnqueue_wait): -270.836639119
+med(spanlatch_wait): -10.9024931233
+med(txnqueue_wait): -90.9707799529
+p99(spanlatch_wait): -182.385145483
+intercept: 1145.96838099
+
+model: 2
+skew: 1.9, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.964381321752
+avg(txnqueue_wait): -2.59735395576
+med(spanlatch_wait): -0.0988212015362
+med(txnqueue_wait): -0.851974499562
+p99(spanlatch_wait): -1.54827206258
+intercept: 16.5215486937
+
+model: 3
+skew: 1.9, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -806.901607689
+avg(txnqueue_wait): -2060.7922679
+med(spanlatch_wait): -83.2484005819
+med(txnqueue_wait): -693.234567338
+p99(spanlatch_wait): -1397.9729147
+intercept: 8725.19031233
+
