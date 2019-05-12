@@ -366,7 +366,7 @@ func (o *kvOp) run(ctx context.Context) error {
 				b := 0
 				for batch := 0; batch < o.config.batchSize; batch++ {
 					key := o.g.writeKey()
-					if key >= 0 && key <= 9 { // probably a hotkey
+					if key == 0 { // probably a hotkey
 						if hotBatch > 0 {
 							hotStmt += ", "
 						}
