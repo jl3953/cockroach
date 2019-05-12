@@ -505,9 +505,9 @@ def run_iteration(a, train_dur, inf_dur, param_file, inf_features, inf_avg_label
 
 def main():
 
-    skews = [1.3, 1.5, 1.9]
-    train_dur = [1, 5, 10, 30, 60]
-    inf_dur = [5, 10]
+    skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+    train_dur = [5]
+    inf_dur = [5]
 
     ts = datetime.datetime.now()
     paramfile = make_logfile_name("params", ts)
