@@ -2967,7 +2967,6 @@ func (s *Store) Send(
 		case *roachpb.WriteIntentError:
 			// Process and resolve write intent error. We do this here because
 			// this is the code path with the requesting client waiting.
-			/*
 				if pErr.Index != nil {
 					var pushType roachpb.PushTxnType
 					if ba.IsWrite() {
@@ -3017,7 +3016,6 @@ func (s *Store) Send(
 					// We've resolved the write intent; retry command.
 
 				}
-			*/
 
 		case *roachpb.MergeInProgressError:
 			// A merge was in progress. We need to retry the command after the merge
