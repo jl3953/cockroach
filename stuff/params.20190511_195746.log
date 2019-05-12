@@ -1,0 +1,1080 @@
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: -126.417738607
+med(spanlatch_wait): 6.25348805115
+med(txnqueue_wait): -98.1998750892
+total_accesses: 2.21485445152
+intercept: 160.552842684
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: 2.41653205115
+med(spanlatch_wait): -0.108518282107
+med(txnqueue_wait): -3.67999512151
+total_accesses: -0.000817053544734
+intercept: 12.1227145094
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: -599.63543932
+med(spanlatch_wait): 29.7694664215
+med(txnqueue_wait): -519.931270622
+total_accesses: 11.5519680447
+intercept: 830.815978865
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 159.272660792
+med(spanlatch_wait): -512.565379185
+med(txnqueue_wait): 23.8236907487
+total_accesses: -0.107925340641
+intercept: -49.8619021154
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 14.0057584163
+med(spanlatch_wait): -17.3321989105
+med(txnqueue_wait): 2.72981686152
+total_accesses: -0.0140495092012
+intercept: -2.82533659031
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 943.186407645
+med(spanlatch_wait): -2354.70905828
+med(txnqueue_wait): 165.300444743
+total_accesses: -0.125748981656
+intercept: -460.897019618
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 1445.50534315
+med(spanlatch_wait): 954.564691859
+med(txnqueue_wait): -159.877917324
+total_accesses: -1.19792920901
+intercept: 81.1093554101
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 30.5504321733
+med(spanlatch_wait): 20.3236043884
+med(txnqueue_wait): -9.6344249213
+total_accesses: -0.0185420127682
+intercept: 14.3867698947
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 7909.33042996
+med(spanlatch_wait): 5223.17715255
+med(txnqueue_wait): -879.530493679
+total_accesses: -6.4770586917
+intercept: 434.956360477
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: 43.9112584145
+med(spanlatch_wait): -11.3530053552
+med(txnqueue_wait): 0.346298308307
+total_accesses: -0.0130650746784
+intercept: 5.95607987642
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: 53.7446118404
+med(spanlatch_wait): -13.8987621168
+med(txnqueue_wait): 1.03916603087
+total_accesses: -0.00842719903537
+intercept: 3.06632749089
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: -285.514285482
+med(spanlatch_wait): 73.8439028176
+med(txnqueue_wait): -6.92367818859
+total_accesses: -0.0340031010242
+intercept: 55.1695846288
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: 128.892150741
+med(spanlatch_wait): -4415.7027312
+med(txnqueue_wait): 48.7641970511
+total_accesses: 0.105306298006
+intercept: 239.946691775
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: 2.5925603547
+med(spanlatch_wait): -49.8375158018
+med(txnqueue_wait): 0.478192189787
+total_accesses: 0.00199216700257
+intercept: 8.37995011642
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: 648.017087671
+med(spanlatch_wait): -21596.4962317
+med(txnqueue_wait): 235.454959112
+total_accesses: 0.583315644795
+intercept: 1169.30805093
+
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: 1.82746271449
+med(spanlatch_wait): -0.0578260892087
+med(txnqueue_wait): 15.8319755765
+total_accesses: 0.431123196055
+intercept: -50.9721621124
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: 0.049472843968
+med(spanlatch_wait): -0.0015656137416
+med(txnqueue_wait): 0.428692867652
+total_accesses: 0.00682368625646
+intercept: 4.81943788342
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: 11.1693683179
+med(spanlatch_wait): -0.353433352703
+med(txnqueue_wait): 96.766072561
+total_accesses: 2.54165173321
+intercept: -315.411813412
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: 0.463499534224
+med(spanlatch_wait): -0.00199476060113
+med(txnqueue_wait): -11.7106943216
+total_accesses: 0.214307326877
+intercept: -1.89176625727
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: 0.00555677612921
+med(spanlatch_wait): -2.39136811437e-05
+med(txnqueue_wait): -0.140391092562
+total_accesses: 0.00287427874786
+intercept: 5.74086384174
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: 3.03867598538
+med(spanlatch_wait): -0.0130773330381
+med(txnqueue_wait): -76.7735310289
+total_accesses: 1.46715853367
+intercept: -29.017907345
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: -1250.50638514
+med(spanlatch_wait): 64.1072381028
+med(txnqueue_wait): 4.48669362441
+total_accesses: 1.90082652013
+intercept: 5.57149074677
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: -23.4849817201
+med(spanlatch_wait): 1.20443957389
+med(txnqueue_wait): 0.0389942297205
+total_accesses: 0.0342271773864
+intercept: 6.19651948788
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: -6046.76374511
+med(spanlatch_wait): 309.83536246
+med(txnqueue_wait): 35.9951158557
+total_accesses: 9.18566264807
+intercept: 0.609700296019
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: 242.92840215
+med(spanlatch_wait): 18.2333309612
+med(txnqueue_wait): -18.2278235216
+total_accesses: 0.0342457155961
+intercept: 11.2137746922
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: 7.93361838345
+med(spanlatch_wait): 0.591277146583
+med(txnqueue_wait): -0.427176268035
+total_accesses: -0.00201018881802
+intercept: 5.89805676099
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: 1730.78249644
+med(spanlatch_wait): 129.829496356
+med(txnqueue_wait): -126.786827657
+total_accesses: 0.255023779081
+intercept: 56.4019060918
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: -292.805894325
+med(spanlatch_wait): -3250.80196506
+med(txnqueue_wait): 43.7903102003
+total_accesses: 0.746341583306
+intercept: 231.747232129
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: 10.5771330903
+med(spanlatch_wait): -37.0914490538
+med(txnqueue_wait): 1.6550792952
+total_accesses: -0.0206562139985
+intercept: 5.87458014072
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: -1409.11047257
+med(spanlatch_wait): -14254.9648555
+med(txnqueue_wait): 193.591633452
+total_accesses: 3.63841890785
+intercept: 1012.06505881
+
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: -161.323770032
+med(spanlatch_wait): -55.2141207717
+med(txnqueue_wait): 50.9304217841
+total_accesses: 2.06068513588
+intercept: -102.904270814
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: -2.03087852697
+med(spanlatch_wait): -0.695088090013
+med(txnqueue_wait): 0.641160906379
+total_accesses: 0.0300929943078
+intercept: 4.29544126227
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: -797.2562243
+med(spanlatch_wait): -272.866553739
+med(txnqueue_wait): 251.696646137
+total_accesses: 10.41791708
+intercept: -524.882389634
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: 6.60827689534
+med(spanlatch_wait): -0.141838146509
+med(txnqueue_wait): 56.4665873283
+total_accesses: 0.218329530341
+intercept: -85.0082939758
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: 0.0879071533883
+med(spanlatch_wait): -0.00188678179982
+med(txnqueue_wait): 0.751136054027
+total_accesses: 0.00460996061155
+intercept: 4.20318937454
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: 32.7521842229
+med(spanlatch_wait): -0.702981895272
+med(txnqueue_wait): 279.861033355
+total_accesses: 1.16358925834
+intercept: -425.833016023
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: 288.906627149
+med(spanlatch_wait): -22.5773314456
+med(txnqueue_wait): -147.209699437
+total_accesses: 0.0216744599069
+intercept: 196.553460352
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: 4.39679356695
+med(spanlatch_wait): -0.343598301368
+med(txnqueue_wait): -2.24034390034
+total_accesses: 0.00192987505241
+intercept: 8.15767673324
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: 1757.87479713
+med(spanlatch_wait): -137.373512138
+med(txnqueue_wait): -895.708685169
+total_accesses: 0.289915918826
+intercept: 1168.19504693
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: -11.2000367951
+med(spanlatch_wait): -2.47367564763
+med(txnqueue_wait): 136.359824822
+total_accesses: 0.219173704914
+intercept: -197.646814719
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: 0.0167175215814
+med(spanlatch_wait): 0.00368963090594
+med(txnqueue_wait): -0.20339875732
+total_accesses: 0.00699931432884
+intercept: 5.40101470255
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: -90.1334907846
+med(spanlatch_wait): -19.9071498233
+med(txnqueue_wait): 1097.36927043
+total_accesses: 1.71189427571
+intercept: -1618.33306342
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: 285.945147537
+med(spanlatch_wait): 12.1572459956
+med(txnqueue_wait): 2.82950589778
+total_accesses: -0.0228036809253
+intercept: -21.4411939796
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: 8.14105235529
+med(spanlatch_wait): 0.346465248337
+med(txnqueue_wait): 0.19793726147
+total_accesses: -0.00336019085433
+intercept: 5.40641387282
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: 1489.88115173
+med(spanlatch_wait): 63.3510139014
+med(txnqueue_wait): 17.2334997846
+total_accesses: -0.135871201827
+intercept: -122.840952958
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: 324.145134725
+med(spanlatch_wait): -20.8850024188
+med(txnqueue_wait): -31.7316909447
+total_accesses: -0.149556778585
+intercept: 17.27040039
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: 42.2470104409
+med(spanlatch_wait): -2.70203200053
+med(txnqueue_wait): -2.12870942702
+total_accesses: -0.0540402796079
+intercept: 6.10130518396
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: 1606.25111398
+med(spanlatch_wait): -103.545411749
+med(txnqueue_wait): -162.566713775
+total_accesses: -0.313378971412
+intercept: 62.1129506764
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 115.55864634
+med(spanlatch_wait): -12.5702204959
+med(txnqueue_wait): 9.00374539529
+total_accesses: 0.158655345417
+intercept: -34.5406199032
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: -0.99412129538
+med(spanlatch_wait): 0.109053711395
+med(txnqueue_wait): 0.554473648846
+total_accesses: 0.00590825216103
+intercept: 3.97068261068
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 799.347765788
+med(spanlatch_wait): -86.9601429796
+med(txnqueue_wait): 56.19314006
+total_accesses: 1.05661977661
+intercept: -242.432883371
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 29.9517874599
+med(spanlatch_wait): 0.0119150677685
+med(txnqueue_wait): -37.2126217965
+total_accesses: 0.150230660128
+intercept: 58.9628004125
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 5.57475615777
+med(spanlatch_wait): 0.0578187876799
+med(txnqueue_wait): 0.201493607819
+total_accesses: -0.00178106690643
+intercept: 5.31600980757
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: -40.6447137781
+med(spanlatch_wait): -2.69729909341
+med(txnqueue_wait): -293.203894443
+total_accesses: 1.37334424786
+intercept: 434.687201051
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: 0.000129472693344
+med(spanlatch_wait): 2.376797488e-06
+med(txnqueue_wait): 0.000357407276863
+total_accesses: 0.196395651328
+intercept: 9.02765595
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: -8.48863202394e-07
+med(spanlatch_wait): -1.55830227595e-08
+med(txnqueue_wait): -2.34327314711e-06
+total_accesses: -0.0012876309067
+intercept: 7.5882367454
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: 0.00086182268929
+med(spanlatch_wait): 1.58209267924e-05
+med(txnqueue_wait): 0.00237904760118
+total_accesses: 1.30728900451
+intercept: 12.8051222537
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: -0.648307865146
+med(spanlatch_wait): 0.069879488262
+med(txnqueue_wait): 9.08919655258
+total_accesses: 0.250914368946
+intercept: -30.7751078769
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: -0.0426943412552
+med(spanlatch_wait): 0.0046008506592
+med(txnqueue_wait): 0.598398179698
+total_accesses: 0.00247001192677
+intercept: 4.75140553227
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: -4.43311334994
+med(spanlatch_wait): 0.477867166642
+med(txnqueue_wait): 62.1569944534
+total_accesses: 2.14995052041
+intercept: -268.786897631
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: -88.1374304613
+med(spanlatch_wait): 16.7377459823
+med(txnqueue_wait): -5.09650666184
+total_accesses: 0.4497311325
+intercept: 25.2149920822
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: -11.90359743
+med(spanlatch_wait): 7.65927713437
+med(txnqueue_wait): -0.565447443063
+total_accesses: 0.0412203114343
+intercept: 7.55118416036
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: -625.805384939
+med(spanlatch_wait): 73.4334968609
+med(txnqueue_wait): -38.4439669842
+total_accesses: 3.20001039691
+intercept: 159.466446193
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: -16.5485682479
+med(spanlatch_wait): -4.38641483072
+med(txnqueue_wait): -5.99527858653
+total_accesses: 0.269589156092
+intercept: 21.2805362649
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: 35.3512353308
+med(spanlatch_wait): 9.00430543248
+med(txnqueue_wait): 4.10537680986
+total_accesses: -0.116290150736
+intercept: -8.94225223257
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: -520.634945881
+med(spanlatch_wait): -133.808564459
+med(txnqueue_wait): -88.9366663042
+total_accesses: 3.30311632051
+intercept: 279.889337593
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: -0.647076326347
+med(spanlatch_wait): 0.0713942650307
+med(txnqueue_wait): -9.34291904297
+total_accesses: 0.246592296243
+intercept: -0.255500914142
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: -0.0198552456861
+med(spanlatch_wait): 0.00219028796216
+med(txnqueue_wait): -0.286626240309
+total_accesses: 0.00322528049245
+intercept: 5.98295255271
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: -4.03836517541
+med(spanlatch_wait): 0.445610842796
+med(txnqueue_wait): -58.3146065817
+total_accesses: 1.99576457487
+intercept: -49.4342362656
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: -10.0574300496
+med(spanlatch_wait): 0.149055771474
+med(txnqueue_wait): 33.5377407336
+total_accesses: 0.297880320411
+intercept: -64.1895976753
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: 0.450726001712
+med(spanlatch_wait): -0.00667996459886
+med(txnqueue_wait): -1.50291910534
+total_accesses: 0.00594074157167
+intercept: 7.56815872668
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: -61.0962433749
+med(spanlatch_wait): 0.905474588567
+med(txnqueue_wait): 203.732129789
+total_accesses: 1.61557605473
+intercept: -380.960231596
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: -0.0309309823415
+med(spanlatch_wait): 1.2299531817e-05
+med(txnqueue_wait): -1.7995847255e-05
+total_accesses: 0.00561031793752
+intercept: 6.58792688728
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: -0.000414063432206
+med(spanlatch_wait): 1.51570827626e-07
+med(txnqueue_wait): -1.95154221615e-06
+total_accesses: 0.000322181283819
+intercept: 5.73819853365
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: 0.211974255314
+med(spanlatch_wait): -7.57963012191e-05
+med(txnqueue_wait): 0.00123427567149
+total_accesses: -0.19890916521
+intercept: 75.7627054618
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: -0.677722690065
+med(spanlatch_wait): 0.0839180919002
+med(txnqueue_wait): 6.28849056258
+total_accesses: 0.409155930874
+intercept: -18.5046676729
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: 0.0733147219196
+med(spanlatch_wait): -0.00906880468773
+med(txnqueue_wait): -0.679242945926
+total_accesses: 0.00167204874235
+intercept: 7.91865294034
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: -2.87201921317
+med(spanlatch_wait): 0.355750741745
+med(txnqueue_wait): 26.6631643184
+total_accesses: 2.36108014293
+intercept: -107.407062511
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: -0.67589825247
+med(spanlatch_wait): -0.205116507358
+med(txnqueue_wait): -23.4418306758
+total_accesses: 0.240690781535
+intercept: 16.9379559206
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: -0.0613105013915
+med(spanlatch_wait): -0.0186014033198
+med(txnqueue_wait): -2.12590951373
+total_accesses: 0.00537299677943
+intercept: 7.84754723576
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: -5.45953043271
+med(spanlatch_wait): -1.65686407135
+med(txnqueue_wait): -189.3550393
+total_accesses: 2.11042852895
+intercept: 97.1842748433
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: 17.1684488004
+med(spanlatch_wait): -0.68724692758
+med(txnqueue_wait): -1.52651229705
+total_accesses: 0.101715296639
+intercept: 4.6357797794
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: 7.69560087721
+med(spanlatch_wait): -0.307671509618
+med(txnqueue_wait): -0.598781954263
+total_accesses: -0.0225844001814
+intercept: 5.12715757281
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: -53.1334454118
+med(spanlatch_wait): 2.02793158416
+med(txnqueue_wait): -17.4973379787
+total_accesses: 2.01499356505
+intercept: 18.9509919414
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+total_accesses: 0.0
+intercept: 114.448789984
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+total_accesses: 0.0
+intercept: 6.833424
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: 0.0
+med(spanlatch_wait): 0.0
+med(txnqueue_wait): 0.0
+total_accesses: 0.0
+intercept: 875.40157588
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: -2140.16300815
+med(spanlatch_wait): 426.771134848
+med(txnqueue_wait): -180.175797177
+total_accesses: 1.73629047377
+intercept: 312.019463166
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: -91.6709922466
+med(spanlatch_wait): 18.2762526861
+med(txnqueue_wait): -7.40073917791
+total_accesses: 0.0674570832599
+intercept: 19.2331449792
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: -14572.7445173
+med(spanlatch_wait): 2905.96146021
+med(txnqueue_wait): -1227.01779601
+total_accesses: 11.9490031227
+intercept: 2094.34384651
+
+model: 1
+skew: 1.9, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: 49.5016589339
+med(spanlatch_wait): 17.3730433776
+med(txnqueue_wait): -1.13252013155
+total_accesses: -0.712072174003
+intercept: -1.65276010058
+
+model: 2
+skew: 1.9, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: 126.486465414
+med(spanlatch_wait): 44.4732242814
+med(txnqueue_wait): -6.57318577927
+total_accesses: -0.387869233588
+intercept: -31.4047896875
+
+model: 3
+skew: 1.9, training_time: 1, inf_dur: 5, r2: 1.0
+failed_accesses: -92.387863925
+med(spanlatch_wait): -32.5662525409
+med(txnqueue_wait): 8.5088517016
+total_accesses: -1.20177491124
+intercept: 59.8965430153
+
+model: 1
+skew: 1.9, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 15.744811903
+med(spanlatch_wait): 0.186421944966
+med(txnqueue_wait): 12.5250663987
+total_accesses: 0.251099882531
+intercept: -29.4147370354
+
+model: 2
+skew: 1.9, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 6.48117736999
+med(spanlatch_wait): -0.0182341009358
+med(txnqueue_wait): -0.190024418558
+total_accesses: -0.00505564833811
+intercept: 5.93458321324
+
+model: 3
+skew: 1.9, training_time: 5, inf_dur: 5, r2: 1.0
+failed_accesses: 102.126269735
+med(spanlatch_wait): 1.35379561374
+med(txnqueue_wait): 89.3811372565
+total_accesses: 1.85750828612
+intercept: -237.451044913
+
+model: 1
+skew: 1.9, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 98.3575047099
+med(spanlatch_wait): 1.89429454685
+med(txnqueue_wait): 10.785793524
+total_accesses: 0.14135262324
+intercept: -31.1656977872
+
+model: 2
+skew: 1.9, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 2.12826100603
+med(spanlatch_wait): 0.045884677061
+med(txnqueue_wait): 0.702205861884
+total_accesses: 0.000806640460066
+intercept: 4.68144504652
+
+model: 3
+skew: 1.9, training_time: 10, inf_dur: 5, r2: 1.0
+failed_accesses: 720.453110007
+med(spanlatch_wait): 13.6663456126
+med(txnqueue_wait): 58.9845264611
+total_accesses: 0.9814205021
+intercept: -211.194607947
+
+model: 1
+skew: 1.9, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: 20.2382106517
+med(spanlatch_wait): 34.3413579403
+med(txnqueue_wait): 395.763904029
+total_accesses: 0.546829621734
+intercept: -742.483469947
+
+model: 2
+skew: 1.9, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: 12.3425003685
+med(spanlatch_wait): 1.47715652173
+med(txnqueue_wait): 6.13463701765
+total_accesses: -0.0112838045813
+intercept: -6.8288870481
+
+model: 3
+skew: 1.9, training_time: 30, inf_dur: 5, r2: 1.0
+failed_accesses: 13.5560664314
+med(spanlatch_wait): 90.1640842333
+med(txnqueue_wait): 1076.65637445
+total_accesses: 2.08374003004
+intercept: -2020.99872415
+
+model: 1
+skew: 1.9, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: 37.8276879252
+med(spanlatch_wait): -5.90000792924
+med(txnqueue_wait): 0.98073267798
+total_accesses: 0.254896952391
+intercept: -3.81407854988
+
+model: 2
+skew: 1.9, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: 10.1452990848
+med(spanlatch_wait): -1.58278770484
+med(txnqueue_wait): 0.200639572994
+total_accesses: -0.0192311892173
+intercept: 4.39190516334
+
+model: 3
+skew: 1.9, training_time: 60, inf_dur: 5, r2: 1.0
+failed_accesses: 426.118908519
+med(spanlatch_wait): -66.5646774039
+med(txnqueue_wait): -5.03020971922
+total_accesses: 0.630644609693
+intercept: -54.9042083823
+
+model: 1
+skew: 1.9, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: 0.00870984651269
+med(spanlatch_wait): -9.28021042618e-05
+med(txnqueue_wait): -0.00567025591188
+total_accesses: 1.50980949992
+intercept: -28.6627460662
+
+model: 2
+skew: 1.9, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: 0.000171057595705
+med(spanlatch_wait): -1.82259294791e-06
+med(txnqueue_wait): -0.000111361358883
+total_accesses: 0.0296520016342
+intercept: 4.72235529106
+
+model: 3
+skew: 1.9, training_time: 1, inf_dur: 10, r2: 1.0
+failed_accesses: 0.0651833193353
+med(spanlatch_wait): -0.000694518461178
+med(txnqueue_wait): -0.0424354322752
+total_accesses: 11.2992111428
+intercept: -232.274925605
+
+model: 1
+skew: 1.9, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: -2.10045808452
+med(spanlatch_wait): 0.183100089329
+med(txnqueue_wait): -25.2407987842
+total_accesses: 0.326859653112
+intercept: 43.33575345
+
+model: 2
+skew: 1.9, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: -0.169404393828
+med(spanlatch_wait): 0.0147660226708
+med(txnqueue_wait): -2.03536227767
+total_accesses: 0.00171406153163
+intercept: 10.5334051274
+
+model: 3
+skew: 1.9, training_time: 5, inf_dur: 10, r2: 1.0
+failed_accesses: -6.33621350353
+med(spanlatch_wait): 0.552381231183
+med(txnqueue_wait): -76.1532902133
+total_accesses: 1.87948550882
+intercept: 109.313986763
+
+model: 1
+skew: 1.9, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: 142.986278783
+med(spanlatch_wait): 15.5944527865
+med(txnqueue_wait): 5.12504057057
+total_accesses: 0.0963710071446
+intercept: -23.1287707879
+
+model: 2
+skew: 1.9, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: 1.03099443963
+med(spanlatch_wait): 0.113072478049
+med(txnqueue_wait): 0.180807575955
+total_accesses: 0.00153265487236
+intercept: 5.69409872952
+
+model: 3
+skew: 1.9, training_time: 10, inf_dur: 10, r2: 1.0
+failed_accesses: 824.797923219
+med(spanlatch_wait): 89.9563018755
+med(txnqueue_wait): 29.9558510569
+total_accesses: 0.634460946924
+intercept: -151.253026151
+
+model: 1
+skew: 1.9, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: 1.9465993727
+med(spanlatch_wait): 0.00696614170552
+med(txnqueue_wait): -16.8669272732
+total_accesses: 0.170327774278
+intercept: 16.5623251655
+
+model: 2
+skew: 1.9, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: 0.118608004618
+med(spanlatch_wait): 0.000424576406305
+med(txnqueue_wait): -1.02776055625
+total_accesses: 0.00188362511826
+intercept: 7.53841123462
+
+model: 3
+skew: 1.9, training_time: 30, inf_dur: 10, r2: 1.0
+failed_accesses: 11.6114760058
+med(spanlatch_wait): 0.0415490339362
+med(txnqueue_wait): -100.609875693
+total_accesses: 1.29434271534
+intercept: 71.4124156625
+
+model: 1
+skew: 1.9, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: 2.29798565037
+med(spanlatch_wait): 0.204638229271
+med(txnqueue_wait): 19.9327154229
+total_accesses: 0.204126629473
+intercept: -38.3858121881
+
+model: 2
+skew: 1.9, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: 0.0552280386535
+med(spanlatch_wait): 0.00491831541941
+med(txnqueue_wait): 0.479064031455
+total_accesses: 0.00190380042713
+intercept: 5.22002149315
+
+model: 3
+skew: 1.9, training_time: 60, inf_dur: 10, r2: 1.0
+failed_accesses: 18.6876573715
+med(spanlatch_wait): 1.66415489458
+med(txnqueue_wait): 162.096458716
+total_accesses: 1.69364269927
+intercept: -345.420049566
+
+model: 1
+skew: 1.9, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: 573.103042719
+med(spanlatch_wait): 22.2529197633
+med(txnqueue_wait): -126.612804346
+total_accesses: 0.572038121783
+intercept: -58.5594326053
+
+model: 2
+skew: 1.9, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: 17.0094611753
+med(spanlatch_wait): 0.668455420807
+med(txnqueue_wait): -3.32375358237
+total_accesses: -0.0133329320801
+intercept: 3.7271140231
+
+model: 3
+skew: 1.9, training_time: 1, inf_dur: 30, r2: 1.0
+failed_accesses: 3780.61202292
+med(spanlatch_wait): 146.207118552
+med(txnqueue_wait): -867.322027566
+total_accesses: 4.26803734847
+intercept: -365.454237796
+
+model: 1
+skew: 1.9, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: 0.000144980807977
+med(spanlatch_wait): -5.22048454925e-06
+med(txnqueue_wait): -6.99054839128e-05
+total_accesses: 0.203795954632
+intercept: -12.7830308883
+
+model: 2
+skew: 1.9, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: 1.47993578641e-06
+med(spanlatch_wait): -5.32896871984e-08
+med(txnqueue_wait): -7.13581533672e-07
+total_accesses: 0.00208030932228
+intercept: 5.86620751331
+
+model: 3
+skew: 1.9, training_time: 5, inf_dur: 30, r2: 1.0
+failed_accesses: 0.000953672800275
+med(spanlatch_wait): -3.43399529107e-05
+med(txnqueue_wait): -0.000459832991195
+total_accesses: 1.34055439096
+intercept: -102.011633333
+
+model: 1
+skew: 1.9, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: -63.879326774
+med(spanlatch_wait): 8.9302181605
+med(txnqueue_wait): -17.879175694
+total_accesses: 0.346038864731
+intercept: 28.0975347843
+
+model: 2
+skew: 1.9, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: -2.98105153613
+med(spanlatch_wait): 0.426750581733
+med(txnqueue_wait): 0.523833420202
+total_accesses: 0.00524081778813
+intercept: 5.37811930598
+
+model: 3
+skew: 1.9, training_time: 10, inf_dur: 30, r2: 1.0
+failed_accesses: -268.220729158
+med(spanlatch_wait): 37.3442215988
+med(txnqueue_wait): -95.791839282
+total_accesses: 2.08252139258
+intercept: 124.366343916
+
+model: 1
+skew: 1.9, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: 53.6975573005
+med(spanlatch_wait): 4.84057191849
+med(txnqueue_wait): -4.9443041675
+total_accesses: 0.229882263064
+intercept: -2.5099270651
+
+model: 2
+skew: 1.9, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: 7.07311056477
+med(spanlatch_wait): 0.633786759701
+med(txnqueue_wait): -0.138700508618
+total_accesses: -0.00486658769478
+intercept: 5.23487147082
+
+model: 3
+skew: 1.9, training_time: 30, inf_dur: 30, r2: 1.0
+failed_accesses: 273.228666598
+med(spanlatch_wait): 24.6128541087
+med(txnqueue_wait): -22.8401270683
+total_accesses: 1.68009091343
+intercept: -42.2697646417
+
+model: 1
+skew: 1.9, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: -251.168267275
+med(spanlatch_wait): 34.8461062189
+med(txnqueue_wait): 35.8793147239
+total_accesses: 0.360577854208
+intercept: -59.4865972577
+
+model: 2
+skew: 1.9, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: -18.7992028199
+med(spanlatch_wait): 2.60330732039
+med(txnqueue_wait): 2.38546053578
+total_accesses: 0.0136489294575
+intercept: 2.55804265207
+
+model: 3
+skew: 1.9, training_time: 60, inf_dur: 30, r2: 1.0
+failed_accesses: -1344.03991561
+med(spanlatch_wait): 186.678310669
+med(txnqueue_wait): 205.155561178
+total_accesses: 2.29495293019
+intercept: -374.906856717
+
