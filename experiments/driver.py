@@ -20,13 +20,14 @@ EXP = {
             "ip": "192.168.1.1",
         },
     ],
-    "hot_nodes": [],
-    "warm_nodes": [
+    "hot_nodes": [
         {
             "ip": "192.168.1.2",
             "region": "newyork",
             "store": lib.STORE_DIR,
         },
+    ],
+    "warm_nodes": [
         {
             "ip": "192.168.1.3",
             "region": "london",
@@ -136,6 +137,9 @@ def main():
 
     args = parser.parse_args()
 
+    lib.cleanup_previous_experiment(EXP)
+    lib.init_experiment(EXP)
+
     if args.benchmark:
         exps = lib.vary_zipf_skew(EXP, SKEWS)
         for e in exps:
@@ -146,7 +150,7 @@ def main():
             lib.run_bench(e)
 
     if args.logs:
-        logs.parse_kvbench_logs(OUT_DIR)
+        logs.parse_kvbench_logs(OUT_DIR) 
 
 
 if __name__ == "__main__":
