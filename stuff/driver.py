@@ -360,13 +360,13 @@ def calculate_stats(extracts, frequency, latencies):
                 "total_accesses": total_accesses,
                 # "bumped_read": bumped_for_read,
                 "failed_accesses": None if total_accesses == 0 else float(failed_accesses)/total_accesses,
-                "uncommitted_intents": None if total_accesses == 0 else float(uncommitted_intents)/total_accesses,
-                "newer_committed_values": None if total_accesses == 0 else float(newer_committed_values)/total_accesses,
-                "avg(spanlatch_wait)": spanlatch_waits["val"].mean(),
+                # "uncommitted_intents": None if total_accesses == 0 else float(uncommitted_intents)/total_accesses,
+                # "newer_committed_values": None if total_accesses == 0 else float(newer_committed_values)/total_accesses,
+                # "avg(spanlatch_wait)": spanlatch_waits["val"].mean(),
                 # "med(spanlatch_wait)": spanlatch_waits["val"].median(),
                 "p99(spanlatch_wait)": spanlatch_waits["val"].quantile(0.99),
-                "avg(txnqueue_wait)": txnqueue_waits["val"].mean(),
-                "med(txnqueue_wait)": txnqueue_waits["val"].median(),
+                # "avg(txnqueue_wait)": txnqueue_waits["val"].mean(),
+                # "med(txnqueue_wait)": txnqueue_waits["val"].median(),
                 "p99(txnqueue_wait)": txnqueue_waits["val"].quantile(0.99),
                 "avg(latency)": group["latency"].mean(),
                 "med(latency)": group["latency"].median(),
@@ -378,7 +378,7 @@ def calculate_stats(extracts, frequency, latencies):
 
 
 def process(keys_to_features, keys_to_latencies):
-    freq = "2s"
+    freq = "3s"
     final = []
     for key, value in keys_to_features.items():
         if key not in keys_to_latencies:
@@ -507,7 +507,7 @@ def main():
 
     skews = [1.3, 1.5, 1.9]
     train_dur = [1, 5, 10, 30, 60]
-    inf_dur = [5, 10, 30]
+    inf_dur = [5, 10]
 
     ts = datetime.datetime.now()
     paramfile = make_logfile_name("params", ts)
