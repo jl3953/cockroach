@@ -1,0 +1,5040 @@
+model: 1
+skew: 1.1, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000100132451916
+avg(txnqueue_wait): 0.000321740302608
+failed_accesses: 0.000251118149726
+key: -0.00111580240418
+med(txnqueue_wait): 0.00044283073175
+newer_committed_values: 7.27172593131e-05
+p99(spanlatch_wait): -8.39868709672e-05
+p99(txnqueue_wait): 0.00049288580613
+total_accesses: 0.215349864006
+uncommitted_intents: 0.000178400890413
+intercept: -23.5469223472
+
+model: 2
+skew: 1.1, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -2.0121731376e-06
+avg(txnqueue_wait): 6.46540838465e-06
+failed_accesses: 5.04624810014e-06
+key: -2.24221776417e-05
+med(txnqueue_wait): 8.89873448501e-06
+newer_committed_values: 1.4612616892e-06
+p99(spanlatch_wait): -1.68772583152e-06
+p99(txnqueue_wait): 9.90459696156e-06
+total_accesses: 0.00432748028484
+uncommitted_intents: 3.58498641094e-06
+intercept: 5.29776275126
+
+model: 3
+skew: 1.1, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000836500273227
+avg(txnqueue_wait): 0.00268779846983
+failed_accesses: 0.00209782539864
+key: -0.00932134386107
+med(txnqueue_wait): 0.00369938038083
+newer_committed_values: 0.000607475459952
+p99(spanlatch_wait): -0.000701621094533
+p99(txnqueue_wait): 0.00411753735785
+total_accesses: 1.79901936519
+uncommitted_intents: 0.00149034993869
+intercept: -230.375435631
+
+model: 1
+skew: 1.1, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.227599312861
+avg(txnqueue_wait): 1.9899374678
+failed_accesses: 0.0773308376664
+key: 3.16114985572
+med(txnqueue_wait): 1.94679247572
+newer_committed_values: 0.0146354519474
+p99(spanlatch_wait): -0.0948977983531
+p99(txnqueue_wait): 2.91332660689
+total_accesses: 0.11744089548
+uncommitted_intents: 0.0626953857191
+intercept: -28.4678986051
+
+model: 2
+skew: 1.1, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00116584794578
+avg(txnqueue_wait): -0.0101964287524
+failed_accesses: -0.000394310870631
+key: -0.0162091436148
+med(txnqueue_wait): -0.00997586459624
+newer_committed_values: -7.42455994558e-05
+p99(spanlatch_wait): 0.00048605662492
+p99(txnqueue_wait): -0.0149165881987
+total_accesses: 0.00215884868013
+uncommitted_intents: -0.000320065271175
+intercept: 5.37784891049
+
+model: 3
+skew: 1.1, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.73523577592
+avg(txnqueue_wait): 15.1714499511
+failed_accesses: 0.589574426151
+key: 24.1008852595
+med(txnqueue_wait): 14.8425095404
+newer_committed_values: 0.111581000588
+p99(spanlatch_wait): -0.723508521083
+p99(txnqueue_wait): 22.2114323289
+total_accesses: 0.892009473308
+uncommitted_intents: 0.477993425562
+intercept: -244.565681073
+
+model: 1
+skew: 1.1, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00109555750355
+avg(txnqueue_wait): 1.56399264843
+failed_accesses: -0.0151217779806
+key: 1.25829746605
+med(txnqueue_wait): 1.48600856159
+newer_committed_values: -0.0184453428435
+p99(spanlatch_wait): 0.0629651976925
+p99(txnqueue_wait): 2.45599428068
+total_accesses: 0.0997593693734
+uncommitted_intents: 0.00332356486286
+intercept: -27.2784211752
+
+model: 2
+skew: 1.1, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 4.60254979902e-06
+avg(txnqueue_wait): 0.00669725953477
+failed_accesses: -6.41318512481e-05
+key: 0.00538551564957
+med(txnqueue_wait): 0.0063628582947
+newer_committed_values: -7.87600073528e-05
+p99(spanlatch_wait): 0.000269319593694
+p99(txnqueue_wait): 0.0105288672895
+total_accesses: 0.0014501405748
+uncommitted_intents: 1.46281561046e-05
+intercept: 5.49183003457
+
+model: 3
+skew: 1.1, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00882579926331
+avg(txnqueue_wait): 12.5941698518
+failed_accesses: -0.121795457258
+key: 10.1326502222
+med(txnqueue_wait): 11.9662164791
+newer_committed_values: -0.148542035939
+p99(spanlatch_wait): 0.507044981391
+p99(txnqueue_wait): 19.7765790466
+total_accesses: 0.760245527419
+uncommitted_intents: 0.0267465786811
+intercept: -240.258507391
+
+model: 1
+skew: 1.1, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.00196536294904
+avg(txnqueue_wait): 0.704291933902
+failed_accesses: -0.0253704855575
+key: 0.261640324905
+med(txnqueue_wait): 0.753491862678
+newer_committed_values: -0.0117420375563
+p99(spanlatch_wait): 0.0108601002199
+p99(txnqueue_wait): 0.495751643044
+total_accesses: 0.206306083647
+uncommitted_intents: -0.0136284480012
+intercept: -15.2541212816
+
+model: 2
+skew: 1.1, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000505324162972
+avg(txnqueue_wait): -0.0121079365131
+failed_accesses: 0.000580021249548
+key: 0.0558841230485
+med(txnqueue_wait): -0.012681287487
+newer_committed_values: 0.00015503814068
+p99(spanlatch_wait): -0.00172026523613
+p99(txnqueue_wait): -0.00935687852332
+total_accesses: 0.00542071512416
+uncommitted_intents: 0.000424983108868
+intercept: 5.54416648677
+
+model: 3
+skew: 1.1, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.010884262139
+avg(txnqueue_wait): 4.31791977146
+failed_accesses: -0.155560275583
+key: 1.41163969799
+med(txnqueue_wait): 4.61898762813
+newer_committed_values: -0.0717452891241
+p99(spanlatch_wait): 0.0716220080724
+p99(txnqueue_wait): 3.04369861003
+total_accesses: 1.5773002177
+uncommitted_intents: -0.0838149864593
+intercept: -128.665162074
+
+model: 1
+skew: 1.1, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.085656066157
+avg(txnqueue_wait): 0.0024974762151
+failed_accesses: 0.00139783074216
+key: -0.0230317900496
+med(txnqueue_wait): 0.00142747472761
+newer_committed_values: 0.000716140952792
+p99(spanlatch_wait): 0.00224049532235
+p99(txnqueue_wait): 0.00773707697864
+total_accesses: 0.409372173885
+uncommitted_intents: 0.00147468797751
+intercept: -5.87896403077
+
+model: 2
+skew: 1.1, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.164417722144
+avg(txnqueue_wait): 0.00513157284258
+failed_accesses: 0.000193947647412
+key: -0.00136308231353
+med(txnqueue_wait): 8.9226530186e-05
+newer_committed_values: 0.000375487658384
+p99(spanlatch_wait): 0.0102404778955
+p99(txnqueue_wait): 0.00119240361063
+total_accesses: 0.0566069175325
+uncommitted_intents: 0.00130533159179
+intercept: 3.55370124399
+
+model: 3
+skew: 1.1, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 1.04654095206
+avg(txnqueue_wait): 0.0321672610774
+failed_accesses: 0.00489038228802
+key: -0.0716048938023
+med(txnqueue_wait): 0.00446119318938
+newer_committed_values: 0.00385747937563
+p99(spanlatch_wait): 0.0564582345175
+p99(txnqueue_wait): 0.0276507055568
+total_accesses: 1.43126411114
+uncommitted_intents: 0.0105488811701
+intercept: -16.0974029224
+
+model: 1
+skew: 1.1, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0127712005056
+avg(txnqueue_wait): -0.257363259153
+failed_accesses: -0.0260792573529
+key: -0.188692272774
+med(txnqueue_wait): 0.078844180188
+newer_committed_values: -0.0220751376431
+p99(spanlatch_wait): -0.504683457542
+p99(txnqueue_wait): -1.89985304697
+total_accesses: 0.348492431896
+uncommitted_intents: -0.00400411970981
+intercept: -0.58697227732
+
+model: 2
+skew: 1.1, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000908257153236
+avg(txnqueue_wait): 0.0184583019097
+failed_accesses: 0.00201446158425
+key: 0.0120983037684
+med(txnqueue_wait): -0.00524189034764
+newer_committed_values: 0.00160770511785
+p99(spanlatch_wait): 0.0348533370221
+p99(txnqueue_wait): 0.135468356779
+total_accesses: 0.014592214699
+uncommitted_intents: 0.000406756466399
+intercept: 4.72601497269
+
+model: 3
+skew: 1.1, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0925393199017
+avg(txnqueue_wait): -1.86667636436
+failed_accesses: -0.190860517309
+key: -1.35160961947
+med(txnqueue_wait): 0.566974156039
+newer_committed_values: -0.160402362073
+p99(spanlatch_wait): -3.64460711396
+p99(txnqueue_wait): -13.7704242908
+total_accesses: 2.05889016464
+uncommitted_intents: -0.0304581552366
+intercept: -15.2034402194
+
+model: 1
+skew: 1.1, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.13706603705
+avg(txnqueue_wait): -0.665984682903
+failed_accesses: -0.534231594283
+key: 9.52657376229
+med(txnqueue_wait): -0.708315437293
+newer_committed_values: -0.53461155711
+p99(spanlatch_wait): -5.64686087392
+p99(txnqueue_wait): -8.70914190674
+total_accesses: 0.217980831092
+uncommitted_intents: 0.000379962826894
+intercept: 1.76227493991
+
+model: 2
+skew: 1.1, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000142801328335
+avg(txnqueue_wait): -8.4426146496e-05
+failed_accesses: -6.46959902885e-05
+key: 0.00118406109252
+med(txnqueue_wait): -8.96024308409e-05
+newer_committed_values: -6.61992611165e-05
+p99(spanlatch_wait): -0.000708746713666
+p99(txnqueue_wait): -0.00108983626697
+total_accesses: 0.00299117534576
+uncommitted_intents: 1.50327082803e-06
+intercept: 5.34671921518
+
+model: 3
+skew: 1.1, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -8.81454026745
+avg(txnqueue_wait): -5.16271820093
+failed_accesses: -4.14135807388
+key: 73.8499986597
+med(txnqueue_wait): -5.49086594536
+newer_committed_values: -4.14430797299
+p99(spanlatch_wait): -43.7744857853
+p99(txnqueue_wait): -67.5132894358
+total_accesses: 1.69880010507
+uncommitted_intents: 0.00294989910776
+intercept: -18.5483494694
+
+model: 1
+skew: 1.1, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.57613814052e-05
+avg(txnqueue_wait): 7.19078686456e-05
+failed_accesses: 0.000117123226715
+key: -0.000362851797126
+med(txnqueue_wait): 7.82843681004e-05
+newer_committed_values: 4.16239543989e-05
+p99(spanlatch_wait): -3.91109316249e-05
+p99(txnqueue_wait): 0.000378294207191
+total_accesses: 0.158203383547
+uncommitted_intents: 7.5499272316e-05
+intercept: -27.7422034003
+
+model: 2
+skew: 1.1, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -2.31151299437e-07
+avg(txnqueue_wait): 1.05457744153e-06
+failed_accesses: 1.71769119428e-06
+key: -5.3214665804e-06
+med(txnqueue_wait): 1.14809311106e-06
+newer_committed_values: 6.10443393233e-07
+p99(spanlatch_wait): -5.73588217611e-07
+p99(txnqueue_wait): 5.54793994979e-06
+total_accesses: 0.00232015942906
+uncommitted_intents: 1.10724780105e-06
+intercept: 5.25987236874
+
+model: 3
+skew: 1.1, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000132302187861
+avg(txnqueue_wait): 0.000603599906738
+failed_accesses: 0.000983140928156
+key: -0.00304580451389
+med(txnqueue_wait): 0.00065712470936
+newer_committed_values: 0.000349394516434
+p99(spanlatch_wait): -0.000328300019537
+p99(txnqueue_wait): 0.003175429233
+total_accesses: 1.32797076805
+uncommitted_intents: 0.000633746411722
+intercept: -265.181421351
+
+model: 1
+skew: 1.1, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -3.93429135634e-05
+avg(txnqueue_wait): 0.000140128616844
+failed_accesses: 0.000118749188673
+key: -0.000428543759854
+med(txnqueue_wait): 0.000119001031043
+newer_committed_values: 3.64800909314e-05
+p99(spanlatch_wait): -2.68163871845e-05
+p99(txnqueue_wait): 0.000811459749928
+total_accesses: 0.164132260024
+uncommitted_intents: 8.22690977411e-05
+intercept: -29.0720482307
+
+model: 2
+skew: 1.1, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -4.81447039498e-07
+avg(txnqueue_wait): 1.71478168793e-06
+failed_accesses: 1.4531573834e-06
+key: -5.24417501882e-06
+med(txnqueue_wait): 1.45623922845e-06
+newer_committed_values: 4.46414110923e-07
+p99(spanlatch_wait): -3.28157450749e-07
+p99(txnqueue_wait): 9.92999396561e-06
+total_accesses: 0.00200851903221
+uncommitted_intents: 1.00674327248e-06
+intercept: 5.53407488974
+
+model: 3
+skew: 1.1, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000343157498051
+avg(txnqueue_wait): 0.00122223244814
+failed_accesses: 0.00103575639905
+key: -0.003737852414
+med(txnqueue_wait): 0.00103795302329
+newer_committed_values: 0.000318187332835
+p99(spanlatch_wait): -0.000233898394896
+p99(txnqueue_wait): 0.00707772943927
+total_accesses: 1.43159747456
+uncommitted_intents: 0.000717569066212
+intercept: -294.983506501
+
+model: 1
+skew: 1.1, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0880997249363
+avg(txnqueue_wait): 1.62534030491
+failed_accesses: -0.188395024925
+key: 1.43075648514
+med(txnqueue_wait): 1.50414553328
+newer_committed_values: -0.0397964497571
+p99(spanlatch_wait): -0.145225411772
+p99(txnqueue_wait): 0.557986559889
+total_accesses: 0.199849985481
+uncommitted_intents: -0.148598575168
+intercept: -14.9310303275
+
+model: 2
+skew: 1.1, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.00474423973751
+avg(txnqueue_wait): -0.0875228638548
+failed_accesses: 0.0101621511107
+key: -0.077195726933
+med(txnqueue_wait): -0.0810104939937
+newer_committed_values: 0.00214881013275
+p99(spanlatch_wait): 0.00772702860789
+p99(txnqueue_wait): -0.0299854986988
+total_accesses: 0.00258725649172
+uncommitted_intents: 0.00801334097798
+intercept: 6.32718470794
+
+model: 3
+skew: 1.1, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.433963877331
+avg(txnqueue_wait): 8.00623825781
+failed_accesses: -0.927461505783
+key: 7.04292900234
+med(txnqueue_wait): 7.40880576187
+newer_committed_values: -0.195847454066
+p99(spanlatch_wait): -0.718333833372
+p99(txnqueue_wait): 2.75053674868
+total_accesses: 1.40983469978
+uncommitted_intents: -0.731614051717
+intercept: -95.8894269983
+
+model: 1
+skew: 1.1, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.000170429438679
+avg(txnqueue_wait): 8.57409597786e-05
+failed_accesses: 0.000191105375488
+key: -0.00116281048577
+med(txnqueue_wait): 0.000310812847389
+newer_committed_values: 5.38792933159e-05
+p99(spanlatch_wait): -0.00027503802929
+p99(txnqueue_wait): 0.000107498747962
+total_accesses: 0.219771181811
+uncommitted_intents: 0.000137226082172
+intercept: -26.8965611886
+
+model: 2
+skew: 1.1, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -2.59002089259e-06
+avg(txnqueue_wait): 1.3030077368e-06
+failed_accesses: 2.90423367605e-06
+key: -1.76712631082e-05
+med(txnqueue_wait): 4.72343143688e-06
+newer_committed_values: 8.1880511048e-07
+p99(spanlatch_wait): -4.17976053692e-06
+p99(txnqueue_wait): 1.63366144551e-06
+total_accesses: 0.00333986872745
+uncommitted_intents: 2.08542856557e-06
+intercept: 5.33197809009
+
+model: 3
+skew: 1.1, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00129253992747
+avg(txnqueue_wait): 0.000650260980689
+failed_accesses: 0.00144934660401
+key: -0.00881877563286
+med(txnqueue_wait): 0.0023572102234
+newer_committed_values: 0.000408621529324
+p99(spanlatch_wait): -0.00208589335966
+p99(txnqueue_wait): 0.000815272437503
+total_accesses: 1.66674859461
+uncommitted_intents: 0.00104072507469
+intercept: -223.241963718
+
+model: 1
+skew: 1.1, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00195362118789
+avg(txnqueue_wait): 0.000209748347004
+failed_accesses: 0.00117172002915
+key: -0.00878790021862
+med(txnqueue_wait): -0.00145375596947
+newer_committed_values: 0.000117172002915
+p99(spanlatch_wait): -0.00483968471146
+p99(txnqueue_wait): 0.00611704115983
+total_accesses: 0.263637006559
+uncommitted_intents: 0.00105454802623
+intercept: -7.82281342491
+
+model: 2
+skew: 1.1, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00021946074812
+avg(txnqueue_wait): 2.35621570014e-05
+failed_accesses: 0.000131625596497
+key: -0.000987191973725
+med(txnqueue_wait): -0.000163308206637
+newer_committed_values: 1.31625596497e-05
+p99(spanlatch_wait): -0.000543667745839
+p99(txnqueue_wait): 0.000687160047988
+total_accesses: 0.0296157592118
+uncommitted_intents: 0.000118463036847
+intercept: 3.72194949892
+
+model: 3
+skew: 1.1, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00513381704838
+avg(txnqueue_wait): 0.000551186507596
+failed_accesses: 0.00307910064596
+key: -0.0230932548447
+med(txnqueue_wait): -0.00382024786919
+newer_committed_values: 0.000307910064596
+p99(spanlatch_wait): -0.0127179496386
+p99(txnqueue_wait): 0.0160746466033
+total_accesses: 0.69279764534
+uncommitted_intents: 0.00277119058136
+intercept: 13.4311155617
+
+model: 1
+skew: 1.1, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -3.2266924433e-05
+avg(txnqueue_wait): 9.39209967847e-06
+failed_accesses: 0.000114073102672
+key: -0.000535595841147
+med(txnqueue_wait): 7.07157900983e-05
+newer_committed_values: 3.07052721737e-05
+p99(spanlatch_wait): -4.49288909672e-05
+p99(txnqueue_wait): -0.000228030357845
+total_accesses: 0.173533052532
+uncommitted_intents: 8.33678304984e-05
+intercept: -26.0044919612
+
+model: 2
+skew: 1.1, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -3.53110722812e-07
+avg(txnqueue_wait): 1.0278175452e-07
+failed_accesses: 1.24835063911e-06
+key: -5.8612538358e-06
+med(txnqueue_wait): 7.73873066449e-07
+newer_committed_values: 3.36020895759e-07
+p99(spanlatch_wait): -4.91676025632e-07
+p99(txnqueue_wait): -2.4954335096e-06
+total_accesses: 0.0018990462428
+uncommitted_intents: 9.12329743347e-07
+intercept: 5.50321124503
+
+model: 3
+skew: 1.1, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.000289522625345
+avg(txnqueue_wait): 8.42728398879e-05
+failed_accesses: 0.00102354794413
+key: -0.00480576059782
+med(txnqueue_wait): 0.000634514183251
+newer_committed_values: 0.000275510330404
+p99(spanlatch_wait): -0.000403135120414
+p99(txnqueue_wait): -0.00204605641913
+total_accesses: 1.55706643369
+uncommitted_intents: 0.000748037613729
+intercept: -266.39731272
+
+model: 1
+skew: 1.1, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.321160701763
+avg(txnqueue_wait): -1.3394773955
+failed_accesses: -0.613048877964
+key: 8.63758209017
+med(txnqueue_wait): -1.11930566189
+newer_committed_values: -0.377746717471
+p99(spanlatch_wait): -0.702829388045
+p99(txnqueue_wait): -4.87487956578
+total_accesses: 0.231242193491
+uncommitted_intents: -0.235302160493
+intercept: -27.9977121759
+
+model: 2
+skew: 1.1, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00331169591845
+avg(txnqueue_wait): 0.0138184608779
+failed_accesses: 0.00632607651395
+key: -0.0891071516427
+med(txnqueue_wait): 0.0115465187922
+newer_committed_values: 0.0038971394771
+p99(spanlatch_wait): 0.00724784175266
+p99(txnqueue_wait): 0.0502985472969
+total_accesses: 0.00137789507884
+uncommitted_intents: 0.00242893703685
+intercept: 5.62328337623
+
+model: 3
+skew: 1.1, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -3.81309431378
+avg(txnqueue_wait): -15.9036777094
+failed_accesses: -7.27882706167
+key: 102.554382702
+med(txnqueue_wait): -13.289544402
+newer_committed_values: -4.48501218474
+p99(spanlatch_wait): -8.34461227626
+p99(txnqueue_wait): -57.8799940545
+total_accesses: 2.59038766839
+uncommitted_intents: -2.79381487693
+intercept: -371.948121912
+
+model: 1
+skew: 1.1, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -1.56291604265e-05
+avg(txnqueue_wait): 0.000104861395397
+failed_accesses: 3.17797640621e-05
+key: -0.000301245680172
+med(txnqueue_wait): 0.000137946873733
+newer_committed_values: 1.22484507323e-05
+p99(spanlatch_wait): 9.18552483814e-05
+p99(txnqueue_wait): 0.000313938157801
+total_accesses: 0.0180747408103
+uncommitted_intents: 1.95313133298e-05
+intercept: 5.01350163784
+
+model: 2
+skew: 1.1, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 3.25685257059e-06
+avg(txnqueue_wait): -2.18513404325e-05
+failed_accesses: -6.62236508257e-06
+key: 6.27745023452e-05
+med(txnqueue_wait): -2.87457942757e-05
+newer_committed_values: -2.55236987557e-06
+p99(spanlatch_wait): -1.91410794726e-05
+p99(txnqueue_wait): -6.54193999126e-05
+total_accesses: -0.00376647014071
+uncommitted_intents: -4.069995207e-06
+intercept: 6.16738055278
+
+model: 3
+skew: 1.1, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00012677381418
+avg(txnqueue_wait): 0.000850568980796
+failed_accesses: 0.000257777244198
+key: -0.00244351346063
+med(txnqueue_wait): 0.00111893734916
+newer_committed_values: 9.93516462015e-05
+p99(spanlatch_wait): 0.000745071383999
+p99(txnqueue_wait): 0.00254646677076
+total_accesses: 0.146610807638
+uncommitted_intents: 0.000158425597997
+intercept: 14.5177560282
+
+model: 1
+skew: 1.2, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.201782844213
+avg(txnqueue_wait): -0.176447704624
+failed_accesses: -0.728409772917
+key: 2.82356640414
+med(txnqueue_wait): 0.14349287
+newer_committed_values: -0.375244590332
+p99(spanlatch_wait): -3.83457042245
+p99(txnqueue_wait): -4.10152323323
+total_accesses: 0.365534890515
+uncommitted_intents: -0.353165182586
+intercept: -1.93744019812
+
+model: 2
+skew: 1.2, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0040313300069
+avg(txnqueue_wait): -0.00352692523537
+failed_accesses: -0.0145538645478
+key: 0.0564181475038
+med(txnqueue_wait): 0.00286404188594
+newer_committed_values: -0.00749680294402
+p99(spanlatch_wait): -0.0765920392763
+p99(txnqueue_wait): -0.0819407489554
+total_accesses: 0.00523510056381
+uncommitted_intents: -0.00705706160383
+intercept: 5.97279454345
+
+model: 3
+skew: 1.2, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.392057325252
+avg(txnqueue_wait): -0.341497830506
+failed_accesses: -1.41429614834
+key: 5.48049484802
+med(txnqueue_wait): 0.280884022757
+newer_committed_values: -0.729119943375
+p99(spanlatch_wait): -7.46347674108
+p99(txnqueue_wait): -7.97046516539
+total_accesses: 2.28237025576
+uncommitted_intents: -0.685176204965
+intercept: -71.1709775181
+
+model: 1
+skew: 1.2, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.68718205122
+avg(txnqueue_wait): 6.95274689739
+failed_accesses: -0.154598864498
+key: 2.81360991234
+med(txnqueue_wait): 8.34047896021
+newer_committed_values: -0.101025839416
+p99(spanlatch_wait): 4.73022187795
+p99(txnqueue_wait): 1.71894911106
+total_accesses: 0.236005675817
+uncommitted_intents: -0.0535730250818
+intercept: -66.8456634748
+
+model: 2
+skew: 1.2, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0199460816968
+avg(txnqueue_wait): 0.200318553864
+failed_accesses: -0.00435534472385
+key: 0.0876421777023
+med(txnqueue_wait): 0.240342662962
+newer_committed_values: -0.0028631407366
+p99(spanlatch_wait): 0.136158428279
+p99(txnqueue_wait): 0.0495680140482
+total_accesses: 0.00343181157563
+uncommitted_intents: -0.00149220398726
+intercept: 4.02119399047
+
+model: 3
+skew: 1.2, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 2.21714761331
+avg(txnqueue_wait): 21.332861761
+failed_accesses: -0.398777330956
+key: 13.4679464457
+med(txnqueue_wait): 25.6219521086
+newer_committed_values: -0.273932379128
+p99(spanlatch_wait): 14.4222484381
+p99(txnqueue_wait): 5.31399848044
+total_accesses: 1.23149274895
+uncommitted_intents: -0.124844951828
+intercept: -258.224434502
+
+model: 1
+skew: 1.2, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.114171130093
+avg(txnqueue_wait): 1.44551407599
+failed_accesses: -0.324968418968
+key: 3.02573966356
+med(txnqueue_wait): 2.54836071004
+newer_committed_values: -0.112491440206
+p99(spanlatch_wait): -1.93843330983
+p99(txnqueue_wait): -3.71274108345
+total_accesses: 0.308905719436
+uncommitted_intents: -0.212476978762
+intercept: -14.8787127384
+
+model: 2
+skew: 1.2, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.00953761995284
+avg(txnqueue_wait): 0.120746585649
+failed_accesses: -0.0271736788135
+key: 0.252867055194
+med(txnqueue_wait): 0.212869770549
+newer_committed_values: -0.00940666798448
+p99(spanlatch_wait): -0.161941968724
+p99(txnqueue_wait): -0.310220330282
+total_accesses: 0.00735820474916
+uncommitted_intents: -0.017767010829
+intercept: 5.41940575358
+
+model: 3
+skew: 1.2, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.267528229634
+avg(txnqueue_wait): 3.38768814757
+failed_accesses: -0.759857409295
+key: 7.0836945632
+med(txnqueue_wait): 5.97228863416
+newer_committed_values: -0.26302114589
+p99(spanlatch_wait): -4.54161349953
+p99(txnqueue_wait): -8.6957720025
+total_accesses: 1.84887708921
+uncommitted_intents: -0.496836263405
+intercept: -101.943496962
+
+model: 1
+skew: 1.2, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.117816269119
+avg(txnqueue_wait): 2.26909571428e-05
+failed_accesses: 8.71149512576e-05
+key: -0.000375541665214
+med(txnqueue_wait): 0.00018727420314
+newer_committed_values: 4.22963964621e-05
+p99(spanlatch_wait): 2.29786241623e-05
+p99(txnqueue_wait): 1.48798357152e-05
+total_accesses: 0.212102818598
+uncommitted_intents: 9.27720664898e-05
+intercept: -32.1589566575
+
+model: 2
+skew: 1.2, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.00368232251435
+avg(txnqueue_wait): 3.14829906022e-07
+failed_accesses: 2.19800579738e-07
+key: -4.96750372738e-06
+med(txnqueue_wait): 5.13630025725e-06
+newer_committed_values: 4.70250396851e-07
+p99(spanlatch_wait): 3.13222398757e-07
+p99(txnqueue_wait): 1.81827557362e-07
+total_accesses: 0.00315614017287
+uncommitted_intents: 1.24809742333e-06
+intercept: 5.10334781642
+
+model: 3
+skew: 1.2, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.41396353567
+avg(txnqueue_wait): 0.000154659280972
+failed_accesses: 0.000298720810988
+key: -0.002487147041
+med(txnqueue_wait): 0.00203365905128
+newer_committed_values: 0.000253499544747
+p99(spanlatch_wait): 0.000154949532787
+p99(txnqueue_wait): 9.40721988588e-05
+total_accesses: 1.50930576415
+uncommitted_intents: 0.000620663406573
+intercept: -242.192562857
+
+model: 1
+skew: 1.2, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000123247714898
+avg(txnqueue_wait): -0.000266351045346
+failed_accesses: 0.000383254782603
+key: -0.00186047201667
+med(txnqueue_wait): 2.009309778e-05
+newer_committed_values: 5.21226504341e-05
+p99(spanlatch_wait): -0.000494622374063
+p99(txnqueue_wait): -0.000698444674215
+total_accesses: 0.329303546951
+uncommitted_intents: 0.000331132132169
+intercept: -15.0825727542
+
+model: 2
+skew: 1.2, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.63577362148e-06
+avg(txnqueue_wait): -3.5350757975e-06
+failed_accesses: 5.08665060614e-06
+key: -2.46926367024e-05
+med(txnqueue_wait): 2.66680476386e-07
+newer_committed_values: 6.91784482435e-07
+p99(spanlatch_wait): -6.56474834246e-06
+p99(txnqueue_wait): -9.26992743917e-06
+total_accesses: 0.00437059669633
+uncommitted_intents: 4.3948661237e-06
+intercept: 5.77020114821
+
+model: 3
+skew: 1.2, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.00079815494473
+avg(txnqueue_wait): -0.00172489529768
+failed_accesses: 0.00248196650202
+key: -0.0120484581874
+med(txnqueue_wait): 0.000130123348424
+newer_committed_values: 0.000337547444275
+p99(spanlatch_wait): -0.00320318550296
+p99(txnqueue_wait): -0.0045231432551
+total_accesses: 2.13257709917
+uncommitted_intents: 0.00214441905775
+intercept: -117.696980993
+
+model: 1
+skew: 1.2, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.260356854095
+avg(txnqueue_wait): -1.58005073535
+failed_accesses: -0.922782040492
+key: 2.14042024889
+med(txnqueue_wait): -1.42155197801
+newer_committed_values: -0.497239373833
+p99(spanlatch_wait): -0.251192541886
+p99(txnqueue_wait): -1.40450184304
+total_accesses: 0.28456195556
+uncommitted_intents: -0.425542666659
+intercept: 6.00093196295
+
+model: 2
+skew: 1.2, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.0641493729684
+avg(txnqueue_wait): 0.388511601035
+failed_accesses: 0.227108417018
+key: -0.527283507403
+med(txnqueue_wait): 0.349489364675
+newer_committed_values: 0.122316466752
+p99(spanlatch_wait): 0.0613552641964
+p99(txnqueue_wait): 0.346066748565
+total_accesses: -0.0073371856635
+uncommitted_intents: 0.104791950266
+intercept: 5.2357487588
+
+model: 3
+skew: 1.2, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -3.41470122724
+avg(txnqueue_wait): 20.6678760812
+failed_accesses: 12.084984718
+key: -28.0660256197
+med(txnqueue_wait): 18.5911897316
+newer_committed_values: 6.50778287675
+p99(spanlatch_wait): 3.25737790204
+p99(txnqueue_wait): 18.4214762348
+total_accesses: 0.61547248315
+uncommitted_intents: 5.5772018413
+intercept: -22.687772966
+
+model: 1
+skew: 1.2, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0503768087787
+avg(txnqueue_wait): 1.531447046
+failed_accesses: -0.0377044005368
+key: 0.497470141208
+med(txnqueue_wait): 1.87313295707
+newer_committed_values: -0.0155536478458
+p99(spanlatch_wait): 0.0161885888275
+p99(txnqueue_wait): -1.64240536782
+total_accesses: 0.196994025664
+uncommitted_intents: -0.022150752691
+intercept: -21.8392191652
+
+model: 2
+skew: 1.2, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.000522452845301
+avg(txnqueue_wait): 0.0158832985802
+failed_accesses: -0.00039063396054
+key: 0.00515824972574
+med(txnqueue_wait): 0.0194276730763
+newer_committed_values: -0.000161159335491
+p99(spanlatch_wait): 0.000167834771259
+p99(txnqueue_wait): -0.017038403913
+total_accesses: 0.00263234154765
+uncommitted_intents: -0.000229474625049
+intercept: 5.30229760428
+
+model: 3
+skew: 1.2, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0636350068968
+avg(txnqueue_wait): 1.93586314522
+failed_accesses: -0.0469641831518
+key: 0.626775349469
+med(txnqueue_wait): 2.36879210641
+newer_committed_values: -0.0194016740255
+p99(spanlatch_wait): 0.0203558825661
+p99(txnqueue_wait): -2.08336505583
+total_accesses: 1.23943912148
+uncommitted_intents: -0.0275625091263
+intercept: -115.107195438
+
+model: 1
+skew: 1.2, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.267539315937
+avg(txnqueue_wait): 6.80375897556
+failed_accesses: -0.13212367139
+key: 0.0716835382195
+med(txnqueue_wait): 8.45593953423
+newer_committed_values: -0.135170455556
+p99(spanlatch_wait): 0.534544086077
+p99(txnqueue_wait): -0.835683862462
+total_accesses: 0.22200774468
+uncommitted_intents: 0.00304678416585
+intercept: -51.0813661842
+
+model: 2
+skew: 1.2, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00243949415273
+avg(txnqueue_wait): -0.0195791831754
+failed_accesses: 0.000921482093997
+key: 0.1502356141
+med(txnqueue_wait): -0.0250338220964
+newer_committed_values: 0.000478525638488
+p99(spanlatch_wait): 0.00342710404217
+p99(txnqueue_wait): 0.00499462517981
+total_accesses: 0.00423246295293
+uncommitted_intents: 0.000442956455508
+intercept: 4.727888131
+
+model: 3
+skew: 1.2, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.11078000858
+avg(txnqueue_wait): 28.2271813672
+failed_accesses: -0.548155003749
+key: 0.219769951308
+med(txnqueue_wait): 35.0821223736
+newer_committed_values: -0.56074133299
+p99(spanlatch_wait): 2.21535577951
+p99(txnqueue_wait): -3.46822725282
+total_accesses: 1.22834237623
+uncommitted_intents: 0.0125863292414
+intercept: -247.556341582
+
+model: 1
+skew: 1.2, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.371629118631
+avg(txnqueue_wait): 0.709157608191
+failed_accesses: -0.309863622501
+key: 2.30120528903
+med(txnqueue_wait): 1.59709004116
+newer_committed_values: -0.116444621433
+p99(spanlatch_wait): -4.11437065094
+p99(txnqueue_wait): 0.114529834926
+total_accesses: 0.34933186728
+uncommitted_intents: -0.193419001068
+intercept: -14.0002032344
+
+model: 2
+skew: 1.2, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0213524353267
+avg(txnqueue_wait): -0.0407770121526
+failed_accesses: 0.0178523437517
+key: -0.132464999887
+med(txnqueue_wait): -0.0918441033245
+newer_committed_values: 0.00670844890665
+p99(spanlatch_wait): 0.23651333785
+p99(txnqueue_wait): -0.00651202376086
+total_accesses: 0.0061292105912
+uncommitted_intents: 0.0111438948451
+intercept: 5.09175035744
+
+model: 3
+skew: 1.2, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.62907354054
+avg(txnqueue_wait): 3.10793690385
+failed_accesses: -1.35719204968
+key: 10.0818725108
+med(txnqueue_wait): 6.99912732019
+newer_committed_values: -0.510031294215
+p99(spanlatch_wait): -18.0330567467
+p99(txnqueue_wait): 0.50363488039
+total_accesses: 2.13692934783
+uncommitted_intents: -0.847160755467
+intercept: -95.9009944885
+
+model: 1
+skew: 1.2, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.66541627875e-05
+avg(txnqueue_wait): 0.00011565004084
+failed_accesses: 8.99661843082e-05
+key: -0.00217121114231
+med(txnqueue_wait): 8.77867707744e-05
+newer_committed_values: 3.65148607328e-05
+p99(spanlatch_wait): 6.51584082492e-05
+p99(txnqueue_wait): 0.000620338465201
+total_accesses: 0.169113223418
+uncommitted_intents: 5.34513235754e-05
+intercept: 3.89494355295
+
+model: 2
+skew: 1.2, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -2.79741429673e-07
+avg(txnqueue_wait): 1.94258385601e-06
+failed_accesses: 1.51116987037e-06
+key: -3.64700235505e-05
+med(txnqueue_wait): 1.47456207053e-06
+newer_committed_values: 6.13343310984e-07
+p99(spanlatch_wait): 1.09447148509e-06
+p99(txnqueue_wait): 1.04198794831e-05
+total_accesses: 0.0028406096121
+uncommitted_intents: 8.97826559385e-07
+intercept: 5.13345204313
+
+model: 3
+skew: 1.2, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000108762838323
+avg(txnqueue_wait): 0.0007552722316
+failed_accesses: 0.000587539444842
+key: -0.0141794630838
+med(txnqueue_wait): 0.000573306414648
+newer_committed_values: 0.000238466499034
+p99(spanlatch_wait): 0.000425528050388
+p99(txnqueue_wait): 0.00405122569398
+total_accesses: 1.10442262464
+uncommitted_intents: 0.000349072945808
+intercept: 14.8604159604
+
+model: 1
+skew: 1.2, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.000153433558188
+avg(txnqueue_wait): 0.000325706772771
+failed_accesses: 0.000426723509928
+key: -0.00157925148811
+med(txnqueue_wait): 9.47787780588e-06
+newer_committed_values: 0.000105796638127
+p99(spanlatch_wait): -0.000299296741448
+p99(txnqueue_wait): 0.00146765379225
+total_accesses: 0.361648590777
+uncommitted_intents: 0.000320926871801
+intercept: -24.9068339221
+
+model: 2
+skew: 1.2, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -2.58390685691e-06
+avg(txnqueue_wait): 5.4850840549e-06
+failed_accesses: 7.1862623557e-06
+key: -2.65954775285e-05
+med(txnqueue_wait): 1.59612758387e-07
+newer_committed_values: 1.78167450408e-06
+p99(spanlatch_wait): -5.04032436979e-06
+p99(txnqueue_wait): 2.47161099706e-05
+total_accesses: 0.00609036435402
+uncommitted_intents: 5.40458785162e-06
+intercept: 5.24082427624
+
+model: 3
+skew: 1.2, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.000986974658099
+avg(txnqueue_wait): 0.00209513703842
+failed_accesses: 0.00274493595331
+key: -0.0101586720398
+med(txnqueue_wait): 6.09672702468e-05
+newer_committed_values: 0.000680546042057
+p99(spanlatch_wait): -0.0019252522235
+p99(txnqueue_wait): 0.0094408101912
+total_accesses: 2.32633589711
+uncommitted_intents: 0.00206438991125
+intercept: -171.911344009
+
+model: 1
+skew: 1.2, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 2.35307285361e-05
+avg(txnqueue_wait): 9.76585242649e-05
+failed_accesses: 0.000349526464296
+key: -0.00105820861703
+med(txnqueue_wait): 0.000123865964145
+newer_committed_values: 0.000139551890144
+p99(spanlatch_wait): 0.000407074939498
+p99(txnqueue_wait): 0.000775371538509
+total_accesses: 0.303705873087
+uncommitted_intents: 0.000209974574151
+intercept: -23.1281158834
+
+model: 2
+skew: 1.2, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 4.42929839731e-07
+avg(txnqueue_wait): 1.83827179149e-06
+failed_accesses: 6.57929908863e-06
+key: -1.99191526273e-05
+med(txnqueue_wait): 2.33158661291e-06
+newer_committed_values: 2.62685008843e-06
+p99(spanlatch_wait): 7.66256078447e-06
+p99(txnqueue_wait): 1.45951788427e-05
+total_accesses: 0.00571679680404
+uncommitted_intents: 3.9524490002e-06
+intercept: 4.99436796261
+
+model: 3
+skew: 1.2, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.000119027252306
+avg(txnqueue_wait): 0.00049399345157
+failed_accesses: 0.00176803597855
+key: -0.00535281616368
+med(txnqueue_wait): 0.000626560513999
+newer_committed_values: 0.00070590581216
+p99(spanlatch_wait): 0.00205913775499
+p99(txnqueue_wait): 0.0039221201164
+total_accesses: 1.53625823898
+uncommitted_intents: 0.00106213016639
+intercept: -73.5626865057
+
+model: 1
+skew: 1.2, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 3.64437649863e-05
+avg(txnqueue_wait): -4.95244451069e-05
+failed_accesses: 0.000294162622268
+key: -0.00102617736573
+med(txnqueue_wait): -0.000192867983535
+newer_committed_values: 8.75704242392e-05
+p99(spanlatch_wait): 0.000208895745192
+p99(txnqueue_wait): 0.000229464259599
+total_accesses: 0.295539081331
+uncommitted_intents: 0.000206592198029
+intercept: -27.2764143868
+
+model: 2
+skew: 1.2, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 4.67223986435e-07
+avg(txnqueue_wait): -6.34923660536e-07
+failed_accesses: 3.77128524146e-06
+key: -1.31560139241e-05
+med(txnqueue_wait): -2.47264650501e-06
+newer_committed_values: 1.12268868823e-06
+p99(spanlatch_wait): 2.67812897089e-06
+p99(txnqueue_wait): 2.9418257459e-06
+total_accesses: 0.00378893201014
+uncommitted_intents: 2.64859655323e-06
+intercept: 5.3024732873
+
+model: 3
+skew: 1.2, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.000258670681392
+avg(txnqueue_wait): -0.000351514778075
+failed_accesses: 0.00208790847956
+key: -0.00728360526205
+med(txnqueue_wait): -0.00136893904179
+newer_committed_values: 0.000621557660583
+p99(spanlatch_wait): 0.00148270094402
+p99(txnqueue_wait): 0.00162869221684
+total_accesses: 2.09767831547
+uncommitted_intents: 0.00146635081898
+intercept: -181.952712549
+
+model: 1
+skew: 1.2, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.90969426218
+avg(txnqueue_wait): -1.94370940515
+failed_accesses: -0.209972488442
+key: 7.21369165134
+med(txnqueue_wait): -2.96536502509
+newer_committed_values: -0.215186221146
+p99(spanlatch_wait): 0.572221463684
+p99(txnqueue_wait): -8.48190022553
+total_accesses: 0.251400395162
+uncommitted_intents: 0.00521373270378
+intercept: -18.6586597503
+
+model: 2
+skew: 1.2, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0523023355901
+avg(txnqueue_wait): -0.10476108878
+failed_accesses: -0.0126580895466
+key: -0.0165261817466
+med(txnqueue_wait): -0.141001076012
+newer_committed_values: -0.0143313068266
+p99(spanlatch_wait): 0.103533750358
+p99(txnqueue_wait): -0.377625220439
+total_accesses: 0.00434675513362
+uncommitted_intents: 0.00167321727996
+intercept: 6.05733967413
+
+model: 3
+skew: 1.2, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 4.61409747208
+avg(txnqueue_wait): -9.95230634677
+failed_accesses: -1.05700215544
+key: 42.3653418237
+med(txnqueue_wait): -15.4357510789
+newer_committed_values: -1.06514853192
+p99(spanlatch_wait): 1.9562025177
+p99(txnqueue_wait): -44.4945982867
+total_accesses: 1.62776095277
+uncommitted_intents: 0.00814637648388
+intercept: -153.707212381
+
+model: 1
+skew: 1.2, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 96.433734866
+
+model: 2
+skew: 1.2, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 7.2400805
+
+model: 3
+skew: 1.2, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 551.49000978
+
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.0522702798189
+avg(txnqueue_wait): 2.21667842585
+failed_accesses: 0.627224833287
+key: 12.2967470063
+med(txnqueue_wait): 3.15454012919
+newer_committed_values: 0.128020651901
+p99(spanlatch_wait): 4.5433647849
+p99(txnqueue_wait): 5.21384491486
+total_accesses: 0.434709940819
+uncommitted_intents: 0.499204181386
+intercept: -71.5547374086
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.16340921188
+avg(txnqueue_wait): 0.198708758351
+failed_accesses: 0.103322613882
+key: 0.0922474803449
+med(txnqueue_wait): 0.227534249843
+newer_committed_values: 0.0803649548132
+p99(spanlatch_wait): -0.0537317017623
+p99(txnqueue_wait): 0.234082794815
+total_accesses: 0.00423137861011
+uncommitted_intents: 0.0229576590687
+intercept: 4.1655977362
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -3.76863659295
+avg(txnqueue_wait): 9.03752135143
+failed_accesses: 1.56101819524
+key: 71.4996903192
+med(txnqueue_wait): 14.0298317175
+newer_committed_values: -0.935193780955
+p99(spanlatch_wait): 28.2748172073
+p99(txnqueue_wait): 26.1916500987
+total_accesses: 2.48063563748
+uncommitted_intents: 2.4962119762
+intercept: -407.992324065
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.387872085918
+avg(txnqueue_wait): 3.12240190302
+failed_accesses: 0.177584108382
+key: 2.78566607432
+med(txnqueue_wait): 0.357847490794
+newer_committed_values: 0.0928459966415
+p99(spanlatch_wait): 1.13054654903
+p99(txnqueue_wait): 8.06525507849
+total_accesses: 0.353478552446
+uncommitted_intents: 0.0847381117405
+intercept: -59.8712846272
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00343471652385
+avg(txnqueue_wait): 0.0276473047667
+failed_accesses: 0.00157617271202
+key: 0.0246501064049
+med(txnqueue_wait): 0.00317057564844
+newer_committed_values: 0.000823385333753
+p99(spanlatch_wait): 0.0100101520639
+p99(txnqueue_wait): 0.0714219506179
+total_accesses: 0.00617405713567
+uncommitted_intents: 0.000752787378271
+intercept: 4.90401503113
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 2.23513885218
+avg(txnqueue_wait): 17.9931031046
+failed_accesses: 1.02326160975
+key: 16.0529735694
+med(txnqueue_wait): 2.06208233883
+newer_committed_values: 0.535004976224
+p99(spanlatch_wait): 6.51487530857
+p99(txnqueue_wait): 46.476531944
+total_accesses: 1.97068555789
+uncommitted_intents: 0.488256633529
+intercept: -353.605578877
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.42161409826
+avg(txnqueue_wait): 4.44678981056
+failed_accesses: 3.3997216882
+key: 2.6504265939
+med(txnqueue_wait): 7.54164350005
+newer_committed_values: 1.38226045755
+p99(spanlatch_wait): 4.12654934055
+p99(txnqueue_wait): -14.5940393854
+total_accesses: 0.252564121715
+uncommitted_intents: 2.01746123065
+intercept: -21.1799688985
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.186849325971
+avg(txnqueue_wait): -0.579206211242
+failed_accesses: -0.196427748962
+key: 0.0458534642273
+med(txnqueue_wait): -0.693619001631
+newer_committed_values: -0.076941514621
+p99(spanlatch_wait): -0.273233382686
+p99(txnqueue_wait): -0.173231806483
+total_accesses: 0.00382242432366
+uncommitted_intents: -0.119486234341
+intercept: 8.30463274402
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -18.0379702325
+avg(txnqueue_wait): 55.8890121932
+failed_accesses: 35.4310336764
+key: 18.6201410501
+med(txnqueue_wait): 86.2065070876
+newer_committed_values: 14.3269570925
+p99(spanlatch_wait): 44.3533670512
+p99(txnqueue_wait): -121.704397396
+total_accesses: 1.97526805006
+uncommitted_intents: 21.1040765839
+intercept: -266.76154259
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.122031759115
+avg(txnqueue_wait): -4.00196538868
+failed_accesses: 0.535221600006
+key: 6.23212312604
+med(txnqueue_wait): -4.88091996708
+newer_committed_values: 0.19179439999
+p99(spanlatch_wait): 6.97468634446
+p99(txnqueue_wait): -5.46442927703
+total_accesses: 0.426405083879
+uncommitted_intents: 0.343427200015
+intercept: -37.1264586757
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.000146326539253
+avg(txnqueue_wait): 0.00478416759284
+failed_accesses: -0.00063048013096
+key: -0.00746074955397
+med(txnqueue_wait): 0.00582959576325
+newer_committed_values: -0.000226239608338
+p99(spanlatch_wait): -0.00831677482801
+p99(txnqueue_wait): 0.0065531530816
+total_accesses: 0.00524158311843
+uncommitted_intents: -0.000404240522622
+intercept: 5.27505705647
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.963516284487
+avg(txnqueue_wait): -31.59801904
+failed_accesses: 4.22592514818
+key: 49.2064908521
+med(txnqueue_wait): -38.5379240991
+newer_committed_values: 1.51434190124
+p99(spanlatch_wait): 55.0695458122
+p99(txnqueue_wait): -43.1450505865
+total_accesses: 3.37654879057
+uncommitted_intents: 2.71158324694
+intercept: -318.16022865
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0239723328422
+avg(txnqueue_wait): 1.46654468769
+failed_accesses: -0.00554773188072
+key: 0.785175329953
+med(txnqueue_wait): 1.50009096891
+newer_committed_values: 0.0187469124024
+p99(spanlatch_wait): -0.00283605221599
+p99(txnqueue_wait): 2.62708560157
+total_accesses: 0.186496815868
+uncommitted_intents: -0.0242946442831
+intercept: -36.7320122142
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.000951508486852
+avg(txnqueue_wait): 0.0582402147826
+failed_accesses: -0.000222997012742
+key: 0.0311900684696
+med(txnqueue_wait): 0.0595723538464
+newer_committed_values: 0.000743353032815
+p99(spanlatch_wait): -0.000114043703958
+p99(txnqueue_wait): 0.104321027597
+total_accesses: 0.00344165312711
+uncommitted_intents: -0.000966350045557
+intercept: 4.4607609201
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0889459170814
+avg(txnqueue_wait): 5.43932661253
+failed_accesses: -0.0203916644819
+key: 2.91156562253
+med(txnqueue_wait): 5.56375251021
+newer_committed_values: 0.0696092242413
+p99(spanlatch_wait): -0.0104212749684
+p99(txnqueue_wait): 9.74419985619
+total_accesses: 0.964450557163
+uncommitted_intents: -0.0900008887231
+intercept: -170.149097363
+
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 1.0976487108
+avg(txnqueue_wait): 5.34465802838
+failed_accesses: 0.0968655468009
+key: 11.1142901274
+med(txnqueue_wait): 9.55563019008
+newer_committed_values: -0.314460306871
+p99(spanlatch_wait): 0.88518547906
+p99(txnqueue_wait): -1.73070547541
+total_accesses: 0.714464914675
+uncommitted_intents: 0.411325853672
+intercept: -69.8155419965
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0272870554537
+avg(txnqueue_wait): 0.0888868920043
+failed_accesses: 0.00990403827811
+key: 0.345894414786
+med(txnqueue_wait): 0.238548228847
+newer_committed_values: -0.00446307235753
+p99(spanlatch_wait): 0.0384434898101
+p99(txnqueue_wait): -0.212086561589
+total_accesses: 0.014308275666
+uncommitted_intents: 0.0143671106356
+intercept: 4.60744973278
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 6.92191288322
+avg(txnqueue_wait): 34.6529612651
+failed_accesses: 0.448661741467
+key: 68.589213685
+med(txnqueue_wait): 60.2371309806
+newer_committed_values: -2.05550973399
+p99(spanlatch_wait): 5.22765237026
+p99(txnqueue_wait): -7.26694852866
+total_accesses: 4.35765390438
+uncommitted_intents: 2.50417147546
+intercept: -455.381693021
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.641961144495
+avg(txnqueue_wait): 3.20263090549
+failed_accesses: 0.926647307322
+key: 9.36580265599
+med(txnqueue_wait): 4.60152841149
+newer_committed_values: 0.529827976476
+p99(spanlatch_wait): 4.96693356838
+p99(txnqueue_wait): -6.28845514715
+total_accesses: 0.258510854051
+uncommitted_intents: 0.396819330846
+intercept: -41.9614347001
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0121115562699
+avg(txnqueue_wait): 0.0604228406351
+failed_accesses: 0.0174817789008
+key: 0.176702288132
+med(txnqueue_wait): 0.0868145884012
+newer_committed_values: 0.009995670485
+p99(spanlatch_wait): 0.0937080644166
+p99(txnqueue_wait): -0.118640325371
+total_accesses: 0.00392380604487
+uncommitted_intents: 0.00748610841581
+intercept: 5.04741124222
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 3.01470731535
+avg(txnqueue_wait): 15.0398312193
+failed_accesses: 4.35164162685
+key: 43.982584743
+med(txnqueue_wait): 21.6091949597
+newer_committed_values: 2.4881289392
+p99(spanlatch_wait): 23.3251826641
+p99(txnqueue_wait): -29.5311730216
+total_accesses: 1.24052518262
+uncommitted_intents: 1.86351268765
+intercept: -196.513627095
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.225011919209
+avg(txnqueue_wait): 0.538535326315
+failed_accesses: 0.378767357061
+key: 10.8551734114
+med(txnqueue_wait): 0.50688405977
+newer_committed_values: 0.137744338785
+p99(spanlatch_wait): -0.163995277041
+p99(txnqueue_wait): 0.705988358162
+total_accesses: 0.216280236181
+uncommitted_intents: 0.241023018276
+intercept: -43.9410515842
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00437546350138
+avg(txnqueue_wait): 0.0104719948258
+failed_accesses: 0.00736482208007
+key: 0.211086570919
+med(txnqueue_wait): 0.00985664564467
+newer_committed_values: 0.0026783225708
+p99(spanlatch_wait): -0.00318935790938
+p99(txnqueue_wait): 0.0137260862388
+total_accesses: 0.00350684546224
+uncommitted_intents: 0.00468649950927
+intercept: 4.57627808726
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.945938982894
+avg(txnqueue_wait): 2.26399980594
+failed_accesses: 1.59246533382
+key: 45.633842787
+med(txnqueue_wait): 2.1309021762
+newer_committed_values: 0.579124612044
+p99(spanlatch_wait): -0.689310898157
+p99(txnqueue_wait): 2.96859531722
+total_accesses: 1.11807820089
+uncommitted_intents: 1.01334072177
+intercept: -197.392624098
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0854847380976
+avg(txnqueue_wait): 0.208614817134
+failed_accesses: 0.0183256155629
+key: 1.70493220133
+med(txnqueue_wait): 0.205049975431
+newer_committed_values: 0.00372920318832
+p99(spanlatch_wait): 0.14699824482
+p99(txnqueue_wait): 0.269317893044
+total_accesses: 0.198889625482
+uncommitted_intents: 0.0145964123746
+intercept: -14.0098987289
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000280750950886
+avg(txnqueue_wait): -0.00936982491448
+failed_accesses: 4.66535966823e-05
+key: 0.00982915096489
+med(txnqueue_wait): -0.00938258477328
+newer_committed_values: -3.8061487894e-05
+p99(spanlatch_wait): 0.00281976771986
+p99(txnqueue_wait): -0.00915254663353
+total_accesses: 0.0021622235443
+uncommitted_intents: 8.47150845763e-05
+intercept: 6.29007116961
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.545535648081
+avg(txnqueue_wait): 2.95544050717
+failed_accesses: 0.0971157419817
+key: 7.9934613592
+med(txnqueue_wait): 2.937220161
+newer_committed_values: 0.0286867202363
+p99(spanlatch_wait): 0.320133364416
+p99(txnqueue_wait): 3.26570142433
+total_accesses: 0.948302335785
+uncommitted_intents: 0.0684290217453
+intercept: -91.2652412309
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.43806836763e-06
+avg(txnqueue_wait): 2.33974205832e-05
+failed_accesses: 5.21811731789e-08
+key: -5.82968066755e-05
+med(txnqueue_wait): 2.38082409558e-05
+newer_committed_values: 7.30536424505e-08
+p99(spanlatch_wait): -8.44195882577e-06
+p99(txnqueue_wait): 5.0121232193e-05
+total_accesses: 0.00239016907369
+uncommitted_intents: -2.08724692716e-08
+intercept: 7.62259385687
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 9.96387852817e-06
+avg(txnqueue_wait): -0.000162112637904
+failed_accesses: -3.61545308077e-07
+key: 0.000403918418184
+med(txnqueue_wait): -0.000164959070231
+newer_committed_values: -5.06163431308e-07
+p99(spanlatch_wait): 5.84914140197e-05
+p99(txnqueue_wait): -0.00034727268918
+total_accesses: -0.0165606551455
+uncommitted_intents: 1.44618123231e-07
+intercept: 7.21817200681
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -7.47542106443e-05
+avg(txnqueue_wait): 0.00121625351491
+failed_accesses: 2.71250136592e-06
+key: -0.003030406526
+med(txnqueue_wait): 0.001237608934
+newer_committed_values: 3.79750191228e-06
+p99(spanlatch_wait): -0.000438833078118
+p99(txnqueue_wait): 0.00260542073898
+total_accesses: 0.124246667566
+uncommitted_intents: -1.08500054637e-06
+intercept: 25.4799254088
+
+model: 1
+skew: 1.3, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.338803893619
+avg(txnqueue_wait): 0.549772307363
+failed_accesses: -0.192137562311
+key: 1.0950255058
+med(txnqueue_wait): 0.693335847622
+newer_committed_values: -0.101858131548
+p99(spanlatch_wait): 0.801855361942
+p99(txnqueue_wait): 0.0689421988409
+total_accesses: 0.409167988041
+uncommitted_intents: -0.090279430763
+intercept: -12.9330999345
+
+model: 2
+skew: 1.3, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0441181448628
+avg(txnqueue_wait): 0.0715934400885
+failed_accesses: -0.0251481876493
+key: 0.143041508809
+med(txnqueue_wait): 0.090288848259
+newer_committed_values: -0.0132816003151
+p99(spanlatch_wait): 0.10452966881
+p99(txnqueue_wait): 0.00877891146219
+total_accesses: 0.015527668199
+uncommitted_intents: -0.0118665873343
+intercept: 4.44394107607
+
+model: 3
+skew: 1.3, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.124684291934
+avg(txnqueue_wait): -0.202501588101
+failed_accesses: 0.077163877879
+key: -0.425589781532
+med(txnqueue_wait): -0.255382289935
+newer_committed_values: 0.0383841920067
+p99(spanlatch_wait): -0.300827259248
+p99(txnqueue_wait): -0.0154011442018
+total_accesses: 1.74516562318
+uncommitted_intents: 0.0387796858723
+intercept: -31.9038416307
+
+model: 1
+skew: 1.3, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.326569694985
+avg(txnqueue_wait): 0.905409907159
+failed_accesses: 0.0179127311461
+key: 5.15949706065
+med(txnqueue_wait): 0.777913717032
+newer_committed_values: -0.0150733956311
+p99(spanlatch_wait): -0.0311470998287
+p99(txnqueue_wait): 0.671533476994
+total_accesses: 0.46664055528
+uncommitted_intents: 0.0329861267772
+intercept: -40.6588561732
+
+model: 2
+skew: 1.3, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0084008175099
+avg(txnqueue_wait): 0.0232909116289
+failed_accesses: 0.000457892070094
+key: 0.132755330072
+med(txnqueue_wait): 0.0200120736233
+newer_committed_values: -0.000388794313863
+p99(spanlatch_wait): -0.000804406973507
+p99(txnqueue_wait): 0.0172652075877
+total_accesses: 0.0104310517932
+uncommitted_intents: 0.000846686383956
+intercept: 4.6474606521
+
+model: 3
+skew: 1.3, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 1.71770076149
+avg(txnqueue_wait): 4.76233320927
+failed_accesses: 0.0946080634854
+key: 27.1340081116
+med(txnqueue_wait): 4.09160029194
+newer_committed_values: -0.0791437068824
+p99(spanlatch_wait): -0.163402892257
+p99(txnqueue_wait): 3.53344230622
+total_accesses: 2.66588697209
+uncommitted_intents: 0.173751770368
+intercept: -234.128399981
+
+model: 1
+skew: 1.3, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.106638859625
+avg(txnqueue_wait): -0.256310162506
+failed_accesses: -0.00531350415866
+key: -1.78418881498
+med(txnqueue_wait): -0.196895990673
+newer_committed_values: 0.00834856663605
+p99(spanlatch_wait): -0.728855447289
+p99(txnqueue_wait): -0.0639512165752
+total_accesses: -0.210918601352
+uncommitted_intents: -0.0136620707947
+intercept: 25.9163304677
+
+model: 2
+skew: 1.3, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0854699149872
+avg(txnqueue_wait): -0.205687791211
+failed_accesses: -0.00383013797847
+key: -1.43855790683
+med(txnqueue_wait): -0.158032042386
+newer_committed_values: 0.00639315667587
+p99(spanlatch_wait): -0.587384750585
+p99(txnqueue_wait): -0.05001152991
+total_accesses: -0.11729904202
+uncommitted_intents: -0.0102232946543
+intercept: 15.2869412671
+
+model: 3
+skew: 1.3, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.243762919078
+avg(txnqueue_wait): 0.585114609031
+failed_accesses: 0.013438710652
+key: 4.05264188676
+med(txnqueue_wait): 0.449409686982
+newer_committed_values: -0.019983010678
+p99(spanlatch_wait): 1.65637434128
+p99(txnqueue_wait): 0.149938711682
+total_accesses: 0.638225440805
+uncommitted_intents: 0.03342172133
+intercept: 9.16792276735
+
+model: 1
+skew: 1.3, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.416337452858
+avg(txnqueue_wait): -0.219584270588
+failed_accesses: 0.0676044444661
+key: 3.01226464743
+med(txnqueue_wait): 0.0157030230304
+newer_committed_values: -0.110217509236
+p99(spanlatch_wait): 0.793188962265
+p99(txnqueue_wait): -1.84621978365
+total_accesses: 0.442461574207
+uncommitted_intents: 0.177821953702
+intercept: -6.56817347893
+
+model: 2
+skew: 1.3, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0186155355933
+avg(txnqueue_wait): -0.041377251278
+failed_accesses: 0.00494916361587
+key: 0.114364013918
+med(txnqueue_wait): -0.0334395513291
+newer_committed_values: -0.00304787838013
+p99(spanlatch_wait): 0.0408910828777
+p99(txnqueue_wait): -0.093443940455
+total_accesses: 0.0181365422551
+uncommitted_intents: 0.007997041996
+intercept: 5.47483464075
+
+model: 3
+skew: 1.3, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 2.19577516911
+avg(txnqueue_wait): 0.913097171859
+failed_accesses: 0.228893908311
+key: 17.2223900388
+med(txnqueue_wait): 2.32312578495
+newer_committed_values: -0.704627152538
+p99(spanlatch_wait): 3.82973838728
+p99(txnqueue_wait): -9.02269899016
+total_accesses: 2.15539159368
+uncommitted_intents: 0.933521060849
+intercept: -56.8491729261
+
+model: 1
+skew: 1.3, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.569697921045
+avg(txnqueue_wait): -2.94110087321
+failed_accesses: 1.66927926972
+key: 18.2787951289
+med(txnqueue_wait): -2.25227073403
+newer_committed_values: 1.13451054574
+p99(spanlatch_wait): -10.2797861032
+p99(txnqueue_wait): -12.6643918957
+total_accesses: 0.432370038433
+uncommitted_intents: 0.534768723984
+intercept: -10.1120254016
+
+model: 2
+skew: 1.3, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0125679890818
+avg(txnqueue_wait): 0.0110939977846
+failed_accesses: 0.00716419982473
+key: 0.153828287457
+med(txnqueue_wait): 0.0132081235286
+newer_committed_values: 0.00328243994738
+p99(spanlatch_wait): 0.00627598937174
+p99(txnqueue_wait): -0.0335701079316
+total_accesses: 0.0052673529787
+uncommitted_intents: 0.00388175987735
+intercept: 5.05112080722
+
+model: 3
+skew: 1.3, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 4.45774587235
+avg(txnqueue_wait): -23.7653596157
+failed_accesses: 13.3553071295
+key: 145.495531805
+med(txnqueue_wait): -18.2459613659
+newer_committed_values: 9.09250645851
+p99(spanlatch_wait): -82.7435098076
+p99(txnqueue_wait): -101.528607494
+total_accesses: 3.45518146874
+uncommitted_intents: 4.26280067102
+intercept: -106.61043883
+
+model: 1
+skew: 1.4, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -2.03879895789e-05
+avg(txnqueue_wait): -0.000680035532495
+failed_accesses: 0.000766816478653
+key: -0.00391257862945
+med(txnqueue_wait): -0.000586475973661
+newer_committed_values: 7.23796463499e-05
+p99(spanlatch_wait): -0.00265530180936
+p99(txnqueue_wait): -0.00668638446383
+total_accesses: 0.418645913351
+uncommitted_intents: 0.000694436832303
+intercept: -27.5334773431
+
+model: 2
+skew: 1.4, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.78280517296e-07
+avg(txnqueue_wait): -5.94649541306e-06
+failed_accesses: 6.70534178742e-06
+key: -3.42131105825e-05
+med(txnqueue_wait): -5.12837421076e-06
+newer_committed_values: 6.32915802854e-07
+p99(spanlatch_wait): -2.32189926484e-05
+p99(txnqueue_wait): -5.84683485556e-05
+total_accesses: 0.00366080283232
+uncommitted_intents: 6.07242598457e-06
+intercept: 6.11466373763
+
+model: 3
+skew: 1.4, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000109625369395
+avg(txnqueue_wait): -0.00365652268766
+failed_accesses: 0.00412314021472
+key: -0.0210377720607
+med(txnqueue_wait): -0.00315345684305
+newer_committed_values: 0.0003891823388
+p99(spanlatch_wait): -0.0142774470518
+p99(txnqueue_wait): -0.0359524103112
+total_accesses: 2.2510416105
+uncommitted_intents: 0.00373395787592
+intercept: -151.229042579
+
+model: 1
+skew: 1.4, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.59522686553
+avg(txnqueue_wait): 3.09972345646
+failed_accesses: -0.423142249977
+key: 7.86882362984
+med(txnqueue_wait): 3.38993633304
+newer_committed_values: -0.179085953115
+p99(spanlatch_wait): 3.73833139701
+p99(txnqueue_wait): -0.13232854189
+total_accesses: 0.22863691704
+uncommitted_intents: -0.244056296863
+intercept: -58.9902233178
+
+model: 2
+skew: 1.4, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00206199929757
+avg(txnqueue_wait): 0.0107376207652
+failed_accesses: -0.0014647517581
+key: 0.0272547281404
+med(txnqueue_wait): 0.0117429806238
+newer_committed_values: -0.00061998877185
+p99(spanlatch_wait): 0.0129500724234
+p99(txnqueue_wait): -0.00045524115909
+total_accesses: 0.0026504294377
+uncommitted_intents: -0.000844762986248
+intercept: 5.35241060892
+
+model: 3
+skew: 1.4, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3.29616695651
+avg(txnqueue_wait): 17.1651250751
+failed_accesses: -2.34299487418
+key: 43.5739657716
+med(txnqueue_wait): 18.7722262234
+newer_committed_values: -0.991635680168
+p99(spanlatch_wait): 20.7015565582
+p99(txnqueue_wait): -0.73214599674
+total_accesses: 1.64377214639
+uncommitted_intents: -1.35135919401
+intercept: -366.421116961
+
+model: 1
+skew: 1.4, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.059757852256
+avg(txnqueue_wait): -0.233118496805
+failed_accesses: -0.00223533128692
+key: -0.418787159987
+med(txnqueue_wait): -0.233118496805
+newer_committed_values: 0.0
+p99(spanlatch_wait): -0.0308512013233
+p99(txnqueue_wait): -0.19466519608
+total_accesses: 0.323254023072
+uncommitted_intents: -0.00223533128692
+intercept: 26.343145836
+
+model: 2
+skew: 1.4, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.059757852256
+avg(txnqueue_wait): -0.233118496805
+failed_accesses: -0.00223533128692
+key: -0.418787159987
+med(txnqueue_wait): -0.233118496805
+newer_committed_values: 0.0
+p99(spanlatch_wait): -0.0308512013233
+p99(txnqueue_wait): -0.19466519608
+total_accesses: 0.323254023072
+uncommitted_intents: -0.00223533128692
+intercept: 26.343145836
+
+model: 3
+skew: 1.4, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0882375728867
+avg(txnqueue_wait): -0.331998089032
+failed_accesses: -0.00189391437533
+key: -0.662124186483
+med(txnqueue_wait): -0.331998089032
+newer_committed_values: 0.0
+p99(spanlatch_wait): -0.0393605928037
+p99(txnqueue_wait): -0.278416907231
+total_accesses: 0.538796090282
+uncommitted_intents: -0.00189391437533
+intercept: 27.5968300331
+
+model: 1
+skew: 1.4, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000104747566012
+avg(txnqueue_wait): -0.000594378126136
+failed_accesses: 0.000721174402452
+key: -0.00319825169783
+med(txnqueue_wait): -0.00101540653504
+newer_committed_values: 5.66420288041e-05
+p99(spanlatch_wait): -0.00258755557864
+p99(txnqueue_wait): 0.00046310588637
+total_accesses: 0.466944747883
+uncommitted_intents: 0.000664532373648
+intercept: -34.6514984838
+
+model: 2
+skew: 1.4, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.471078903e-06
+avg(txnqueue_wait): -8.34746958862e-06
+failed_accesses: 1.01282014392e-05
+key: -4.49163715999e-05
+med(txnqueue_wait): -1.42604089865e-05
+newer_committed_values: 7.95482861985e-07
+p99(spanlatch_wait): -3.63397314803e-05
+p99(txnqueue_wait): 6.50387713276e-06
+total_accesses: 0.00655779025359
+uncommitted_intents: 9.33271857721e-06
+intercept: 5.53801240783
+
+model: 3
+skew: 1.4, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000677152449261
+avg(txnqueue_wait): -0.00384242440397
+failed_accesses: 0.00466211322667
+key: -0.0206754586574
+med(txnqueue_wait): -0.00656421001822
+newer_committed_values: 0.000366168780776
+p99(spanlatch_wait): -0.0167275447477
+p99(txnqueue_wait): 0.00299380021095
+total_accesses: 3.01861696398
+uncommitted_intents: 0.00429594444589
+intercept: -246.24353454
+
+model: 1
+skew: 1.4, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -3.6512473634e-06
+avg(txnqueue_wait): -4.57963101663e-05
+failed_accesses: 0.000206740714836
+key: -0.000689166879502
+med(txnqueue_wait): -5.91229374256e-05
+newer_committed_values: 6.21624496735e-05
+p99(spanlatch_wait): -0.000128910532453
+p99(txnqueue_wait): 0.000386892628092
+total_accesses: 0.266018415488
+uncommitted_intents: 0.000144578265162
+intercept: -30.3323648909
+
+model: 2
+skew: 1.4, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -5.3216453395e-08
+avg(txnqueue_wait): -6.67475238751e-07
+failed_accesses: 3.01321891422e-06
+key: -1.00445172496e-05
+med(txnqueue_wait): -8.61709090329e-07
+newer_committed_values: 9.06009584321e-07
+p99(spanlatch_wait): -1.87885417219e-06
+p99(txnqueue_wait): 5.63890951846e-06
+total_accesses: 0.00387718365836
+uncommitted_intents: 2.1072093299e-06
+intercept: 5.15411226637
+
+model: 3
+skew: 1.4, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -2.64016588798e-05
+avg(txnqueue_wait): -0.000331146711967
+failed_accesses: 0.00149491318621
+key: -0.00498326929211
+med(txnqueue_wait): -0.000427509689301
+newer_committed_values: 0.000449487977142
+p99(spanlatch_wait): -0.000932134025749
+p99(txnqueue_wait): 0.00279756646795
+total_accesses: 1.92354194675
+uncommitted_intents: 0.00104542520907
+intercept: -197.752905325
+
+model: 1
+skew: 1.4, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 7.01790615381e-05
+avg(txnqueue_wait): -0.00046277475625
+failed_accesses: 0.000436189218945
+key: -0.0020074250041
+med(txnqueue_wait): -0.000522747523042
+newer_committed_values: 0.000109778649173
+p99(spanlatch_wait): -0.000803721501264
+p99(txnqueue_wait): -0.00127265138522
+total_accesses: 0.391447875799
+uncommitted_intents: 0.000326410569772
+intercept: -32.1212037123
+
+model: 2
+skew: 1.4, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 1.1589125927e-06
+avg(txnqueue_wait): -7.64210123145e-06
+failed_accesses: 7.2030769229e-06
+key: -3.31499177271e-05
+med(txnqueue_wait): -8.63247062556e-06
+newer_committed_values: 1.81284639818e-06
+p99(spanlatch_wait): -1.3272377094e-05
+p99(txnqueue_wait): -2.10161219618e-05
+total_accesses: 0.00646423395678
+uncommitted_intents: 5.39023052473e-06
+intercept: 5.51062511837
+
+model: 3
+skew: 1.4, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.000421478085292
+avg(txnqueue_wait): -0.0027793107219
+failed_accesses: 0.0026196445606
+key: -0.0120560980519
+med(txnqueue_wait): -0.0031394923254
+newer_committed_values: 0.000659303413945
+p99(spanlatch_wait): -0.00482695254163
+p99(txnqueue_wait): -0.00764322943809
+total_accesses: 2.35093912012
+uncommitted_intents: 0.00196034114665
+intercept: -176.557547766
+
+model: 1
+skew: 1.4, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.0239423562353
+avg(txnqueue_wait): 0.229934220923
+failed_accesses: 0.0680386712537
+key: 6.19020015051
+med(txnqueue_wait): 0.29975736984
+newer_committed_values: 0.000550398875011
+p99(spanlatch_wait): -2.17917496496
+p99(txnqueue_wait): 0.232258809772
+total_accesses: 0.575569951338
+uncommitted_intents: 0.0674882723786
+intercept: -32.505784956
+
+model: 2
+skew: 1.4, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000817625068967
+avg(txnqueue_wait): 0.00783233534802
+failed_accesses: 0.00229750055099
+key: 0.210646785079
+med(txnqueue_wait): 0.0102096298237
+newer_committed_values: 1.71244958125e-05
+p99(spanlatch_wait): -0.074078145476
+p99(txnqueue_wait): 0.00782712709667
+total_accesses: 0.0126438189062
+uncommitted_intents: 0.00228037605518
+intercept: 5.22099571316
+
+model: 3
+skew: 1.4, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.100564576319
+avg(txnqueue_wait): 0.967897609147
+failed_accesses: 0.288544019489
+key: 26.0799230551
+med(txnqueue_wait): 1.26193370452
+newer_committed_values: 0.0024894180226
+p99(spanlatch_wait): -9.1892771039
+p99(txnqueue_wait): 0.986649192006
+total_accesses: 3.16252909192
+uncommitted_intents: 0.286054601467
+intercept: -158.95691487
+
+model: 1
+skew: 1.4, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.274302227263
+avg(txnqueue_wait): 0.379389697942
+failed_accesses: -0.668049096689
+key: 4.14456031163
+med(txnqueue_wait): 0.872221140627
+newer_committed_values: -0.427199254984
+p99(spanlatch_wait): -4.67347778412
+p99(txnqueue_wait): -7.88633921215
+total_accesses: 0.240837231733
+uncommitted_intents: -0.240849841705
+intercept: 3.67824427954
+
+model: 2
+skew: 1.4, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00244018425896
+avg(txnqueue_wait): 0.00857656713727
+failed_accesses: -0.00542931733877
+key: 0.197086732054
+med(txnqueue_wait): 0.015701817811
+newer_committed_values: -0.00390089015742
+p99(spanlatch_wait): -0.0497855179118
+p99(txnqueue_wait): -0.109903507918
+total_accesses: 0.00432241971596
+uncommitted_intents: -0.00152842718135
+intercept: 5.22175981811
+
+model: 3
+skew: 1.4, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.28591327055
+avg(txnqueue_wait): 2.17345907415
+failed_accesses: -3.50776802014
+key: 27.1674450843
+med(txnqueue_wait): 4.86457852433
+newer_committed_values: -2.25739774897
+p99(spanlatch_wait): -24.9316690682
+p99(txnqueue_wait): -42.927671237
+total_accesses: 1.74265123654
+uncommitted_intents: -1.25037027117
+intercept: -37.1020532079
+
+model: 1
+skew: 1.4, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 8.89498879315e-05
+avg(txnqueue_wait): 5.85188975491e-05
+failed_accesses: 0.000205586960065
+key: -0.000772039501799
+med(txnqueue_wait): 2.98794727986e-05
+newer_committed_values: 6.2643556067e-05
+p99(spanlatch_wait): 3.35451009124e-05
+p99(txnqueue_wait): 0.000346897081488
+total_accesses: 0.271757904633
+uncommitted_intents: 0.000142943403998
+intercept: -31.5205426956
+
+model: 2
+skew: 1.4, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 9.87897081346e-07
+avg(txnqueue_wait): 6.49923787839e-07
+failed_accesses: 2.28329413937e-06
+key: -8.57444105043e-06
+med(txnqueue_wait): 3.31848017534e-07
+newer_committed_values: 6.95733155408e-07
+p99(spanlatch_wait): 3.72559292152e-07
+p99(txnqueue_wait): 3.85271552667e-06
+total_accesses: 0.00301820324975
+uncommitted_intents: 1.58756098396e-06
+intercept: 5.70116141373
+
+model: 3
+skew: 1.4, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00074156574285
+avg(txnqueue_wait): 0.00048786581682
+failed_accesses: 0.00171395659181
+key: -0.00643641110714
+med(txnqueue_wait): 0.000249101982668
+newer_committed_values: 0.000522252655623
+p99(spanlatch_wait): 0.000279661933877
+p99(txnqueue_wait): 0.0028920440251
+total_accesses: 2.26561670971
+uncommitted_intents: 0.00119170393619
+intercept: -290.930256
+
+model: 1
+skew: 1.4, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.264787326959
+avg(txnqueue_wait): -0.734543940187
+failed_accesses: -0.131073942204
+key: 5.01094054215
+med(txnqueue_wait): -0.775066839206
+newer_committed_values: -0.0589404103183
+p99(spanlatch_wait): 0.334739831842
+p99(txnqueue_wait): -4.3786824664
+total_accesses: 0.212421765934
+uncommitted_intents: -0.0721335318854
+intercept: -17.1880458622
+
+model: 2
+skew: 1.4, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00596392784536
+avg(txnqueue_wait): 0.0533321589125
+failed_accesses: 0.00373072652391
+key: 0.132803453992
+med(txnqueue_wait): 0.0531283569584
+newer_committed_values: 0.00206613874109
+p99(spanlatch_wait): -0.0104476703426
+p99(txnqueue_wait): 0.0583823401433
+total_accesses: 0.00274110755643
+uncommitted_intents: 0.00166458778282
+intercept: 4.90436247688
+
+model: 3
+skew: 1.4, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 1.88161970358
+avg(txnqueue_wait): -5.05805436807
+failed_accesses: -0.915907681483
+key: 35.6542499518
+med(txnqueue_wait): -5.3443882275
+newer_committed_values: -0.41096569477
+p99(spanlatch_wait): 2.3371062852
+p99(txnqueue_wait): -30.7520881158
+total_accesses: 1.59813357284
+uncommitted_intents: -0.504941986712
+intercept: -154.308031958
+
+model: 1
+skew: 1.4, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.176693941702
+avg(txnqueue_wait): -0.000139986766759
+failed_accesses: 0.000208698574288
+key: -0.0041256775009
+med(txnqueue_wait): -0.000853599368992
+newer_committed_values: 9.89818100849e-05
+p99(spanlatch_wait): -0.00190944941518
+p99(txnqueue_wait): 0.000586275349154
+total_accesses: 0.254946788602
+uncommitted_intents: 0.000206789912808
+intercept: 3.94870910699
+
+model: 2
+skew: 1.4, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00414317591902
+avg(txnqueue_wait): -1.417155964e-05
+failed_accesses: 4.99113028323e-06
+key: -7.34182725425e-05
+med(txnqueue_wait): -3.52960684846e-07
+newer_committed_values: 6.07482890424e-07
+p99(spanlatch_wait): 3.34524127527e-07
+p99(txnqueue_wait): 1.63209984648e-05
+total_accesses: 0.00377787807642
+uncommitted_intents: 2.10849547239e-06
+intercept: 5.97912187147
+
+model: 3
+skew: 1.4, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 2.12061355635
+avg(txnqueue_wait): 0.000933531631644
+failed_accesses: 0.00102455673881
+key: -0.0240349371539
+med(txnqueue_wait): -0.00719456495233
+newer_committed_values: 0.000749431512774
+p99(spanlatch_wait): -0.0162621217294
+p99(txnqueue_wait): 0.00253378496935
+total_accesses: 1.59889840609
+uncommitted_intents: 0.00144000300929
+intercept: 0.100888651511
+
+model: 1
+skew: 1.4, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -2.32110086373e-06
+avg(txnqueue_wait): 4.19804422346e-05
+failed_accesses: 0.000110438819461
+key: -0.000392125425867
+med(txnqueue_wait): -0.000127566243543
+newer_committed_values: 4.40561531695e-05
+p99(spanlatch_wait): -8.62402821549e-05
+p99(txnqueue_wait): 0.000394071748261
+total_accesses: 0.204297346877
+uncommitted_intents: 6.63826662915e-05
+intercept: -28.7290131997
+
+model: 2
+skew: 1.4, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -2.88009224885e-08
+avg(txnqueue_wait): 5.20906041492e-07
+failed_accesses: 1.3703583195e-06
+key: -4.86561104372e-06
+med(txnqueue_wait): -1.58288058474e-06
+newer_committed_values: 5.46662091424e-07
+p99(spanlatch_wait): -1.07009553981e-06
+p99(txnqueue_wait): 4.88976160145e-06
+total_accesses: 0.00253498335378
+uncommitted_intents: 8.23696228076e-07
+intercept: 5.58227182953
+
+model: 3
+skew: 1.4, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -1.73041075215e-05
+avg(txnqueue_wait): 0.000312969633322
+failed_accesses: 0.000823335700899
+key: -0.00292334583005
+med(txnqueue_wait): -0.000951022865431
+newer_committed_values: 0.000328444327146
+p99(spanlatch_wait): -0.000642932471573
+p99(txnqueue_wait): 0.00293785591554
+total_accesses: 1.52306317745
+uncommitted_intents: 0.000494891373752
+intercept: -226.945645751
+
+model: 1
+skew: 1.4, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.209212126494
+avg(txnqueue_wait): -0.760822386477
+failed_accesses: -0.00271115277058
+key: 6.21572993647
+med(txnqueue_wait): -0.440770087625
+newer_committed_values: 0.0146614159515
+p99(spanlatch_wait): -0.0286915555889
+p99(txnqueue_wait): -2.21589355307
+total_accesses: 0.289125204639
+uncommitted_intents: -0.0173725687221
+intercept: -32.0033906466
+
+model: 2
+skew: 1.4, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00651249586368
+avg(txnqueue_wait): -0.0236831405454
+failed_accesses: -8.80354827801e-05
+key: 0.193492110489
+med(txnqueue_wait): -0.0137217985683
+newer_committed_values: 0.000455071101404
+p99(spanlatch_wait): -0.000894583936184
+p99(txnqueue_wait): -0.0689846649179
+total_accesses: 0.00412317564056
+uncommitted_intents: -0.000543106584184
+intercept: 5.34009412674
+
+model: 3
+skew: 1.4, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.913289320566
+avg(txnqueue_wait): -3.32128716869
+failed_accesses: -0.0116553481566
+key: 27.1337586259
+med(txnqueue_wait): -1.92406677876
+newer_committed_values: 0.0640677445972
+p99(spanlatch_wait): -0.125177572726
+p99(txnqueue_wait): -9.67286778227
+total_accesses: 1.5030447949
+uncommitted_intents: -0.0757230927538
+intercept: -150.64299194
+
+model: 1
+skew: 1.4, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0007119405165
+avg(txnqueue_wait): 0.00141437116604
+failed_accesses: 0.000587971296836
+key: -0.00582091583867
+med(txnqueue_wait): 0.00230312975485
+newer_committed_values: -0.000587971296836
+p99(spanlatch_wait): 0.00245610784699
+p99(txnqueue_wait): 0.00639308980434
+total_accesses: 0.192090222676
+uncommitted_intents: 0.00117594259367
+intercept: 6.95634142213
+
+model: 2
+skew: 1.4, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.000116157009668
+avg(txnqueue_wait): 0.000230762432252
+failed_accesses: 9.59307498701e-05
+key: -0.000949714423714
+med(txnqueue_wait): 0.000375768282602
+newer_committed_values: -9.59307498701e-05
+p99(spanlatch_wait): 0.00040072749944
+p99(txnqueue_wait): 0.00104306775215
+total_accesses: 0.0313405759826
+uncommitted_intents: 0.00019186149974
+intercept: 3.8043746928
+
+model: 3
+skew: 1.4, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00802478611692
+avg(txnqueue_wait): 0.0159423797836
+failed_accesses: 0.00662744118454
+key: -0.0656116677269
+med(txnqueue_wait): 0.0259602077053
+newer_committed_values: -0.00662744118454
+p99(spanlatch_wait): 0.0276845321981
+p99(txnqueue_wait): 0.0720610459963
+total_accesses: 2.16518503499
+uncommitted_intents: 0.0132548823691
+intercept: -43.621933615
+
+model: 1
+skew: 1.4, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00157522002965
+avg(txnqueue_wait): 0.0102418458931
+failed_accesses: 0.0185112452984
+key: 0.47631052222
+med(txnqueue_wait): 0.0071899204031
+newer_committed_values: 0.0100752516301
+p99(spanlatch_wait): -0.21300429089
+p99(txnqueue_wait): 0.0628252490063
+total_accesses: 0.0298085705536
+uncommitted_intents: 0.00843599366824
+intercept: 2.82485788714
+
+model: 2
+skew: 1.4, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00047954737099
+avg(txnqueue_wait): 0.00316855684135
+failed_accesses: 0.00565211453476
+key: 0.145649399989
+med(txnqueue_wait): 0.00223786463501
+newer_committed_values: 0.00307703986389
+p99(spanlatch_wait): -0.0650690587808
+p99(txnqueue_wait): 0.0192039953277
+total_accesses: 0.00445466496101
+uncommitted_intents: 0.00257507467087
+intercept: 4.93910084281
+
+model: 3
+skew: 1.4, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0248175482554
+avg(txnqueue_wait): 0.160325882658
+failed_accesses: 0.291302952265
+key: 7.49107530317
+med(txnqueue_wait): 0.112275336577
+newer_committed_values: 0.158534849835
+p99(spanlatch_wait): -3.35130520337
+p99(txnqueue_wait): 0.988216747833
+total_accesses: 0.56403194125
+uncommitted_intents: 0.13276810243
+intercept: -38.6783459728
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.455931238722
+avg(txnqueue_wait): 3.24175250356
+failed_accesses: -0.282105049055
+key: 1.62775604731
+med(txnqueue_wait): 4.48634623683
+newer_committed_values: -0.108212129059
+p99(spanlatch_wait): 1.3366592204
+p99(txnqueue_wait): -0.258415809176
+total_accesses: 0.480175289752
+uncommitted_intents: -0.173892919995
+intercept: -37.4794492099
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.00269442209144
+avg(txnqueue_wait): -0.0197850428791
+failed_accesses: 0.00178465549763
+key: 0.0011057794693
+med(txnqueue_wait): -0.027175706243
+newer_committed_values: 0.000629823500483
+p99(spanlatch_wait): -0.00821361271789
+p99(txnqueue_wait): 0.00137307052216
+total_accesses: 0.00544376297937
+uncommitted_intents: 0.00115483199714
+intercept: 5.86321708598
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3.38613127956
+avg(txnqueue_wait): 24.2171356343
+failed_accesses: -2.11872167211
+key: 9.73683735854
+med(txnqueue_wait): 33.470130365
+newer_committed_values: -0.801059346917
+p99(spanlatch_wait): 9.99576246609
+p99(txnqueue_wait): -1.86954269126
+total_accesses: 3.25669473104
+uncommitted_intents: -1.31766232519
+intercept: -282.595194071
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 26.0875087273
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 7.055301
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 134.3496032
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.610263811615
+avg(txnqueue_wait): 0.36219784105
+failed_accesses: -0.33009055204
+key: 5.80062789144
+med(txnqueue_wait): -1.53422848951
+newer_committed_values: -0.206019970015
+p99(spanlatch_wait): 0.676976598411
+p99(txnqueue_wait): -1.85743776389
+total_accesses: 0.352669308456
+uncommitted_intents: -0.124070582025
+intercept: -19.8089993799
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00210934050308
+avg(txnqueue_wait): 0.00124829033363
+failed_accesses: -0.00113731220243
+key: 0.0200360163281
+med(txnqueue_wait): -0.00530894367934
+newer_committed_values: -0.000711043837568
+p99(spanlatch_wait): 0.0023335879881
+p99(txnqueue_wait): -0.00641030426865
+total_accesses: 0.0040145372304
+uncommitted_intents: -0.000426268364865
+intercept: 5.73873727263
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 4.50192019308
+avg(txnqueue_wait): 2.67238809291
+failed_accesses: -2.43553255823
+key: 42.792955678
+med(txnqueue_wait): -11.3172684583
+newer_committed_values: -1.51994191496
+p99(spanlatch_wait): 4.99485194681
+p99(txnqueue_wait): -13.7035556174
+total_accesses: 2.25289519701
+uncommitted_intents: -0.915590643274
+intercept: -147.870096431
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.0753416664625
+avg(txnqueue_wait): 0.275506419842
+failed_accesses: -0.031051484675
+key: 5.15949572106
+med(txnqueue_wait): -0.884934651745
+newer_committed_values: -0.251352335427
+p99(spanlatch_wait): -0.385108129083
+p99(txnqueue_wait): -0.0770105662278
+total_accesses: 0.506350446567
+uncommitted_intents: 0.220300850752
+intercept: -14.0803468315
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00745382317917
+avg(txnqueue_wait): -0.0245012238405
+failed_accesses: 0.00425247456623
+key: 0.47972997244
+med(txnqueue_wait): -0.120777959868
+newer_committed_values: -0.0216402933941
+p99(spanlatch_wait): -0.0163543489544
+p99(txnqueue_wait): -0.118913944768
+total_accesses: 0.0302596930668
+uncommitted_intents: 0.0258927679604
+intercept: 4.54274685753
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0770466058531
+avg(txnqueue_wait): -0.20622635513
+failed_accesses: 0.0671370122754
+key: 21.9685764914
+med(txnqueue_wait): -4.83247062732
+newer_committed_values: -1.02301966402
+p99(spanlatch_wait): -1.10742521263
+p99(txnqueue_wait): -3.39960083471
+total_accesses: 2.59959006419
+uncommitted_intents: 1.09015667629
+intercept: -63.1466126717
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -9.00703252538e-07
+avg(txnqueue_wait): -7.33223547509e-05
+failed_accesses: 9.81165470933e-05
+key: -0.000507464634326
+med(txnqueue_wait): -0.000105643733842
+newer_committed_values: 3.33255309257e-05
+p99(spanlatch_wait): -2.20748942805e-05
+p99(txnqueue_wait): 0.000824427499107
+total_accesses: 0.167717061645
+uncommitted_intents: 6.47910161676e-05
+intercept: -9.77275982493
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -1.12310706776e-08
+avg(txnqueue_wait): -9.14272870823e-07
+failed_accesses: 1.22343721081e-06
+key: -6.32769023366e-06
+med(txnqueue_wait): -1.317295389e-06
+newer_committed_values: 4.15543512407e-07
+p99(spanlatch_wait): -2.75256803133e-07
+p99(txnqueue_wait): 1.02799712169e-05
+total_accesses: 0.00209130162223
+uncommitted_intents: 8.07893698399e-07
+intercept: 5.48995096077
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -6.89718579094e-06
+avg(txnqueue_wait): -0.00056147005344
+failed_accesses: 0.000751332975147
+key: -0.0038859389653
+med(txnqueue_wait): -0.000808972830826
+newer_committed_values: 0.000255192126512
+p99(spanlatch_wait): -0.000169039743928
+p99(txnqueue_wait): 0.00631309992094
+total_accesses: 1.28430282803
+uncommitted_intents: 0.000496140848635
+intercept: -95.7724493748
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0341898627378
+avg(txnqueue_wait): 0.430457743412
+failed_accesses: 0.00718710887494
+key: 0.342734069998
+med(txnqueue_wait): 0.308727059194
+newer_committed_values: 0.00516818287399
+p99(spanlatch_wait): 0.811477866416
+p99(txnqueue_wait): 0.209334539572
+total_accesses: 0.339396695604
+uncommitted_intents: 0.00201892600095
+intercept: -5.71349418082
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00703901218137
+avg(txnqueue_wait): 0.147381007376
+failed_accesses: 0.00270314651764
+key: 0.102449507824
+med(txnqueue_wait): 0.0823932504399
+newer_committed_values: 0.002583427129
+p99(spanlatch_wait): 0.210147229742
+p99(txnqueue_wait): 0.16694926729
+total_accesses: 0.0304747007031
+uncommitted_intents: 0.000119719388643
+intercept: 2.0150623723
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0775390433151
+avg(txnqueue_wait): -0.995263556123
+failed_accesses: -0.0269531315156
+key: -0.290317576713
+med(txnqueue_wait): 0.0647837342318
+newer_committed_values: -0.0393280219741
+p99(spanlatch_wait): 0.380963569718
+p99(txnqueue_wait): -3.6583276531
+total_accesses: 1.55705824249
+uncommitted_intents: 0.0123748904585
+intercept: 29.1968250096
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 3.6649390421e-05
+avg(txnqueue_wait): -3.70681164607e-05
+failed_accesses: 0.000126494478994
+key: -0.000644486344293
+med(txnqueue_wait): -0.000154470809243
+newer_committed_values: 4.21396081339e-05
+p99(spanlatch_wait): 1.53122866054e-06
+p99(txnqueue_wait): 0.000393054088761
+total_accesses: 0.191412444255
+uncommitted_intents: 8.43548708606e-05
+intercept: -11.6425198467
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 4.76023057308e-07
+avg(txnqueue_wait): -4.81461708465e-07
+failed_accesses: 1.64298199593e-06
+key: -8.37095396349e-06
+med(txnqueue_wait): -2.00635443145e-06
+newer_committed_values: 5.47333117066e-07
+p99(spanlatch_wait): 1.98884658123e-08
+p99(txnqueue_wait): 5.10520930554e-06
+total_accesses: 0.00248617332716
+uncommitted_intents: 1.09564887887e-06
+intercept: 5.37956297498
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.000274142658399
+avg(txnqueue_wait): -0.000277274788792
+failed_accesses: 0.00094619671285
+key: -0.00482084961568
+med(txnqueue_wait): -0.00115546364631
+newer_committed_values: 0.000315210268575
+p99(spanlatch_wait): 1.14538083934e-05
+p99(txnqueue_wait): 0.002940100546
+total_accesses: 1.43179233586
+uncommitted_intents: 0.000630986444275
+intercept: -108.6709821
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.321526348437
+avg(txnqueue_wait): 5.10877491366
+failed_accesses: 0.0707458493276
+key: 4.419260544
+med(txnqueue_wait): 2.38082509437
+newer_committed_values: -0.0347158003943
+p99(spanlatch_wait): -2.53694893075
+p99(txnqueue_wait): 2.21028043947
+total_accesses: 0.263950806563
+uncommitted_intents: 0.105461649722
+intercept: -37.6628735566
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0119319156997
+avg(txnqueue_wait): -0.25668633147
+failed_accesses: -0.000705975333773
+key: -0.238897091648
+med(txnqueue_wait): -0.141368868874
+newer_committed_values: 0.00231463449369
+p99(spanlatch_wait): 0.108605187086
+p99(txnqueue_wait): -0.0809475106699
+total_accesses: 0.00259487575817
+uncommitted_intents: -0.00302060982747
+intercept: 6.76963986229
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -2.13379201656
+avg(txnqueue_wait): 30.7520001006
+failed_accesses: 0.559122076828
+key: 25.8123050122
+med(txnqueue_wait): 13.3101397601
+newer_committed_values: -0.182337764233
+p99(spanlatch_wait): -16.1568477325
+p99(txnqueue_wait): 14.7178565326
+total_accesses: 1.71424292453
+uncommitted_intents: 0.74145984106
+intercept: -238.206376514
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.311107979301
+avg(txnqueue_wait): 0.693675365339
+failed_accesses: -0.190611457889
+key: 2.69902980503
+med(txnqueue_wait): 0.910780077189
+newer_committed_values: -0.117246536712
+p99(spanlatch_wait): 2.77426931642
+p99(txnqueue_wait): 1.51702332249
+total_accesses: 0.285875020208
+uncommitted_intents: -0.0733649211776
+intercept: -32.8821231578
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00185737122477
+avg(txnqueue_wait): 0.00414076714655
+failed_accesses: -0.00113613319875
+key: 0.0161047952997
+med(txnqueue_wait): 0.00543652784432
+newer_committed_values: -0.000699476705106
+p99(spanlatch_wait): 0.0165599695695
+p99(txnqueue_wait): 0.00906038533431
+total_accesses: 0.00328537573244
+uncommitted_intents: -0.00043665649364
+intercept: 5.70424855133
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 2.4040801892
+avg(txnqueue_wait): 5.36038141966
+failed_accesses: -1.47300761363
+key: 20.8569911114
+med(txnqueue_wait): 7.03806651289
+newer_committed_values: -0.906036950515
+p99(spanlatch_wait): 21.4382035782
+p99(txnqueue_wait): 11.7226490195
+total_accesses: 2.15650431249
+uncommitted_intents: -0.566970663113
+intercept: -271.867241082
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.197380303957
+avg(txnqueue_wait): 1.98362935729
+failed_accesses: -0.20007587367
+key: 1.18497132136
+med(txnqueue_wait): 0.967258785232
+newer_committed_values: -0.153519147285
+p99(spanlatch_wait): 2.25663858093
+p99(txnqueue_wait): 2.15766825126
+total_accesses: 0.362996355082
+uncommitted_intents: -0.0465567263842
+intercept: -25.3423338819
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.035793522096
+avg(txnqueue_wait): -0.318928579781
+failed_accesses: 0.0337348505897
+key: 0.27924328879
+med(txnqueue_wait): -0.166517145312
+newer_committed_values: 0.0221866868889
+p99(spanlatch_wait): -0.357156602583
+p99(txnqueue_wait): -0.332250128613
+total_accesses: 0.0192762339892
+uncommitted_intents: 0.0115481637007
+intercept: 6.92058696906
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.595089955946
+avg(txnqueue_wait): 5.96739935704
+failed_accesses: -0.60102963559
+key: 3.3948511897
+med(txnqueue_wait): 2.91288337967
+newer_committed_values: -0.460642016642
+p99(spanlatch_wait): 6.78588867518
+p99(txnqueue_wait): 6.49643927826
+total_accesses: 1.70366761635
+uncommitted_intents: -0.140387618948
+intercept: -89.3623209145
+
+model: 1
+skew: 1.5, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.015024734829
+avg(txnqueue_wait): 0.147594697648
+failed_accesses: 0.0128966378648
+key: 1.47478516594
+med(txnqueue_wait): 0.137867510518
+newer_committed_values: -0.00134160022002
+p99(spanlatch_wait): 0.0243038039547
+p99(txnqueue_wait): 0.159622138196
+total_accesses: 0.359097085515
+uncommitted_intents: 0.0142382380849
+intercept: -16.9620240441
+
+model: 2
+skew: 1.5, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00476292694014
+avg(txnqueue_wait): 0.046235478206
+failed_accesses: 0.00387803431038
+key: 0.464264628995
+med(txnqueue_wait): 0.0432241767341
+newer_committed_values: -0.000472942676042
+p99(spanlatch_wait): 0.00772504890948
+p99(txnqueue_wait): 0.0493477831124
+total_accesses: 0.00857067155991
+uncommitted_intents: 0.00435097698642
+intercept: 4.71902897033
+
+model: 3
+skew: 1.5, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0649345254227
+avg(txnqueue_wait): 0.641667432564
+failed_accesses: 0.0571773157872
+key: 6.39605095638
+med(txnqueue_wait): 0.599133101287
+newer_committed_values: -0.00547186172702
+p99(spanlatch_wait): 0.10489608429
+p99(txnqueue_wait): 0.698445341384
+total_accesses: 2.2728837428
+uncommitted_intents: 0.0626491775142
+intercept: -115.243688108
+
+model: 1
+skew: 1.5, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.210989223592
+avg(txnqueue_wait): 0.673542679895
+failed_accesses: -0.0319126316149
+key: 1.05876371921
+med(txnqueue_wait): 0.709933366433
+newer_committed_values: -0.0285397587306
+p99(spanlatch_wait): -1.10153223355
+p99(txnqueue_wait): 0.342808677112
+total_accesses: 0.382857608918
+uncommitted_intents: -0.00337287288436
+intercept: -4.64595590754
+
+model: 2
+skew: 1.5, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0697258597865
+avg(txnqueue_wait): -0.222993478937
+failed_accesses: 0.0110618584977
+key: -0.352095917584
+med(txnqueue_wait): -0.235012783076
+newer_committed_values: 0.0094124742523
+p99(spanlatch_wait): 0.362278206455
+p99(txnqueue_wait): -0.11090566598
+total_accesses: 0.0102034928809
+uncommitted_intents: 0.00164938424539
+intercept: 6.44246398319
+
+model: 3
+skew: 1.5, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 1.45115450279
+avg(txnqueue_wait): 4.63359169566
+failed_accesses: -0.220832160025
+key: 7.28776600104
+med(txnqueue_wait): 4.88386415968
+newer_committed_values: -0.196242812452
+p99(spanlatch_wait): -7.57164173659
+p99(txnqueue_wait): 2.35159145216
+total_accesses: 2.27753264731
+uncommitted_intents: -0.0245893475725
+intercept: -53.2848820747
+
+model: 1
+skew: 1.5, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00998182788347
+avg(txnqueue_wait): 0.0202421335304
+failed_accesses: 0.000360485664177
+key: 0.258206583761
+med(txnqueue_wait): 0.0245443385643
+newer_committed_values: 0.00125071407308
+p99(spanlatch_wait): -0.00337933190074
+p99(txnqueue_wait): 0.00478831367407
+total_accesses: -0.203593556889
+uncommitted_intents: -0.000890228408905
+intercept: 22.7532066592
+
+model: 2
+skew: 1.5, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0423953645615
+avg(txnqueue_wait): 0.0965900469018
+failed_accesses: 0.0121253427114
+key: 1.0781249333
+med(txnqueue_wait): 0.13008100043
+newer_committed_values: 0.00158209400757
+p99(spanlatch_wait): -0.0305770928677
+p99(txnqueue_wait): -0.0125922643679
+total_accesses: 0.0925441657589
+uncommitted_intents: 0.0105432487039
+intercept: 4.66236216744
+
+model: 3
+skew: 1.5, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0496453796846
+avg(txnqueue_wait): -0.11661394429
+failed_accesses: -0.0176976042224
+key: -1.25637053445
+med(txnqueue_wait): -0.160857981572
+newer_committed_values: -0.000620828587063
+p99(spanlatch_wait): 0.0411640449738
+p99(txnqueue_wait): 0.0256204716749
+total_accesses: -0.42450036889
+uncommitted_intents: -0.0170767756353
+intercept: 60.5637083436
+
+model: 1
+skew: 1.5, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 3.57484771824
+avg(txnqueue_wait): 13.0096735545
+failed_accesses: -0.0542108957835
+key: 1.31383702862
+med(txnqueue_wait): 15.7048891562
+newer_committed_values: 0.0394552337431
+p99(spanlatch_wait): -3.7666488127
+p99(txnqueue_wait): -6.82489052034
+total_accesses: 0.363679162331
+uncommitted_intents: -0.0936661295266
+intercept: -40.7619314141
+
+model: 2
+skew: 1.5, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00326353066252
+avg(txnqueue_wait): -0.000362433383925
+failed_accesses: 0.0182775403988
+key: 0.345080469894
+med(txnqueue_wait): -0.0354177667317
+newer_committed_values: 0.00514419068764
+p99(spanlatch_wait): 0.0979483291165
+p99(txnqueue_wait): 0.153381659392
+total_accesses: 0.00578021306703
+uncommitted_intents: 0.0131333497112
+intercept: 4.33287634439
+
+model: 3
+skew: 1.5, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 16.8850204182
+avg(txnqueue_wait): 64.1620303987
+failed_accesses: 1.55257390766
+key: 5.4197607454
+med(txnqueue_wait): 73.0063934565
+newer_committed_values: 0.883390728378
+p99(spanlatch_wait): -5.02316075152
+p99(txnqueue_wait): -13.8684198142
+total_accesses: 1.90087463768
+uncommitted_intents: 0.669183179286
+intercept: -270.97276237
+
+model: 1
+skew: 1.5, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.116881130043
+avg(txnqueue_wait): -1.50359745879
+failed_accesses: -0.2322453145
+key: 2.35108530102
+med(txnqueue_wait): -1.63226524244
+newer_committed_values: -0.0549340708097
+p99(spanlatch_wait): -1.01766166114
+p99(txnqueue_wait): -3.67100628897
+total_accesses: 0.227431143461
+uncommitted_intents: -0.17731124369
+intercept: -4.82020583882
+
+model: 2
+skew: 1.5, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00527964830676
+avg(txnqueue_wait): 0.06790586955
+failed_accesses: 0.0104978166815
+key: -0.10622313522
+med(txnqueue_wait): 0.0737154456871
+newer_committed_values: 0.00248431120931
+p99(spanlatch_wait): 0.0459644314298
+p99(txnqueue_wait): 0.165819965353
+total_accesses: 0.00187981432672
+uncommitted_intents: 0.00801350547223
+intercept: 5.08233742379
+
+model: 3
+skew: 1.5, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.686442448065
+avg(txnqueue_wait): -8.8310988764
+failed_accesses: -1.36372300101
+key: 13.8071237567
+med(txnqueue_wait): -9.58685364699
+newer_committed_values: -0.322524205141
+p99(spanlatch_wait): -5.97688326356
+p99(txnqueue_wait): -21.5599285038
+total_accesses: 1.77211313453
+uncommitted_intents: -1.04119879587
+intercept: -78.1463040286
+
+model: 1
+skew: 1.6, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.464446716007
+avg(txnqueue_wait): -0.262527279782
+failed_accesses: 0.0970370456447
+key: 4.52709270563
+med(txnqueue_wait): 0.443280109893
+newer_committed_values: -0.0175732403315
+p99(spanlatch_wait): 1.06347061312
+p99(txnqueue_wait): -3.16686800233
+total_accesses: 0.408933789926
+uncommitted_intents: 0.114610285976
+intercept: -15.7175369182
+
+model: 2
+skew: 1.6, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00107286895001
+avg(txnqueue_wait): 0.01009839127
+failed_accesses: -0.000185971128095
+key: 0.0179637054516
+med(txnqueue_wait): 0.0108714792546
+newer_committed_values: -0.000359483678578
+p99(spanlatch_wait): 0.00630519911623
+p99(txnqueue_wait): 0.00828140850428
+total_accesses: 0.0047156317412
+uncommitted_intents: 0.000173512550483
+intercept: 5.37715694308
+
+model: 3
+skew: 1.6, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 2.90378427807
+avg(txnqueue_wait): -1.74172374258
+failed_accesses: 0.610827233004
+key: 28.2326734319
+med(txnqueue_wait): 2.6791796222
+newer_committed_values: -0.106823280743
+p99(spanlatch_wait): 6.6125000146
+p99(txnqueue_wait): -19.9430460893
+total_accesses: 2.72928931834
+uncommitted_intents: 0.717650513747
+intercept: -121.071894636
+
+model: 1
+skew: 1.6, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.47386484707
+avg(txnqueue_wait): -3.80083641976
+failed_accesses: 1.14489539082
+key: 16.4876294696
+med(txnqueue_wait): -5.25734151715
+newer_committed_values: 0.737258942074
+p99(spanlatch_wait): 3.29627374854
+p99(txnqueue_wait): -4.40874441969
+total_accesses: 0.324122682083
+uncommitted_intents: 0.407636448748
+intercept: -29.3110544369
+
+model: 2
+skew: 1.6, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00895923848784
+avg(txnqueue_wait): -0.071860560174
+failed_accesses: 0.0216445625379
+key: 0.311725174057
+med(txnqueue_wait): -0.09939838621
+newer_committed_values: 0.0139384683725
+p99(spanlatch_wait): 0.0623207156631
+p99(txnqueue_wait): -0.0833571468893
+total_accesses: 0.00470495902226
+uncommitted_intents: 0.00770609416537
+intercept: 5.16837473678
+
+model: 3
+skew: 1.6, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3.82642729059
+avg(txnqueue_wait): -30.6915351361
+failed_accesses: 9.24501796636
+key: 133.136597332
+med(txnqueue_wait): -42.4527149457
+newer_committed_values: 5.95334344035
+p99(spanlatch_wait): 26.6172329121
+p99(txnqueue_wait): -35.6002372718
+total_accesses: 2.67117332332
+uncommitted_intents: 3.29167452601
+intercept: -266.790662372
+
+model: 1
+skew: 1.6, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.247756033984
+avg(txnqueue_wait): -0.00275169093721
+failed_accesses: -0.0451934461694
+key: 1.72600970246
+med(txnqueue_wait): 0.0750739418979
+newer_committed_values: -0.0784526961868
+p99(spanlatch_wait): 0.146738318678
+p99(txnqueue_wait): -0.306979890949
+total_accesses: 0.287021001323
+uncommitted_intents: 0.0332592500175
+intercept: -1.18561426134
+
+model: 2
+skew: 1.6, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.079224057986
+avg(txnqueue_wait): -0.135328386844
+failed_accesses: -0.0137337926638
+key: 0.450559413392
+med(txnqueue_wait): -0.145920583796
+newer_committed_values: -0.0236393815372
+p99(spanlatch_wait): -0.0489774406121
+p99(txnqueue_wait): -0.194979852905
+total_accesses: 0.0210420505775
+uncommitted_intents: 0.00990558887341
+intercept: 5.59986583762
+
+model: 3
+skew: 1.6, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.899597096301
+avg(txnqueue_wait): -0.551459258641
+failed_accesses: -0.158683302804
+key: 5.84312100764
+med(txnqueue_wait): -0.410328653729
+newer_committed_values: -0.279102416373
+p99(spanlatch_wait): 0.149928433442
+p99(txnqueue_wait): -1.49759154393
+total_accesses: 1.73309373595
+uncommitted_intents: 0.120419113569
+intercept: -16.3139806622
+
+model: 1
+skew: 1.6, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.401678557962
+avg(txnqueue_wait): -0.12693259145
+failed_accesses: -0.25245809922
+key: 4.06061868182
+med(txnqueue_wait): 0.641816245183
+newer_committed_values: -0.191770134309
+p99(spanlatch_wait): 0.344311788683
+p99(txnqueue_wait): -3.48125286215
+total_accesses: 0.368333315331
+uncommitted_intents: -0.0606879649117
+intercept: -7.94453687442
+
+model: 2
+skew: 1.6, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.0026999749158
+avg(txnqueue_wait): 0.00418189479225
+failed_accesses: 0.00207111888221
+key: -0.0266276924109
+med(txnqueue_wait): -0.00184033089019
+newer_committed_values: 0.00159461150067
+p99(spanlatch_wait): -0.00140017302702
+p99(txnqueue_wait): 0.0305144675206
+total_accesses: 0.00131976894299
+uncommitted_intents: 0.000476507381537
+intercept: 6.38587562528
+
+model: 3
+skew: 1.6, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3.46016859464
+avg(txnqueue_wait): -4.22613287975
+failed_accesses: -2.52275517193
+key: 34.340422726
+med(txnqueue_wait): 3.20417980177
+newer_committed_values: -1.93883638028
+p99(spanlatch_wait): 2.10322852983
+p99(txnqueue_wait): -36.6762208735
+total_accesses: 2.8637113015
+uncommitted_intents: -0.583918791642
+intercept: -69.964940465
+
+model: 1
+skew: 1.6, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.640801726053
+avg(txnqueue_wait): -1.43611618433
+failed_accesses: 0.00910140967287
+key: 2.78091733243
+med(txnqueue_wait): -2.61355058467
+newer_committed_values: -0.152016951518
+p99(spanlatch_wait): 0.970432888234
+p99(txnqueue_wait): -0.957688579341
+total_accesses: 0.310970057148
+uncommitted_intents: 0.161118361191
+intercept: 1.03226441195
+
+model: 2
+skew: 1.6, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.00552668520356
+avg(txnqueue_wait): -0.012390405062
+failed_accesses: 8.11168836243e-05
+key: 0.0239716384834
+med(txnqueue_wait): -0.0225473966124
+newer_committed_values: -0.00131074049408
+p99(spanlatch_wait): 0.00836792782066
+p99(txnqueue_wait): -0.00826004613903
+total_accesses: 0.0044429458144
+uncommitted_intents: 0.0013918573777
+intercept: 6.1286406008
+
+model: 3
+skew: 1.6, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 5.5954773341
+avg(txnqueue_wait): -12.5375661261
+failed_accesses: 0.0779354063696
+key: 24.2904547759
+med(txnqueue_wait): -22.8177187279
+newer_committed_values: -1.32761737508
+p99(spanlatch_wait): 8.47481741386
+p99(txnqueue_wait): -8.36234069302
+total_accesses: 1.68183149093
+uncommitted_intents: 1.40555278145
+intercept: 13.6018978363
+
+model: 1
+skew: 1.6, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.334979190961
+avg(txnqueue_wait): -1.16854800981
+failed_accesses: -0.0543795144291
+key: 1.88694760503
+med(txnqueue_wait): -0.655185698397
+newer_committed_values: -0.0473159513666
+p99(spanlatch_wait): 0.346463032298
+p99(txnqueue_wait): -1.41515426435
+total_accesses: 0.401472411741
+uncommitted_intents: -0.00706356306253
+intercept: -1.55029797664
+
+model: 2
+skew: 1.6, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.0122613535612
+avg(txnqueue_wait): 0.0428380992152
+failed_accesses: 0.00202370863988
+key: -0.069331254704
+med(txnqueue_wait): 0.0240646382982
+newer_committed_values: 0.00173671530656
+p99(spanlatch_wait): -0.0126588107404
+p99(txnqueue_wait): 0.0521674250615
+total_accesses: 0.0035600286654
+uncommitted_intents: 0.000286993333319
+intercept: 6.18614890754
+
+model: 3
+skew: 1.6, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 1.50461621414
+avg(txnqueue_wait): -5.24577771426
+failed_accesses: -0.242751917116
+key: 8.46366870344
+med(txnqueue_wait): -2.93914058756
+newer_committed_values: -0.212310894535
+p99(spanlatch_wait): 1.55723288972
+p99(txnqueue_wait): -6.33976335052
+total_accesses: 2.62876243714
+uncommitted_intents: -0.0304410225815
+intercept: -40.3024073969
+
+model: 1
+skew: 1.6, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.62126132634
+avg(txnqueue_wait): 0.523827684549
+failed_accesses: 0.247532954836
+key: -3.40382706162
+med(txnqueue_wait): 1.04475711405
+newer_committed_values: 0.800646349445
+p99(spanlatch_wait): 3.1672213967
+p99(txnqueue_wait): 1.73417263446
+total_accesses: -0.147189047904
+uncommitted_intents: -0.553113394609
+intercept: 9.79841731231
+
+model: 2
+skew: 1.6, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -3.51030709331
+avg(txnqueue_wait): 2.50259517818
+failed_accesses: 0.451001578551
+key: -5.63021154539
+med(txnqueue_wait): 4.02718929597
+newer_committed_values: 1.60547142863
+p99(spanlatch_wait): 6.99392130147
+p99(txnqueue_wait): 3.38988553578
+total_accesses: -0.282834774364
+uncommitted_intents: -1.15446985008
+intercept: -16.8098396786
+
+model: 3
+skew: 1.6, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 3.6219875356
+avg(txnqueue_wait): -4.78914196921
+failed_accesses: -0.326852684855
+key: 3.00087404628
+med(txnqueue_wait): -6.99803993249
+newer_committed_values: -1.45305850884
+p99(spanlatch_wait): -7.44838530526
+p99(txnqueue_wait): -2.92740973689
+total_accesses: 0.51237363076
+uncommitted_intents: 1.12620582399
+intercept: 87.5694294044
+
+model: 1
+skew: 1.6, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.3505998601
+avg(txnqueue_wait): 0.247838707051
+failed_accesses: 0.108016261367
+key: 2.68151750876
+med(txnqueue_wait): 0.64933796666
+newer_committed_values: -0.1488612349
+p99(spanlatch_wait): 0.329720876731
+p99(txnqueue_wait): -1.73069815348
+total_accesses: 0.279218800047
+uncommitted_intents: 0.256877496266
+intercept: 2.1813126457
+
+model: 2
+skew: 1.6, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.0524096376879
+avg(txnqueue_wait): -0.0369872489253
+failed_accesses: -0.0160279856115
+key: -0.401690930784
+med(txnqueue_wait): -0.0969415085511
+newer_committed_values: 0.0222485920599
+p99(spanlatch_wait): -0.0495041787203
+p99(txnqueue_wait): 0.258863676905
+total_accesses: -0.00505788784701
+uncommitted_intents: -0.0382765776714
+intercept: 6.85804326873
+
+model: 3
+skew: 1.6, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 4.38724261661
+avg(txnqueue_wait): 3.09932271484
+failed_accesses: 1.34774254904
+key: 33.5830546978
+med(txnqueue_wait): 8.12138165057
+newer_committed_values: -1.86264715491
+p99(spanlatch_wait): 4.13308731978
+p99(txnqueue_wait): -21.6620689094
+total_accesses: 2.28384980092
+uncommitted_intents: 3.21038970396
+intercept: -49.9399850592
+
+model: 1
+skew: 1.6, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.000540966813979
+avg(txnqueue_wait): -0.0187237458975
+failed_accesses: 0.000182408205979
+key: -0.0260928158218
+med(txnqueue_wait): -0.0186332195661
+newer_committed_values: -1.25814330415e-06
+p99(spanlatch_wait): -0.0152317810749
+p99(txnqueue_wait): -0.0225201415722
+total_accesses: 0.00424298904449
+uncommitted_intents: 0.000183666349284
+intercept: 6.51239598382
+
+model: 2
+skew: 1.6, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00164893923101
+avg(txnqueue_wait): -0.0567037930834
+failed_accesses: 0.000546507415743
+key: -0.078856163062
+med(txnqueue_wait): -0.0564264132207
+newer_committed_values: -8.85183199325e-06
+p99(spanlatch_wait): -0.046101582637
+p99(txnqueue_wait): -0.0684168325672
+total_accesses: -0.00304880570951
+uncommitted_intents: 0.000555359247736
+intercept: 6.89018144446
+
+model: 3
+skew: 1.6, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.00111448160701
+avg(txnqueue_wait): 0.035263769336
+failed_accesses: -0.000290521097656
+key: 0.0476660797677
+med(txnqueue_wait): 0.0350643097194
+newer_committed_values: 4.7635449689e-05
+p99(spanlatch_wait): 0.0284447309885
+p99(txnqueue_wait): 0.0443519920706
+total_accesses: 0.134752336967
+uncommitted_intents: -0.000338156547345
+intercept: 16.8240278994
+
+model: 1
+skew: 1.6, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.490601716261
+avg(txnqueue_wait): -2.92169449088
+failed_accesses: 0.271155745326
+key: 4.25303059541
+med(txnqueue_wait): -0.935359658427
+newer_committed_values: 0.0439607407181
+p99(spanlatch_wait): 4.08296795323
+p99(txnqueue_wait): -7.77676314117
+total_accesses: 0.22476754528
+uncommitted_intents: 0.227195004608
+intercept: -6.80710213518
+
+model: 2
+skew: 1.6, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00446733176433
+avg(txnqueue_wait): -0.0266045169782
+failed_accesses: 0.00246945062096
+key: 0.0387258287911
+med(txnqueue_wait): -0.00851718765458
+newer_committed_values: 0.000400426041002
+p99(spanlatch_wait): 0.0371787029564
+p99(txnqueue_wait): -0.0708131036818
+total_accesses: 0.00260589324542
+uncommitted_intents: 0.00206902457995
+intercept: 5.52486522459
+
+model: 3
+skew: 1.6, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 4.3957576879
+avg(txnqueue_wait): -26.1781687071
+failed_accesses: 2.429483144
+key: 38.1070906515
+med(txnqueue_wait): -8.3807629474
+newer_committed_values: 0.393865931812
+p99(spanlatch_wait): 36.5831238865
+p99(txnqueue_wait): -69.6793719809
+total_accesses: 1.9292305179
+uncommitted_intents: 2.03561721219
+intercept: -71.1224051019
+
+model: 1
+skew: 1.6, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -1.5081555489
+avg(txnqueue_wait): -0.0389642431112
+failed_accesses: 0.526436806791
+key: 6.58056198486
+med(txnqueue_wait): -3.42920708215
+newer_committed_values: -0.069603009874
+p99(spanlatch_wait): -3.52137881986
+p99(txnqueue_wait): -2.60204299419
+total_accesses: 0.354242233001
+uncommitted_intents: 0.596039816665
+intercept: 13.0985782134
+
+model: 2
+skew: 1.6, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00487281723826
+avg(txnqueue_wait): 0.107950237014
+failed_accesses: -0.00120281264042
+key: 0.193889061838
+med(txnqueue_wait): 0.0981205695504
+newer_committed_values: -0.00501863855348
+p99(spanlatch_wait): -0.0257548988955
+p99(txnqueue_wait): -0.00611377080523
+total_accesses: 0.00691338057844
+uncommitted_intents: 0.00381582591307
+intercept: 5.16545877646
+
+model: 3
+skew: 1.6, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -13.1314427498
+avg(txnqueue_wait): -5.28848447965
+failed_accesses: 4.55989453219
+key: 47.4246008252
+med(txnqueue_wait): -33.8532949273
+newer_committed_values: -0.365399268685
+p99(spanlatch_wait): -28.9520730981
+p99(txnqueue_wait): -21.9864325848
+total_accesses: 2.11257211022
+uncommitted_intents: 4.92529380088
+intercept: 141.794720623
+
+model: 1
+skew: 1.6, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0307817720399
+avg(txnqueue_wait): -0.08946064399
+failed_accesses: 0.1185268494
+key: -0.750885372223
+med(txnqueue_wait): -0.215665574426
+newer_committed_values: 0.0608950691549
+p99(spanlatch_wait): 1.25549625709
+p99(txnqueue_wait): 0.0725592906892
+total_accesses: 0.246655450207
+uncommitted_intents: 0.0576317802453
+intercept: 1.92038140255
+
+model: 2
+skew: 1.6, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.00102315200076
+avg(txnqueue_wait): -0.00306975156582
+failed_accesses: 0.00397243093888
+key: -0.0251815405454
+med(txnqueue_wait): -0.00729741831649
+newer_committed_values: 0.00205474841911
+p99(spanlatch_wait): 0.0424275832056
+p99(txnqueue_wait): 0.00209696892281
+total_accesses: 0.0028816519173
+uncommitted_intents: 0.00191768251977
+intercept: 6.29094864792
+
+model: 3
+skew: 1.6, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0078117524969
+avg(txnqueue_wait): 0.00807483364015
+failed_accesses: 0.0196057727801
+key: -0.119215110053
+med(txnqueue_wait): -0.0134715015649
+newer_committed_values: 0.00564119937725
+p99(spanlatch_wait): 0.0958031656309
+p99(txnqueue_wait): 0.119159443813
+total_accesses: 1.76404789412
+uncommitted_intents: 0.0139645734028
+intercept: -11.4258504061
+
+model: 1
+skew: 1.6, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.627909220499
+avg(txnqueue_wait): 1.73373824621
+failed_accesses: 0.0962464350399
+key: -2.49614990272
+med(txnqueue_wait): 2.40915580658
+newer_committed_values: 0.233684270675
+p99(spanlatch_wait): 0.543939975431
+p99(txnqueue_wait): -0.906394897449
+total_accesses: -0.0140878248187
+uncommitted_intents: -0.137437835635
+intercept: 13.1241269878
+
+model: 2
+skew: 1.6, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.202473834358
+avg(txnqueue_wait): 0.559036198846
+failed_accesses: 0.0309537226435
+key: -0.804067746448
+med(txnqueue_wait): 0.776726161982
+newer_committed_values: 0.0753832192113
+p99(spanlatch_wait): 0.175735205988
+p99(txnqueue_wait): -0.292242015398
+total_accesses: -0.0292392738916
+uncommitted_intents: -0.0444294965678
+intercept: 6.17171957597
+
+model: 3
+skew: 1.6, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.237285491686
+avg(txnqueue_wait): 0.655991326205
+failed_accesses: 0.039676604499
+key: -0.977046637125
+med(txnqueue_wait): 0.915411837036
+newer_committed_values: 0.0870920575867
+p99(spanlatch_wait): 0.191873650138
+p99(txnqueue_wait): -0.343801035278
+total_accesses: 0.994654973713
+uncommitted_intents: -0.0474154530877
+intercept: 26.0900571082
+
+model: 1
+skew: 1.6, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0405571860479
+avg(txnqueue_wait): 0.0029309872129
+failed_accesses: 0.00280260403514
+key: 0.0464823121815
+med(txnqueue_wait): 0.00369627178968
+newer_committed_values: 0.00153329522492
+p99(spanlatch_wait): -1.07673930023
+p99(txnqueue_wait): 0.010639171448
+total_accesses: 0.168716817228
+uncommitted_intents: 0.00126930881022
+intercept: -2.11185441421
+
+model: 2
+skew: 1.6, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -5.86057067685e-05
+avg(txnqueue_wait): 6.35853232432e-06
+failed_accesses: 5.4250142733e-06
+key: 5.93242650344e-05
+med(txnqueue_wait): 6.96757464425e-06
+newer_committed_values: 2.59798138281e-06
+p99(spanlatch_wait): -0.00155822993985
+p99(txnqueue_wait): 2.36326529892e-05
+total_accesses: 0.00256180251156
+uncommitted_intents: 2.82703289049e-06
+intercept: 5.44702066619
+
+model: 3
+skew: 1.6, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.357157244236
+avg(txnqueue_wait): 0.0258040164652
+failed_accesses: 0.0246759162461
+key: 0.409361423402
+med(txnqueue_wait): 0.0325449580336
+newer_committed_values: 0.0135013353801
+p99(spanlatch_wait): -9.48204168991
+p99(txnqueue_wait): 0.0936640051913
+total_accesses: 1.4780923319
+uncommitted_intents: 0.011174580866
+intercept: -49.406197651
+
+model: 1
+skew: 1.6, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 1.04039600387
+avg(txnqueue_wait): -1.86097594759
+failed_accesses: -0.301026745238
+key: 3.50835715455
+med(txnqueue_wait): -2.5906814678
+newer_committed_values: -0.0154802345453
+p99(spanlatch_wait): 1.39108979523
+p99(txnqueue_wait): -2.70039180134
+total_accesses: 0.368273247054
+uncommitted_intents: -0.285546510693
+intercept: -7.05437875947
+
+model: 2
+skew: 1.6, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0568590983111
+avg(txnqueue_wait): -0.101741561867
+failed_accesses: -0.0164659707009
+key: 0.19181021907
+med(txnqueue_wait): -0.14160395138
+newer_committed_values: -0.000848800974002
+p99(spanlatch_wait): 0.0760027081314
+p99(txnqueue_wait): -0.147762706493
+total_accesses: 0.00805514465973
+uncommitted_intents: -0.0156171697269
+intercept: 5.99623371647
+
+model: 3
+skew: 1.6, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 4.67099525475
+avg(txnqueue_wait): -8.35335321267
+failed_accesses: -1.35081173425
+key: 15.747728105
+med(txnqueue_wait): -11.6302739887
+newer_committed_values: -0.0693679460241
+p99(spanlatch_wait): 6.2465432366
+p99(txnqueue_wait): -12.1150733727
+total_accesses: 2.22831831447
+uncommitted_intents: -1.28144378822
+intercept: -58.8982913007
+
+model: 1
+skew: 1.7, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.8621006203
+avg(txnqueue_wait): -1.83743196245
+failed_accesses: -0.161424149337
+key: 8.59773891336
+med(txnqueue_wait): -0.526685319799
+newer_committed_values: -0.151241296364
+p99(spanlatch_wait): -1.83882997126
+p99(txnqueue_wait): -3.45630759043
+total_accesses: 0.428126650137
+uncommitted_intents: -0.0101828529729
+intercept: -16.8399189637
+
+model: 2
+skew: 1.7, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0329556902097
+avg(txnqueue_wait): -0.070239479212
+failed_accesses: -0.00618211425036
+key: 0.328697875818
+med(txnqueue_wait): -0.0201399574654
+newer_committed_values: -0.0057845064142
+p99(spanlatch_wait): -0.0702880732717
+p99(txnqueue_wait): -0.132157883807
+total_accesses: 0.00894114147026
+uncommitted_intents: -0.000397607836153
+intercept: 5.50187619713
+
+model: 3
+skew: 1.7, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 4.55639608117
+avg(txnqueue_wait): -9.71126853627
+failed_accesses: -0.852402469488
+key: 45.4389446265
+med(txnqueue_wait): -2.78323049672
+newer_committed_values: -0.79914444793
+p99(spanlatch_wait): -9.71898299421
+p99(txnqueue_wait): -18.2651522888
+total_accesses: 2.76152949921
+uncommitted_intents: -0.0532580215579
+intercept: -120.124776377
+
+model: 1
+skew: 1.7, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 4.24817968873
+avg(txnqueue_wait): -2.91788529471
+failed_accesses: -0.158656265808
+key: 3.98029597934
+med(txnqueue_wait): -3.08784644373
+newer_committed_values: 0.324581510888
+p99(spanlatch_wait): 9.06649087409
+p99(txnqueue_wait): -9.53254114846
+total_accesses: 0.359413268276
+uncommitted_intents: -0.483237776696
+intercept: -7.94583979054
+
+model: 2
+skew: 1.7, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.0288472288292
+avg(txnqueue_wait): 0.0181680498915
+failed_accesses: 0.00181934841221
+key: 0.00610241498876
+med(txnqueue_wait): 0.0192394863974
+newer_committed_values: -0.00243938684278
+p99(spanlatch_wait): -0.0674357842009
+p99(txnqueue_wait): 0.0628327373861
+total_accesses: 0.00415149143127
+uncommitted_intents: 0.004258735255
+intercept: 5.77691466783
+
+model: 3
+skew: 1.7, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 28.5342294122
+avg(txnqueue_wait): -19.3483251049
+failed_accesses: -1.17800752957
+key: 21.6533890628
+med(txnqueue_wait): -20.4775947376
+newer_committed_values: 2.21653020148
+p99(spanlatch_wait): 61.7979965493
+p99(txnqueue_wait): -63.7355096772
+total_accesses: 2.29950791112
+uncommitted_intents: -3.39453773106
+intercept: -62.5122741474
+
+model: 1
+skew: 1.7, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 113.717419701
+
+model: 2
+skew: 1.7, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 6.842772
+
+model: 3
+skew: 1.7, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 882.62935693
+
+model: 1
+skew: 1.7, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -5.27117662752e-06
+avg(txnqueue_wait): 4.69345677641e-07
+failed_accesses: 0.000233658602203
+key: -0.000639959693889
+med(txnqueue_wait): -3.45251855256e-05
+newer_committed_values: 7.61518926209e-05
+p99(spanlatch_wait): 2.51524254433e-05
+p99(txnqueue_wait): 0.000756598254928
+total_accesses: 0.259183676025
+uncommitted_intents: 0.000157506709582
+intercept: -25.0323849674
+
+model: 2
+skew: 1.7, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -5.25669400478e-08
+avg(txnqueue_wait): 4.68056144606e-09
+failed_accesses: 2.33016622313e-06
+key: -6.38201396741e-06
+med(txnqueue_wait): -3.44303271528e-07
+newer_committed_values: 7.59426643572e-07
+p99(spanlatch_wait): 2.50833188443e-07
+p99(txnqueue_wait): 7.54519491896e-06
+total_accesses: 0.0025847156568
+uncommitted_intents: 1.57073957956e-06
+intercept: 5.59286416094
+
+model: 3
+skew: 1.7, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -3.92228105435e-05
+avg(txnqueue_wait): 3.49239987473e-06
+failed_accesses: 0.00173865300553
+key: -0.00476193829248
+med(txnqueue_wait): -0.000256901808941
+newer_committed_values: 0.000566646020022
+p99(spanlatch_wait): 0.000187159127381
+p99(txnqueue_wait): 0.00562984549898
+total_accesses: 1.92858500845
+uncommitted_intents: 0.00117200698551
+intercept: -205.392705512
+
+model: 1
+skew: 1.7, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 4.25287164182
+avg(txnqueue_wait): 0.741467265919
+failed_accesses: 0.243791013448
+key: -0.398763664639
+med(txnqueue_wait): -0.604918219357
+newer_committed_values: 0.29081114727
+p99(spanlatch_wait): -11.90485405
+p99(txnqueue_wait): 2.21961013977
+total_accesses: 0.254317234618
+uncommitted_intents: -0.0470201338223
+intercept: 25.2384673766
+
+model: 2
+skew: 1.7, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.340761403827
+avg(txnqueue_wait): 0.0588867748646
+failed_accesses: 0.0162753580554
+key: -0.182303151394
+med(txnqueue_wait): -0.0477674220859
+newer_committed_values: 0.0245807732643
+p99(spanlatch_wait): -0.915675047657
+p99(txnqueue_wait): 0.172759053964
+total_accesses: -0.00341479678492
+uncommitted_intents: -0.00830541520895
+intercept: 8.97072970862
+
+model: 3
+skew: 1.7, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 23.5223411822
+avg(txnqueue_wait): 4.09438067687
+failed_accesses: 1.30673100276
+key: -4.16951013431
+med(txnqueue_wait): -3.3366379524
+newer_committed_values: 1.62535791909
+p99(spanlatch_wait): -65.3502664206
+p99(txnqueue_wait): 12.2131016034
+total_accesses: 1.56229373
+uncommitted_intents: -0.318626916324
+intercept: 119.079227191
+
+model: 1
+skew: 1.7, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0424197448551
+avg(txnqueue_wait): -2.29107599179
+failed_accesses: 0.244451970964
+key: 3.92880300174
+med(txnqueue_wait): -2.01941352863
+newer_committed_values: -0.000161246163016
+p99(spanlatch_wait): -1.96459199974
+p99(txnqueue_wait): -4.08988175074
+total_accesses: 0.60765503976
+uncommitted_intents: 0.244613217127
+intercept: -1.98687598342
+
+model: 2
+skew: 1.7, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00122230301896
+avg(txnqueue_wait): -0.06562894201
+failed_accesses: 0.00697659278155
+key: 0.112636365053
+med(txnqueue_wait): -0.0578545819084
+newer_committed_values: -9.93108306054e-06
+p99(spanlatch_wait): -0.0561862955355
+p99(txnqueue_wait): -0.1172764564
+total_accesses: 0.00578653090027
+uncommitted_intents: 0.00698652386461
+intercept: 6.55209957844
+
+model: 3
+skew: 1.7, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.338756562497
+avg(txnqueue_wait): -18.3041427409
+failed_accesses: 1.95354047614
+key: 31.3865251677
+med(txnqueue_wait): -16.1335879306
+newer_committed_values: -0.00117828135121
+p99(spanlatch_wait): -15.6976276989
+p99(txnqueue_wait): -32.6728986108
+total_accesses: 5.09529792112
+uncommitted_intents: 1.95471875749
+intercept: -54.2997530903
+
+model: 1
+skew: 1.7, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.91215445508e-05
+avg(txnqueue_wait): 5.16923259211e-06
+failed_accesses: 0.000188360584157
+key: -0.000538701175701
+med(txnqueue_wait): -6.56964938308e-05
+newer_committed_values: 5.64799686652e-05
+p99(spanlatch_wait): 5.30678568442e-05
+p99(txnqueue_wait): 0.000804902182483
+total_accesses: 0.227870597321
+uncommitted_intents: 0.000131880615491
+intercept: -23.0808117461
+
+model: 2
+skew: 1.7, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -1.4854166572e-07
+avg(txnqueue_wait): 4.01560876889e-08
+failed_accesses: 1.46323927193e-06
+key: -4.18478589696e-06
+med(txnqueue_wait): -5.10349286884e-07
+newer_committed_values: 4.38752664728e-07
+p99(spanlatch_wait): 4.12246397299e-07
+p99(txnqueue_wait): 6.25271199251e-06
+total_accesses: 0.00177016443441
+uncommitted_intents: 1.0244866072e-06
+intercept: 5.70454534433
+
+model: 3
+skew: 1.7, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.000169000829593
+avg(txnqueue_wait): 4.56869262891e-05
+failed_accesses: 0.00166477634171
+key: -0.00476117111536
+med(txnqueue_wait): -0.000580641481617
+newer_committed_values: 0.00049918360593
+p99(spanlatch_wait): 0.000469026537452
+p99(txnqueue_wait): 0.00711391991477
+total_accesses: 2.0139753818
+uncommitted_intents: 0.00116559273578
+intercept: -227.421200443
+
+model: 1
+skew: 1.7, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.192535075896
+avg(txnqueue_wait): 1.2245069973
+failed_accesses: 0.062478660651
+key: 3.21629601628
+med(txnqueue_wait): 1.12477820518
+newer_committed_values: 0.00196824441404
+p99(spanlatch_wait): 1.20155558381
+p99(txnqueue_wait): 1.11122231452
+total_accesses: 0.197545252528
+uncommitted_intents: 0.060510416237
+intercept: -34.8313027855
+
+model: 2
+skew: 1.7, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00673806544937
+avg(txnqueue_wait): 0.0428546338334
+failed_accesses: 0.00218398082833
+key: 0.112572517227
+med(txnqueue_wait): 0.039365565197
+newer_committed_values: 6.80314893784e-05
+p99(spanlatch_wait): 0.0420519945838
+p99(txnqueue_wait): 0.0388786550281
+total_accesses: 0.00315164035318
+uncommitted_intents: 0.00211594933895
+intercept: 4.64120850753
+
+model: 3
+skew: 1.7, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 1.31838367389
+avg(txnqueue_wait): 8.38475547081
+failed_accesses: 0.427949311151
+key: 22.0229274224
+med(txnqueue_wait): 7.70180836978
+newer_committed_values: 0.0135196986742
+p99(spanlatch_wait): 8.22756688455
+p99(txnqueue_wait): 7.60960406102
+total_accesses: 1.53915504101
+uncommitted_intents: 0.414429612477
+intercept: -273.863139942
+
+model: 1
+skew: 1.7, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.027719257439
+avg(txnqueue_wait): 0.162585386649
+failed_accesses: -0.00429690601564
+key: 0.16757933461
+med(txnqueue_wait): 0.162585386649
+newer_committed_values: 0.00751958552737
+p99(spanlatch_wait): -0.0974207555573
+p99(txnqueue_wait): 0.162585386649
+total_accesses: -0.586527671135
+uncommitted_intents: -0.011816491543
+intercept: 17.9399029442
+
+model: 2
+skew: 1.7, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0457574688181
+avg(txnqueue_wait): 0.268387267453
+failed_accesses: -0.00709310281698
+key: 0.276631009862
+med(txnqueue_wait): 0.268387267453
+newer_committed_values: 0.0124129299297
+p99(spanlatch_wait): -0.160816976951
+p99(txnqueue_wait): 0.268387267453
+total_accesses: -0.968208534517
+uncommitted_intents: -0.0195060327467
+intercept: 18.402837231
+
+model: 3
+skew: 1.7, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0207414846422
+avg(txnqueue_wait): 0.121657743092
+failed_accesses: -0.00321524522539
+key: 0.12539456379
+med(txnqueue_wait): 0.121657743092
+newer_committed_values: 0.00562667914444
+p99(spanlatch_wait): -0.0728970142749
+p99(txnqueue_wait): 0.121657743092
+total_accesses: -0.438880973266
+uncommitted_intents: -0.00884192436983
+intercept: 28.5276407001
+
+model: 1
+skew: 1.7, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.135756414188
+avg(txnqueue_wait): 0.672872198905
+failed_accesses: -0.0226453864912
+key: 2.40835593283
+med(txnqueue_wait): 0.866790278453
+newer_committed_values: -0.0487180412678
+p99(spanlatch_wait): 0.00156638248125
+p99(txnqueue_wait): 0.309394813034
+total_accesses: 0.489140695772
+uncommitted_intents: 0.0260726547766
+intercept: -13.8082619871
+
+model: 2
+skew: 1.7, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0021670023254
+avg(txnqueue_wait): 0.0107398866384
+failed_accesses: -0.000362340990423
+key: 0.0384469675629
+med(txnqueue_wait): 0.0138340290336
+newer_committed_values: -0.000777716764858
+p99(spanlatch_wait): 2.48151663485e-05
+p99(txnqueue_wait): 0.00493656664387
+total_accesses: 0.00752834326621
+uncommitted_intents: 0.000415375774435
+intercept: 6.27994424052
+
+model: 3
+skew: 1.7, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.429714228602
+avg(txnqueue_wait): 2.13189820217
+failed_accesses: -0.0694491992297
+key: 7.61357387967
+med(txnqueue_wait): 2.74896481925
+newer_committed_values: -0.154058246076
+p99(spanlatch_wait): 0.00544295105843
+p99(txnqueue_wait): 0.984818605228
+total_accesses: 2.26876701591
+uncommitted_intents: 0.084609046846
+intercept: -59.356950613
+
+model: 1
+skew: 1.7, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0723220498039
+avg(txnqueue_wait): 0.999846190353
+failed_accesses: 0.0132636280065
+key: 1.54388657968
+med(txnqueue_wait): 0.991171071594
+newer_committed_values: -0.0477965822004
+p99(spanlatch_wait): -0.141195458142
+p99(txnqueue_wait): 1.28160034905
+total_accesses: 0.291670286087
+uncommitted_intents: 0.0610602102069
+intercept: -9.8757752589
+
+model: 2
+skew: 1.7, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00521042376969
+avg(txnqueue_wait): 0.0549535133442
+failed_accesses: 0.000929677211373
+key: 0.0377062601266
+med(txnqueue_wait): 0.0545859249035
+newer_committed_values: -0.00186958773709
+p99(spanlatch_wait): -4.97606682635e-05
+p99(txnqueue_wait): 0.093198077956
+total_accesses: 0.00923439028079
+uncommitted_intents: 0.00279926494846
+intercept: 4.9975074584
+
+model: 3
+skew: 1.7, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.322888025253
+avg(txnqueue_wait): 3.81836690003
+failed_accesses: 0.0608568172961
+key: 4.09115507979
+med(txnqueue_wait): 3.78817559636
+newer_committed_values: -0.153790551278
+p99(spanlatch_wait): -0.252107686182
+p99(txnqueue_wait): 5.76568652513
+total_accesses: 1.92777454825
+uncommitted_intents: 0.214647368575
+intercept: -55.1892196533
+
+model: 1
+skew: 1.7, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0206820614553
+avg(txnqueue_wait): 0.00363225509245
+failed_accesses: 0.0142168413615
+key: 0.802022202901
+med(txnqueue_wait): -0.00437312658747
+newer_committed_values: -0.0207420891965
+p99(spanlatch_wait): -0.170553123713
+p99(txnqueue_wait): 0.136249845998
+total_accesses: 0.209760741897
+uncommitted_intents: 0.034958930558
+intercept: 5.67678800886
+
+model: 2
+skew: 1.7, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0155271356213
+avg(txnqueue_wait): 0.00222234098882
+failed_accesses: 0.00988713667783
+key: 0.624677818643
+med(txnqueue_wait): -0.00297668456135
+newer_committed_values: -0.0159317084682
+p99(spanlatch_wait): -0.132134141042
+p99(txnqueue_wait): 0.0945025406217
+total_accesses: 0.0261026991797
+uncommitted_intents: 0.0258188451461
+intercept: 5.38655299588
+
+model: 3
+skew: 1.7, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0464144443742
+avg(txnqueue_wait): 0.011466938433
+failed_accesses: 0.0370711875721
+key: 1.65167727345
+med(txnqueue_wait): -0.0118277406483
+newer_committed_values: -0.0441869640763
+p99(spanlatch_wait): -0.355874528871
+p99(txnqueue_wait): 0.356939581342
+total_accesses: 1.33396835329
+uncommitted_intents: 0.0812581516484
+intercept: 4.82075529376
+
+model: 1
+skew: 1.7, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.146789247721
+avg(txnqueue_wait): 1.01040005983
+failed_accesses: 0.0396073394141
+key: 4.23196198372
+med(txnqueue_wait): 1.0525450144
+newer_committed_values: -0.0522067899907
+p99(spanlatch_wait): 0.506312781972
+p99(txnqueue_wait): 0.812794131913
+total_accesses: 0.380544363178
+uncommitted_intents: 0.0918141294048
+intercept: -25.2672692237
+
+model: 2
+skew: 1.7, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0100525409204
+avg(txnqueue_wait): 0.069165041721
+failed_accesses: 0.00268105413331
+key: 0.289947011006
+med(txnqueue_wait): 0.0720518545816
+newer_committed_values: -0.00358229319091
+p99(spanlatch_wait): 0.0346435535822
+p99(txnqueue_wait): 0.0554595980689
+total_accesses: 0.00665637249322
+uncommitted_intents: 0.00626334732422
+intercept: 5.18734078313
+
+model: 3
+skew: 1.7, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.487033811739
+avg(txnqueue_wait): 3.35338345882
+failed_accesses: 0.132422647394
+key: 14.0370850748
+med(txnqueue_wait): 3.49319716277
+newer_committed_values: -0.172991563597
+p99(spanlatch_wait): 1.68087175344
+p99(txnqueue_wait): 2.70330371581
+total_accesses: 1.88677210468
+uncommitted_intents: 0.305414210991
+intercept: -107.321612568
+
+model: 1
+skew: 1.7, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 74.8483741053
+
+model: 2
+skew: 1.7, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 7.044063
+
+model: 3
+skew: 1.7, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 500.38263404
+
+model: 1
+skew: 1.7, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 11.8186738437
+
+model: 2
+skew: 1.7, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 6.1556715
+
+model: 3
+skew: 1.7, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0
+avg(txnqueue_wait): 0.0
+failed_accesses: 0.0
+key: 0.0
+med(txnqueue_wait): 0.0
+newer_committed_values: 0.0
+p99(spanlatch_wait): 0.0
+p99(txnqueue_wait): 0.0
+total_accesses: 0.0
+uncommitted_intents: 0.0
+intercept: 60.84419984
+
+model: 1
+skew: 1.8, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.000292858238935
+avg(txnqueue_wait): 3.63612584485e-05
+failed_accesses: 0.00076608542155
+key: -0.00286078296407
+med(txnqueue_wait): 0.000425963431393
+newer_committed_values: 7.28113890692e-05
+p99(spanlatch_wait): -0.00176359777344
+p99(txnqueue_wait): 0.0016227258972
+total_accesses: 0.483472320928
+uncommitted_intents: 0.000693274032481
+intercept: -21.2868313619
+
+model: 2
+skew: 1.8, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -3.01209873659e-06
+avg(txnqueue_wait): 3.73981968313e-07
+failed_accesses: 7.8793239308e-06
+key: -2.94236582965e-05
+med(txnqueue_wait): 4.38110916121e-06
+newer_committed_values: 7.48878002621e-07
+p99(spanlatch_wait): -1.81389147342e-05
+p99(txnqueue_wait): 1.66900225944e-05
+total_accesses: 0.00497259825211
+uncommitted_intents: 7.13044592818e-06
+intercept: 5.67904250303
+
+model: 3
+skew: 1.8, training_time: 1, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): -0.00228476691777
+avg(txnqueue_wait): 0.000283676500595
+failed_accesses: 0.00597670269994
+key: -0.0223187242367
+med(txnqueue_wait): 0.00332320224203
+newer_committed_values: 0.000568046347567
+p99(spanlatch_wait): -0.0137589089645
+p99(txnqueue_wait): 0.0126598809718
+total_accesses: 3.771864396
+uncommitted_intents: 0.00540865635237
+intercept: -178.734869217
+
+model: 1
+skew: 1.8, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.105079302817
+avg(txnqueue_wait): -0.767186921261
+failed_accesses: -0.19255134947
+key: 3.89828209687
+med(txnqueue_wait): -0.455075016745
+newer_committed_values: -0.128093782326
+p99(spanlatch_wait): 0.171812574269
+p99(txnqueue_wait): -3.22936340511
+total_accesses: 0.286441198216
+uncommitted_intents: -0.0644575671443
+intercept: -7.59923872509
+
+model: 2
+skew: 1.8, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.038455491719
+avg(txnqueue_wait): 0.0939411586704
+failed_accesses: 0.0430929890605
+key: 0.287186333799
+med(txnqueue_wait): 0.065203006205
+newer_committed_values: 0.0134666950985
+p99(spanlatch_wait): 0.220255922258
+p99(txnqueue_wait): 0.342546317201
+total_accesses: 0.00107933200546
+uncommitted_intents: 0.029626293962
+intercept: 4.0564383732
+
+model: 3
+skew: 1.8, training_time: 5, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.999096702812
+avg(txnqueue_wait): -0.614063630722
+failed_accesses: 0.194518808714
+key: 16.7485605569
+med(txnqueue_wait): -0.195058898624
+newer_committed_values: -0.141915872754
+p99(spanlatch_wait): 4.4402352621
+p99(txnqueue_wait): -3.52604775854
+total_accesses: 1.77591831723
+uncommitted_intents: 0.336434681468
+intercept: -84.3171086806
+
+model: 1
+skew: 1.8, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.594075945676
+avg(txnqueue_wait): 4.08388785091
+failed_accesses: -1.11007875809
+key: 9.8647127121
+med(txnqueue_wait): 4.97281645788
+newer_committed_values: -0.446376735068
+p99(spanlatch_wait): 0.408432669773
+p99(txnqueue_wait): -0.315645543651
+total_accesses: 0.240172390652
+uncommitted_intents: -0.663702023019
+intercept: -44.2150181903
+
+model: 2
+skew: 1.8, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0100746258746
+avg(txnqueue_wait): 0.0692549556952
+failed_accesses: -0.018826321177
+key: 0.167294079167
+med(txnqueue_wait): 0.0843295375954
+newer_committed_values: -0.00757025631428
+p99(spanlatch_wait): 0.00692765276574
+p99(txnqueue_wait): -0.00535822561793
+total_accesses: 0.00209551405155
+uncommitted_intents: -0.0112560648627
+intercept: 5.40074135498
+
+model: 3
+skew: 1.8, training_time: 10, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 4.12223060914
+avg(txnqueue_wait): 28.3378570052
+failed_accesses: -7.70259251099
+key: 68.4497855252
+med(txnqueue_wait): 34.5060746447
+newer_committed_values: -3.0973155237
+p99(spanlatch_wait): 2.83392212041
+p99(txnqueue_wait): -2.18959405819
+total_accesses: 1.90177258214
+uncommitted_intents: -4.60527698729
+intercept: -345.373897132
+
+model: 1
+skew: 1.8, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.613527419892
+avg(txnqueue_wait): -1.5849362339
+failed_accesses: -0.396815287835
+key: 7.4152821418
+med(txnqueue_wait): -1.32375483262
+newer_committed_values: -0.169957451576
+p99(spanlatch_wait): 1.33179584302
+p99(txnqueue_wait): -5.81532317776
+total_accesses: 0.203879863013
+uncommitted_intents: -0.226857836259
+intercept: -12.8087649912
+
+model: 2
+skew: 1.8, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.0156884772059
+avg(txnqueue_wait): -0.0405283197254
+failed_accesses: -0.0101486068948
+key: 0.189621016319
+med(txnqueue_wait): -0.0338493023618
+newer_committed_values: -0.00434653036493
+p99(spanlatch_wait): 0.0340542040883
+p99(txnqueue_wait): -0.148710467593
+total_accesses: 0.00215485398022
+uncommitted_intents: -0.00580207652986
+intercept: 6.06676231937
+
+model: 3
+skew: 1.8, training_time: 30, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 3.77224634239
+avg(txnqueue_wait): -9.74491080069
+failed_accesses: -2.43958934078
+key: 45.5918698378
+med(txnqueue_wait): -8.13909450766
+newer_committed_values: -1.04490491075
+p99(spanlatch_wait): 8.18862532849
+p99(txnqueue_wait): -35.75434831
+total_accesses: 1.64316990621
+uncommitted_intents: -1.39468443003
+intercept: -129.733304592
+
+model: 1
+skew: 1.8, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 1.50230995903e-05
+avg(txnqueue_wait): 5.41229490592e-05
+failed_accesses: 0.000184938838262
+key: -0.000582174331096
+med(txnqueue_wait): -1.72378908566e-05
+newer_committed_values: 5.47156326219e-05
+p99(spanlatch_wait): -5.91388404235e-05
+p99(txnqueue_wait): 0.00148624443513
+total_accesses: 0.244513219061
+uncommitted_intents: 0.00013022320564
+intercept: -18.6066233479
+
+model: 2
+skew: 1.8, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 1.87659590514e-07
+avg(txnqueue_wait): 6.76071565443e-07
+failed_accesses: 2.3101455495e-06
+key: -7.27217415582e-06
+med(txnqueue_wait): -2.15325440667e-07
+newer_committed_values: 6.83475014645e-07
+p99(spanlatch_wait): -7.38727085618e-07
+p99(txnqueue_wait): 1.85652781187e-05
+total_accesses: 0.00305431314544
+uncommitted_intents: 1.62667053485e-06
+intercept: 5.47937745179
+
+model: 3
+skew: 1.8, training_time: 60, inf_dur: 5, r2: 1.0
+avg(spanlatch_wait): 0.000115703341123
+avg(txnqueue_wait): 0.000416838482627
+failed_accesses: 0.00142434265058
+key: -0.00448372952726
+med(txnqueue_wait): -0.000132760989437
+newer_committed_values: 0.000421403151058
+p99(spanlatch_wait): -0.000455469351448
+p99(txnqueue_wait): 0.0114466023363
+total_accesses: 1.88316640145
+uncommitted_intents: 0.00100293949952
+intercept: -156.46406956
+
+model: 1
+skew: 1.8, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0406253834639
+avg(txnqueue_wait): -0.707303543314
+failed_accesses: -0.0431002098434
+key: 0.323274021102
+med(txnqueue_wait): -0.730785020077
+newer_committed_values: -0.0398121600756
+p99(spanlatch_wait): -0.0863702999423
+p99(txnqueue_wait): -0.947186255789
+total_accesses: 0.376043755667
+uncommitted_intents: -0.00328804976777
+intercept: 4.36799131615
+
+model: 2
+skew: 1.8, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.0115755436688
+avg(txnqueue_wait): -0.200017904614
+failed_accesses: -0.0124238335553
+key: 0.0927003948229
+med(txnqueue_wait): -0.206611119919
+newer_committed_values: -0.0112860870766
+p99(spanlatch_wait): -0.0240304287657
+p99(txnqueue_wait): -0.268952313992
+total_accesses: 0.0129953389749
+uncommitted_intents: -0.00113774647871
+intercept: 7.31130875919
+
+model: 3
+skew: 1.8, training_time: 1, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.23904420343
+avg(txnqueue_wait): 4.09918177593
+failed_accesses: 0.259520144574
+key: -1.92650408918
+med(txnqueue_wait): 4.23332288817
+newer_committed_values: 0.231873325725
+p99(spanlatch_wait): 0.484273139999
+p99(txnqueue_wait): 5.53479628543
+total_accesses: 1.6775106979
+uncommitted_intents: 0.0276468188488
+intercept: -11.3364158444
+
+model: 1
+skew: 1.8, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 2.82763464412
+avg(txnqueue_wait): 5.51277064701
+failed_accesses: -1.8530126457
+key: 4.3813751545
+med(txnqueue_wait): 7.51154350782
+newer_committed_values: -1.19154351243
+p99(spanlatch_wait): 2.18428746759
+p99(txnqueue_wait): -9.81411925276
+total_accesses: 0.237679774521
+uncommitted_intents: -0.661469133276
+intercept: -27.1372704116
+
+model: 2
+skew: 1.8, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.145896432213
+avg(txnqueue_wait): 0.288349806491
+failed_accesses: -0.0961030467453
+key: 0.200700562523
+med(txnqueue_wait): 0.391411737317
+newer_committed_values: -0.061471866964
+p99(spanlatch_wait): 0.110154635963
+p99(txnqueue_wait): -0.500985224588
+total_accesses: 0.00413320517869
+uncommitted_intents: -0.0346311797813
+intercept: 4.92205085775
+
+model: 3
+skew: 1.8, training_time: 5, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 16.3517707314
+avg(txnqueue_wait): 30.9606375975
+failed_accesses: -10.6005161971
+key: 31.3001551044
+med(txnqueue_wait): 42.5354715153
+newer_committed_values: -6.89259211072
+p99(spanlatch_wait): 13.2293480693
+p99(txnqueue_wait): -58.0239835563
+total_accesses: 1.87238725318
+uncommitted_intents: -3.70792408638
+intercept: -214.450591109
+
+model: 1
+skew: 1.8, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.45029036262
+avg(txnqueue_wait): -1.96607795841
+failed_accesses: -0.0265808706292
+key: 4.0597996273
+med(txnqueue_wait): -2.00692192577
+newer_committed_values: -0.00276966466598
+p99(spanlatch_wait): 0.211381207999
+p99(txnqueue_wait): -4.97360271494
+total_accesses: 0.195044370204
+uncommitted_intents: -0.0238112059632
+intercept: -5.23972074952
+
+model: 2
+skew: 1.8, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.00867724682426
+avg(txnqueue_wait): -0.0378877503423
+failed_accesses: -0.000513170793904
+key: 0.0782377049733
+med(txnqueue_wait): -0.0386747869746
+newer_committed_values: -5.3718478232e-05
+p99(spanlatch_wait): 0.00407219813129
+p99(txnqueue_wait): -0.0958475831102
+total_accesses: 0.00217598096603
+uncommitted_intents: -0.000459452315672
+intercept: 5.96725371153
+
+model: 3
+skew: 1.8, training_time: 10, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 2.79852596146
+avg(txnqueue_wait): -12.2188994983
+failed_accesses: -0.165012850849
+key: 25.2306138609
+med(txnqueue_wait): -12.4727500546
+newer_committed_values: -0.0171455733666
+p99(spanlatch_wait): 1.3139533682
+p99(txnqueue_wait): -30.9097274467
+total_accesses: 1.52182349177
+uncommitted_intents: -0.147867277482
+intercept: -74.3795318872
+
+model: 1
+skew: 1.8, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.371696384674
+avg(txnqueue_wait): 1.72600760846
+failed_accesses: 0.826131467575
+key: 0.5866540397
+med(txnqueue_wait): 2.1297228835
+newer_committed_values: 0.685149965727
+p99(spanlatch_wait): 2.21425033176
+p99(txnqueue_wait): 3.44689019552
+total_accesses: 0.183689192626
+uncommitted_intents: 0.140981501848
+intercept: -11.7620695138
+
+model: 2
+skew: 1.8, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.0422202044212
+avg(txnqueue_wait): 0.329308426113
+failed_accesses: 0.154484616374
+key: 0.717847762056
+med(txnqueue_wait): 0.397449941905
+newer_committed_values: 0.124823748566
+p99(spanlatch_wait): 0.340935637752
+p99(txnqueue_wait): 0.666135072656
+total_accesses: 0.00921397766806
+uncommitted_intents: 0.0296608678074
+intercept: 1.62819562074
+
+model: 3
+skew: 1.8, training_time: 30, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -2.1597828163
+avg(txnqueue_wait): 9.9326633859
+failed_accesses: 4.7572306262
+key: 2.9472653957
+med(txnqueue_wait): 12.2610615617
+newer_committed_values: 3.94702350732
+p99(spanlatch_wait): 12.7985258144
+p99(txnqueue_wait): 19.8348546558
+total_accesses: 1.37570180605
+uncommitted_intents: 0.810207118873
+intercept: -106.658129931
+
+model: 1
+skew: 1.8, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 0.25805605886
+avg(txnqueue_wait): -1.71221883111
+failed_accesses: -0.103560275339
+key: 3.34966460409
+med(txnqueue_wait): -1.68033809835
+newer_committed_values: -0.0848788215171
+p99(spanlatch_wait): 1.3451058994
+p99(txnqueue_wait): -2.92323909599
+total_accesses: 0.243943379658
+uncommitted_intents: -0.0186814538219
+intercept: -9.58512270483
+
+model: 2
+skew: 1.8, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): -0.00162282645881
+avg(txnqueue_wait): 0.0107678249172
+failed_accesses: 0.000653696052757
+key: -0.0210743938272
+med(txnqueue_wait): 0.0105665689971
+newer_committed_values: 0.000534480018968
+p99(spanlatch_wait): -0.00846025549164
+p99(txnqueue_wait): 0.0183937077071
+total_accesses: 0.00165190707085
+uncommitted_intents: 0.000119216033788
+intercept: 5.87396567144
+
+model: 3
+skew: 1.8, training_time: 60, inf_dur: 10, r2: 1.0
+avg(spanlatch_wait): 1.90424787272
+avg(txnqueue_wait): -12.6347908659
+failed_accesses: -0.764023481415
+key: 24.7171963361
+med(txnqueue_wait): -12.3995896436
+newer_committed_values: -0.626289183624
+p99(spanlatch_wait): 9.92571570284
+p99(txnqueue_wait): -21.5704499771
+total_accesses: 2.02036705541
+uncommitted_intents: -0.137734297791
+intercept: -106.203188049
+
+model: 1
+skew: 1.8, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.0559191777305
+avg(txnqueue_wait): 0.574821166987
+failed_accesses: 0.0749466484538
+key: -0.327891586986
+med(txnqueue_wait): 0.574821166987
+newer_committed_values: -0.0124911080756
+p99(spanlatch_wait): 0.169458933126
+p99(txnqueue_wait): 1.15497673007
+total_accesses: 5.24626539177
+uncommitted_intents: 0.0874377565295
+intercept: -68.6803526682
+
+model: 2
+skew: 1.8, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.000572652033082
+avg(txnqueue_wait): 0.0058865763642
+failed_accesses: 0.000767506825952
+key: -0.00335784236354
+med(txnqueue_wait): 0.0058865763642
+newer_committed_values: -0.000127917804325
+p99(spanlatch_wait): 0.00173537964107
+p99(txnqueue_wait): 0.0118277807271
+total_accesses: 0.0537254778167
+uncommitted_intents: 0.000895424630278
+intercept: 5.10146978344
+
+model: 3
+skew: 1.8, training_time: 1, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): -0.449008228842
+avg(txnqueue_wait): 4.61557992383
+failed_accesses: 0.60179107143
+key: -2.63283593751
+med(txnqueue_wait): 4.61557992383
+newer_committed_values: -0.100298511905
+p99(spanlatch_wait): 1.36068623525
+p99(txnqueue_wait): 9.27399287631
+total_accesses: 42.1253750001
+uncommitted_intents: 0.702089583335
+intercept: -573.561931686
+
+model: 1
+skew: 1.8, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.256049943623
+avg(txnqueue_wait): -0.0587310358361
+failed_accesses: -0.536915296789
+key: 5.94098211245
+med(txnqueue_wait): -0.178746356212
+newer_committed_values: -0.357144042651
+p99(spanlatch_wait): 2.31759725622
+p99(txnqueue_wait): -6.16358832466
+total_accesses: 0.26255116566
+uncommitted_intents: -0.179771254138
+intercept: -14.5489181922
+
+model: 2
+skew: 1.8, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.00124184269331
+avg(txnqueue_wait): -0.000283930363554
+failed_accesses: -0.00260289939399
+key: 0.0288099065311
+med(txnqueue_wait): -0.000866586961801
+newer_committed_values: -0.00173190064187
+p99(spanlatch_wait): 0.0112402220842
+p99(txnqueue_wait): -0.0298879838845
+total_accesses: 0.00282510203441
+uncommitted_intents: -0.000870998752119
+intercept: 5.79915338567
+
+model: 3
+skew: 1.8, training_time: 5, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 1.42259149096
+avg(txnqueue_wait): -0.326180878981
+failed_accesses: -2.98290107439
+key: 33.0070635091
+med(txnqueue_wait): -0.99305436462
+newer_committed_values: -1.98422801689
+p99(spanlatch_wait): 12.8763538503
+p99(txnqueue_wait): -34.2436332159
+total_accesses: 1.66844899879
+uncommitted_intents: -0.998673057502
+intercept: -106.669407397
+
+model: 1
+skew: 1.8, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 5.40515835926e-05
+avg(txnqueue_wait): -0.0009423654081
+failed_accesses: 0.000427588419573
+key: -0.00213358038644
+med(txnqueue_wait): 0.000198717410032
+newer_committed_values: 9.60983516183e-05
+p99(spanlatch_wait): -0.000150345686272
+p99(txnqueue_wait): -0.00526772853536
+total_accesses: 0.330704959899
+uncommitted_intents: 0.000331490067954
+intercept: -6.99162802807
+
+model: 2
+skew: 1.8, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 7.29441325111e-07
+avg(txnqueue_wait): -1.27174862665e-05
+failed_accesses: 5.7704260013e-06
+key: -2.8793267484e-05
+med(txnqueue_wait): 2.68174734692e-06
+newer_committed_values: 1.29687428723e-06
+p99(spanlatch_wait): -2.02895732797e-06
+p99(txnqueue_wait): -7.10894783789e-05
+total_accesses: 0.00446295646001
+uncommitted_intents: 4.47355171407e-06
+intercept: 6.14456047066
+
+model: 3
+skew: 1.8, training_time: 10, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.000279084235396
+avg(txnqueue_wait): -0.00486570997375
+failed_accesses: 0.00220776486476
+key: -0.0110163035239
+med(txnqueue_wait): 0.00102603647761
+newer_committed_values: 0.000496184074575
+p99(spanlatch_wait): -0.000776279030313
+p99(txnqueue_wait): -0.0271988329083
+total_accesses: 1.70752704621
+uncommitted_intents: 0.00171158079019
+intercept: -17.2220983088
+
+model: 1
+skew: 1.8, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.33960800921
+avg(txnqueue_wait): 0.520244591408
+failed_accesses: 0.010118836012
+key: 5.44568876382
+med(txnqueue_wait): 0.386976167186
+newer_committed_values: -0.0390966780482
+p99(spanlatch_wait): 1.46536057424
+p99(txnqueue_wait): -0.077035811284
+total_accesses: 0.221858326335
+uncommitted_intents: 0.0492155140602
+intercept: -27.50181881
+
+model: 2
+skew: 1.8, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 0.0152846048614
+avg(txnqueue_wait): 0.0234162012669
+failed_accesses: 0.000450561973241
+key: 0.245123551414
+med(txnqueue_wait): 0.0174207443805
+newer_committed_values: -0.00176124609828
+p99(spanlatch_wait): 0.0659535159368
+p99(txnqueue_wait): -0.00348292015846
+total_accesses: 0.00281750878761
+uncommitted_intents: 0.00221180807152
+intercept: 5.44003183909
+
+model: 3
+skew: 1.8, training_time: 30, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 2.7040419814
+avg(txnqueue_wait): 4.14223719299
+failed_accesses: 0.0807825118301
+key: 43.3585138028
+med(txnqueue_wait): 3.08101111019
+newer_committed_values: -0.31122515065
+p99(spanlatch_wait): 11.6674442393
+p99(txnqueue_wait): -0.612681624238
+total_accesses: 2.0823884043
+uncommitted_intents: 0.39200766248
+intercept: -269.38857841
+
+model: 1
+skew: 1.8, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 8.50533919536e-06
+avg(txnqueue_wait): -4.6361667626e-05
+failed_accesses: 0.000176767181734
+key: -0.000628004842639
+med(txnqueue_wait): -0.000153146830938
+newer_committed_values: 5.11532766561e-05
+p99(spanlatch_wait): 0.000237141335672
+p99(txnqueue_wait): 0.00101098929409
+total_accesses: 0.249317922528
+uncommitted_intents: 0.000125613905078
+intercept: -18.8178935931
+
+model: 2
+skew: 1.8, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 9.47446307169e-08
+avg(txnqueue_wait): -5.16442551879e-07
+failed_accesses: 1.96908564981e-06
+key: -6.9956159934e-06
+med(txnqueue_wait): -1.70596840519e-06
+newer_committed_values: 5.69818345327e-07
+p99(spanlatch_wait): 2.64161931229e-06
+p99(txnqueue_wait): 1.1261844487e-05
+total_accesses: 0.00277725954938
+uncommitted_intents: 1.39926730448e-06
+intercept: 5.77796831007
+
+model: 3
+skew: 1.8, training_time: 60, inf_dur: 30, r2: 1.0
+avg(spanlatch_wait): 7.51417546261e-05
+avg(txnqueue_wait): -0.00040958943233
+failed_accesses: 0.00156167742294
+key: -0.00554820739133
+med(txnqueue_wait): -0.00135299972497
+newer_committed_values: 0.000451921654683
+p99(spanlatch_wait): 0.00209506236582
+p99(txnqueue_wait): 0.00893174366372
+total_accesses: 2.20263833436
+uncommitted_intents: 0.00110975576825
+intercept: -165.725018091
+
