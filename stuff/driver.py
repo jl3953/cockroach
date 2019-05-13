@@ -11,7 +11,7 @@ import subprocess
 import sys
 
 # constants
-COCKROACH_DIR = "~/go/src/github.com/cockroachdb/cockroach"
+COCKROACH_DIR = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach"
 EXE = os.path.join(COCKROACH_DIR, "cockroach")
 STORE_DIR = "/data"
 LOGS_DIR = os.path.join(STORE_DIR, 'logs')
@@ -506,8 +506,8 @@ def run_iteration(a, train_dur, inf_dur, param_file, inf_features, inf_avg_label
 def main():
 
     skews = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
-    train_dur = [5]
-    inf_dur = [5]
+    train_dur = [10]
+    inf_dur = [10]
 
     ts = datetime.datetime.now()
     paramfile = make_logfile_name("params", ts)
