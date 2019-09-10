@@ -443,10 +443,11 @@ type zipfGenerator struct {
 // Creates a new zipfian generator.
 func newZipfianGenerator(seq *sequence) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
+	hey := newZipf(1.001, 1, uint64(math.MaxInt64))
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
-		zipf:   newZipf(1.1, 1, uint64(math.MaxInt64)),
+		zipf:   hey,
 	}
 }
 

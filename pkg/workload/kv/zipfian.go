@@ -20,6 +20,7 @@
 package kv
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 )
@@ -59,6 +60,7 @@ func (z *zipf) hinv(x float64) float64 {
 func newZipf(s float64, v float64, imax uint64) *zipf {
 	z := new(zipf)
 	if s <= 1.0 || v < 1 {
+		fmt.Errorf("jenndebug")
 		return nil
 	}
 	z.imax = float64(imax)
