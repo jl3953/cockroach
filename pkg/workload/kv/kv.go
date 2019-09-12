@@ -57,6 +57,7 @@ type kv struct {
 	splits                               int
 	secondaryIndex                       bool
 	targetCompressionRatio               float64
+	s				     float64
 }
 
 func init() {
@@ -112,6 +113,7 @@ var kvMeta = workload.Meta{
 		g.flags.Float64Var(&g.targetCompressionRatio, `target-compression-ratio`, 1.0,
 			`Target compression ratio for data blocks. Must be >= 1.0`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
+		g.flags.Float64Var(&g.s, `s`, 1.1, `s parameter in the zipfian generator, default 1.1`)
 		return g
 	},
 }
@@ -250,7 +252,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq)
+			op.g = newZipfianGenerator(seq, w.s)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -278,6 +280,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = o.g.readKey()
 		}
+		//fmt.Printf("jenndebug readKeys:[%+v]\n", args)
 		start := timeutil.Now()
 		rows, err := o.readStmt.Query(ctx, args...)
 		if err != nil {
@@ -311,6 +314,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	}
+	//fmt.Printf("jenndebug writeKeys (every other):[%+v]\n", args)
 	start := timeutil.Now()
 	_, err := o.writeStmt.Exec(ctx, args...)
 	elapsed := timeutil.Since(start)
@@ -441,9 +445,9 @@ type zipfGenerator struct {
 }
 
 // Creates a new zipfian generator.
-func newZipfianGenerator(seq *sequence) *zipfGenerator {
+func newZipfianGenerator(seq *sequence, s float64) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
-	hey := newZipf(1.001, 1, uint64(math.MaxInt64))
+	hey := newZipf(s, 1, uint64(math.MaxInt64))
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
