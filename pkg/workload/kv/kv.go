@@ -13,6 +13,7 @@ package kv
 import (
 	"context"
 	"crypto/sha1"
+	"database/sql"
 	"encoding/binary"
 	"fmt"
 	"hash"
@@ -22,6 +23,7 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
@@ -199,6 +201,16 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	if err != nil {
 		return workload.QueryLoad{}, err
 	}
+
+	// open db connections
+	db, err := sql.Open(`cockroach`, strings.Join(urls, ` `))
+	if err != nil {
+		return workload.QueryLoad{}, err
+	}
+	db.SetMaxOpenConns(w.connFlags.Concurrency + 1)
+	db.SetMaxIdleConns(w.connFlags.Concurrency + 1)
+	// end opening of db connections
+
 	cfg := workload.MultiConnPoolCfg{
 		MaxTotalConnections: w.connFlags.Concurrency + 1,
 	}
@@ -275,6 +287,7 @@ type kvOp struct {
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
+
 	if statementProbability < o.config.readPercent {
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
@@ -282,20 +295,29 @@ func (o *kvOp) run(ctx context.Context) error {
 		}
 		//fmt.Printf("jenndebug readKeys:[%+v]\n", args)
 		start := timeutil.Now()
-		rows, err := o.readStmt.Query(ctx, args...)
-		if err != nil {
-			return err
-		}
-		empty := true
-		for rows.Next() {
-			empty = false
-		}
-		if empty {
-			atomic.AddInt64(o.numEmptyResults, 1)
-		}
+
+		// wrapping the single read statemnt in a txn
+		err := crdb.ExecuteTx(ctx, o.db, &sql.TxOptions {ReadOnly: true}, func(tx *sql.Tx) error {
+			rows, err := o.readStmt.QueryTx(ctx, args...)
+			if err != nil {
+				return err
+			}
+			empty := true
+			for rows.Next() {
+				empty = false
+			}
+			if empty {
+				atomic.AddInt64(o.numEmptyResults, 1)
+			}
+			if rowErr := rows.Err(); rowErr != nil {
+				return rowErr
+			}
+			rows.Close()
+			return nil
+		})
 		elapsed := timeutil.Since(start)
 		o.hists.Get(`read`).Record(elapsed)
-		return rows.Err()
+		return err
 	}
 	// Since we know the statement is not a read, we recalibrate
 	// statementProbability to only consider the other statements.
