@@ -298,12 +298,11 @@ func (o *kvOp) run(ctx context.Context) error {
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = o.g.readKey()
 		}
-		//fmt.Printf("jenndebug readKeys:[%+v]\n", args)
 		start := timeutil.Now()
 
-
-		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{pgx.Serializable, pgx.ReadOnly, pgx.Deferrable})
+		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable, AccessMode: pgx.ReadOnly,})
 		if err != nil {
+			fmt.Printf("jenndebug err getting txn\n")
 			return err
 		}
 		// wrapping the single read statemnt in a txn
@@ -346,7 +345,6 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	}
-	//fmt.Printf("jenndebug writeKeys (every other):[%+v]\n", args)
 	start := timeutil.Now()
 	_, err := o.writeStmt.Exec(ctx, args...)
 	elapsed := timeutil.Since(start)
