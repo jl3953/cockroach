@@ -13,6 +13,7 @@ package kv
 import (
 	"context"
 	"crypto/sha1"
+	"database/sql"
 	"encoding/binary"
 	"fmt"
 	"hash"
@@ -22,9 +23,11 @@ import (
 	"strings"
 	"sync/atomic"
 
+	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
+	"github.com/jackc/pgx"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
 )
@@ -57,6 +60,7 @@ type kv struct {
 	splits                               int
 	secondaryIndex                       bool
 	targetCompressionRatio               float64
+	s				     float64
 }
 
 func init() {
@@ -112,6 +116,7 @@ var kvMeta = workload.Meta{
 		g.flags.Float64Var(&g.targetCompressionRatio, `target-compression-ratio`, 1.0,
 			`Target compression ratio for data blocks. Must be >= 1.0`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
+		g.flags.Float64Var(&g.s, `s`, 1.1, `s parameter in the zipfian generator, default 1.1`)
 		return g
 	},
 }
@@ -197,6 +202,16 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	if err != nil {
 		return workload.QueryLoad{}, err
 	}
+
+	// open db connections
+	db, err := sql.Open(`cockroach`, strings.Join(urls, ` `))
+	if err != nil {
+		return workload.QueryLoad{}, err
+	}
+	db.SetMaxOpenConns(w.connFlags.Concurrency + 1)
+	db.SetMaxIdleConns(w.connFlags.Concurrency + 1)
+	// end opening of db connections
+
 	cfg := workload.MultiConnPoolCfg{
 		MaxTotalConnections: w.connFlags.Concurrency + 1,
 	}
@@ -240,6 +255,8 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 			config:          w,
 			hists:           reg.GetHandle(),
 			numEmptyResults: numEmptyResults,
+			db: db,
+			mcp: mcp,
 		}
 		op.readStmt = op.sr.Define(readStmtStr)
 		op.writeStmt = op.sr.Define(writeStmtStr)
@@ -250,7 +267,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq)
+			op.g = newZipfianGenerator(seq, w.s)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -269,30 +286,48 @@ type kvOp struct {
 	spanStmt        workload.StmtHandle
 	g               keyGenerator
 	numEmptyResults *int64 // accessed atomically
+	db		*sql.DB
+	mcp		*workload.MultiConnPool
 }
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
+
 	if statementProbability < o.config.readPercent {
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = o.g.readKey()
 		}
+		//fmt.Printf("jenndebug readKeys:[%+v]\n", args)
 		start := timeutil.Now()
-		rows, err := o.readStmt.Query(ctx, args...)
+
+
+		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{pgx.Serializable, pgx.ReadOnly, pgx.Deferrable})
 		if err != nil {
 			return err
 		}
-		empty := true
-		for rows.Next() {
-			empty = false
-		}
-		if empty {
-			atomic.AddInt64(o.numEmptyResults, 1)
-		}
+		// wrapping the single read statemnt in a txn
+		err = crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx), func() error {
+			rows, err := o.readStmt.QueryTx(ctx, tx, args...)
+			if err != nil {
+				return err
+			}
+			empty := true
+			for rows.Next() {
+				empty = false
+			}
+			if empty {
+				atomic.AddInt64(o.numEmptyResults, 1)
+			}
+			if rowErr := rows.Err(); rowErr != nil {
+				return rowErr
+			}
+			rows.Close()
+			return nil
+		})
 		elapsed := timeutil.Since(start)
 		o.hists.Get(`read`).Record(elapsed)
-		return rows.Err()
+		return err
 	}
 	// Since we know the statement is not a read, we recalibrate
 	// statementProbability to only consider the other statements.
@@ -311,6 +346,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	}
+	//fmt.Printf("jenndebug writeKeys (every other):[%+v]\n", args)
 	start := timeutil.Now()
 	_, err := o.writeStmt.Exec(ctx, args...)
 	elapsed := timeutil.Since(start)
@@ -441,12 +477,13 @@ type zipfGenerator struct {
 }
 
 // Creates a new zipfian generator.
-func newZipfianGenerator(seq *sequence) *zipfGenerator {
+func newZipfianGenerator(seq *sequence, s float64) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
+	hey := newZipf(s, 1, uint64(math.MaxInt64))
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
-		zipf:   newZipf(1.1, 1, uint64(math.MaxInt64)),
+		zipf:   hey,
 	}
 }
 
