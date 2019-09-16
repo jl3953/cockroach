@@ -300,7 +300,9 @@ func (o *kvOp) run(ctx context.Context) error {
 		}
 		start := timeutil.Now()
 
-		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.Serializable, AccessMode: pgx.ReadOnly,})
+		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
+						IsoLevel: pgx.Serializable,
+						AccessMode: pgx.ReadOnly,})
 		if err != nil {
 			fmt.Printf("jenndebug err getting txn\n")
 			return err
@@ -345,8 +347,14 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	}
+	tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
+					IsoLevel: pgx.Serializable,
+					AccessMode: pgx.ReadWrite,})
 	start := timeutil.Now()
-	_, err := o.writeStmt.Exec(ctx, args...)
+	err = crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx), func() error {
+		_, err := o.writeStmt.ExecTx(ctx, tx, args...)
+		return err
+	})
 	elapsed := timeutil.Since(start)
 	o.hists.Get(`write`).Record(elapsed)
 	return err
