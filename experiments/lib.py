@@ -225,8 +225,8 @@ def parse_bench_args(bench_config):
     if "drop" in bench_config and bench_config["drop"] is True:
         args.append("--drop")
 
-    if "n_clients" in bench_config:
-        args.append("--concurrency={}".format(bench_config["n_clients"]))
+    if "concurrency" in bench_config:
+        args.append("--concurrency={}".format(bench_config["concurrency"]))
 
     if "splits" in bench_config:
         args.append("--splits={}".format(bench_config["splits"]))
@@ -237,8 +237,8 @@ def parse_bench_args(bench_config):
     if "n_statements_per_txn" in bench_config:
         args.append("--stmt-per-txn={}".format(bench_config["n_statements_per_txn"]))
 
-    if "n_keys_per_statement" in bench_config:
-        args.append("--batch={}".format(bench_config["n_keys_per_statement"]))
+    if "batch" in bench_config:
+        args.append("--batch={}".format(bench_config["batch"]))
         
     if "distribution" in bench_config:
         d = bench_config["distribution"]
@@ -246,7 +246,7 @@ def parse_bench_args(bench_config):
 
         if d["type"] == "zipf":
             args.append("--zipfian")
-            args.append("--skew={1}".format(args, params["skew"]))
+            # args.append("--skew={1}".format(args, params["skew"]))
 
     return " ".join(args)
 
