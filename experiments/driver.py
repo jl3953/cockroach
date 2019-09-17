@@ -10,11 +10,12 @@ FPATH = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.join(FPATH, "..")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 OUT_DIR = os.path.join(LOGS_DIR, "kv-skew")
-SKEWS = [1.000001, 1.00001, 1.0001, 1.001, 1.01, 1.1, 2]
+# SKEWS = [1.000001, 1.00001, 1.0001, 1.001, 1.01, 1.1, 2]
+SKEWS = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
 
 EXP = {
     "out_dir": OUT_DIR,
-    "cockroach_commit": "jenn-thisWillWork"
+    "cockroach_commit": "jenn-thisWillWork",
     "workload_nodes": [
        	{
             "ip": "192.168.1.1",
