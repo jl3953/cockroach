@@ -14,9 +14,9 @@ SKEWS = [1.000001, 1.00001, 1.0001, 1.001, 1.01, 1.1, 2]
 
 EXP = {
     "out_dir": OUT_DIR,
-    "cockroach_commit": "hot_or_not-jeff",
+    "cockroach_commit": "jenn-thisWillWork"
     "workload_nodes": [
-        {
+       	{
             "ip": "192.168.1.1",
         },
     ],
@@ -37,83 +37,83 @@ EXP = {
             "region": "tokyo",
             "store": lib.STORE_DIR,
         },
-        {
-            "ip": "192.168.1.5",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.6",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.7",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.8",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.9",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.10",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.11",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.12",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.13",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.14",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.15",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.16",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
-        {
-            "ip": "192.168.1.17",
-            "region": "singapore",
-            "store": lib.STORE_DIR,
-        },
+        # {
+        #     "ip": "192.168.1.5",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.6",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.7",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.8",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.9",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.10",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.11",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.12",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.13",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.14",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.15",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.16",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
+        # {
+        #     "ip": "192.168.1.17",
+        #     "region": "singapore",
+        #     "store": lib.STORE_DIR,
+        # },
     ],
     "benchmark": {
         "name": "kv",
         "init_args": {
         },
         "run_args": {
-            "n_clients": 128,
+            "concurrency": 128,
             "duration": 240,
-            "splits": 1000,
-            "drop": True,
+            # "splits": 1000,
+            # "drop": True,
             "read_percent": 90,
-            "n_statements_per_txn": 1,
+            # "n_statements_per_txn": 1,
             "n_keys_per_statement": 10,
             "distribution": {
                 "type": "zipf",
@@ -133,7 +133,6 @@ def main():
     parser.add_argument('--logs', action='store_true', help='parses benchmark logs')
 
     args = parser.parse_args()
-
     if args.benchmark:
         exps = lib.vary_zipf_skew(EXP, SKEWS)
         for e in exps:
