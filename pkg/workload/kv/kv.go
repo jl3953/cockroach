@@ -304,7 +304,6 @@ func (o *kvOp) run(ctx context.Context) error {
 						IsoLevel: pgx.Serializable,
 						AccessMode: pgx.ReadOnly,})
 		if err != nil {
-			fmt.Printf("jenndebug err getting txn\n")
 			return err
 		}
 		// wrapping the single read statemnt in a txn

@@ -11,7 +11,8 @@ BASE_DIR = os.path.join(FPATH, "..")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 OUT_DIR = os.path.join(LOGS_DIR, "kv-skew")
 # SKEWS = [1.000001, 1.00001, 1.0001, 1.001, 1.01, 1.1, 2]
-SKEWS = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+SKEWS = [1.1, 1.2, 1.3, 1.5, 1.7, 2.0]
+# SKEWS = [1.1] # warmup
 
 EXP = {
     "out_dir": OUT_DIR,
@@ -109,7 +110,7 @@ EXP = {
         "init_args": {
         },
         "run_args": {
-            "concurrency": 128,
+            "concurrency": 32,
             "duration": 240,
             # "splits": 1000,
             # "drop": True,
@@ -128,23 +129,28 @@ EXP = {
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Start and kill script for cockroach.')
-    parser.add_argument('--kill', action='store_true', help='kills cluster, if specified')
-    parser.add_argument('--benchmark', action='store_true', help='runs specified benchmark')
-    parser.add_argument('--logs', action='store_true', help='parses benchmark logs')
+	
+	parser = argparse.ArgumentParser(description='Start script for cockroach.')
+	parser.add_argument('--start', action='store_true', help='starts, or restarts, the cluster.')
+	parser.add_argument('--obliterate', action='store_true', help='kills cluster and cleans up, if specified')
+	parser.add_argument('--benchmark', action='store_true', help='runs specified benchmark, assumes db is already started')
+	# parser.add_argument('--logs', action='store_true', help='parses benchmark logs')
+	
+	args = parser.parse_args()
+	if args.obliterate:
+		lib.cleanup_previous_experiment(EXP)
+	elif args.benchmark:
+		exps = lib.vary_zipf_skew(EXP, SKEWS)
+		for e in exps:
+			lib.run_bench(e)
+	elif args.start:
+		lib.cleanup_previous_experiment(EXP)
+		lib.init_experiment(EXP)
+	else:
+		parser.print_help()
 
-    args = parser.parse_args()
-    if args.benchmark:
-        exps = lib.vary_zipf_skew(EXP, SKEWS)
-        for e in exps:
-            if args.kill:
-                lib.cleanup_previous_experiment(EXP)
-                lib.init_experiment(EXP)
-
-            lib.run_bench(e)
-
-    if args.logs:
-        logs.parse_kvbench_logs(OUT_DIR)
+    # if args.logs:
+    #    logs.parse_kvbench_logs(OUT_DIR)
 
 
 if __name__ == "__main__":
