@@ -11,12 +11,13 @@ BASE_DIR = os.path.join(FPATH, "..")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 OUT_DIR = os.path.join(LOGS_DIR, "kv-skew")
 # SKEWS = [1.000001, 1.00001, 1.0001, 1.001, 1.01, 1.1, 2]
-SKEWS = [1.1, 1.2, 1.3, 1.5, 1.7, 2.0]
+SKEWS = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+# SKEWS = [1.1, 1.2, 1.3]
 # SKEWS = [1.1] # warmup
 
 EXP = {
     "out_dir": OUT_DIR,
-    "cockroach_commit": "jenn-hotshard",
+    "cockroach_commit": "bdaf976d3f55aa3093",
     "workload_nodes": [
        	{
             "ip": "192.168.1.1",
@@ -111,7 +112,7 @@ EXP = {
         },
         "run_args": {
             "concurrency": 64,
-            "duration": 240,
+            "duration": 120,
             # "splits": 1000,
             # "drop": True,
             "read_percent": 90,
@@ -142,7 +143,11 @@ def main():
 	elif args.benchmark:
 		exps = lib.vary_zipf_skew(EXP, SKEWS)
 		for e in exps:
+			lib.cleanup_previous_experiment(EXP)
+			lib.init_experiment(EXP)
+			lib.warmup_cluster(e)
 			lib.run_bench(e)
+		lib.gnuplot(EXP, SKEWS)
 	elif args.start:
 		lib.cleanup_previous_experiment(EXP)
 		lib.init_experiment(EXP)

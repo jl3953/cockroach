@@ -1,9 +1,12 @@
+
 import copy
+import csv
 import json
 import os
 import shlex
 import subprocess
 import sys
+import re
 
 # Constants
 COCKROACH_DIR = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach"
@@ -237,8 +240,8 @@ def parse_bench_args(bench_config):
     if "n_statements_per_txn" in bench_config:
         args.append("--stmt-per-txn={}".format(bench_config["n_statements_per_txn"]))
 
-    if "batch" in bench_config:
-        args.append("--batch={}".format(bench_config["batch"]))
+    if "n_keys_per_statement" in bench_config:
+        args.append("--batch={}".format(bench_config["n_keys_per_statement"]))
         
     if "distribution" in bench_config:
         d = bench_config["distribution"]
@@ -249,6 +252,140 @@ def parse_bench_args(bench_config):
             args.append("--s={1}".format(args, params["skew"]))
 
     return " ".join(args)
+
+
+def warmup_cluster(config):
+
+	# out_dir = config["out_dir"]
+	# if not os.path.exists(out_dir):
+	#     os.makedirs(out_dir)
+
+	# save_params(config, out_dir)
+
+	nodes = config["warm_nodes"]
+	# out_dir = config["out_dir"]
+	b = config["benchmark"]
+
+	name = b["name"]
+
+	urls = ["postgresql://root@{0}:26257?sslmode=disable".format(n["ip"])
+			for n in nodes]
+	urls = " ".join(urls)
+
+	workload_nodes = config["workload_nodes"]
+
+	if len(workload_nodes) == 0:
+		print("No workload nodes!")
+		return
+
+	if len(nodes) == 0:
+		print("No cluster nodes!")
+		return
+
+	args = parse_bench_args(b["init_args"])
+	cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
+
+	ip = workload_nodes[0]["ip"]
+	call_remote(ip, cmd, "Failed to initialize benchmark")
+
+	ip = nodes[0]["ip"]
+	cmd = ('echo "'
+			'alter range default configure zone using num_replicas = 1;'
+			'alter table kv partition by range(k) (partition hot values from (minvalue) to (3), partition warm values from (3) to (maxvalue));'
+			"alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
+			"alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
+			'" | {0} sql --insecure --database=kv '
+			'--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
+	
+	call_remote(ip, cmd, "Failed to assign partition affinity")
+
+	if "hot_keys" in b["init_args"]:
+		set_hot_keys(nodes, b["init_args"]["hot_keys"])
+
+	i = 0
+	ps = []
+	for wn in workload_nodes:
+		args = parse_bench_args(b["run_args"])
+		cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
+
+		# Call remote
+		ip = wn["ip"]
+		cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
+		print(cmd)
+
+		# path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
+		# print(path)
+		# with open(path, "w") as f:
+		ps.append(subprocess.Popen(shlex.split(cmd)))
+
+		i += 1
+
+	for p in ps:
+		p.wait()
+
+
+def extract_data(last_eight_lines):
+
+	def parse(header_line, data_line, suffix=""):
+		header = [w + suffix for w in re.split('_+', header_line.strip().strip('_'))]
+		fields = data_line.strip().split()
+		data = dict(zip(header, fields))
+		return data
+
+	read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
+	data = parse(last_eight_lines[6], last_eight_lines[7])
+
+	read_data.update(write_data)
+	read_data.update(data)
+
+	return read_data
+
+
+def write_out_data(data, out_dir):
+
+	filename = os.path.join(out_dir, "gnuplot.csv")
+	with open(filename, "w") as csvfile:
+		writer = csv.DictWriter(csvfile, delimiter='\t', fieldnames=data[0].keys())
+		writer.writeheader()
+
+		for datum in data:
+			try:
+				writer.writerow(datum)
+			except BaseException:
+				print("failed on {0}".format(datum))
+				continue
+
+	return filename
+
+
+def gnuplot_written_data(filename):
+	pass
+
+def gnuplot(config, skews):
+
+	out_dir = os.path.join(config["out_dir"])
+	
+	data = []
+	for i in range(len(skews)):
+
+		path = os.path.join(out_dir, "skew-{0}".format(i))
+		path = os.path.join(path, "bench_out_0.txt")
+		print(path)
+		with open(path, "r") as f:
+			# read the last eight lines of f
+			tail = f.readlines()[-8:]
+			try:
+				datum = {"skew": skews[i]}
+				datum.update(extract_data(tail))
+				data.append(datum)
+			except BaseException:
+				print("failed on skew: {0}".format(skews[i]))
+				continue
+
+	filename = write_out_data(data, out_dir)
+	print(filename)
+	gnuplot_written_data(filename)
 
 
 def run_bench(config):
@@ -278,11 +415,11 @@ def run_bench(config):
         print("No cluster nodes!")
         return
 
-    args = parse_bench_args(b["init_args"])
-    cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
+    # args = parse_bench_args(b["init_args"])
+    # cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
 
-    ip = workload_nodes[0]["ip"]
-    call_remote(ip, cmd, "Failed to initialize benchmark")
+    # ip = workload_nodes[0]["ip"]
+    # call_remote(ip, cmd, "Failed to initialize benchmark")
 
     if "hot_keys" in b["init_args"]:
         set_hot_keys(nodes, b["init_args"]["hot_keys"])
