@@ -103,7 +103,7 @@ func main() {
 	z := newZipf(1.1, 1, uint64(math.MaxInt64))
 
 	hist := make(map[int]int)
-	for i := 0; i < 10000; i++ {
+	for i := 0; i < 1000000; i++ {
 		key := int(z.Uint64(rand.New(random)))
 		if v, ok := hist[key]; ok {
 			hist[key] = v + 1
