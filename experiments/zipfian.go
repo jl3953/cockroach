@@ -100,7 +100,7 @@ func (z *zipf) Uint64(random *rand.Rand) uint64 {
 func main() {
 
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
-	z := newZipf(1.1, 1, 1000)
+	z := newZipf(1.1, 1, uint64(math.MaxInt64))
 
 	hist := make(map[int]int)
 	for i := 0; i < 10000; i++ {

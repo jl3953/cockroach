@@ -28,3 +28,8 @@ set title "Tail Latency vs. skew"
 plot "logs-64.csv" using "skew":"p99(ms)" title "p99-64" with linespoint,\
 		 "logs-64-hot.csv" using "skew":"p99(ms)" title "p99-64-hot" with linespoint,\
 		 "logs-64-10keys.csv" using "skew":"p99(ms)" title "p99-64-10keys" with linespoint
+
+set output "tp_v_s-64_10keys.png"
+set xlabel "Power Law s"
+set ylabel "Throughput (txn over 120 s)"
+plot "logs-64-10keys.csv" using "skew":"ops(total)" title "tp-64-10keys" with linespoint
