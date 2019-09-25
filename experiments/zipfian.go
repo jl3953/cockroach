@@ -24,6 +24,7 @@ import (
 	"math/rand"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"fmt"
+	"sort"
 )
 
 // A zipf generates Zipf distributed variates.
@@ -100,10 +101,11 @@ func (z *zipf) Uint64(random *rand.Rand) uint64 {
 func main() {
 
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
-	z := newZipf(1.1, 1, uint64(math.MaxInt64))
+	z := newZipf(2.0, 1, uint64(math.MaxInt64))
+	trials := 100000000
 
 	hist := make(map[int]int)
-	for i := 0; i < 1000000; i++ {
+	for i := 0; i < trials; i++ {
 		key := int(z.Uint64(rand.New(random)))
 		if v, ok := hist[key]; ok {
 			hist[key] = v + 1
@@ -112,7 +114,17 @@ func main() {
 		}
 	}
 
-	for k, v := range hist {
-		fmt.Printf("%d\t%v\n", k, float64(v) / 10000)
+	keys := make([]int,0)
+	for k := range hist {
+		keys = append(keys, k)
+	}
+
+	sort.Ints(keys)
+	for _, k := range keys {
+		v := hist[k]
+		norm := (float64)(v) / (float64)(trials)
+		if norm > 0.001 {
+			fmt.Printf("%d\t%v\n", k, norm * 100)
+		}
 	}
 }
