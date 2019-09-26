@@ -739,6 +739,7 @@ func (tc *TxnCoordSender) Send(
 	// comes, and unlock again in the defer below.
 	tc.mu.Lock()
 	defer tc.mu.Unlock()
+	log.Warningf(ctx, "jenndebug txn sender")
 
 	if pErr := tc.maybeRejectClientLocked(ctx, &ba); pErr != nil {
 		return nil, pErr
