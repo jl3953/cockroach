@@ -117,7 +117,7 @@ def start_cluster(nodes):
 
 def build_cockroach(node, commit):
     cmd = ("ssh {0} 'export GOPATH=/usr/local/temp/go "
-           "&& cd {1} && git pull && git checkout {2} "
+           "&& cd {1} && git fetch origin {2} && git checkout {2} && git pull origin {2} "
            "&& (make build || "
            "(./bin/dep ensure && make clean && make build))'") \
            .format(node["ip"], COCKROACH_DIR, commit)

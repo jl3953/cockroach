@@ -17,7 +17,7 @@ SKEWS = [1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
 
 EXP = {
     "out_dir": OUT_DIR,
-    "cockroach_commit": "bdaf976d3f55aa3093",
+    "cockroach_commit": "jenn-startHacking",
     "workload_nodes": [
        	{
             "ip": "192.168.1.1",
