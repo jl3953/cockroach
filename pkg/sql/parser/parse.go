@@ -94,7 +94,9 @@ var defaultNakedIntType = types.Int
 
 // Parse parses the sql and returns a list of statements.
 func (p *Parser) Parse(sql string) (Statements, error) {
-	return p.parseWithDepth(1, sql, defaultNakedIntType)
+	stmt, err := p.parseWithDepth(1, sql, defaultNakedIntType)
+	fmt.Printf("jenndebug sql:[%s], stmt:[%+v]\n", sql, stmt)
+	return stmt, err
 }
 
 // ParseWithInt parses a sql statement string and returns a list of
