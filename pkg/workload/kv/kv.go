@@ -235,8 +235,8 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	// Write statement
 	buf.Reset()
 	buf.WriteString(`UPSERT INTO kv (k, v) VALUES`)
-	//for i := 0; i < w.batchSize; i++ {
-	for i := 0; i < 6; i++ { //jenndebug
+	for i := 0; i < w.batchSize; i++ {
+	//for i := 0; i < 6; i++ { //jenndebug
 		j := i * 2
 		if i > 0 {
 			buf.WriteString(", ")
@@ -347,7 +347,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	} //jenndebug
-	args[0] = 0
+	/*args[0] = 0
 	args[1] = randomBlock(o.config, o.g.rand())
 	args[2] = -1
 	args[3] = randomBlock(o.config, o.g.rand())
@@ -358,7 +358,7 @@ func (o *kvOp) run(ctx context.Context) error {
 	args[8] = math.MaxInt64 - 6
 	args[9] = randomBlock(o.config, o.g.rand())
 	args[10] = math.MaxInt64 - 8
-	args[11] = randomBlock(o.config, o.g.rand())
+	args[11] = randomBlock(o.config, o.g.rand())*/
 	tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
 					IsoLevel: pgx.Serializable,
 					AccessMode: pgx.ReadWrite,})

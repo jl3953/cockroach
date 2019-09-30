@@ -3087,6 +3087,7 @@ func (s *Store) Send(
 			if pErr.Index != nil {
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
+					log.Warningf(ctx, "jenndebug ABORT")
 					pushType = roachpb.PUSH_ABORT
 				} else {
 					pushType = roachpb.PUSH_TIMESTAMP
