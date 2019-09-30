@@ -22,6 +22,7 @@ import (
 	"sync/atomic"
 	"time"
 	"unsafe"
+	"math/rand"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/config"
@@ -3195,6 +3196,9 @@ func (s *Store) maybeWaitForPushee(
 	// If this is a push txn request, check the push queue first, which
 	// may cause this request to wait and either return a successful push
 	// txn response or else allow this request to proceed.
+	jenndebug := rand.Intn(10000)
+	log.Warningf(ctx, "jenndebug start wait %d", jenndebug)
+	defer log.Warningf(ctx, "jenndebug end wait %d", jenndebug)
 	if ba.IsSinglePushTxnRequest() {
 		pushReq := ba.Requests[0].GetInner().(*roachpb.PushTxnRequest)
 		pushResp, pErr := repl.txnWaitQueue.MaybeWaitForPush(repl.AnnotateCtx(ctx), repl, pushReq)

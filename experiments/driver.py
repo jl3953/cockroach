@@ -117,7 +117,7 @@ EXP = {
             # "drop": True,
             "read_percent": 0,
             # "n_statements_per_txn": 1,
-            "n_keys_per_statement": 10,
+            "n_keys_per_statement": 6,
             "distribution": {
                 "type": "zipf",
                 "params": {
@@ -146,7 +146,7 @@ def main():
 			lib.cleanup_previous_experiment(EXP)
 			lib.init_experiment(EXP)
 			lib.warmup_cluster(e)
-			lib.run_bench(e)
+			# lib.run_bench(e)
 		lib.gnuplot(EXP, SKEWS)
 	elif args.start:
 		lib.cleanup_previous_experiment(EXP)
