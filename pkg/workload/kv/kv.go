@@ -235,7 +235,8 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	// Write statement
 	buf.Reset()
 	buf.WriteString(`UPSERT INTO kv (k, v) VALUES`)
-	for i := 0; i < w.batchSize; i++ {
+	//for i := 0; i < w.batchSize; i++ {
+	for i := 0; i < 2; i++ { //jenndebug
 		j := i * 2
 		if i > 0 {
 			buf.WriteString(", ")
@@ -341,11 +342,15 @@ func (o *kvOp) run(ctx context.Context) error {
 	}
 	const argCount = 2
 	args := make([]interface{}, argCount*o.config.batchSize)
-	for i := 0; i < o.config.batchSize; i++ {
+	/*for i := 0; i < o.config.batchSize; i++ {
 		j := i * argCount
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
-	}
+	}*/ //jenndebug
+	args[0] = 0
+	args[1] = 0
+	args[2] = 940214
+	args[3] = 940214
 	tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
 					IsoLevel: pgx.Serializable,
 					AccessMode: pgx.ReadWrite,})
