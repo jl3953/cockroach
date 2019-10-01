@@ -104,6 +104,7 @@ func SetAbortSpan(
 // CanPushWithPriority returns true if the given pusher can push the pushee
 // based on its priority.
 func CanPushWithPriority(pusher, pushee *roachpb.Transaction) bool {
+	log.Warningf(context.TODO(), "jenndebug pusher is max? %v, pushee is max? %v\n", pusher.Priority == enginepb.MaxTxnPriority, pushee.Priority == enginepb.MaxTxnPriority)
 	return (pusher.Priority > enginepb.MinTxnPriority && pushee.Priority == enginepb.MinTxnPriority) ||
 		(pusher.Priority == enginepb.MaxTxnPriority && pushee.Priority < pusher.Priority)
 }
