@@ -104,9 +104,11 @@ func SetAbortSpan(
 // CanPushWithPriority returns true if the given pusher can push the pushee
 // based on its priority.
 func CanPushWithPriority(pusher, pushee *roachpb.Transaction) bool {
-	log.Warningf(context.TODO(), "jenndebug pusher is max? %v, pushee is max? %v\n", pusher.Priority == enginepb.MaxTxnPriority, pushee.Priority == enginepb.MaxTxnPriority)
-	return (pusher.Priority > enginepb.MinTxnPriority && pushee.Priority == enginepb.MinTxnPriority) ||
+	result := (pusher.Priority > enginepb.MinTxnPriority && pushee.Priority == enginepb.MinTxnPriority) ||
 		(pusher.Priority == enginepb.MaxTxnPriority && pushee.Priority < pusher.Priority)
+	log.Warningf(context.TODO(), "jenndebug pusher.Priority:[%v], pushee.Priority:[%v], pusher.Priority > pushee.Priority:[%v], result:[%v]\n",
+			pusher.Priority, pushee.Priority, pusher.Priority > pushee.Priority, result)
+	return result
 }
 
 // CanCreateTxnRecord determines whether a transaction record can be created for
