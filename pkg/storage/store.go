@@ -3030,6 +3030,7 @@ func (s *Store) Send(
 		}
 		br, pErr = repl.Send(ctx, ba)
 		if pErr == nil {
+			log.Warningf(ctx, "jenndebug succeeded txn:[%v]", ba.Header.Txn.Short())
 			return br, nil
 		}
 

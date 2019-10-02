@@ -365,7 +365,6 @@ func (o *kvOp) run(ctx context.Context) error {
 	start := timeutil.Now()
 	err = crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx), func() error {
 		_, err := o.writeStmt.ExecTx(ctx, tx, args...)
-		fmt.Printf("jenndebug writeTxn failed err[%v]\n", err)
 		return err
 	})
 	elapsed := timeutil.Since(start)
