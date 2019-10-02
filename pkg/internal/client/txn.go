@@ -108,7 +108,10 @@ func NewTxn(ctx context.Context, db *DB, gatewayNodeID roachpb.NodeID, typ TxnTy
 	if gatewayNodeID != 0 && typ == RootTxn {
 		txn.UpdateObservedTimestamp(gatewayNodeID, now)
 	}
-	return NewTxnWithProto(ctx, db, gatewayNodeID, typ, txn)
+	result := NewTxnWithProto(ctx, db, gatewayNodeID, typ, txn)
+	log.Warningf(ctx, "jenndebug NewTxn(ctx, db, gatewayNodeID=[%+v], typ=[%+v]), txn.mu.ID=[%+v]",
+			gatewayNodeID, typ, result.mu.ID)
+	return result
 }
 
 // NewTxnWithProto is like NewTxn, except it returns a new txn with the provided
@@ -952,7 +955,7 @@ func (txn *Txn) GenerateForcedRetryableError(ctx context.Context, msg string) er
 	now := txn.db.clock.Now()
 	txn.mu.sender.ManualRestart(ctx, txn.mu.userPriority, now)
 	txn.resetDeadlineLocked()
-	return roachpb.NewTransactionRetryWithProtoRefreshError(
+	result := roachpb.NewTransactionRetryWithProtoRefreshError(
 		msg,
 		txn.mu.ID,
 		roachpb.MakeTransaction(
@@ -962,6 +965,8 @@ func (txn *Txn) GenerateForcedRetryableError(ctx context.Context, msg string) er
 			now,
 			txn.db.clock.MaxOffset().Nanoseconds(),
 		))
+	log.Warningf(ctx, "jenndebug RetryableErr txn.mu.ID=[%+v]", txn.mu.ID)
+	return result
 }
 
 // ManualRestart bumps the transactions epoch, and can upgrade the timestamp.
