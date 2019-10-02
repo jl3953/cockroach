@@ -3087,7 +3087,6 @@ func (s *Store) Send(
 			if pErr.Index != nil {
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
-					log.Warningf(ctx, "jenndebug ABORT")
 					pushType = roachpb.PUSH_ABORT
 				} else {
 					pushType = roachpb.PUSH_TIMESTAMP
@@ -3211,7 +3210,7 @@ func (s *Store) maybeWaitForPushee(
 			// and set the push type to ABORT.
 			pushReqCopy.Force = true
 			pushReqCopy.PushType = roachpb.PUSH_ABORT
-			log.Warningf(ctx, "jenndebug deadlock")
+			log.Warningf(ctx, "jenndebug deadlock, PushType = ABORT, pushReqCopy:[%v]", pushReqCopy)
 		} else if pErr != nil {
 			return nil, pErr
 		} else if pushResp != nil {
