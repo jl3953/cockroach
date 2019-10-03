@@ -966,6 +966,7 @@ func (txn *Txn) GenerateForcedRetryableError(ctx context.Context, msg string) er
 			now,
 			txn.db.clock.MaxOffset().Nanoseconds(),
 		))
+	log.Warningf(ctx, "jenndebug retry previousIds:[%+v]", txn.mu.previousIDs)
 	return result
 }
 

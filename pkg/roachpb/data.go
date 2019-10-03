@@ -1246,6 +1246,7 @@ func PrepareTransactionForRetry(
 			now,
 			clock.MaxOffset().Nanoseconds(),
 		)
+		log.Warningf(ctx, "jenndebug prepareTransactionForRetry txnid:[%+v]", txn.TxnMeta.ID)
 		// Use the priority communicated back by the server.
 		txn.Priority = errTxnPri
 	case *ReadWithinUncertaintyIntervalError:
