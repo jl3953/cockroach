@@ -3085,8 +3085,9 @@ func (s *Store) Send(
 		case *roachpb.WriteIntentError:
 			// Process and resolve write intent error. We do this here because
 			// this is the code path with the requesting client waiting.
-			log.Warningf(ctx, "jenndebug WriteIntentErr for txn:[%+v]", ba.Header.Txn.TxnMeta.ID)
 			if pErr.Index != nil {
+
+				log.Warningf(ctx, "jenndebug WriteIntentErr for txn:[%+v]", ba.Header.Txn.TxnMeta.ID)
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
