@@ -3087,7 +3087,7 @@ func (s *Store) Send(
 			// this is the code path with the requesting client waiting.
 			if pErr.Index != nil {
 
-				log.Warningf(ctx, "jenndebug WriteIntentErr for txn:[%+v]", ba.Txn.TxnMeta.ID)
+				log.Warningf(ctx, "jenndebug WriteIntentErr for txn ba:[%+v]", ba)
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
