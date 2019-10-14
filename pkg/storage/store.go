@@ -3132,12 +3132,13 @@ func (s *Store) Send(
 					if _, ok := pErr.GetDetail().(*roachpb.AmbiguousResultError); !ok {
 						// Preserve the error index.
 						pErr.Index = index
+						duration := rand.Intn(100)
+						log.Warningf(ctx, "jenndebug duration[%+v], txnid:[%+v]\n", duration, h.Txn)
+						time.Sleep(time.Duration(duration) * time.Millisecond)
+
 						return nil, pErr
 					}
 					pErr = nil
-					duration := rand.Intn(100)
-					log.Warningf(ctx, "jenndebug duration[%+v], txnid:[%+v]\n", duration, h.Txn)
-					time.Sleep(time.Duration(duration) * time.Millisecond)
 				}
 				// We've resolved the write intent; retry command.
 			}
