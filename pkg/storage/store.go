@@ -3135,7 +3135,9 @@ func (s *Store) Send(
 						return nil, pErr
 					}
 					pErr = nil
-					time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+					duration := rand.Intn(100)
+					log.Warningf(ctx, "jenndebug duration[%+v], txnid:[%+v]\n", duration, h.Txn)
+					time.Sleep(time.Duration(duration) * time.Millisecond)
 				}
 				// We've resolved the write intent; retry command.
 			}
