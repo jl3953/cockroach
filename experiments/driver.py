@@ -147,7 +147,7 @@ def main():
 			lib.init_experiment(EXP)
 			lib.warmup_cluster(e)
 			# lib.run_bench(e)
-		lib.gnuplot(EXP, SKEWS)
+		#lib.gnuplot(EXP, SKEWS)
 	elif args.start:
 		lib.cleanup_previous_experiment(EXP)
 		lib.init_experiment(EXP)

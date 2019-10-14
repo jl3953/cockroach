@@ -347,18 +347,18 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	} //jenndebug
-	/*args[0] = 0
+	args[0] = 0
 	args[1] = randomBlock(o.config, o.g.rand())
-	args[2] = -1
+	args[2] = math.MaxInt64-1
 	args[3] = randomBlock(o.config, o.g.rand())
-	args[4] = -2
+	args[4] = math.MaxInt64-2
 	args[5] = randomBlock(o.config, o.g.rand())
 	args[6] = math.MaxInt64-4
 	args[7] =randomBlock(o.config, o.g.rand())
 	args[8] = math.MaxInt64 - 6
 	args[9] = randomBlock(o.config, o.g.rand())
 	args[10] = math.MaxInt64 - 8
-	args[11] = randomBlock(o.config, o.g.rand())*/
+	args[11] = randomBlock(o.config, o.g.rand())
 	tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
 					IsoLevel: pgx.Serializable,
 					AccessMode: pgx.ReadWrite,})

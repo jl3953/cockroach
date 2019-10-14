@@ -76,7 +76,8 @@ def start_cockroach_node(node, join=None):
            "--cache=.25 "
            "--max-sql-memory=.25 "
 		   "--log-file-verbosity=2 "
-           "--background").format(EXE, ip, store, region)
+           #"--background"
+		   ).format(EXE, ip, store, region)
 
     if join:
         cmd = "{0} --join={1}:26257".format(cmd, join)
