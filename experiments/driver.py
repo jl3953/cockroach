@@ -22,6 +22,9 @@ EXP = {
        	{
             "ip": "192.168.1.1",
         },
+		{
+			"ip": "192.168.1.5",
+		},
     ],
     "hot_nodes": [],
     "warm_nodes": [
@@ -112,7 +115,7 @@ EXP = {
         },
         "run_args": {
             "concurrency": 2,
-            "duration": 120,
+            "duration": 10,
             # "splits": 1000,
             # "drop": True,
             "read_percent": 0,
@@ -146,8 +149,8 @@ def main():
 			lib.cleanup_previous_experiment(EXP)
 			lib.init_experiment(EXP)
 			lib.warmup_cluster(e)
-			# lib.run_bench(e)
-		#lib.gnuplot(EXP, SKEWS)
+			lib.run_bench(e)
+		lib.gnuplot(EXP, SKEWS)
 	elif args.start:
 		lib.cleanup_previous_experiment(EXP)
 		lib.init_experiment(EXP)

@@ -22,7 +22,7 @@ import (
 	"sync/atomic"
 	"time"
 	"unsafe"
-	"math/rand"
+	//"math/rand"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/config"
