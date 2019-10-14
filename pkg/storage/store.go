@@ -22,7 +22,7 @@ import (
 	"sync/atomic"
 	"time"
 	"unsafe"
-	//"math/rand"
+	"math/rand"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/config"
@@ -3091,7 +3091,7 @@ func (s *Store) Send(
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
-					time.Sleep(2 * time.Millisecond)
+					time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 				} else {
 					pushType = roachpb.PUSH_TIMESTAMP
 				}
