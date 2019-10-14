@@ -115,7 +115,7 @@ EXP = {
         },
         "run_args": {
             "concurrency": 2,
-            "duration": 10,
+            "duration": 30,
             # "splits": 1000,
             # "drop": True,
             "read_percent": 0,
