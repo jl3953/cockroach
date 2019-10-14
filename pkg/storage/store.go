@@ -3091,6 +3091,7 @@ func (s *Store) Send(
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
+					time.Sleep(2 * time.Millisecond)
 				} else {
 					pushType = roachpb.PUSH_TIMESTAMP
 				}
