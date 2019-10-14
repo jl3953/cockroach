@@ -3091,7 +3091,6 @@ func (s *Store) Send(
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
-					time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 				} else {
 					pushType = roachpb.PUSH_TIMESTAMP
 				}
@@ -3136,6 +3135,7 @@ func (s *Store) Send(
 						return nil, pErr
 					}
 					pErr = nil
+					time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 				}
 				// We've resolved the write intent; retry command.
 			}
