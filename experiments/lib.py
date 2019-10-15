@@ -1,4 +1,5 @@
 
+import collections
 import copy
 import csv
 import json
@@ -371,23 +372,49 @@ def gnuplot(config, skews):
 	data = []
 	for i in range(len(skews)):
 
-		path = os.path.join(out_dir, "skew-{0}".format(i))
-		path = os.path.join(path, "bench_out_0.txt")
-		print(path)
-		with open(path, "r") as f:
-			# read the last eight lines of f
-			tail = f.readlines()[-8:]
-			try:
-				datum = {"skew": skews[i]}
-				datum.update(extract_data(tail))
-				data.append(datum)
-			except BaseException:
-				print("failed on skew: {0}".format(skews[i]))
-				continue
+		dir_path = os.path.join(out_dir, "skew-{0}".format(i))
+		acc = []
+		for j in range(len(config["workload_nodes"])):
+			path = os.path.join(dir_path, "bench_out_{0}.txt".format(j))
+			print(path)
+
+			with open(path, "r") as f:
+				# read the last eight lines of f
+				tail = f.readlines()[-8:]
+				try:
+					datum = extract_data(tail)
+					acc.append(datum)
+				except BaseException:
+					print("failed on skew: {0}".format(skews[i]))
+					continue
+
+		final_datum = accumulate_workloads(acc)
+
+		datum = {"skew": skews[i]}
+		datum.update(final_datum)
+		data.append(datum)
 
 	filename = write_out_data(data, out_dir)
 	print(filename)
 	gnuplot_written_data(filename)
+
+
+def accumulate_workloads(acc):
+	final_datum = collections.defaultdict(float)
+	for datum in acc:
+		print("individual datum:[{0}]".format(datum))
+		for k, v in datum.items():
+			try:
+				final_datum[k] += float(v)
+			except BaseException:
+				print("could not add to csv file key:[{0}], value:[{1}]".format(k, v))
+				continue
+			
+	for k in final_datum:
+		if "ops" not in k:
+			final_datum[k] /= len(acc)
+
+	return final_datum
 
 
 def run_bench(config):
