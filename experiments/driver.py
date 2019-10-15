@@ -17,7 +17,7 @@ SKEWS = [ 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
 
 EXP = {
     "out_dir": OUT_DIR,
-    "cockroach_commit": "jenn-startHacking",
+    "cockroach_commit": "jenn-fivenodes",
     "workload_nodes": [
        	{
             "ip": "192.168.1.1",
@@ -115,7 +115,7 @@ EXP = {
         },
         "run_args": {
             "concurrency": 8,
-            "duration": 60,
+            "duration": 30,
             # "splits": 1000,
             # "drop": True,
             "read_percent": 90,

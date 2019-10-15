@@ -347,6 +347,9 @@ def extract_data(last_eight_lines):
 
 def write_out_data(data, out_dir):
 
+	if len(data) <= 0:
+		return ""
+
 	filename = os.path.join(out_dir, "gnuplot.csv")
 	with open(filename, "w") as csvfile:
 		writer = csv.DictWriter(csvfile, delimiter='\t', fieldnames=data[0].keys())
@@ -361,48 +364,19 @@ def write_out_data(data, out_dir):
 
 	return filename
 
+def aggregate(acc):
 
-def gnuplot_written_data(filename):
-	pass
+	""" Aggregates data across workload nodes.
 
-def gnuplot(config, skews):
+	Args:
+	acc (list[dict])
 
-	out_dir = os.path.join(config["out_dir"])
-	
-	data = []
-	for i in range(len(skews)):
+	Returns:
+	one final data point (dict).
+	"""
 
-		dir_path = os.path.join(out_dir, "skew-{0}".format(i))
-		acc = []
-		for j in range(len(config["workload_nodes"])):
-			path = os.path.join(dir_path, "bench_out_{0}.txt".format(j))
-			print(path)
-
-			with open(path, "r") as f:
-				# read the last eight lines of f
-				tail = f.readlines()[-8:]
-				try:
-					datum = extract_data(tail)
-					acc.append(datum)
-				except BaseException:
-					print("failed on skew: {0}".format(skews[i]))
-					continue
-
-		final_datum = accumulate_workloads(acc)
-
-		datum = {"skew": skews[i]}
-		datum.update(final_datum)
-		data.append(datum)
-
-	filename = write_out_data(data, out_dir)
-	print(filename)
-	gnuplot_written_data(filename)
-
-
-def accumulate_workloads(acc):
 	final_datum = collections.defaultdict(float)
 	for datum in acc:
-		print("individual datum:[{0}]".format(datum))
 		for k, v in datum.items():
 			try:
 				final_datum[k] += float(v)
@@ -415,6 +389,67 @@ def accumulate_workloads(acc):
 			final_datum[k] /= len(acc)
 
 	return final_datum
+
+
+def is_output_okay(tail):
+
+	if not ("elapsed" in tail[0] and "elapsed" in tail[3] and "elapsed" in tail[6]):
+		return False
+
+	return True
+
+
+def accumulate_workloads_per_skew(config, dir_path):
+	""" Aggregating data for a single skew point across all workload nodes.
+
+		Returns:
+		extracted datum, success or not
+	"""
+
+	acc = []
+	for j in range(len(config["workload_nodes"])):
+		path = os.path.join(dir_path, "bench_out_{0}.txt".format(j))
+
+		with open(path, "r") as f:
+			# read the last eight lines of f
+			tail = f.readlines()[-8:]
+			if not is_output_okay(tail):
+				print ("{0} missing some data lines".format(path))
+				return None, False
+
+			try:
+				datum = extract_data(tail)
+				acc.append(datum)
+			except BaseException:
+				print("failed to extract data: {0}".format(path))
+				return None, False
+
+	final_datum = aggregate(acc)
+	return final_datum, True
+
+
+def gnuplot_written_data(filename):
+	pass
+
+def gnuplot(config, skews):
+
+	out_dir = os.path.join(config["out_dir"])
+	data = []
+	for i in range(len(skews)):
+
+		dir_path = os.path.join(out_dir, "skew-{0}".format(i))
+		datum, succeeded = accumulate_workloads_per_skew(config, dir_path)
+		if succeeded:
+			datum_with_skew = {"skew": skews[i]}
+			datum_with_skew.update(datum)
+			data.append(datum_with_skew)
+		else:
+			print("failed on skew[{0}]".format(skews[i]))
+			continue
+
+	filename = write_out_data(data, out_dir)
+	print(filename)
+	gnuplot_written_data(filename)
 
 
 def run_bench(config):
