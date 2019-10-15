@@ -294,9 +294,9 @@ def warmup_cluster(config):
 	ip = nodes[0]["ip"]
 	cmd = ('echo "'
 			'alter range default configure zone using num_replicas = 1;'
-			'alter table kv partition by range(k) (partition hot values from (minvalue) to (3), partition warm values from (3) to (maxvalue));'
-			"alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
-			"alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
+			# 'alter table kv partition by range(k) (partition hot values from (minvalue) to (3), partition warm values from (3) to (maxvalue));'
+			# "alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
+			# "alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
 			'" | {0} sql --insecure --database=kv '
 			'--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
 	

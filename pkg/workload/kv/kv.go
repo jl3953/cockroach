@@ -347,7 +347,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = o.g.writeKey()
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	} //jenndebug
-	if rand.Intn(2) == 0 {
+	/*if rand.Intn(2) == 0 {
 	//if true {
 	args[0] = 0
 	args[1] = randomBlock(o.config, o.g.rand())
@@ -375,7 +375,7 @@ func (o *kvOp) run(ctx context.Context) error {
 	args[0] = math.MaxInt64 - 8
 	args[1] = randomBlock(o.config, o.g.rand())
 
-	}
+	}*/
 
 	tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
 					IsoLevel: pgx.Serializable,

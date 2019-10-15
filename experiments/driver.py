@@ -11,8 +11,8 @@ BASE_DIR = os.path.join(FPATH, "..")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 OUT_DIR = os.path.join(LOGS_DIR, "kv-skew")
 # SKEWS = [1.000001, 1.00001, 1.0001, 1.001, 1.01, 1.1, 2]
-# SKEWS = [ 1.5, 1.6, 1.7, 1.8]
-SKEWS = [1.1, 1.2, 1.3]
+SKEWS = [ 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0]
+# SKEWS = [1.1, 1.2, 1.3]
 # SKEWS = [1.1] # warmup
 
 EXP = {
@@ -114,13 +114,13 @@ EXP = {
         "init_args": {
         },
         "run_args": {
-            "concurrency": 2,
-            "duration": 30,
+            "concurrency": 8,
+            "duration": 60,
             # "splits": 1000,
             # "drop": True,
-            "read_percent": 10,
+            "read_percent": 90,
             # "n_statements_per_txn": 1,
-            "n_keys_per_statement": 6,
+            "n_keys_per_statement": 1,
             "distribution": {
                 "type": "zipf",
                 "params": {
