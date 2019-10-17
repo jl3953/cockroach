@@ -22,7 +22,7 @@ import (
 	"sync/atomic"
 	"time"
 	"unsafe"
-	//"math/rand"
+	"math/rand"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/config"
@@ -3132,9 +3132,9 @@ func (s *Store) Send(
 					if _, ok := pErr.GetDetail().(*roachpb.AmbiguousResultError); !ok {
 						// Preserve the error index.
 						pErr.Index = index
-						/*duration := rand.Intn(100)
+						duration := rand.Intn(100)
 						log.Warningf(ctx, "jenndebug duration[%+v], txnid:[%+v]\n", duration, h.Txn)
-						time.Sleep(time.Duration(duration) * time.Millisecond)*/
+						time.Sleep(time.Duration(duration) * time.Millisecond)
 
 						return nil, pErr
 					}
