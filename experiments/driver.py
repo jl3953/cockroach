@@ -113,8 +113,8 @@ EXP = {
         "init_args": {
         },
         "run_args": {
-            "concurrency": 8,
-            "duration": 15,
+            "concurrency": 3,
+            "duration": 120,
             # "splits": 1000,
             # "drop": True,
             "read_percent": 90,

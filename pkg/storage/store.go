@@ -3217,7 +3217,7 @@ func (s *Store) maybeWaitForPushee(
 			// and set the push type to ABORT.
 			pushReqCopy.Force = true
 			pushReqCopy.PushType = roachpb.PUSH_ABORT
-			// log.Warningf(ctx, "jenndebug deadlock, PushType = ABORT, pushReqCopy:[%v]", pushReqCopy)
+			log.Warningf(ctx, "jenndebug deadlock, PushType = ABORT, pushReqCopy:[%v]", pushReqCopy)
 		} else if pErr != nil {
 			return nil, pErr
 		} else if pushResp != nil {
