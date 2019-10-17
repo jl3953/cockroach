@@ -3030,7 +3030,7 @@ func (s *Store) Send(
 		}
 		br, pErr = repl.Send(ctx, ba)
 		if pErr == nil {
-			//log.Warningf(ctx, "jenndebug succeeded txn:[%v]", ba)
+			log.Warningf(ctx, "jenndebug succeeded txn:[%v]", ba)
 			return br, nil
 		}
 
@@ -3087,7 +3087,7 @@ func (s *Store) Send(
 			// this is the code path with the requesting client waiting.
 			if pErr.Index != nil {
 
-				//log.Warningf(ctx, "jenndebug WriteIntentErr for txn ba:[%+v]", ba)
+				log.Warningf(ctx, "jenndebug WriteIntentErr for txn ba:[%+v]", ba)
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
