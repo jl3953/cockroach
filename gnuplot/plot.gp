@@ -1,19 +1,19 @@
 set title "Throughput (reads) vs. skew"
 set xlabel "Power Law s"
-set ylabel "Throughput (txn over 30s)"
+set ylabel "Throughput (txns/sec)"
 set terminal png
 set title "Throughput vs skew with 2 clients"
 
-set output "tp_v_s_single_and_multiclient.png"
-set ylabel "Throughput (txn / sec)"
-plot "logs-32-2nodes.csv" using "skew":"ops/sec(cum)" title "tp-32, 2 clients" with linespoint,\
-		 "logs-64.csv" using "skew":"ops/sec(cum)" title "tp-64, 1 client" with linespoint
-
-set output "p99_v_s_single_and_multiclient.png"
-set ylabel "p99 (ms)"
-plot "logs-32-2nodes.csv" using "skew":"p99(ms)" title "tp-32, 2 clients" with linespoint,\
-		 "logs-64.csv" using "skew":"p99(ms)" title "tp-64, 1 client" with linespoint
-
+# set output "tp_v_s_single_and_multiclient.png"
+# set ylabel "Throughput (txn / sec)"
+# plot "logs-32-2nodes.csv" using "skew":"ops/sec(cum)" title "tp-32, 2 clients" with linespoint,\
+# 		 "logs-64.csv" using "skew":"ops/sec(cum)" title "tp-64, 1 client" with linespoint
+# 
+# set output "p99_v_s_single_and_multiclient.png"
+# set ylabel "p99 (ms)"
+# plot "logs-32-2nodes.csv" using "skew":"p99(ms)" title "tp-32, 2 clients" with linespoint,\
+# 		 "logs-64.csv" using "skew":"p99(ms)" title "tp-64, 1 client" with linespoint
+# 
 # set output "tp_v_s-2clients.png"
 # 
 # plot "logs-8-2nodes.csv" using "skew":"ops(total)" title "tp-8" with linespoint,\
@@ -39,10 +39,27 @@ plot "logs-32-2nodes.csv" using "skew":"p99(ms)" title "tp-32, 2 clients" with l
 # 
 # set output "tp_v_s-64.png"
 # set title "Throughput vs. skew"
-# plot "logs-64.csv" using "skew":"ops(total)" title "tp-64" with linespoint,\
-# 		 "logs-64-hot.csv" using "skew":"ops(total)" title "tp-64-hot" with linespoint,\
-# 		 "logs-64-10keys.csv" using "skew":"ops(total)" title "tp-64-10keys" with linespoint
+# plot "logs-64.csv" using "skew":"ops/sec(cum)" title "tp-64" with linespoint,\
+# 		 "logs-64-hot.csv" using "skew":"ops/sec(cum)" title "tp-64-hot" with linespoint,\
+# 		 "logs-64-10keys.csv" using "skew":"ops/sec(cum)" title "tp-64-10keys" with linespoint,\
+# 		 "logs-64-10hot.csv" using "skew":"ops/sec(cum)" title "tp-64-10hot" with linespoint
 # 
+
+#set output "tp_v_s-64-10hot.png"
+#plot "logs-64-10hot.csv" using "skew":"ops/sec(cum)" with linespoint
+
+# set output "high_for_multikey.png"
+# plot "logs-64-10hot.csv" using "skew":"ops/sec(cum)" title "n=10" with linespoint,\
+# 		 "logs-64-5hot.csv" using "skew":"ops/sec(cum)" title "n=5" with linespoint,\
+# 		 "logs-64-3hot.csv" using "skew":"ops/sec(cum)" title "n=3" with linespoint,\
+# 		 "logs-64-2hot.csv" using "skew":"ops/sec(cum)" title "n=2" with linespoint
+# 
+
+set output "high_for_10keys.png"
+plot "logs-64-10hot.csv" using "skew":"ops/sec(cum)" title "c=64" with linespoint,\
+		 "logs-32-10hot.csv" using "skew":"ops/sec(cum)" title "c=32" with linespoint,\
+		 "logs-8-10hot.csv" using "skew":"ops/sec(cum)" title "c=8" with linespoint
+
 # set output "tail_v_s-64_reads.png"
 # set title "Tail Latency (reads) vs. skew"
 # set xlabel "Power Law s"

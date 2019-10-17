@@ -19,6 +19,7 @@ import (
 	"hash"
 	"math"
 	"math/rand"
+	"sort"
 	"strconv"
 	"strings"
 	"sync/atomic"
@@ -291,16 +292,37 @@ type kvOp struct {
 	mcp		*workload.MultiConnPool
 }
 
+type byInt []int64
+
+func (s byInt) Len() int {
+	return len(s)
+}
+
+func (s byInt) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s byInt) Less (i, j int) bool {
+	return s[i] < s[j]
+}
+
+
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
 
 	if statementProbability < o.config.readPercent {
+		// jenndebug sort the keys first
+		argsInt := make([]int64, o.config.batchSize)
+		for i := 0; i < o.config.batchSize; i++ {
+			argsInt[i] = o.g.readKey()
+		}
+		sort.Sort(byInt(argsInt))
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
-			args[i] = o.g.readKey()
+			args[i] = argsInt[i]
 		}
-		start := timeutil.Now()
 
+		start := timeutil.Now()
 		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
 						IsoLevel: pgx.Serializable,
 						AccessMode: pgx.ReadOnly,})
@@ -341,10 +363,17 @@ func (o *kvOp) run(ctx context.Context) error {
 		return err
 	}
 	const argCount = 2
+
+	// jenndebug sort the keys first
+	argsInt := make([]int64, o.config.batchSize)
+	for i := 0; i < o.config.batchSize; i++ {
+		argsInt[i] = o.g.writeKey()
+	}
+	sort.Sort(byInt(argsInt))
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
 		j := i * argCount
-		args[j+0] = o.g.writeKey()
+		args[j+0] = argsInt[i]
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	} //jenndebug
 	/*if rand.Intn(2) == 0 {
