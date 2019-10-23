@@ -4,6 +4,8 @@ import configparser
 import os
 import json
 
+def override(exp, skews):
+
 def create_out_dir(fpath, logs_dirname, out_dirname):
 	base_dir = os.path.join(fpath, "..")
 	logs_dir = os.path.join(base_dir, logs_dirname)
@@ -12,10 +14,14 @@ def create_out_dir(fpath, logs_dirname, out_dirname):
 	return out_dir
 
 
-def create_experiment(fpath, config_filename):
+def create_experiment(fpath, config_filename, override=False):
 
 	config = configparser.ConfigParser()
 	config.read(config_filename)
+	for section in config:
+		print (section)
+		for a in config[section]:
+			print (a)
 
 	exp = {
 		"out_dir": create_out_dir(fpath, config["DEFAULT"]["LOGS_DIR"], config["DEFAULT"]["OUT_DIR"]),
@@ -38,8 +44,10 @@ def create_experiment(fpath, config_filename):
 			}
 		}
 	}
-
 	skews = json.loads(config["benchmark"]["skews"])
+	
+	if override:
+		exp, skews = override_params(exp, skews)
 	
 	return exp, skews
 
