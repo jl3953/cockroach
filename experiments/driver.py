@@ -10,10 +10,9 @@ import os
 FPATH = os.path.dirname(os.path.realpath(__file__))
 EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
-	"single_key_64.ini",
-	"single_key_72.ini",
-	"single_key_80.ini",
-	"single_key_96.ini",
+	"multi_key_2.ini",
+	"multi_key_8.ini",
+	"multi_key_16.ini",
 	]
 
 
