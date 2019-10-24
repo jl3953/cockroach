@@ -2,7 +2,14 @@ set title "Throughput (reads) vs. skew"
 set xlabel "Power Law s"
 set ylabel "Throughput (txns/sec)"
 set terminal png
-set title "Throughput vs skew with 2 clients"
+set output "single_key_optimal_threads.png"
+set title "TP/sec vs. skew"
+
+plot "single_key_64_15.csv" using "skew":"ops/sec(cum)" title "14 secs" with linespoint,\
+		 "single_key_64_9.csv" using "skew":"ops/sec(cum)" title "9 secs" with linespoint,\
+		 "single_key_64_60.csv" using "skew":"ops/sec(cum)" title "60 secs" with linespoint
+
+# set title "Throughput vs skew with 2 clients"
 
 # set output "tp_v_s_single_and_multiclient.png"
 # set ylabel "Throughput (txn / sec)"
