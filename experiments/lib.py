@@ -58,7 +58,8 @@ def kill_cockroach_node(node):
            "|| (sudo pkill -9 cockroach; while ps -p $PID;do sleep 1;done;)")
 
     if store:
-        cmd = "({0}) && {1}".format(cmd, "sudo rm -rf {0}".format(os.path.join(store, "*")))
+        cmd = "({0}) && {1}".format(
+            cmd, "sudo rm -rf {0}".format(os.path.join(store, "*")))
 
     cmd = "ssh {0} '{1}'".format(ip, cmd)
     print(cmd)
@@ -193,6 +194,7 @@ def read_params(out_dir):
         params = json.load(f)
         return params["exp_params"]
 
+
 def vary_zipf_skew(config, skews):
     if ("benchmark" in config and
         "run_args" in config["benchmark"] and
@@ -219,15 +221,18 @@ def vary_zipf_skew(config, skews):
         return exps
 
     else:
-        raise ValueError("Passed experiment that does not use Zipf distribution!")
+        raise ValueError(
+            "Passed experiment that does not use Zipf distribution!")
 
 
-def parse_bench_args(bench_config):
+def parse_bench_args(bench_config, is_warmup=False):
     args = []
-
     if "duration" in bench_config:
-        args.append("--duration={}s".format(bench_config["duration"]))
-
+    	if is_warmup:
+    		args.append("--duration={}s".format(bench_config["warmup_duration"]))
+    	else: 
+    		args.append("--duration={}s".format(bench_config["duration"]))
+    
     if "drop" in bench_config and bench_config["drop"] is True:
         args.append("--drop")
 
@@ -285,7 +290,7 @@ def warmup_cluster(config):
 		print("No cluster nodes!")
 		return
 
-	args = parse_bench_args(b["init_args"])
+	args = parse_bench_args(b["init_args"], is_warmup=True)
 	cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
 
 	ip = workload_nodes[0]["ip"]
@@ -308,7 +313,7 @@ def warmup_cluster(config):
 	i = 0
 	ps = []
 	for wn in workload_nodes:
-		args = parse_bench_args(b["run_args"])
+		args = parse_bench_args(b["run_args"], is_warmup=True)
 		cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
 
 		# Call remote
@@ -451,6 +456,10 @@ def gnuplot(config, skews):
 	print(filename)
 	gnuplot_written_data(filename)
 
+	driver_node = "192.168.1.1" # usually
+	csv_file = os.path.basename(os.path.dirname(out_dir)) + ".csv"
+	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
+	call_remote(driver_node, cmd, "i like to move it move it")
 
 def run_bench(config):
     out_dir = config["out_dir"]
