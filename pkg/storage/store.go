@@ -3030,7 +3030,7 @@ func (s *Store) Send(
 		}
 		br, pErr = repl.Send(ctx, ba)
 		if pErr == nil {
-			log.Warningf(ctx, "jenndebug succeeded txn:[%v]", ba)
+			// log.Warningf(ctx, "jenndebug succeeded txn:[%v]", ba)
 			return br, nil
 		}
 
@@ -3087,7 +3087,7 @@ func (s *Store) Send(
 			// this is the code path with the requesting client waiting.
 			if pErr.Index != nil {
 
-				log.Warningf(ctx, "jenndebug WriteIntentErr for txn ba:[%+v]", ba)
+				// log.Warningf(ctx, "jenndebug WriteIntentErr for txn ba:[%+v]", ba)
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
@@ -3132,8 +3132,8 @@ func (s *Store) Send(
 					if _, ok := pErr.GetDetail().(*roachpb.AmbiguousResultError); !ok {
 						// Preserve the error index.
 						pErr.Index = index
-						duration := rand.Intn(100)
-						log.Warningf(ctx, "jenndebug duration[%+v], txnid:[%+v]\n", duration, h.Txn)
+						duration := rand.Intn(50)
+						// log.Warningf(ctx, "jenndebug duration[%+v], txnid:[%+v]\n", duration, h.Txn)
 						time.Sleep(time.Duration(duration) * time.Millisecond)
 
 						return nil, pErr
@@ -3217,7 +3217,7 @@ func (s *Store) maybeWaitForPushee(
 			// and set the push type to ABORT.
 			pushReqCopy.Force = true
 			pushReqCopy.PushType = roachpb.PUSH_ABORT
-			log.Warningf(ctx, "jenndebug deadlock, PushType = ABORT, pushReqCopy:[%v]", pushReqCopy)
+			// log.Warningf(ctx, "jenndebug deadlock, PushType = ABORT, pushReqCopy:[%v]", pushReqCopy)
 		} else if pErr != nil {
 			return nil, pErr
 		} else if pushResp != nil {
