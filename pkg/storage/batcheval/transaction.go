@@ -108,7 +108,8 @@ func CanPushWithPriority(pusher, pushee *roachpb.Transaction) bool {
 		(pusher.Priority == enginepb.MaxTxnPriority && pushee.Priority < pusher.Priority)
 	// log.Warningf(context.TODO(), "jenndebug pusher.Priority:[%v], pushee.Priority:[%v], pusher.Priority > pushee.Priority:[%v], result:[%v], match:[%v]",
 	// 		pusher.Priority, pushee.Priority, pusher.Priority > pushee.Priority, result, pusher.Priority > pushee.Priority == result)
-	return result
+	result2 := pusher.Priority > pushee.Priority
+	return result || result2
 }
 
 // CanCreateTxnRecord determines whether a transaction record can be created for
