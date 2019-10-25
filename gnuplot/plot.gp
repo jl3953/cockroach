@@ -1,10 +1,20 @@
-set xlabel "Throughput (txns/sec)"
-set ylabel "p99 latency (ms)"
+set xlabel "skew"
+set ylabel "Throughput (txns/sec)"
 set terminal png
 
-set output "single_key_latency_tp.png"
-set title "Latency vs Tp"
-plot "single_key_latency_tp_stripped.csv" using "ops/sec(cum)":"p99(ms)" title "jenn" with linespoint
+set output "tp_v_skew_edge.png"
+set title "TP vs skew"
+plot "single_key_56.csv" using "skew":"ops/sec(cum)" title "concurrency=56" with linespoint,\
+		 "single_key_64.csv" using "skew":"ops/sec(cum)" title "concurrency=64" with linespoint,\
+		 "single_key_91.csv" using "skew":"ops/sec(cum)" title "concurrency=91" with linespoint
+set output "p99_v_skew_edge.png"
+plot "single_key_56.csv" using "skew":"p99(ms)" title "concurrency=56" with linespoint,\
+		 "single_key_64.csv" using "skew":"p99(ms)" title "concurrency=64" with linespoint,\
+		 "single_key_91.csv" using "skew":"p99(ms)" title "concurrency=91" with linespoint
+
+# set output "single_key_latency_tp.png"
+# set title "Latency vs Tp"
+# plot "single_key_latency_tp_stripped.csv" using "ops/sec(cum)":"p99(ms)" title "jenn" with linespoint
 
 # plot "single_key_64.csv" using "ops/sec(cum)":"p99(ms)" title "concurrency=64" with linespoint,\
 # 		 "single_key_72.csv" using "ops/sec(cum)":"p99(ms)" title "concurrency=72" with linespoint,\
