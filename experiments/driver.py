@@ -10,9 +10,7 @@ import os
 FPATH = os.path.dirname(os.path.realpath(__file__))
 EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
-	"multi_key_2.ini",
-	"multi_key_8.ini",
-	"multi_key_16.ini",
+	"real_multikey_8.ini",
 	]
 
 
