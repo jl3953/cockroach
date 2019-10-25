@@ -1,13 +1,44 @@
-set title "Throughput (reads) vs. skew"
-set xlabel "Power Law s"
+set xlabel "skew"
 set ylabel "Throughput (txns/sec)"
 set terminal png
-set output "single_key_optimal_threads.png"
-set title "TP/sec vs. skew"
 
-plot "single_key_64_15.csv" using "skew":"ops/sec(cum)" title "14 secs" with linespoint,\
-		 "single_key_64_9.csv" using "skew":"ops/sec(cum)" title "9 secs" with linespoint,\
-		 "single_key_64_60.csv" using "skew":"ops/sec(cum)" title "60 secs" with linespoint
+set output "tp_v_skew_edge.png"
+set title "TP vs skew"
+plot "single_key_56.csv" using "skew":"ops/sec(cum)" title "concurrency=56" with linespoint,\
+		 "single_key_64.csv" using "skew":"ops/sec(cum)" title "concurrency=64" with linespoint,\
+		 "single_key_91.csv" using "skew":"ops/sec(cum)" title "concurrency=91" with linespoint
+set output "p99_v_skew_edge.png"
+plot "single_key_56.csv" using "skew":"p99(ms)" title "concurrency=56" with linespoint,\
+		 "single_key_64.csv" using "skew":"p99(ms)" title "concurrency=64" with linespoint,\
+		 "single_key_91.csv" using "skew":"p99(ms)" title "concurrency=91" with linespoint
+
+# set output "single_key_latency_tp.png"
+# set title "Latency vs Tp"
+# plot "single_key_latency_tp_stripped.csv" using "ops/sec(cum)":"p99(ms)" title "jenn" with linespoint
+
+# plot "single_key_64.csv" using "ops/sec(cum)":"p99(ms)" title "concurrency=64" with linespoint,\
+# 		 "single_key_72.csv" using "ops/sec(cum)":"p99(ms)" title "concurrency=72" with linespoint,\
+# 		 "single_key_80.csv" using "ops/sec(cum)":"p99(ms)" title "concurrency=80" with linespoint,\
+# 		 "single_key_96.csv" using "ops/sec(cum)":"p99(ms)" title "concurrency=96" with linespoint
+
+# set output "single_key_optimal_concurrency.png"
+# set title "TP/sec vs. skew"
+# plot "single_key_64.csv" using "skew":"ops/sec(cum)" title "concurrency=64" with linespoint,\
+# 		 "single_key_72.csv" using "skew":"ops/sec(cum)" title "concurrency=72" with linespoint,\
+# 		 "single_key_80.csv" using "skew":"ops/sec(cum)" title "concurrency=80" with linespoint,\
+# 		 "single_key_96.csv" using "skew":"ops/sec(cum)" title "concurrency=96" with linespoint,
+# 
+# set output "single_key_optimal_concurrency_latency.png"
+# plot "single_key_64.csv" using "skew":"p99(ms)" title "concurrency=64" with linespoint,\
+# 		 "single_key_72.csv" using "skew":"p99(ms)" title "concurrency=72" with linespoint,\
+# 		 "single_key_80.csv" using "skew":"p99(ms)" title "concurrency=80" with linespoint,\
+# 		 "single_key_96.csv" using "skew":"p99(ms)" title "concurrency=96" with linespoint
+
+# set output "single_key_optimal_threads.png"
+# set title "TP/sec vs. skew"
+# plot "single_key_64_15.csv" using "skew":"ops/sec(cum)" title "14 secs" with linespoint,\
+# 		 "single_key_64_9.csv" using "skew":"ops/sec(cum)" title "9 secs" with linespoint,\
+# 		 "single_key_64_60.csv" using "skew":"ops/sec(cum)" title "60 secs" with linespoint
 
 # set title "Throughput vs skew with 2 clients"
 
