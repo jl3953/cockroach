@@ -14,7 +14,7 @@ CONFIG_LIST = [
 	# "single_key_87.ini",
 	# "single_key_89.ini",
 	# "single_key_90.ini",
-	"single_key_91.ini",
+	# "single_key_91.ini",
 	# "single_key_94.ini",
 	# "single_key_96.ini",
 	# "single_key_98.ini",
@@ -22,11 +22,12 @@ CONFIG_LIST = [
 	# "single_key_102.ini",
 	# "single_key_108.ini",
 	# "single_key_124.ini",
-	"single_key_56.ini",
-	"single_key_64.ini",
+	# "single_key_56.ini",
+	# "single_key_64.ini",
 	# "single_key_72.ini",
 	# "single_key_80.ini",
 	# "single_key_96.ini",
+	"single_key_47_double.ini",
 	]
 
 
