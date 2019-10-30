@@ -28,6 +28,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
+	"github.com/cockroachdb/cockroach/pkg/workload/ycsb"
 	"github.com/jackc/pgx"
 	"github.com/pkg/errors"
 	"github.com/spf13/pflag"
@@ -62,6 +63,8 @@ type kv struct {
 	secondaryIndex                       bool
 	targetCompressionRatio               float64
 	s				     float64
+	zipfVerbose				bool
+	useOriginal				bool
 }
 
 func init() {
@@ -118,6 +121,8 @@ var kvMeta = workload.Meta{
 			`Target compression ratio for data blocks. Must be >= 1.0`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
 		g.flags.Float64Var(&g.s, `s`, 1.1, `s parameter in the zipfian generator, default 1.1`)
+		g.flags.BoolVar(&g.zipfVerbose, `zipfVerbose`, false, `whether zipfian generator is verbose`)
+		g.flags.BoolVar(&g.useOriginal, `useOriginal`, false, `whether or not to use original fake zipfian generator.`)
 		return g
 	},
 }
@@ -269,7 +274,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq, w.s)
+			op.g = newZipfianGenerator(seq, w.s, w.zipfVerbose, w.useOriginal)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -535,16 +540,25 @@ func (g *sequentialGenerator) sequence() int64 {
 	return atomic.LoadInt64(&g.seq.val)
 }
 
+type zipfWrapper interface {
+	Uint64Jenn(*rand.Rand) uint64
+}
+
 type zipfGenerator struct {
 	seq    *sequence
 	random *rand.Rand
-	zipf   *zipf
+	zipf   zipfWrapper
 }
 
 // Creates a new zipfian generator.
-func newZipfianGenerator(seq *sequence, s float64) *zipfGenerator {
+func newZipfianGenerator(seq *sequence, s float64, verbose bool, useOriginal bool,
+		) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
-	hey := newZipf(s, 1, uint64(math.MaxInt64))
+	var hey zipfWrapper
+	hey, _ = ycsb.NewZipfGenerator(random, 0, math.MaxInt64, s, verbose)
+	if useOriginal {
+		hey = newZipf(s, 1, uint64(math.MaxInt64))
+	}
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
@@ -556,7 +570,7 @@ func newZipfianGenerator(seq *sequence, s float64) *zipfGenerator {
 // zipfian distribution.
 func (g *zipfGenerator) zipfian(seed int64) int64 {
 	randomWithSeed := rand.New(rand.NewSource(seed))
-	return int64(g.zipf.Uint64(randomWithSeed))
+	return int64(g.zipf.Uint64Jenn(randomWithSeed))
 }
 
 // Get a zipf write key appropriately.
