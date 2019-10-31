@@ -258,6 +258,9 @@ def parse_bench_args(bench_config, is_warmup=False):
         if d["type"] == "zipf":
             args.append("--zipfian")
             args.append("--s={1}".format(args, params["skew"]))
+            
+            if "use_original_zipfian" in bench_config:
+                args.append("--useOriginal={}".format(bench_config["use_original_zipfian"]))
 
     return " ".join(args)
 

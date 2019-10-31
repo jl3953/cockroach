@@ -122,7 +122,7 @@ var kvMeta = workload.Meta{
 		g.connFlags = workload.NewConnFlags(&g.flags)
 		g.flags.Float64Var(&g.s, `s`, 1.1, `s parameter in the zipfian generator, default 1.1`)
 		g.flags.BoolVar(&g.zipfVerbose, `zipfVerbose`, false, `whether zipfian generator is verbose`)
-		g.flags.BoolVar(&g.useOriginal, `useOriginal`, false, `whether or not to use original fake zipfian generator.`)
+		g.flags.BoolVar(&g.useOriginal, `useOriginal`, true, `whether or not to use original fake zipfian generator.`)
 		return g
 	},
 }
@@ -554,10 +554,13 @@ type zipfGenerator struct {
 func newZipfianGenerator(seq *sequence, s float64, verbose bool, useOriginal bool,
 		) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
+	max := uint64(1000000)
 	var hey zipfWrapper
-	hey, _ = ycsb.NewZipfGenerator(random, 0, math.MaxInt64, s, verbose)
 	if useOriginal {
-		hey = newZipf(s, 1, uint64(math.MaxInt64))
+		hey = newZipf(s, 1, max)
+	} else {
+		hey, _ = ycsb.NewZipfGenerator(random, 0, max, s, verbose)
+		//fmt.Printf("jenndebug here I am...\n")
 	}
 	return &zipfGenerator{
 		seq:    seq,
@@ -570,6 +573,7 @@ func newZipfianGenerator(seq *sequence, s float64, verbose bool, useOriginal boo
 // zipfian distribution.
 func (g *zipfGenerator) zipfian(seed int64) int64 {
 	randomWithSeed := rand.New(rand.NewSource(seed))
+	// fmt.Printf("jenndebug zipfian\n")
 	return int64(g.zipf.Uint64Jenn(randomWithSeed))
 }
 

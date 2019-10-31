@@ -49,6 +49,8 @@ def override_params(exp, skews, config, fpath):
 			run_args["read_percent"] = int(override_benchmark["read_percent"])
 		if "n_keys_per_statement" in override_benchmark:
 			run_args["n_keys_per_statement"] = int(override_benchmark["n_keys_per_statement"])
+		if "use_original_zipfian" in override_benchmark:
+			run_args["use_original_zipfian"] = bool(override_benchmark["use_original_zipfian"])
 		if "distribution_type" in override_benchmark:
 			run_args["distribution"]["type"] = override_benchmark["distribution_type"]
 		exp_benchmark["run_args"] = run_args
@@ -94,6 +96,10 @@ def create_experiment(fpath, config_filename, override=False):
 			}
 		}
 	}
+
+	if "use_original_zipfian" in config["benchmark"]:
+		exp["benchmark"]["run_args"]["use_original_zipfian"] = (config["benchmark"]["use_original_zipfian"] == "True")
+
 	skews = json.loads(config["benchmark"]["skews"])
 	
 	if override:
@@ -103,6 +109,6 @@ def create_experiment(fpath, config_filename, override=False):
 
 
 if __name__ == "__main__":
-	exp, skews = create_experiment(os.path.dirname(os.path.realpath(__file__)), "concurrency_8.ini", override=True)
+	exp, skews = create_experiment(os.path.dirname(os.path.realpath(__file__)), "old_zipfian.ini", override=False)
 	print(exp)
 	print(skews)
