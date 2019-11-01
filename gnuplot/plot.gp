@@ -4,7 +4,7 @@ set xlabel "skew"
 set ylabel "Throughput (txns/sec)"
 set output "new_v_old.png"
 set title "new vs old zipfian"
-plot "new_zipfian.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\
+plot "new_zipfian_low_skews.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\
 		 "old_zipfian.csv" using "skew":"ops/sec(cum)" title "old" with linespoint
 
 set output "tp_v_skew_edge.png"
