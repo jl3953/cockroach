@@ -5,12 +5,13 @@ import exp_lib
 import lib
 import logs
 import os
+import configparser
 
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
 EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
-	"new_zipfian.ini",
+	"low_skew.ini"
 	]
 
 
@@ -26,6 +27,18 @@ def run_experiment(exp, skews, view=False):
 
 	if not view:
 		lib.gnuplot(exp, skews)
+
+
+def create_trial_outdir(config_filename, i):
+
+	config = configparser.ConfigParser()
+	config.read(config_filename)
+	logs_dir = config["DEFAULT"]["LOGS_DIR"]
+
+	if i > 0:
+		logs_dir += str(i)
+
+	return exp_lib.create_out_dir(FPATH, logs_dir, config["DEFAULT"]["OUT_DIR"])
 
 
 def main():
@@ -45,7 +58,10 @@ def main():
 	elif args.benchmark:
 		for config_file in CONFIG_LIST:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
-			run_experiment(exp, skews, args.view)
+			for i in range(exp["trials"]):
+				exp["out_dir"] = create_trial_outdir(config_file, i)
+				run_experiment(exp, skews, args.view)
+
 	elif args.start:
 		lib.cleanup_previous_experiment(EXP)
 		lib.init_experiment(EXP)

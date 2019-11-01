@@ -2,6 +2,22 @@ set terminal png
 
 set xlabel "skew"
 set ylabel "Throughput (txns/sec)"
+
+set output "zoom_low_skew.png"
+set title "tp v low skews"
+plot "low_skew.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
+		"low_skew1.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
+		"low_skew2.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
+		"new_zipfian_low_skews.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\
+		 "old_zipfian.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
+		 "new_zipfian_low_skews_2.csv" using "skew":"ops/sec(cum)" title "new, trial2" with linespoint
+		# "low_skew3.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
+		# "low_skew4.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
+		# "low_skew5.csv" using "skew":"ops/sec(cum)" title "trial=5" with linespoint,\
+		# "low_skew6.csv" using "skew":"ops/sec(cum)" title "trial=6" with linespoint,\
+		# "low_skew7.csv" using "skew":"ops/sec(cum)" title "trial=7" with linespoint,\
+		# "low_skew8.csv" using "skew":"ops/sec(cum)" title "trial=8" with linespoint,\
+
 set output "new_v_old.png"
 set title "new vs old zipfian"
 plot "new_zipfian_low_skews.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\

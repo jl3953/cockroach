@@ -76,6 +76,7 @@ def create_experiment(fpath, config_filename, override=False):
 	config.read(config_filename)
 	exp = {
 		"out_dir": create_out_dir(fpath, config["DEFAULT"]["LOGS_DIR"], config["DEFAULT"]["OUT_DIR"]),
+		"trials": 1,
 		"cockroach_commit": config["cluster"]["cockroach_commit"],
 		"workload_nodes": json.loads(config["cluster"]["workload_nodes"]),
 		"hot_nodes": json.loads(config["cluster"]["hot_nodes"]),
@@ -99,6 +100,8 @@ def create_experiment(fpath, config_filename, override=False):
 
 	if "use_original_zipfian" in config["benchmark"]:
 		exp["benchmark"]["run_args"]["use_original_zipfian"] = (config["benchmark"]["use_original_zipfian"] == "True")
+	if "trials" in config["DEFAULT"]:
+		exp["trials"] = int(config["DEFAULT"]["trials"])
 
 	skews = json.loads(config["benchmark"]["skews"])
 	
@@ -109,6 +112,6 @@ def create_experiment(fpath, config_filename, override=False):
 
 
 if __name__ == "__main__":
-	exp, skews = create_experiment(os.path.dirname(os.path.realpath(__file__)), "old_zipfian.ini", override=False)
+	exp, skews = create_experiment(os.path.dirname(os.path.realpath(__file__)), "default.ini", override=False)
 	print(exp)
 	print(skews)
