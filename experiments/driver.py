@@ -10,7 +10,7 @@ import os
 FPATH = os.path.dirname(os.path.realpath(__file__))
 EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
-	"new_zipfian.ini",
+	# "new_zipfian.ini",
 	"old_zipfian.ini",
 	]
 
