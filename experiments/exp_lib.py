@@ -6,6 +6,21 @@ import json
 
 OVERRIDE_INI = "override.ini"
 
+def read_variation(variation_file):
+	config = configparser.ConfigParser()
+	config.read(variation_file)
+
+	exp = {
+		"variation": {
+			"concurrency": json.loads(config["variation"]["concurrency"]),
+			"step_size": int(config["variation"]["step_size"]),
+			"skew": float(config["variation"]["skew"]),
+		}
+	}
+
+	return exp
+
+
 def override_params(exp, skews, config, fpath):
 
 	override = configparser.ConfigParser()
@@ -117,3 +132,5 @@ if __name__ == "__main__":
 	exp, skews = create_experiment(os.path.dirname(os.path.realpath(__file__)), "new_zipfian_match.ini", override=False)
 	print(exp)
 	print(skews)
+
+	print(read_variation("lt.ini"))

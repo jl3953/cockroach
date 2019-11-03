@@ -92,7 +92,7 @@ def start_cockroach_node(node, join=None):
 def set_cluster_settings(node):
     ip = node["ip"]
     cmd = ('echo "'
-           'set cluster setting kv.range_merge.queue_enabled = false;'
+           # 'set cluster setting kv.range_merge.queue_enabled = false;'
            # 'set cluster setting kv.range_split.by_load_enabled = false;'
            'set cluster setting kv.raft_log.disable_synchronization_unsafe = true;'
            'alter range default configure zone using num_replicas = 1;'
@@ -174,8 +174,8 @@ def init_experiment(config):
     build_cockroach_commit(nodes, config["cockroach_commit"])
 
     # Start hot node separately from warm nodes
-    start_cluster(config["hot_nodes"])
-    start_cluster(config["warm_nodes"])
+    # start_cluster(config["hot_nodes"])
+    start_cluster(config["warm_nodes"] + config["hot_nodes"]) # no, start them together for now
 
 
 def save_params(exp_params, out_dir):
@@ -353,12 +353,12 @@ def extract_data(last_eight_lines):
 	return read_data
 
 
-def write_out_data(data, out_dir):
+def write_out_data(data, out_dir, outfile_name="gnuplot.csv"):
 
 	if len(data) <= 0:
 		return ""
 
-	filename = os.path.join(out_dir, "gnuplot.csv")
+	filename = os.path.join(out_dir, outfile_name)
 	with open(filename, "w") as csvfile:
 		writer = csv.DictWriter(csvfile, delimiter='\t', fieldnames=data[0].keys())
 		writer.writeheader()

@@ -1,42 +1,50 @@
 set terminal png
 
-set xlabel "skew"
-set ylabel "Throughput (txns/sec)"
+set xlabel "tp (txns/sec)"
+set ylabel "latency"
 
 set output "match.png"
 plot "old_zipfian_match.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
 		 "new_zipfian_match.csv" using "skew":"ops/sec(cum)" title "new" with linespoint
 
-set output "zoom_low_skew.png"
-set title "tp v low skews"
-plot "low_skew.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
-		"low_skew1.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
-		"low_skew2.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
-		"new_zipfian_low_skews.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\
-		 "old_zipfian.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
-		 "new_zipfian_low_skews_2.csv" using "skew":"ops/sec(cum)" title "new, trial2" with linespoint
-		# "low_skew3.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
-		# "low_skew4.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
-		# "low_skew5.csv" using "skew":"ops/sec(cum)" title "trial=5" with linespoint,\
-		# "low_skew6.csv" using "skew":"ops/sec(cum)" title "trial=6" with linespoint,\
-		# "low_skew7.csv" using "skew":"ops/sec(cum)" title "trial=7" with linespoint,\
-		# "low_skew8.csv" using "skew":"ops/sec(cum)" title "trial=8" with linespoint,\
+set output "lt_uniform.png"
+plot "lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint,\
+		 #"lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
 
-set output "new_v_old.png"
-set title "new vs old zipfian"
-plot "new_zipfian_low_skews.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\
-		 "old_zipfian.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
-		 "new_zipfian_low_skews_2.csv" using "skew":"ops/sec(cum)" title "new, trial2" with linespoint
-
-set output "tp_v_skew_edge.png"
-set title "TP vs skew"
-plot "single_key_56.csv" using "skew":"ops/sec(cum)" title "concurrency=56" with linespoint,\
-		 "single_key_64.csv" using "skew":"ops/sec(cum)" title "concurrency=64" with linespoint,\
-		 "single_key_91.csv" using "skew":"ops/sec(cum)" title "concurrency=91" with linespoint
-set output "p99_v_skew_edge.png"
-plot "single_key_56.csv" using "skew":"p99(ms)" title "concurrency=56" with linespoint,\
-		 "single_key_64.csv" using "skew":"p99(ms)" title "concurrency=64" with linespoint,\
-		 "single_key_91.csv" using "skew":"p99(ms)" title "concurrency=91" with linespoint
+# set xlabel "skew"
+# set ylabel "Throughput (txns/sec)"
+# 
+# 
+# set output "zoom_low_skew.png"
+# set title "tp v low skews"
+# plot "low_skew.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
+# 		"low_skew1.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
+# 		"low_skew2.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
+# 		"new_zipfian_low_skews.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\
+# 		 "old_zipfian.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
+# 		 "new_zipfian_low_skews_2.csv" using "skew":"ops/sec(cum)" title "new, trial2" with linespoint
+# 		# "low_skew3.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
+# 		# "low_skew4.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
+# 		# "low_skew5.csv" using "skew":"ops/sec(cum)" title "trial=5" with linespoint,\
+# 		# "low_skew6.csv" using "skew":"ops/sec(cum)" title "trial=6" with linespoint,\
+# 		# "low_skew7.csv" using "skew":"ops/sec(cum)" title "trial=7" with linespoint,\
+# 		# "low_skew8.csv" using "skew":"ops/sec(cum)" title "trial=8" with linespoint,\
+# 
+# set output "new_v_old.png"
+# set title "new vs old zipfian"
+# plot "new_zipfian_low_skews.csv" using "skew":"ops/sec(cum)" title "new" with linespoint,\
+# 		 "old_zipfian.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
+# 		 "new_zipfian_low_skews_2.csv" using "skew":"ops/sec(cum)" title "new, trial2" with linespoint
+# 
+# set output "tp_v_skew_edge.png"
+# set title "TP vs skew"
+# plot "single_key_56.csv" using "skew":"ops/sec(cum)" title "concurrency=56" with linespoint,\
+# 		 "single_key_64.csv" using "skew":"ops/sec(cum)" title "concurrency=64" with linespoint,\
+# 		 "single_key_91.csv" using "skew":"ops/sec(cum)" title "concurrency=91" with linespoint
+# set output "p99_v_skew_edge.png"
+# plot "single_key_56.csv" using "skew":"p99(ms)" title "concurrency=56" with linespoint,\
+# 		 "single_key_64.csv" using "skew":"p99(ms)" title "concurrency=64" with linespoint,\
+# 		 "single_key_91.csv" using "skew":"p99(ms)" title "concurrency=91" with linespoint
 
 # set output "single_key_latency_tp.png"
 # set title "Latency vs Tp"
