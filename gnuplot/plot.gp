@@ -4,7 +4,8 @@ set xlabel "tp (txns/sec)"
 set ylabel "latency"
 
 set output "wtf.png"
-plot "new_zipfian_low_skews_2.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
+plot "wtf.csv" using "ops/sec(cum)":"p50(ms)" with linespoint,\
+		 "wtf.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
 
 # set xlabel "skew"
 # set ylabel "Throughput (txns/sec)"
