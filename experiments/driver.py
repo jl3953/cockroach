@@ -11,7 +11,8 @@ import configparser
 FPATH = os.path.dirname(os.path.realpath(__file__))
 EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
-	"low_skew.ini"
+	"old_zipfian_match.ini",
+	"new_zipfian_match.ini"
 	]
 
 

@@ -74,6 +74,8 @@ def create_experiment(fpath, config_filename, override=False):
 
 	config = configparser.ConfigParser()
 	config.read(config_filename)
+	print("jenndebug", config_filename)
+
 	exp = {
 		"out_dir": create_out_dir(fpath, config["DEFAULT"]["LOGS_DIR"], config["DEFAULT"]["OUT_DIR"]),
 		"trials": 1,
@@ -112,6 +114,6 @@ def create_experiment(fpath, config_filename, override=False):
 
 
 if __name__ == "__main__":
-	exp, skews = create_experiment(os.path.dirname(os.path.realpath(__file__)), "default.ini", override=False)
+	exp, skews = create_experiment(os.path.dirname(os.path.realpath(__file__)), "new_zipfian_match.ini", override=False)
 	print(exp)
 	print(skews)

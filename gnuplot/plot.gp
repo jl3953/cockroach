@@ -3,6 +3,10 @@ set terminal png
 set xlabel "skew"
 set ylabel "Throughput (txns/sec)"
 
+set output "match.png"
+plot "old_zipfian_match.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
+		 "new_zipfian_match.csv" using "skew":"ops/sec(cum)" title "new" with linespoint
+
 set output "zoom_low_skew.png"
 set title "tp v low skews"
 plot "low_skew.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
