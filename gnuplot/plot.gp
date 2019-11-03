@@ -3,9 +3,9 @@ set terminal png
 set xlabel "tp (txns/sec)"
 set ylabel "latency"
 
-set output "wtf.png"
-plot "wtf.csv" using "ops/sec(cum)":"p50(ms)" with linespoint,\
-		 "wtf.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
+set output "lt_uniform.png"
+plot "lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint,\
+		 #"lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
 
 # set xlabel "skew"
 # set ylabel "Throughput (txns/sec)"

@@ -49,7 +49,8 @@ def find_optimal_parameters(exp, variations, view):
 		end = concurrency + step_size
 		step_size = int(step_size / 2)
 
-	filename = lib.write_out_data(data, exp["out_dir"])
+	data = sorted(data, key=lambda i: i["concurrency"])
+	filename = lib.write_out_data(data, os.path.dirname(exp["out_dir"]))
 
 	driver_node = "192.168.1.1" # usually
 	csv_file = os.path.basename(os.path.dirname(exp["out_dir"])) + ".csv"
