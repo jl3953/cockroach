@@ -1,15 +1,24 @@
 set terminal png
 
-set xlabel "tp (txns/sec)"
-set ylabel "latency"
+set xlabel "zipfian constant"
+set ylabel "throughput"
+set output "uniform_benchmark.png"
+plot "new_zipfian_overload.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
+		 "new_zipfian_overload1.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
+		 "new_zipfian_overload2.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
+		 "new_zipfian_overload3.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
+		 "new_zipfian_overload4.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint
 
-set output "match.png"
-plot "old_zipfian_match.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
-		 "new_zipfian_match.csv" using "skew":"ops/sec(cum)" title "new" with linespoint
-
-set output "lt_uniform.png"
-plot "lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint,\
-		 #"lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
+# set xlabel "tp (txns/sec)"
+# set ylabel "latency"
+# 
+# set output "match.png"
+# plot "old_zipfian_match.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
+# 		 "new_zipfian_match.csv" using "skew":"ops/sec(cum)" title "new" with linespoint
+# 
+# set output "lt_uniform.png"
+# plot "lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint,\
+# 		 #"lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
 
 # set xlabel "skew"
 # set ylabel "Throughput (txns/sec)"
