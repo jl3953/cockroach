@@ -2,13 +2,17 @@ set terminal png
 
 set xlabel "tp (txns/sec)"
 set ylabel "latency"
+set output "lt_8clients.png"
+plot "lt_8clients.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
 
-set output "match.png"
-plot "old_zipfian_match.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
-		 "new_zipfian_match.csv" using "skew":"ops/sec(cum)" title "new" with linespoint
-
-set output "lt_uniform.png"
-plot "lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint,\
+# set xlabel "tp (txns/sec)"
+# set ylabel "latency"
+# set output "match.png"
+# plot "old_zipfian_match.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
+# 		 "new_zipfian_match.csv" using "skew":"ops/sec(cum)" title "new" with linespoint
+# 
+# set output "lt_uniform.png"
+# plot "lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint,\
 		 #"lt_uniform.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
 
 # set xlabel "skew"
