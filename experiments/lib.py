@@ -353,12 +353,12 @@ def extract_data(last_eight_lines):
 	return read_data
 
 
-def write_out_data(data, out_dir):
+def write_out_data(data, out_dir, outfile_name="gnuplot.csv"):
 
 	if len(data) <= 0:
 		return ""
 
-	filename = os.path.join(out_dir, "gnuplot.csv")
+	filename = os.path.join(out_dir, outfile_name)
 	with open(filename, "w") as csvfile:
 		writer = csv.DictWriter(csvfile, delimiter='\t', fieldnames=data[0].keys())
 		writer.writeheader()
