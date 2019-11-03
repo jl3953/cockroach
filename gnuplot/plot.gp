@@ -14,9 +14,13 @@ plot "new_zipfian_overload.csv" using "skew":"ops/sec(cum)" title "trial=0" with
 		 "new_zipfian_overload8.csv" using "skew":"ops/sec(cum)" title "trial=8" with linespoint,\
 		 "new_zipfian_overload9.csv" using "skew":"ops/sec(cum)" title "trial=9" with linespoint
 
+set xlabel "tp (txns/sec)"
+set ylabel "latency"
+set output "lt_8clients.png"
+plot "lt_8clients.csv" using "ops/sec(cum)":"p99(ms)" with linespoint
+
 # set xlabel "tp (txns/sec)"
 # set ylabel "latency"
-# 
 # set output "match.png"
 # plot "old_zipfian_match.csv" using "skew":"ops/sec(cum)" title "old" with linespoint,\
 # 		 "new_zipfian_match.csv" using "skew":"ops/sec(cum)" title "new" with linespoint
