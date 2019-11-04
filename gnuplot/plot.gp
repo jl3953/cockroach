@@ -1,18 +1,23 @@
 set terminal png
 
-set xlabel "zipfian constant"
-set ylabel "throughput"
-set output "uniform_benchmark.png"
-plot "new_zipfian_overload.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
-		 "new_zipfian_overload1.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
-		 "new_zipfian_overload2.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
-		 "new_zipfian_overload3.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
-		 "new_zipfian_overload4.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
-		 "new_zipfian_overload5.csv" using "skew":"ops/sec(cum)" title "trial=5" with linespoint,\
-		 "new_zipfian_overload6.csv" using "skew":"ops/sec(cum)" title "trial=6" with linespoint,\
-		 "new_zipfian_overload7.csv" using "skew":"ops/sec(cum)" title "trial=7" with linespoint,\
-		 "new_zipfian_overload8.csv" using "skew":"ops/sec(cum)" title "trial=8" with linespoint,\
-		 "new_zipfian_overload9.csv" using "skew":"ops/sec(cum)" title "trial=9" with linespoint
+set xlabel "tp"
+set ylabel "latency"
+set output "n6_lt.png"
+plot "n6_lt.csv" using "ops/sec(cum)":"p50(ms)" with linespoint
+
+# set xlabel "zipfian constant"
+# set ylabel "throughput"
+# set output "uniform_benchmark.png"
+# plot "new_zipfian_overload.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
+# 		 "new_zipfian_overload1.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
+# 		 "new_zipfian_overload2.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
+# 		 "new_zipfian_overload3.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
+# 		 "new_zipfian_overload4.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
+# 		 "new_zipfian_overload5.csv" using "skew":"ops/sec(cum)" title "trial=5" with linespoint,\
+# 		 "new_zipfian_overload6.csv" using "skew":"ops/sec(cum)" title "trial=6" with linespoint,\
+# 		 "new_zipfian_overload7.csv" using "skew":"ops/sec(cum)" title "trial=7" with linespoint,\
+# 		 "new_zipfian_overload8.csv" using "skew":"ops/sec(cum)" title "trial=8" with linespoint,\
+# 		 "new_zipfian_overload9.csv" using "skew":"ops/sec(cum)" title "trial=9" with linespoint
 
 set xlabel "tp (txns/sec)"
 set ylabel "latency"
