@@ -74,7 +74,7 @@ def main():
 	parser.add_argument('--view', action='store_true', help='only runs warmup for short testing')
 	args = parser.parse_args()
 
-	run_single_trial("lt_8clients.ini", "lt.ini", "", args.view)
+	run_single_trial("n6_lt.ini", "lt.ini", "", args.view)
 
 
 if __name__ == "__main__":
