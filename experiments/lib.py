@@ -424,7 +424,7 @@ def accumulate_workloads_per_skew(config, dir_path):
 			tail = f.readlines()[-8:]
 			if not is_output_okay(tail):
 				print ("{0} missing some data lines".format(path))
-				# return None, False
+				return None, False
 
 			try:
 				datum = extract_data(tail)

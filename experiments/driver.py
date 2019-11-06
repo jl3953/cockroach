@@ -13,7 +13,7 @@ EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
 	# "new_zipfian_read95.ini",
 	# "new_zipfian_write.ini"
-	"new_zipfian_overload.ini"
+	"n6.ini"
 	]
 
 
