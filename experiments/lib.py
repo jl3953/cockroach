@@ -344,7 +344,7 @@ def extract_data(last_eight_lines):
 		return data
 
 	read_data = {}
-	# read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
 	write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
 	data = parse(last_eight_lines[6], last_eight_lines[7])
 
@@ -424,7 +424,7 @@ def accumulate_workloads_per_skew(config, dir_path):
 			tail = f.readlines()[-8:]
 			if not is_output_okay(tail):
 				print ("{0} missing some data lines".format(path))
-				# return None, False
+				return None, False
 
 			try:
 				datum = extract_data(tail)

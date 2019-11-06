@@ -2,59 +2,97 @@ set terminal png
 
 set xlabel "zipfian constant"
 set ylabel "tp (txn/sec)"
-set output "jenn.png"
+set output "n6.png"
 
-plot "new_zipfian_read95.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
-		 "new_zipfian_read951.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
-		 "new_zipfian_read952.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
-		 "new_zipfian_read953.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
-		 "new_zipfian_read954.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
-		 # "new_zipfian_write.csv" using "skew":"ops/sec(cum)" title "write, trial=0" with linespoint,\
-
-set xlabel "zipfian constant"
-set ylabel "p50(ms)-r"
-set output "nopep50.png"
-plot "new_zipfian_read95.csv" using "skew":"p50(ms)-r" title "trial=0" with linespoint,\
-		 "new_zipfian_read951.csv" using "skew":"p50(ms)-r" title "trial=1" with linespoint,\
-		 "new_zipfian_read952.csv" using "skew":"p50(ms)-r" title "trial=2" with linespoint,\
-		 "new_zipfian_read953.csv" using "skew":"p50(ms)-r" title "trial=3" with linespoint,\
-		 "new_zipfian_read954.csv" using "skew":"p50(ms)-r" title "trial=4" with linespoint,\
-		 "new_zipfian_read95.csv" using "skew":"p50(ms)-w" title "w-trial=0" with linespoint,\
-		 "new_zipfian_read951.csv" using "skew":"p50(ms)-w" title "w-trial=1" with linespoint,\
-		 "new_zipfian_read952.csv" using "skew":"p50(ms)-w" title "w-trial=2" with linespoint,\
-		 "new_zipfian_read953.csv" using "skew":"p50(ms)-w" title "w-trial=3" with linespoint,\
-		 "new_zipfian_read954.csv" using "skew":"p50(ms)-w" title "w-trial=4" with linespoint,\
-		 # "new_zipfian_write.csv" using "skew":"p50(ms)-w" title "write, w-trial=0" with linespoint,\
+plot "n6.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
+		 "n61.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
+		 "n62.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
+		 "n63.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
+		 "n64.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
 
 set xlabel "zipfian constant"
-set ylabel "p99(ms)"
-set output "nopep99.png"
-plot "new_zipfian_read95.csv" using "skew":"p99(ms)-r" title "trial=0" with linespoint,\
-		 "new_zipfian_read951.csv" using "skew":"p99(ms)-r" title "trial=1" with linespoint,\
-		 "new_zipfian_read952.csv" using "skew":"p99(ms)-r" title "trial=2" with linespoint,\
-		 "new_zipfian_read953.csv" using "skew":"p99(ms)-r" title "trial=3" with linespoint,\
-		 "new_zipfian_read954.csv" using "skew":"p99(ms)-r" title "trial=4" with linespoint,\
-		 "new_zipfian_read95.csv" using "skew":"p99(ms)-w" title "w-trial=0" with linespoint,\
-		 "new_zipfian_read951.csv" using "skew":"p99(ms)-w" title "w-trial=1" with linespoint,\
-		 "new_zipfian_read952.csv" using "skew":"p99(ms)-w" title "w-trial=2" with linespoint,\
-		 "new_zipfian_read953.csv" using "skew":"p99(ms)-w" title "w-trial=3" with linespoint,\
-		 "new_zipfian_read954.csv" using "skew":"p99(ms)-w" title "w-trial=4" with linespoint,\
-		 # "new_zipfian_write.csv" using "skew":"p99(ms)-w" title "write" with linespoint,\
+set ylabel "p50"
+set output "n6_p50.png"
+plot "n6.csv" using "skew":"p50(ms)-r" title "trial=0" with linespoint,\
+		 "n61.csv" using "skew":"p50(ms)-r" title "trial=1" with linespoint,\
+		 "n62.csv" using "skew":"p50(ms)-r" title "trial=2" with linespoint,\
+		 "n63.csv" using "skew":"p50(ms)-r" title "trial=3" with linespoint,\
+		 "n64.csv" using "skew":"p50(ms)-r" title "trial=4" with linespoint,\
+		"n6.csv" using "skew":"p50(ms)-w" title "w-trial=0" with linespoint,\
+		 "n61.csv" using "skew":"p50(ms)-w" title "w-trial=1" with linespoint,\
+		 "n62.csv" using "skew":"p50(ms)-w" title "w-trial=2" with linespoint,\
+		 "n63.csv" using "skew":"p50(ms)-w" title "w-trial=3" with linespoint,\
+		 "n64.csv" using "skew":"p50(ms)-w" title "w-trial=4" with linespoint,\
 
 set xlabel "zipfian constant"
-set ylabel "pMax(ms)"
-set output "nopepMax.png"
-plot "new_zipfian_read95.csv" using "skew":"pMax(ms)-r" title "trial=0" with linespoint,\
-		 "new_zipfian_read951.csv" using "skew":"pMax(ms)-r" title "trial=1" with linespoint,\
-		 "new_zipfian_read952.csv" using "skew":"pMax(ms)-r" title "trial=2" with linespoint,\
-		 "new_zipfian_read953.csv" using "skew":"pMax(ms)-r" title "trial=3" with linespoint,\
-		 "new_zipfian_read954.csv" using "skew":"pMax(ms)-r" title "trial=4" with linespoint,\
-		 "new_zipfian_read95.csv" using "skew":"pMax(ms)-w" title "w-trial=0" with linespoint,\
-		 "new_zipfian_read951.csv" using "skew":"pMax(ms)-w" title "w-trial=1" with linespoint,\
-		 "new_zipfian_read952.csv" using "skew":"pMax(ms)-w" title "w-trial=2" with linespoint,\
-		 "new_zipfian_read953.csv" using "skew":"pMax(ms)-w" title "w-trial=3" with linespoint,\
-		 "new_zipfian_read954.csv" using "skew":"pMax(ms)-w" title "w-trial=4" with linespoint,\
-		 # "new_zipfian_write.csv" using "skew":"pMax(ms)-w" title "write" with linespoint,\
+set ylabel "p99"
+set output "n6_p99.png"
+plot "n6.csv" using "skew":"p99(ms)-r" title "trial=0" with linespoint,\
+		 "n61.csv" using "skew":"p99(ms)-r" title "trial=1" with linespoint,\
+		 "n62.csv" using "skew":"p99(ms)-r" title "trial=2" with linespoint,\
+		 "n63.csv" using "skew":"p99(ms)-r" title "trial=3" with linespoint,\
+		 "n64.csv" using "skew":"p99(ms)-r" title "trial=4" with linespoint,\
+		"n6.csv" using "skew":"p99(ms)-w" title "w-trial=0" with linespoint,\
+		 "n61.csv" using "skew":"p99(ms)-w" title "w-trial=1" with linespoint,\
+		 "n62.csv" using "skew":"p99(ms)-w" title "w-trial=2" with linespoint,\
+		 "n63.csv" using "skew":"p99(ms)-w" title "w-trial=3" with linespoint,\
+		 "n64.csv" using "skew":"p99(ms)-w" title "w-trial=4" with linespoint,\
+
+# set xlabel "zipfian constant"
+# set ylabel "tp (txn/sec)"
+# set output "jenn.png"
+# 
+# plot "new_zipfian_read95.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
+# 		 "new_zipfian_read951.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
+# 		 "new_zipfian_read952.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
+# 		 "new_zipfian_read953.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
+# 		 "new_zipfian_read954.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
+# 		 # "new_zipfian_write.csv" using "skew":"ops/sec(cum)" title "write, trial=0" with linespoint,\
+# 
+# set xlabel "zipfian constant"
+# set ylabel "p50(ms)-r"
+# set output "nopep50.png"
+# plot "new_zipfian_read95.csv" using "skew":"p50(ms)-r" title "trial=0" with linespoint,\
+# 		 "new_zipfian_read951.csv" using "skew":"p50(ms)-r" title "trial=1" with linespoint,\
+# 		 "new_zipfian_read952.csv" using "skew":"p50(ms)-r" title "trial=2" with linespoint,\
+# 		 "new_zipfian_read953.csv" using "skew":"p50(ms)-r" title "trial=3" with linespoint,\
+# 		 "new_zipfian_read954.csv" using "skew":"p50(ms)-r" title "trial=4" with linespoint,\
+# 		 "new_zipfian_read95.csv" using "skew":"p50(ms)-w" title "w-trial=0" with linespoint,\
+# 		 "new_zipfian_read951.csv" using "skew":"p50(ms)-w" title "w-trial=1" with linespoint,\
+# 		 "new_zipfian_read952.csv" using "skew":"p50(ms)-w" title "w-trial=2" with linespoint,\
+# 		 "new_zipfian_read953.csv" using "skew":"p50(ms)-w" title "w-trial=3" with linespoint,\
+# 		 "new_zipfian_read954.csv" using "skew":"p50(ms)-w" title "w-trial=4" with linespoint,\
+# 		 # "new_zipfian_write.csv" using "skew":"p50(ms)-w" title "write, w-trial=0" with linespoint,\
+# 
+# set xlabel "zipfian constant"
+# set ylabel "p99(ms)"
+# set output "nopep99.png"
+# plot "new_zipfian_read95.csv" using "skew":"p99(ms)-r" title "trial=0" with linespoint,\
+# 		 "new_zipfian_read951.csv" using "skew":"p99(ms)-r" title "trial=1" with linespoint,\
+# 		 "new_zipfian_read952.csv" using "skew":"p99(ms)-r" title "trial=2" with linespoint,\
+# 		 "new_zipfian_read953.csv" using "skew":"p99(ms)-r" title "trial=3" with linespoint,\
+# 		 "new_zipfian_read954.csv" using "skew":"p99(ms)-r" title "trial=4" with linespoint,\
+# 		 "new_zipfian_read95.csv" using "skew":"p99(ms)-w" title "w-trial=0" with linespoint,\
+# 		 "new_zipfian_read951.csv" using "skew":"p99(ms)-w" title "w-trial=1" with linespoint,\
+# 		 "new_zipfian_read952.csv" using "skew":"p99(ms)-w" title "w-trial=2" with linespoint,\
+# 		 "new_zipfian_read953.csv" using "skew":"p99(ms)-w" title "w-trial=3" with linespoint,\
+# 		 "new_zipfian_read954.csv" using "skew":"p99(ms)-w" title "w-trial=4" with linespoint,\
+# 		 # "new_zipfian_write.csv" using "skew":"p99(ms)-w" title "write" with linespoint,\
+# 
+# set xlabel "zipfian constant"
+# set ylabel "pMax(ms)"
+# set output "nopepMax.png"
+# plot "new_zipfian_read95.csv" using "skew":"pMax(ms)-r" title "trial=0" with linespoint,\
+# 		 "new_zipfian_read951.csv" using "skew":"pMax(ms)-r" title "trial=1" with linespoint,\
+# 		 "new_zipfian_read952.csv" using "skew":"pMax(ms)-r" title "trial=2" with linespoint,\
+# 		 "new_zipfian_read953.csv" using "skew":"pMax(ms)-r" title "trial=3" with linespoint,\
+# 		 "new_zipfian_read954.csv" using "skew":"pMax(ms)-r" title "trial=4" with linespoint,\
+# 		 "new_zipfian_read95.csv" using "skew":"pMax(ms)-w" title "w-trial=0" with linespoint,\
+# 		 "new_zipfian_read951.csv" using "skew":"pMax(ms)-w" title "w-trial=1" with linespoint,\
+# 		 "new_zipfian_read952.csv" using "skew":"pMax(ms)-w" title "w-trial=2" with linespoint,\
+# 		 "new_zipfian_read953.csv" using "skew":"pMax(ms)-w" title "w-trial=3" with linespoint,\
+# 		 "new_zipfian_read954.csv" using "skew":"pMax(ms)-w" title "w-trial=4" with linespoint,\
+# 		 # "new_zipfian_write.csv" using "skew":"pMax(ms)-w" title "write" with linespoint,\
 
 # set xlabel "tp"
 # set ylabel "latency"
