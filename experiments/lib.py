@@ -302,9 +302,9 @@ def warmup_cluster(config):
 	ip = nodes[0]["ip"]
 	cmd = ('echo "'
 			'alter range default configure zone using num_replicas = 1;'
-			# 'alter table kv partition by range(k) (partition hot values from (minvalue) to (3), partition warm values from (3) to (maxvalue));'
-			# "alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
-			# "alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
+			'alter table kv partition by range(k) (partition hot values from (minvalue) to (1), partition warm values from (1) to (maxvalue));'
+			"alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
+			"alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
 			'" | {0} sql --insecure --database=kv '
 			'--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
 	
@@ -344,7 +344,7 @@ def extract_data(last_eight_lines):
 		return data
 
 	read_data = {}
-	# read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
 	write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
 	data = parse(last_eight_lines[6], last_eight_lines[7])
 
@@ -460,7 +460,7 @@ def gnuplot(config, skews):
 	print(filename)
 	gnuplot_written_data(filename)
 
-	driver_node = "192.168.1.1" # usually
+	driver_node = "192.168.1.19" # usually
 	csv_file = os.path.basename(os.path.dirname(out_dir)) + ".csv"
 	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
 	call_remote(driver_node, cmd, "i like to move it move it")
