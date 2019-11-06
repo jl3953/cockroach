@@ -11,7 +11,8 @@ import configparser
 FPATH = os.path.dirname(os.path.realpath(__file__))
 EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
-	"new_zipfian_overload.ini"
+	# "new_zipfian_read95.ini",
+	"new_zipfian_write.ini"
 	]
 
 
