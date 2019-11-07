@@ -201,6 +201,7 @@ func newGuard(spans *spanset.SpanSet, ts hlc.Timestamp) *Guard {
 func (m *Manager) Acquire(
 	ctx context.Context, spans *spanset.SpanSet, ts hlc.Timestamp,
 ) (*Guard, error) {
+	log.Warningf(ctx, "jenndebug acquire\n")
 	lg, snap := m.sequence(spans, ts)
 	defer snap.close()
 
