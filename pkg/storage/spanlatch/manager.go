@@ -249,7 +249,7 @@ func (m *Manager) snapshotLocked(spans *spanset.SpanSet) snapshot {
 		reading := len(spans.GetSpans(spanset.SpanReadOnly, s)) > 0
 		writing := len(spans.GetSpans(spanset.SpanReadWrite, s)) > 0
 
-		log.Warningf(context.Background(), "jenndebug reading:[%+v], writing:[%v]", reading, writing)
+		log.Warningf(context.Background(), "jenndebug reading:[%+v], writing:[%v]\n", reading, writing)
 		if writing {
 			sm.flushReadSetLocked()
 			snap.trees[s][spanset.SpanReadOnly] = sm.trees[spanset.SpanReadOnly].Clone()
@@ -346,11 +346,13 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 				switch a {
 				case spanset.SpanReadOnly:
 					// Wait for writes at equal or lower timestamps.
+					log.Warningf(ctx, "jenndebug read-only\n")
 					it := tr[spanset.SpanReadWrite].MakeIter()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreLater); err != nil {
 						return err
 					}
 				case spanset.SpanReadWrite:
+					log.Warningf(ctx, "jenndebug read-write\n")
 					// Wait for all other writes.
 					//
 					// It is cheaper to wait on an already released latch than

@@ -11,21 +11,19 @@ import configparser
 FPATH = os.path.dirname(os.path.realpath(__file__))
 EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
 CONFIG_LIST = [
-	# "new_zipfian_read95.ini",
-	# "new_zipfian_write.ini"
-	"n6.ini"
+	"new_zipfian_read95.ini"
 	]
 
 
 def run_experiment(exp, skews, view=False):
 
 	exps = lib.vary_zipf_skew(exp, skews)
-	# for e in exps:
-	# 	lib.cleanup_previous_experiment(exp)
-	# 	lib.init_experiment(exp)
-	# 	lib.warmup_cluster(e)
-	# 	if not view:
-	# 		lib.run_bench(e)
+	for e in exps:
+		lib.cleanup_previous_experiment(exp)
+		lib.init_experiment(exp)
+		lib.warmup_cluster(e)
+		if not view:
+			lib.run_bench(e)
 
 	if not view:
 		lib.gnuplot(exp, skews)
