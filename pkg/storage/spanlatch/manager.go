@@ -367,12 +367,12 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 					elapsed_rw := timeutil.Since(start_rw)
 					// Wait for reads at equal or higher timestamps.
 					it = tr[spanset.SpanReadOnly].MakeIter()
-					start_ro := timeutile.Now()
+					start_ro := timeutil.Now()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreEarlier); err != nil {
 						return err
 					}
-					elapsed_ro := timeUtil.Since(start_ro)
-					elapsed := timeUtil.Since(start_rw)
+					elapsed_ro := timeutil.Since(start_ro)
+					elapsed := timeutil.Since(start_rw)
 					log.Warningf(ctx, "jenndebug rwspan elapsed:[%+v], elapsed_rw:[%+v], elapsed_ro:[%+v]\n",
 							elapsed, elapsed_rw, elapsed_ro)
 				default:
