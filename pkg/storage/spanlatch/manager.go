@@ -201,7 +201,6 @@ func newGuard(spans *spanset.SpanSet, ts hlc.Timestamp) *Guard {
 func (m *Manager) Acquire(
 	ctx context.Context, spans *spanset.SpanSet, ts hlc.Timestamp,
 ) (*Guard, error) {
-	log.Warningf(ctx, "jenndebug acquire\n")
 	lg, snap := m.sequence(spans, ts)
 	defer snap.close()
 
@@ -250,7 +249,6 @@ func (m *Manager) snapshotLocked(spans *spanset.SpanSet) snapshot {
 		reading := len(spans.GetSpans(spanset.SpanReadOnly, s)) > 0
 		writing := len(spans.GetSpans(spanset.SpanReadWrite, s)) > 0
 
-		log.Warningf(context.Background(), "jenndebug reading:[%+v], writing:[%v]\n", reading, writing)
 		if writing {
 			sm.flushReadSetLocked()
 			snap.trees[s][spanset.SpanReadOnly] = sm.trees[spanset.SpanReadOnly].Clone()
@@ -347,13 +345,14 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 				switch a {
 				case spanset.SpanReadOnly:
 					// Wait for writes at equal or lower timestamps.
-					log.Warningf(ctx, "jenndebug read-only\n")
 					it := tr[spanset.SpanReadWrite].MakeIter()
+					start := timeutil.Now()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreLater); err != nil {
 						return err
 					}
+					elapsed := timeutil.Since(start)
+					log.Warningf(ctx, "jenndebug readspan elapsed:[%+v]\n", elapsed)
 				case spanset.SpanReadWrite:
-					log.Warningf(ctx, "jenndebug read-write\n")
 					// Wait for all other writes.
 					//
 					// It is cheaper to wait on an already released latch than
@@ -361,14 +360,21 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 					// latches first. We expect writes to take longer than reads
 					// to release their latches, so we wait on them first.
 					it := tr[spanset.SpanReadWrite].MakeIter()
+					start_rw := timeutil.Now()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreNothing); err != nil {
 						return err
 					}
+					elapsed_rw := timeutil.Since(start_rw)
 					// Wait for reads at equal or higher timestamps.
 					it = tr[spanset.SpanReadOnly].MakeIter()
+					start_ro := timeutile.Now()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreEarlier); err != nil {
 						return err
 					}
+					elapsed_ro := timeUtil.Since(start_ro)
+					elapsed := timeUtil.Since(start_rw)
+					log.Warningf(ctx, "jenndebug rwspan elapsed:[%+v], elapsed_rw:[%+v], elapsed_ro:[%+v]\n",
+							elapsed, elapsed_rw, elapsed_ro)
 				default:
 					panic("unknown access")
 				}
