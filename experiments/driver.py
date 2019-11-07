@@ -19,12 +19,12 @@ CONFIG_LIST = [
 def run_experiment(exp, skews, view=False):
 
 	exps = lib.vary_zipf_skew(exp, skews)
-	for e in exps:
-		lib.cleanup_previous_experiment(exp)
-		lib.init_experiment(exp)
-		lib.warmup_cluster(e)
-		if not view:
-			lib.run_bench(e)
+	# for e in exps:
+	# 	lib.cleanup_previous_experiment(exp)
+	# 	lib.init_experiment(exp)
+	# 	lib.warmup_cluster(e)
+	# 	if not view:
+	# 		lib.run_bench(e)
 
 	if not view:
 		lib.gnuplot(exp, skews)

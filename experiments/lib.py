@@ -121,7 +121,7 @@ def start_cluster(nodes):
 
 def build_cockroach(node, commit):
     cmd = ("ssh {0} 'export GOPATH=/usr/local/temp/go "
-           "&& cd {1} && git add * && git stash && git fetch origin {2} && git checkout {2} && git pull origin {2} && git submodule update --init"
+           "&& cd {1} && git fetch origin {2} && git checkout {2} && git pull origin {2} && git submodule update --init"
            "&& (make build || "
            "(./bin/dep ensure && make clean && make build))'") \
            .format(node["ip"], COCKROACH_DIR, commit)
@@ -344,7 +344,10 @@ def extract_data(last_eight_lines):
 		return data
 
 	read_data = {}
-	# read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	try:
+		read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	except BaseException:
+		print("writes-only")
 	write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
 	data = parse(last_eight_lines[6], last_eight_lines[7])
 
@@ -402,10 +405,13 @@ def aggregate(acc):
 
 def is_output_okay(tail):
 
-	if not ("elapsed" in tail[0] and "elapsed" in tail[3] and "elapsed" in tail[6]):
-		return False
+	try:
+		if not ("elapsed" in tail[3] and "elapsed" in tail[6]):
+			return False
 
-	return True
+		return True
+	except BaseException:
+		return False
 
 
 def accumulate_workloads_per_skew(config, dir_path):
@@ -421,10 +427,11 @@ def accumulate_workloads_per_skew(config, dir_path):
 
 		with open(path, "r") as f:
 			# read the last eight lines of f
+			print(path)
 			tail = f.readlines()[-8:]
 			if not is_output_okay(tail):
 				print ("{0} missing some data lines".format(path))
-				# return None, False
+				return None, False
 
 			try:
 				datum = extract_data(tail)

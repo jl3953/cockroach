@@ -249,6 +249,7 @@ func (m *Manager) snapshotLocked(spans *spanset.SpanSet) snapshot {
 		reading := len(spans.GetSpans(spanset.SpanReadOnly, s)) > 0
 		writing := len(spans.GetSpans(spanset.SpanReadWrite, s)) > 0
 
+		log.Warningf(context.Background(), "jenndebug reading:[%+v], writing:[%v]", reading, writing)
 		if writing {
 			sm.flushReadSetLocked()
 			snap.trees[s][spanset.SpanReadOnly] = sm.trees[spanset.SpanReadOnly].Clone()
