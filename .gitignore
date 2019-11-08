@@ -28,3 +28,5 @@ customenv.mk
 # Generated files containing include paths.
 zcgo_flags*.go
 build/Railroad.jar
+
+experiments/__pycache__
