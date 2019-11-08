@@ -2,12 +2,14 @@ set terminal png
 
 set xlabel "zipfian constant"
 set ylabel "hottest shard key qty"
+set logscale y 10
 set output "shard_uniform.png"
 plot "new_zipfian_skewed_shard_shard.csv" using "skew":"end_key" title "trial=0" with linespoint,\
 		"new_zipfian_skewed_shard1_shard.csv" using "skew":"end_key" title "trial=1" with linespoint,\
 		"new_zipfian_skewed_shard2_shard.csv" using "skew":"end_key" title "trial=2" with linespoint,\
 		"new_zipfian_skewed_shard3_shard.csv" using "skew":"end_key" title "trial=3" with linespoint,\
-		"new_zipfian_skewed_shard4_shard.csv" using "skew":"end_key" title "trial=4" with linespoint,\
+		"new_zipfian_skewed_shard4_shard.csv" using "skew":"end_key" title "trial=4" with linespoint
+unset logscale y
 
 set xlabel "zipfian constant"
 set ylabel "bumps from reads"
