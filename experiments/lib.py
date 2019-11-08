@@ -17,6 +17,24 @@ STORE_DIR = "/data"
 FPATH = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.join(FPATH, '..')
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
+DRIVER_NODE = "192.168.1.19"
+
+def query_for_shards(ip, config):
+
+	cmd = '/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach sql --insecure --execute "show experimental_ranges from table kv.kv"'
+	cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
+
+	out_dir = config["out_dir"]
+	if not os.path.exists(out_dir):
+		os.makedirs(out_dir)
+		
+	save_params(config, out_dir)
+
+	outfile = os.path.join(out_dir, "shards.csv")
+	print(outfile)
+	with open(outfile, "w") as f:
+		p = subprocess.Popen(shlex.split(cmd), stdout=f)
+		p.wait()
 
 
 def call(cmd, err_msg):
@@ -88,6 +106,13 @@ def start_cockroach_node(node, join=None):
     print(cmd)
     return subprocess.Popen(cmd, shell=True)
 
+def send_command_to_crdb(ip, err_msg, *argv):
+	
+	cmd = ('echo "' + ";".join(argv) + '"| {0} sql --insecure --url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
+	call_remote(ip, cmd, err_msg)
+
+	return cmd
+
 
 def set_cluster_settings(node):
     ip = node["ip"]
@@ -102,6 +127,33 @@ def set_cluster_settings(node):
     call_remote(ip, cmd, "Failed to set cluster settings.")
 
 
+def grep_for_term(config, term):
+
+	nodes = config["hot_nodes"] + config["warm_nodes"]
+
+	out_dir = config["out_dir"]
+	if not os.path.exists(out_dir):
+		os.makedirs(out_dir)
+		
+	save_params(config, out_dir)
+
+	outfile = os.path.join(out_dir, "bumps.csv")
+	print(outfile)
+
+	ssh = "sudo ssh {0} '{1}'"
+	template= 'grep -ir "{0}" /data/logs/cockroach.node-* | wc -l'.format(term)
+	ps = []
+	with open(outfile, "w") as f:
+		i = 1
+
+	with open(outfile, "a") as f:
+		for n in nodes:
+			cmd = ssh.format(n["ip"], template)
+			print(cmd)
+			p = subprocess.Popen(shlex.split(cmd), stdout=f)
+			p.wait()
+
+		
 def start_cluster(nodes):
     if len(nodes) == 0:
         return
@@ -302,9 +354,9 @@ def warmup_cluster(config):
 	ip = nodes[0]["ip"]
 	cmd = ('echo "'
 			'alter range default configure zone using num_replicas = 1;'
-			'alter table kv partition by range(k) (partition hot values from (minvalue) to (1), partition warm values from (1) to (maxvalue));'
-			"alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
-			"alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
+			# 'alter table kv partition by range(k) (partition hot values from (minvalue) to (1), partition warm values from (1) to (maxvalue));'
+			# "alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
+			# "alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
 			'" | {0} sql --insecure --database=kv '
 			'--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
 	
@@ -437,9 +489,103 @@ def accumulate_workloads_per_skew(config, dir_path):
 	return final_datum, True
 
 
+def extract_shard_data(lines):
+
+	def to_int(key):
+		if key == "NULL":
+			return 0
+		else:
+			all_nums = key.split("/")
+			last = int(all_nums[-1])
+			if last == 0:
+				return int(all_nums[-2])
+			else:
+				return last
+
+	point = lines[0]
+	print(point)
+	point["start_key"] = to_int(point["start_key"])
+	point["end_key"] = to_int(point["end_key"])
+	point["range_id"] = int(point["range_id"])
+	point["range_size_mb"] = float(point["range_size_mb"])
+
+	return point
+
+
+def accumulate_shard_per_skew(config, dir_path):
+
+	acc = []
+	path = os.path.join(dir_path, "shards.csv")
+	with open(path, "r") as f:
+		reader = csv.DictReader(f, delimiter='\t')
+		for row in reader:
+			acc.append(row)
+
+	datum = extract_shard_data(acc)
+	return datum, True
+
+
 def gnuplot_written_data(filename):
 	pass
 
+
+def accumulate_greps_per_skew(config, dir_path):
+	bumps = 0
+	path = os.path.join(dir_path, "bumps.csv")
+	with open(path, "r") as f:
+		for line in f:
+			bumps += int(line.strip())
+
+	return {"bumps": bumps}, True
+
+
+def plot_bumps(config, skews):
+	out_dir = os.path.join(config["out_dir"])
+	data = []
+
+	for i in range(len(skews)):
+		dir_path=os.path.join(out_dir, "skew-{0}".format(i))
+		datum, succeeded = accumulate_greps_per_skew(config, dir_path)
+		if succeeded:
+			datum_with_skew = {"skew":skews[i]}
+			datum_with_skew.update(datum)
+			data.append(datum_with_skew)
+		else:
+			print("Failed on skew[{0}]".format(skews[i]))
+			continue
+
+	filename = write_out_data(data, out_dir, "bumps.csv")
+	print(filename)
+
+	driver_node = DRIVER_NODE # usually
+	csv_file = os.path.basename(os.path.dirname(out_dir)) + "_bumps.csv"
+	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
+	call_remote(driver_node, cmd, "i like to move it move it")
+
+def plot_shards(config, skews):
+	out_dir = os.path.join(config["out_dir"])
+	data = []
+
+	for i in range(len(skews)):
+		dir_path = os.path.join(out_dir, "skew-{0}".format(i))
+		datum, succeeded = accumulate_shard_per_skew(config, dir_path)
+		if succeeded:
+			datum_with_skew = {"skew":skews[i]}
+			datum_with_skew.update(datum)
+			data.append(datum_with_skew)
+		else:
+			print("failed on skew[{0}]".format(skews[i]))
+			continue
+
+	filename = write_out_data(data, out_dir, "shard_data.csv")
+	print(filename)
+
+	driver_node = DRIVER_NODE # usually
+	csv_file = os.path.basename(os.path.dirname(out_dir)) + "_shard.csv"
+	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
+	call_remote(driver_node, cmd, "i like to move it move it")
+
+			
 def gnuplot(config, skews):
 
 	out_dir = os.path.join(config["out_dir"])
@@ -460,7 +606,7 @@ def gnuplot(config, skews):
 	print(filename)
 	gnuplot_written_data(filename)
 
-	driver_node = "192.168.1.19" # usually
+	driver_node = DRIVER_NODE # usually
 	csv_file = os.path.basename(os.path.dirname(out_dir)) + ".csv"
 	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
 	call_remote(driver_node, cmd, "i like to move it move it")
@@ -512,7 +658,7 @@ def run_bench(config):
         cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
         print(cmd)
 
-        path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
+        path = os.path.join(out_dir, "bench_out_{0}.txt".format(i)).format("192.168.1.18", cmd).format("192.168.1.18", cmd)
         print(path)
         with open(path, "w") as f:
             ps.append(subprocess.Popen(shlex.split(cmd), stdout=f))

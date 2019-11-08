@@ -1,8 +1,13 @@
 set terminal png
 
 set xlabel "zipfian constant"
+set ylabel "hottest shard key qty"
+set output "shard_uniform.png"
+plot "new_zipfian_skewed_af_shard.csv" using "skew":"end_key" title "trial=0" with linespoint,\
+		"new_zipfian_skewed_af1_shard.csv" using "skew":"end_key" title "trial=1" with linespoint 
+
+set xlabel "zipfian constant"
 set ylabel "tp (txn/sec)"
-<<<<<<< HEAD
 set output "hot_n1.png"
 plot "new_zipfian_hot_n1.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
 		 "new_zipfian_hot_n11.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
@@ -55,7 +60,6 @@ plot "new_zipfian_hot_n1.csv" using "skew":"pMax(ms)-r" title "trial=0" with lin
 # set xlabel "zipfian constant"
 # set ylabel "tp (txn/sec)"
 # set output "jenn.png"
-=======
 set output "n6.png"
 
 plot "n6.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
@@ -96,7 +100,6 @@ plot "n6.csv" using "skew":"p99(ms)-r" title "trial=0" with linespoint,\
 # set ylabel "tp (txn/sec)"
 # set output "jenn.png"
 # 
->>>>>>> a46bd7449accdf53d9a291a1ec50c4605866cb7c
 # plot "new_zipfian_read95.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
 # 		 "new_zipfian_read951.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
 # 		 "new_zipfian_read952.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\

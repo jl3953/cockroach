@@ -9,11 +9,11 @@ import configparser
 
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
-EXP, SKEWS = exp_lib.create_experiment(FPATH, "default.ini")
+EXP, SKEWS = exp_lib.create_experiment(FPATH, "new_zipfian_overload.ini")
 CONFIG_LIST = [
 	# "new_zipfian_read95.ini",
 	# "new_zipfian_write.ini"
-	"n6.ini"
+	"new_zipfian_overload.ini"
 	]
 
 
@@ -25,10 +25,14 @@ def run_experiment(exp, skews, view=False):
 		lib.init_experiment(exp)
 		lib.warmup_cluster(e)
 		if not view:
-			lib.run_bench(e)
+			lib.query_for_shards("192.168.1.18", e) # driver
+			lib.grep_for_term(e, "jenndebug bumped")
+			# lib.run_bench(e)
 
 	if not view:
-		lib.gnuplot(exp, skews)
+		lib.plot_shards(exp, skews)
+		lib.plot_bumps(exp, skews)
+		# lib.gnuplot(exp, skews)
 
 
 def create_trial_outdir(config_filename, i):

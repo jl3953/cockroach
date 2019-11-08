@@ -267,6 +267,7 @@ func (r *Replica) applyTimestampCache(
 						ba.Txn = txn
 					}
 				}
+				log.Warningf(ctx, "jenndebug bumped for read")
 			} else {
 				bumped = ba.Timestamp.Forward(nextRTS) || bumped
 			}
