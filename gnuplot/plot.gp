@@ -3,8 +3,20 @@ set terminal png
 set xlabel "zipfian constant"
 set ylabel "hottest shard key qty"
 set output "shard_uniform.png"
-plot "new_zipfian_skewed_af_shard.csv" using "skew":"end_key" title "trial=0" with linespoint,\
-		"new_zipfian_skewed_af1_shard.csv" using "skew":"end_key" title "trial=1" with linespoint 
+plot "new_zipfian_skewed_shard_shard.csv" using "skew":"end_key" title "trial=0" with linespoint,\
+		"new_zipfian_skewed_shard1_shard.csv" using "skew":"end_key" title "trial=1" with linespoint,\
+		"new_zipfian_skewed_shard2_shard.csv" using "skew":"end_key" title "trial=2" with linespoint,\
+		"new_zipfian_skewed_shard3_shard.csv" using "skew":"end_key" title "trial=3" with linespoint,\
+		"new_zipfian_skewed_shard4_shard.csv" using "skew":"end_key" title "trial=4" with linespoint,\
+
+set xlabel "zipfian constant"
+set ylabel "bumps from reads"
+set output "bumps.png"
+plot "new_zipfian_skewed_shard_bumps.csv" using "skew":"bumps" title "trial=0" with linespoint,\
+		 "new_zipfian_skewed_shard1_bumps.csv" using "skew":"bumps" title "trial=1" with linespoint,\
+		 "new_zipfian_skewed_shard2_bumps.csv" using "skew":"bumps" title "trial=2" with linespoint,\
+		 "new_zipfian_skewed_shard3_bumps.csv" using "skew":"bumps" title "trial=3" with linespoint,\
+		 "new_zipfian_skewed_shard4_bumps.csv" using "skew":"bumps" title "trial=4" with linespoint,\
 
 set xlabel "zipfian constant"
 set ylabel "tp (txn/sec)"
