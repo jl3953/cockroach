@@ -23,11 +23,22 @@ plot "new_zipfian_skewed_shard_bumps.csv" using "skew":"bumps" title "trial=0" w
 set xlabel "zipfian constant"
 set ylabel "tp (txn/sec)"
 set output "hot_n1.png"
-plot "new_zipfian_hot_n1.csv" using "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
-		 "new_zipfian_hot_n11.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
-		 "new_zipfian_hot_n12.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
-		 "new_zipfian_hot_n13.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
-		 "new_zipfian_hot_n14.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
+plot 	"new_zipfian_hot_n1.csv" using 	 "skew":"ops/sec(cum)" title "hot one, trial=0" with linespoint,\
+		 "new_zipfian_hot_n11.csv" using "skew":"ops/sec(cum)" title "hot one, trial=1" with linespoint,\
+		 "new_zipfian_hot_n12.csv" using "skew":"ops/sec(cum)" title "hot one, trial=2" with linespoint,\
+		 "new_zipfian_hot_n13.csv" using "skew":"ops/sec(cum)" title "hot one, trial=3" with linespoint,\
+		 "new_zipfian_hot_n14.csv" using "skew":"ops/sec(cum)" title "hot one, trial=4" with linespoint,\
+		 "new_zipfian_read95.csv" using  "skew":"ops/sec(cum)" title "trial=0" with linespoint,\
+ 		 "new_zipfian_read951.csv" using "skew":"ops/sec(cum)" title "trial=1" with linespoint,\
+ 		 "new_zipfian_read952.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
+ 		 "new_zipfian_read953.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
+ 		 "new_zipfian_read954.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
+		 "new_zipfian_read95_allgateway.csv" using "skew":"ops/sec(cum)" title "allgateway" with linespoint,\
+		 "new_zipfian_read95_allgateway1.csv" using "skew":"ops/sec(cum)" title "allgateway 1" with linespoint,\
+		 "new_zipfian_read95_allgateway2.csv" using "skew":"ops/sec(cum)" title "allgateway 2" with linespoint,\
+		 "new_zipfian_read95_allgateway3.csv" using "skew":"ops/sec(cum)" title "allgateway 3" with linespoint,\
+		 "new_zipfian_read95_allgateway4.csv" using "skew":"ops/sec(cum)" title "allgateway 4" with linespoint,\
+
 
 set xlabel "zipfian constant"
 set ylabel "p50(ms)"
@@ -119,7 +130,6 @@ plot "n6.csv" using "skew":"p99(ms)-r" title "trial=0" with linespoint,\
 # 		 "new_zipfian_read952.csv" using "skew":"ops/sec(cum)" title "trial=2" with linespoint,\
 # 		 "new_zipfian_read953.csv" using "skew":"ops/sec(cum)" title "trial=3" with linespoint,\
 # 		 "new_zipfian_read954.csv" using "skew":"ops/sec(cum)" title "trial=4" with linespoint,\
-# 		 # "new_zipfian_write.csv" using "skew":"ops/sec(cum)" title "write, trial=0" with linespoint,\
 # 
 # set xlabel "zipfian constant"
 # set ylabel "p50(ms)-r"

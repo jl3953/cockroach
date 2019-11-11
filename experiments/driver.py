@@ -14,7 +14,7 @@ CONFIG_LIST = [
 	# "new_zipfian_read95.ini",
 	# "new_zipfian_write.ini"
 	"new_zipfian_overload.ini"
-	]
+]
 
 
 def run_experiment(exp, skews, view=False):

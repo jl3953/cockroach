@@ -30,3 +30,4 @@ zcgo_flags*.go
 build/Railroad.jar
 
 experiments/__pycache__
+__pycache__

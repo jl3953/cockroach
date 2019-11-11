@@ -17,7 +17,7 @@ STORE_DIR = "/data"
 FPATH = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.join(FPATH, '..')
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
-DRIVER_NODE = "192.168.1.19"
+DRIVER_NODE = "192.168.1.1"
 
 def query_for_shards(ip, config):
 
@@ -325,7 +325,7 @@ def warmup_cluster(config):
 
 	# save_params(config, out_dir)
 
-	nodes = config["warm_nodes"]
+	nodes = config["warm_nodes"] + config["hot_nodes"]
 	# out_dir = config["out_dir"]
 	b = config["benchmark"]
 
@@ -396,7 +396,10 @@ def extract_data(last_eight_lines):
 		return data
 
 	read_data = {}
-	read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	try:
+		read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	except BaseException:
+		print("writes-only")
 	write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
 	data = parse(last_eight_lines[6], last_eight_lines[7])
 
@@ -454,10 +457,13 @@ def aggregate(acc):
 
 def is_output_okay(tail):
 
-	if not ("elapsed" in tail[0] and "elapsed" in tail[3] and "elapsed" in tail[6]):
-		return False
+	try:
+		if not ("elapsed" in tail[3] and "elapsed" in tail[6]):
+			return False
 
-	return True
+		return True
+	except BaseException:
+		return False
 
 
 def accumulate_workloads_per_skew(config, dir_path):
@@ -473,6 +479,7 @@ def accumulate_workloads_per_skew(config, dir_path):
 
 		with open(path, "r") as f:
 			# read the last eight lines of f
+			print(path)
 			tail = f.readlines()[-8:]
 			if not is_output_okay(tail):
 				print ("{0} missing some data lines".format(path))
@@ -618,7 +625,7 @@ def run_bench(config):
 
     save_params(config, out_dir)
 
-    nodes = config["warm_nodes"]
+    nodes = config["warm_nodes"] + config["hot_nodes"]
     out_dir = config["out_dir"]
     b = config["benchmark"]
 
