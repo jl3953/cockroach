@@ -101,7 +101,7 @@ def start_cockroach_node(node, join=None):
 def query_for_shards(ip, config):
 
 	cmd = '/usr/local/temp/go/src/github.com/cockroachdb/cockroach/cockroach sql --insecure --execute "show experimental_ranges from table kv.kv"'
-	cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
+	# cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
 
 	out_dir = config["out_dir"]
 	if not os.path.exists(out_dir):
@@ -110,10 +110,9 @@ def query_for_shards(ip, config):
 	save_params(config, out_dir)
 
 	outfile = os.path.join(out_dir, "shards.csv")
-	print(outfile)
-	with open(outfile, "w") as f:
-		p = subprocess.Popen(shlex.split(cmd), stdout=f)
-		p.wait()
+
+	p = call_remote_redirect_stdout(ip, cmd, "query_shard_err", outfile)
+	p.wait()
 
 
 def set_cluster_settings(node):
@@ -319,18 +318,42 @@ def parse_bench_args(bench_config, is_warmup=False):
     return " ".join(args)
 
 
-def warmup_cluster(config):
+def init_workload(b, name, urls, args, workload_nodes):
 
-	# out_dir = config["out_dir"]
-	# if not os.path.exists(out_dir):
-	#     os.makedirs(out_dir)
+	args = parse_bench_args(b["init_args"], is_warmup=True)
+	cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
 
-	# save_params(config, out_dir)
+	ip = workload_nodes[0]["ip"]
+	call_remote(ip, cmd, "Failed to initialize benchmark")
 
-	nodes = config["warm_nodes"] + config["hot_nodes"]
-	# out_dir = config["out_dir"]
+
+def set_database_settings(nodes, create_partition, hot_key):
+
+	ip = nodes[0]["ip"]
+	cmd = ('echo "'
+			'alter range default configure zone using num_replicas = 1;')
+	if create_partition:
+		cmd +=  'alter table kv partition by range(k) (partition hot values from (minvalue) to ({0}), partition warm values from ({0}) to (maxvalue));'.format(hot_key)
+		cmd += "alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
+		cmd += "alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
+	
+	cmd += ('" | {0} sql --insecure --database=kv '
+			'--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
+	
+	call_remote(ip, cmd, "Failed to assign partition affinity")
+
+
+def extract_config_params(config, include_hot_nodes):
+
+	out_dir = config["out_dir"]
+	if not os.path.exists(out_dir):
+		os.makedirs(out_dir)
+
+	nodes = config["warm_nodes"]
+	if include_hot_nodes:
+		nodes += config["hot_nodes"]
+
 	b = config["benchmark"]
-
 	name = b["name"]
 
 	urls = ["postgresql://root@{0}:26257?sslmode=disable".format(n["ip"])
@@ -338,6 +361,42 @@ def warmup_cluster(config):
 	urls = " ".join(urls)
 
 	workload_nodes = config["workload_nodes"]
+
+	return out_dir, nodes, b, name, urls, workload_nodes
+
+
+def run_workload(workload_nodes, b, name, urls, is_warmup=False):
+
+	i = 0
+	ps = []
+	for wn in workload_nodes:
+		args = parse_bench_args(b["run_args"], is_warmup=is_warmup)
+		cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
+        ip = wn["ip"]
+
+		if is_warmup:
+
+			# Call remote
+			cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
+			print(cmd)
+
+			ps.append(subprocess.Popen(shlex.split(cmd)))
+
+		else:
+			path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
+
+			p = call_remote_redirect_stdout(ip, cmd, "run_bench_err", path)
+			ps.append(p)
+
+		i += 1
+
+	for p in ps:
+		p.wait()
+
+
+def warmup_cluster(config, include_hot_nodes=False, create_partition=False, hot_key=1):
+
+	_, nodes, b, name, urls, workload_nodes = extract_config_params(config, include_hot_nodes)
 
 	if len(workload_nodes) == 0:
 		print("No workload nodes!")
@@ -347,65 +406,23 @@ def warmup_cluster(config):
 		print("No cluster nodes!")
 		return
 
-	args = parse_bench_args(b["init_args"], is_warmup=True)
-	cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
+	# initialize workload on database
+	init_workload(b, name, urls, args, workload_nodes)
 
-	ip = workload_nodes[0]["ip"]
-	call_remote(ip, cmd, "Failed to initialize benchmark")
+	# set database settings (hot key, replicas)
+	set_database_settings(nodes, create_partition, hot_key)
 
-	ip = nodes[0]["ip"]
-	cmd = ('echo "'
-			'alter range default configure zone using num_replicas = 1;'
-			# 'alter table kv partition by range(k) (partition hot values from (minvalue) to (1), partition warm values from (1) to (maxvalue));'
-			# "alter partition hot of table kv configure zone using constraints='\\''[+region=newyork]'\\'';"
-			# "alter partition warm of table kv configure zone using constraints='\\''[-region=newyork]'\\'';"
-			'" | {0} sql --insecure --database=kv '
-			'--url="postgresql://root@{1}?sslmode=disable"').format(EXE, ip)
-	
-	call_remote(ip, cmd, "Failed to assign partition affinity")
+	# run workload
+	run_workload(workload_nodes, b, name, urls, is_warmup=True)
 
-	if "hot_keys" in b["init_args"]:
-		set_hot_keys(nodes, b["init_args"]["hot_keys"])
 
-	i = 0
-	ps = []
-	for wn in workload_nodes:
-		args = parse_bench_args(b["run_args"], is_warmup=True)
-		cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
+def run_bench(config, include_hot_nodes=False):
 
-		# Call remote
-		ip = wn["ip"]
-		cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
-		print(cmd)
+	out_dir, nodes, b, name, urls, workload_nodes = extract_config_params(config, include_hot_nodes)
 
-		# path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
-		# print(path)
-		# with open(path, "w") as f:
-		ps.append(subprocess.Popen(shlex.split(cmd)))
-
-		i += 1
-
-	for p in ps:
-		p.wait()
-
-def run_bench(config):
-    out_dir = config["out_dir"]
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
-
     save_params(config, out_dir)
-
-    nodes = config["warm_nodes"] + config["hot_nodes"]
-    out_dir = config["out_dir"]
-    b = config["benchmark"]
-
-    name = b["name"]
-
-    urls = ["postgresql://root@{0}:26257?sslmode=disable".format(n["ip"])
-            for n in nodes]
-    urls = " ".join(urls)
-
-    workload_nodes = config["workload_nodes"]
 
     if len(workload_nodes) == 0:
         print("No workload nodes!")
@@ -415,33 +432,5 @@ def run_bench(config):
         print("No cluster nodes!")
         return
 
-    # args = parse_bench_args(b["init_args"])
-    # cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
-
-    # ip = workload_nodes[0]["ip"]
-    # call_remote(ip, cmd, "Failed to initialize benchmark")
-
-    if "hot_keys" in b["init_args"]:
-        set_hot_keys(nodes, b["init_args"]["hot_keys"])
-    
-    i = 0
-    ps = []
-    for wn in workload_nodes:
-        args = parse_bench_args(b["run_args"])
-        cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
-
-        # Call remote
-        ip = wn["ip"]
-        cmd = "sudo ssh {0} '{1}'".format(ip, cmd)
-        print(cmd)
-
-        path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
-        print(path)
-        with open(path, "w") as f:
-            ps.append(subprocess.Popen(shlex.split(cmd), stdout=f))
-
-        i += 1
-
-    for p in ps:
-        p.wait()
-
+	run_workload(workload_nodes, b, name, urls, is_warmup=False)
+   
