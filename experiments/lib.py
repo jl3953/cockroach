@@ -343,14 +343,14 @@ def set_database_settings(nodes, create_partition, hot_key):
 	call_remote(ip, cmd, "Failed to assign partition affinity")
 
 
-def extract_config_params(config, include_hot_nodes):
+def extract_config_params(config):
 
 	out_dir = config["out_dir"]
 	if not os.path.exists(out_dir):
 		os.makedirs(out_dir)
 
 	nodes = config["warm_nodes"]
-	if include_hot_nodes:
+	if config["use_hot_nodes_as_gateways"]:
 		nodes += config["hot_nodes"]
 
 	b = config["benchmark"]
@@ -385,7 +385,7 @@ def run_workload(workload_nodes, b, name, urls, is_warmup=False):
 		else:
 			path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
 
-			p = call_remote_redirect_stdout(ip, cmd, "run_bench_err", path)
+			p = call_remote_redirect_stdout(ip, cmd, "run_workload_err", path)
 			ps.append(p)
 
 		i += 1
@@ -394,9 +394,9 @@ def run_workload(workload_nodes, b, name, urls, is_warmup=False):
 		p.wait()
 
 
-def warmup_cluster(config, include_hot_nodes=False, create_partition=False, hot_key=1):
+def warmup_cluster(config):
 
-	_, nodes, b, name, urls, workload_nodes = extract_config_params(config, include_hot_nodes)
+	_, nodes, b, name, urls, workload_nodes = extract_config_params(config)
 
 	if len(workload_nodes) == 0:
 		print("No workload nodes!")
@@ -410,15 +410,15 @@ def warmup_cluster(config, include_hot_nodes=False, create_partition=False, hot_
 	init_workload(b, name, urls, args, workload_nodes)
 
 	# set database settings (hot key, replicas)
-	set_database_settings(nodes, create_partition, hot_key)
+	set_database_settings(nodes, config["should_create_partition"], config["hot_key"])
 
 	# run workload
 	run_workload(workload_nodes, b, name, urls, is_warmup=True)
 
 
-def run_bench(config, include_hot_nodes=False):
+def run_bench(config):
 
-	out_dir, nodes, b, name, urls, workload_nodes = extract_config_params(config, include_hot_nodes)
+	out_dir, nodes, b, name, urls, workload_nodes = extract_config_params(config)
 
     if not os.path.exists(out_dir):
         os.makedirs(out_dir)
