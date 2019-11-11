@@ -1,5 +1,4 @@
 
-import collections
 import copy
 import csv
 import json
@@ -7,7 +6,6 @@ import os
 import shlex
 import subprocess
 import sys
-import re
 
 # Constants
 COCKROACH_DIR = "/usr/local/temp/go/src/github.com/cockroachdb/cockroach"
@@ -17,7 +15,6 @@ STORE_DIR = "/data"
 FPATH = os.path.dirname(os.path.realpath(__file__))
 BASE_DIR = os.path.join(FPATH, '..')
 LOGS_DIR = os.path.join(BASE_DIR, 'logs')
-DRIVER_NODE = "192.168.1.1"
 
 
 def call(cmd, err_msg):
@@ -37,7 +34,7 @@ def call_remote(host, cmd, err_msg):
 
 
 def call_remote_redirect_stdout(host, cmd, err_msg, path):
-    cmd = "sudo ssh {0} '{1}'".format(host, cmd)
+	cmd = "sudo ssh {0} '{1}'".format(host, cmd)
 	print(cmd)
 	print(path)
 	with open(path, "w") as f:
@@ -318,7 +315,7 @@ def parse_bench_args(bench_config, is_warmup=False):
     return " ".join(args)
 
 
-def init_workload(b, name, urls, args, workload_nodes):
+def init_workload(b, name, urls, workload_nodes):
 
 	args = parse_bench_args(b["init_args"], is_warmup=True)
 	cmd = "{0} workload init {1} {2} {3}".format(EXE, name, urls, args)
@@ -365,14 +362,14 @@ def extract_config_params(config):
 	return out_dir, nodes, b, name, urls, workload_nodes
 
 
-def run_workload(workload_nodes, b, name, urls, is_warmup=False):
-
+def run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False):
+	
 	i = 0
 	ps = []
 	for wn in workload_nodes:
 		args = parse_bench_args(b["run_args"], is_warmup=is_warmup)
 		cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
-        ip = wn["ip"]
+		ip = wn["ip"]
 
 		if is_warmup:
 
@@ -396,7 +393,7 @@ def run_workload(workload_nodes, b, name, urls, is_warmup=False):
 
 def warmup_cluster(config):
 
-	_, nodes, b, name, urls, workload_nodes = extract_config_params(config)
+	out_dir, nodes, b, name, urls, workload_nodes = extract_config_params(config)
 
 	if len(workload_nodes) == 0:
 		print("No workload nodes!")
@@ -407,30 +404,31 @@ def warmup_cluster(config):
 		return
 
 	# initialize workload on database
-	init_workload(b, name, urls, args, workload_nodes)
+	init_workload(b, name, urls, workload_nodes)
 
 	# set database settings (hot key, replicas)
 	set_database_settings(nodes, config["should_create_partition"], config["hot_key"])
 
 	# run workload
-	run_workload(workload_nodes, b, name, urls, is_warmup=True)
+	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=True)
 
 
 def run_bench(config):
 
 	out_dir, nodes, b, name, urls, workload_nodes = extract_config_params(config)
+	
+	if not os.path.exists(out_dir):
+		os.makedirs(out_dir)
+		
+	save_params(config, out_dir)
+	
+	if len(workload_nodes) == 0:
+		print("No workload nodes!")
+		return
+		
+	if len(nodes) == 0:
+		print("No cluster nodes!")
+		return
 
-    if not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-    save_params(config, out_dir)
-
-    if len(workload_nodes) == 0:
-        print("No workload nodes!")
-        return
-
-    if len(nodes) == 0:
-        print("No cluster nodes!")
-        return
-
-	run_workload(workload_nodes, b, name, urls, is_warmup=False)
+	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False)
    

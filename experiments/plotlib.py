@@ -1,5 +1,10 @@
+import collections
 import csv
 import os
+import lib
+import re
+
+DRIVER_NODE = "192.168.1.1"
 
 def extract_data(last_eight_lines):
 
@@ -10,10 +15,7 @@ def extract_data(last_eight_lines):
 		return data
 
 	read_data = {}
-	try:
-		read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
-	except BaseException:
-		print("writes-only")
+	read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
 	write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
 	data = parse(last_eight_lines[6], last_eight_lines[7])
 
@@ -34,11 +36,11 @@ def write_out_data(data, out_dir, outfile_name="gnuplot.csv"):
 		writer.writeheader()
 
 		for datum in data:
-			try:
-				writer.writerow(datum)
-			except BaseException:
-				print("failed on {0}".format(datum))
-				continue
+			#try:
+			writer.writerow(datum)
+			#except BaseException:
+			#	print("failed on {0}".format(datum))
+			#	continue
 
 	return filename
 
@@ -100,12 +102,12 @@ def accumulate_workloads_per_skew(config, dir_path):
 				print ("{0} missing some data lines".format(path))
 				return None, False
 
-			try:
-				datum = extract_data(tail)
-				acc.append(datum)
-			except BaseException:
-				print("failed to extract data: {0}".format(path))
-				return None, False
+			#try:
+			datum = extract_data(tail)
+			acc.append(datum)
+			#except BaseException:
+			#	print("failed to extract data: {0}".format(path))
+			#	return None, False
 
 	final_datum = aggregate(acc)
 	return final_datum, True
@@ -188,8 +190,9 @@ def generate_csv_file(config, skews, accumulate_fn, suffix):
 
 	driver_node = DRIVER_NODE # usually
 	csv_file = os.path.basename(os.path.dirname(out_dir)) + "_" + suffix + ".csv"
+	print(csv_file)
 	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
-	call_remote(driver_node, cmd, "i like to move it move it")
+	lib.call_remote(driver_node, cmd, "i like to move it move it")
 
 
 def plot_bumps(config, skews):
@@ -204,5 +207,5 @@ def plot_shards(config, skews):
 
 def gnuplot(config, skews):
 
-	generate_csv_files(config, skews, accumulate_workloads_per_skew, "")
+	generate_csv_file(config, skews, accumulate_workloads_per_skew, "")
 

@@ -12,10 +12,11 @@ import configparser
 FPATH = os.path.dirname(os.path.realpath(__file__))
 CONFIG_LIST = [
 	# "new_zipfian_read95.ini",
-	# "new_zipfian_write.ini"
-	"new_zipfian_overload.ini"
+	"new_zipfian_write.ini"
+	# "new_zipfian_overload.ini"
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
+DB_QUERY_NODE = "192.168.1.2"
 
 
 def gather_statistics(exp, skews, collect_only=False):
@@ -38,7 +39,7 @@ def gather_statistics(exp, skews, collect_only=False):
 			lib.cleanup_previous_experiment(exp)
 			lib.init_experiment(exp)
 			lib.warmup_cluster(e)
-			lib.query_for_shards("192.168.1.18", e)
+			lib.query_for_shards(DB_QUERY_NODE, e)
 			lib.grep_for_term(e, "jenndebug bumped")
 			lib.run_bench(e)
 
@@ -64,7 +65,7 @@ def generate_skew_curve(exp, skews, view=False, collect=False):
 		lib.init_experiment(exp)
 		lib.warmup_cluster(e)
 		if collect:
-			lib.query_for_shards("192.168.1.18", e)
+			lib.query_for_shards(DB_QUERY_NODE, e)
 			lib.grep_for_term(e, "jenndebug bumped")
 		if not view:
 			lib.run_bench(e)
@@ -121,13 +122,13 @@ def main():
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
 			for i in range(exp["trials"]):
 				exp["out_dir"] = create_trial_outdir(config_file, i)
-				generate_skew_curve(exp, skews, args.view, args.collect)
+				generate_skew_curve(exp, skews, args.view, args.collect) 
 	elif args.stats:
-	   for config_file in CONFIG_LIST:
-	   		exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
-	   		for i in range(exp["trials"]):
-				exp["out_dir"] = create_trial_out_dir(config_file, i)
-				gather_statistics(exp, skews, args.collect)
+		for config_file in CONFIG_LIST:
+			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
+			for i in range(exp["trials"]):
+				exp["out_dir"] = create_trial_outdir(config_file, i)
+				gather_statistics(exp, skews, args.collect) 
 	elif args.start:
 		lib.cleanup_previous_experiment(EXP)
 		lib.init_experiment(EXP)

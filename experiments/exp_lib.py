@@ -118,16 +118,16 @@ def create_experiment(fpath, config_filename, override=False):
 	if "use_original_zipfian" in config["benchmark"]:
 		try:
 			exp["benchmark"]["run_args"]["use_original_zipfian"] = json.loads(config["benchmark"]["use_original_zipfian"])
-		except BaseException e:
+		except BaseException:
 			exp["benchmark"]["run_args"]["use_original_zipfian"] = (config["benchmark"]["use_original_zipfian"] == "True")
 
 	if "trials" in config["DEFAULT"]:
 		exp["trials"] = int(config["DEFAULT"]["trials"])
 
-	if "include_hot_nodes_as_gateways" in config["cluster"]:
-		exp["include_hot_nodes_as_gateways"] = json.loads(config["cluster"]["include_hot_nodes_as_gateways"])
+	if "use_hot_nodes_as_gateways" in config["cluster"]:
+		exp["use_hot_nodes_as_gateways"] = json.loads(config["cluster"]["use_hot_nodes_as_gateways"])
 	else:
-		exp["include_hot_nodes_as_gateways"] = False
+		exp["use_hot_nodes_as_gateways"] = False
 
 	if "hot_key" in config["cluster"]:
 		exp["hot_key"] = int(config["cluster"]["hot_key"])
