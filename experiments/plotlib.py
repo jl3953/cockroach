@@ -4,7 +4,7 @@ import os
 import lib
 import re
 
-DRIVER_NODE = "192.168.1.1"
+DRIVER_NODE = "192.168.1.19"
 
 def extract_data(last_eight_lines):
 
@@ -15,11 +15,20 @@ def extract_data(last_eight_lines):
 		return data
 
 	read_data = {}
-	read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
-	write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
+	try:
+		read_data = parse(last_eight_lines[0], last_eight_lines[1], "-r")
+	except BaseException:
+		print("write only")
+
+	write_data = {}
+	try:
+		write_data = parse(last_eight_lines[3], last_eight_lines[4], "-w")
+		read_data.update(write_data)
+	except BaseException:
+		print ("read only")
+
 	data = parse(last_eight_lines[6], last_eight_lines[7])
 
-	read_data.update(write_data)
 	read_data.update(data)
 
 	return read_data
@@ -207,5 +216,5 @@ def plot_shards(config, skews):
 
 def gnuplot(config, skews):
 
-	generate_csv_file(config, skews, accumulate_workloads_per_skew, "")
+	generate_csv_file(config, skews, accumulate_workloads_per_skew, "skew")
 

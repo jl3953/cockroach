@@ -7,6 +7,7 @@ import logs
 import os
 import plotlib
 import configparser
+import copy
 
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
@@ -14,9 +15,10 @@ CONFIG_LIST = [
 	# "new_zipfian_read95.ini",
 	# "new_zipfian_write.ini"
 	# "new_zipfian_overload.ini"
-	"baseline.ini",
-	"all_gateway.ini",
-	"hot1.ini"
+	# "baseline.ini",
+	# "all_gateway.ini",
+	# "hot1.ini"
+	"read100.ini"
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
 DB_QUERY_NODE = "192.168.1.2"
@@ -66,7 +68,13 @@ def generate_skew_curve(exp, skews, view=False, collect=False):
 	for e in exps:
 		lib.cleanup_previous_experiment(exp)
 		lib.init_experiment(exp)
-		lib.warmup_cluster(e)
+
+		# insert writes, or just warm up
+		if prepopulate:
+			lib.prepopulate_cluster(e)
+		else:
+			lib.warmup_cluster(e)
+
 		if collect:
 			lib.query_for_shards(DB_QUERY_NODE, e)
 			lib.grep_for_term(e, "jenndebug bumped")

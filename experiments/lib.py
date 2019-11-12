@@ -391,6 +391,23 @@ def run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False):
 		p.wait()
 
 
+def prepopulate_cluster(config):
+
+	out_dir, nodes, b, name, urls, workload_nodes = extract_config_params(config)
+	init_workload(b, name, urls, workload_nodes)
+	set_database_settings(nodes, config["should_create_partition"], config["hot_key"])
+
+	b_copy = copy.deepcopy(b)
+	b_copy["run_args"]["warmup_duration"] = 30
+	b_copy["run_args"]["read_percent"] = 0
+
+	# populate with writes
+	run_workload(workload_nodes, b_copy, name, urls, out_dir, is_warmup=True)
+
+	# real warmup
+	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=True)
+
+
 def warmup_cluster(config):
 
 	out_dir, nodes, b, name, urls, workload_nodes = extract_config_params(config)
