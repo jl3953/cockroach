@@ -50,7 +50,7 @@ def gather_statistics(exp, skews, collect_only=False):
 	plotlib.plot_bumps(exp, skews)
 		
 
-def generate_skew_curve(exp, skews, view=False, collect=False):
+def generate_skew_curve(exp, skews, view=False, collect=False, take_over_time=False):
 	""" Warms up cluster and generates curve over skew space.
 
 		Args:
@@ -72,6 +72,8 @@ def generate_skew_curve(exp, skews, view=False, collect=False):
 			lib.grep_for_term(e, "jenndebug bumped")
 		if not view:
 			lib.run_bench(e)
+			if take_over_time:
+				plotlib.gather_over_time(e)
 
 	if collect:
 		plotlib.plot_shards(exp, skews)
@@ -116,6 +118,7 @@ def main():
 	parser.add_argument('--stats', action='store_true', help='gathers statistics on benchmark instead of generating curve')
 
 	parser.add_argument('--collect', action='store_true', help='collects statistics without running the benchmark')
+	parser.add_argument('--over_time', action='store_true', help='collects stats over time')
 	
 	args = parser.parse_args()
 	if args.obliterate:
@@ -125,7 +128,7 @@ def main():
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
 			for i in range(exp["trials"]):
 				exp["out_dir"] = create_trial_outdir(config_file, i)
-				generate_skew_curve(exp, skews, args.view, args.collect) 
+				generate_skew_curve(exp, skews, args.view, args.collect, args.over_time)
 	elif args.stats:
 		for config_file in CONFIG_LIST:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
