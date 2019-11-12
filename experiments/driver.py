@@ -11,12 +11,7 @@ import configparser
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
 CONFIG_LIST = [
-	# "new_zipfian_read95.ini",
-	# "new_zipfian_write.ini"
-	# "new_zipfian_overload.ini"
-	"baseline_overtime.ini",
-	# "all_gateway.ini",
-	# "hot1.ini"
+	"baseline_opt_skew2.ini"
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
 DB_QUERY_NODE = "192.168.1.2"
