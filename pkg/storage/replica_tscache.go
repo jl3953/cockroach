@@ -21,7 +21,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/util"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
 	"github.com/cockroachdb/cockroach/pkg/util/uuid"
-	"github.com/cockroachdb/cockroach/pkg/util/log"
+	// "github.com/cockroachdb/cockroach/pkg/util/log"
 )
 
 // setTimestampCacheLowWaterMark updates the low water mark of the timestamp
