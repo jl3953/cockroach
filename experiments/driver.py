@@ -11,7 +11,8 @@ import configparser
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
 CONFIG_LIST = [
-	"baseline_opt_skew2.ini"
+	"n6_hot.ini",
+	"n6_hot3.ini",
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
 DB_QUERY_NODE = "192.168.1.2"
