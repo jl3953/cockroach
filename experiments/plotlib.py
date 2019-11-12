@@ -207,5 +207,5 @@ def plot_shards(config, skews):
 
 def gnuplot(config, skews):
 
-	generate_csv_file(config, skews, accumulate_workloads_per_skew, "")
+	generate_csv_file(config, skews, accumulate_workloads_per_skew, "skew")
 
