@@ -174,12 +174,13 @@ def gather_over_time(config):
 		return out
 
 	out_dir = os.path.join(config["out_dir"])
+	print("jenndebug", out_dir)
 	dir_path = os.path.join(out_dir, "skew-0")
 
 	for i in range(len(config["workload_nodes"])):
-		path = os.path.join(out_dir, "bench_out_{0}.txt".format(i))
+		path = os.path.join(dir_path, "bench_out_{0}.txt".format(i))
 		stats = over_time.parse_file(path)
-		stats.sort(key=stats["elapsed-r"])
+		sorted(stats, key=lambda stat: stat["elapsed-r"])
 		filename = write_out_stats(stats, os.path.join(out_dir, "stats_over_time_{0}.csv".format(i)))
 		print(filename)
 

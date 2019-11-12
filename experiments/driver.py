@@ -14,8 +14,8 @@ CONFIG_LIST = [
 	# "new_zipfian_read95.ini",
 	# "new_zipfian_write.ini"
 	# "new_zipfian_overload.ini"
-	# "baseline.ini",
-	"all_gateway.ini",
+	"baseline_overtime.ini",
+	# "all_gateway.ini",
 	# "hot1.ini"
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
@@ -72,8 +72,11 @@ def generate_skew_curve(exp, skews, view=False, collect=False, take_over_time=Fa
 			lib.grep_for_term(e, "jenndebug bumped")
 		if not view:
 			lib.run_bench(e)
-			if take_over_time:
-				plotlib.gather_over_time(e)
+			
+	if take_over_time:
+		plotlib.gather_over_time(exp)
+		if len(exps) > 1:
+			print ("over_time takes only one skew!!")
 
 	if collect:
 		plotlib.plot_shards(exp, skews)

@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 
+import re
 
 def parse_lines(header_original, header, line_r, line_w):
 	
@@ -13,7 +15,7 @@ def parse_lines(header_original, header, line_r, line_w):
 	read_stats = parse(line_r)
 	write_stats = parse(line_w)
 
-	result = zip(header, line_r + line_w)
+	result = dict(zip(header, read_stats + write_stats))
 	return result
 
 
@@ -23,11 +25,12 @@ def parse_file(filename):
 	with open(filename, "r") as f:
 		lines = f.readlines()
 	
-	header_original = lines[0].strip("_").split("_")
+	header_original = re.split('_+', lines[0].strip().strip('_'))
 	header_r = [field + "-r" for field in header_original]
 	header_w = [field + "-w" for field in header_original]
+	header = header_r + header_w
 
-	lines = lines[:-8] # get rid of end stats
+	lines = lines[:-11] # get rid of end stats
 
 	data = []
 	i = 0
@@ -43,8 +46,17 @@ def parse_file(filename):
 		line_w =  lines[i+1]
 		i += 2
 
-		datum = parse_lines(header_original, header_r + header_w, line_r, line_w)
+		datum = parse_lines(header_original, header, line_r, line_w)
 		data.append(datum)
 
 	return data
 
+
+def main():
+
+	filename = "../all_gateway/kv-skew/skew-0/bench_out_0.txt"
+	print(parse_file(filename))
+
+
+if __name__ == "__main__":
+	main()
