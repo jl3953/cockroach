@@ -266,10 +266,9 @@ func (r *Replica) applyTimestampCache(
 						txn := ba.Txn.Clone()
 						bumped = txn.Timestamp.Forward(nextRTS) || bumped
 						ba.Txn = txn
-						log.Warningf(ctx, "jenndebug bumped by read\n")
+						//log.Warningf(ctx, "jenndebug bumped by read\n")
 					}
 				}
-				log.Warningf(ctx, "jenndebug bumped for read")
 			} else {
 				bumped = ba.Timestamp.Forward(nextRTS) || bumped
 			}
@@ -287,7 +286,7 @@ func (r *Replica) applyTimestampCache(
 						bumped = txn.Timestamp.Forward(nextWTS) || bumped
 						txn.WriteTooOld = true
 						ba.Txn = txn
-						log.Warningf(ctx, "jenndebug bumped by write\n")
+						// log.Warningf(ctx, "jenndebug bumped by write\n")
 					}
 				}
 			} else {

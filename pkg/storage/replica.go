@@ -1165,7 +1165,6 @@ func (r *Replica) beginCmds(
 	// Only acquire latches for consistent operations.
 	var lg *spanlatch.Guard
 	if ba.ReadConsistency == roachpb.CONSISTENT {
-		log.Warningf(ctx, "jenndebug beginCmds consistent\n")
 		// Check for context cancellation before acquiring latches.
 		if err := ctx.Err(); err != nil {
 			log.VEventf(ctx, 2, "%s before acquiring latches: %s", err, ba.Summary())
@@ -1246,7 +1245,6 @@ func (r *Replica) beginCmds(
 			return endCmds{}, &roachpb.MergeInProgressError{}
 		}
 	} else {
-		log.Warningf(ctx, "jenndebug inconsistent\n")
 		log.Event(ctx, "operation accepts inconsistent results")
 	}
 

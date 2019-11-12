@@ -351,7 +351,7 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 						return err
 					}
 					elapsed := timeutil.Since(start)
-					log.Warningf(ctx, "jenndebug readspan elapsed:[%+v]\n", elapsed)
+					// log.Warningf(ctx, "jenndebug readspan elapsed:[%+v]\n", elapsed)
 				case spanset.SpanReadWrite:
 					// Wait for all other writes.
 					//
@@ -373,7 +373,7 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 					}
 					elapsed_ro := timeutil.Since(start_ro)
 					elapsed := timeutil.Since(start_rw)
-					log.Warningf(ctx, "jenndebug rwspan elapsed:[%+v], elapsed_rw:[%+v], elapsed_ro:[%+v]\n",
+					// log.Warningf(ctx, "jenndebug rwspan elapsed:[%+v], elapsed_rw:[%+v], elapsed_ro:[%+v]\n",
 							elapsed, elapsed_rw, elapsed_ro)
 				default:
 					panic("unknown access")
