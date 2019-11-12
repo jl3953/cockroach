@@ -39,7 +39,7 @@ def find_optimal_parameters(exp, variations, view):
 					lib.run_bench(e)
 
 			datum = {"concurrency": concurrency}
-			datum.update(lib.accumulate_workloads_per_skew(exp, os.path.join(exp["out_dir"], "skew-0"))[0])
+			datum.update(plotlib.accumulate_workloads_per_skew(exp, os.path.join(exp["out_dir"], "skew-0"))[0])
 			data.append(datum)
 			exp["out_dir"] = original_outdir
 
@@ -50,7 +50,7 @@ def find_optimal_parameters(exp, variations, view):
 		step_size = int(step_size / 2)
 
 	data = sorted(data, key=lambda i: i["concurrency"])
-	filename = lib.write_out_data(data, os.path.dirname(exp["out_dir"]))
+	filename = plotlib.write_out_data(data, os.path.dirname(exp["out_dir"]))
 
 	driver_node = "192.168.1.1" # usually
 	csv_file = os.path.basename(os.path.dirname(exp["out_dir"])) + ".csv"
@@ -74,7 +74,7 @@ def main():
 	parser.add_argument('--view', action='store_true', help='only runs warmup for short testing')
 	args = parser.parse_args()
 
-	run_single_trial("n6_lt.ini", "lt.ini", "", args.view)
+	run_single_trial("all_gateway.ini", "lt.ini", "", args.view)
 
 
 if __name__ == "__main__":
