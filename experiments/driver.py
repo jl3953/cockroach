@@ -16,8 +16,6 @@ CONFIG_LIST = [
 	# "new_zipfian_write.ini"
 	# "new_zipfian_overload.ini"
 	# "baseline.ini",
-	# "all_gateway.ini",
-	# "hot1.ini"
 	"read100.ini"
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
@@ -52,7 +50,7 @@ def gather_statistics(exp, skews, collect_only=False):
 	plotlib.plot_bumps(exp, skews)
 		
 
-def generate_skew_curve(exp, skews, view=False, collect=False):
+def generate_skew_curve(exp, skews, view=False, collect=False, prepopulate=False):
 	""" Warms up cluster and generates curve over skew space.
 
 		Args:
@@ -65,21 +63,21 @@ def generate_skew_curve(exp, skews, view=False, collect=False):
 	"""
 
 	exps = lib.vary_zipf_skew(exp, skews)
-	for e in exps:
-		lib.cleanup_previous_experiment(exp)
-		lib.init_experiment(exp)
+	# for e in exps:
+	# 	lib.cleanup_previous_experiment(exp)
+	# 	lib.init_experiment(exp)
 
-		# insert writes, or just warm up
-		if prepopulate:
-			lib.prepopulate_cluster(e)
-		else:
-			lib.warmup_cluster(e)
+	# 	# insert writes, or just warm up
+	# 	if prepopulate:
+	# 		lib.prepopulate_cluster(e)
+	# 	else:
+	# 		lib.warmup_cluster(e)
 
-		if collect:
-			lib.query_for_shards(DB_QUERY_NODE, e)
-			lib.grep_for_term(e, "jenndebug bumped")
-		if not view:
-			lib.run_bench(e)
+	# 	if collect:
+	# 		lib.query_for_shards(DB_QUERY_NODE, e)
+	# 		lib.grep_for_term(e, "jenndebug bumped")
+	# 	if not view:
+	# 		lib.run_bench(e)
 
 	if collect:
 		plotlib.plot_shards(exp, skews)
@@ -87,7 +85,6 @@ def generate_skew_curve(exp, skews, view=False, collect=False):
 	if not view:
 		plotlib.gnuplot(exp, skews)
 		
-
 
 def create_trial_outdir(config_filename, i):
 
@@ -124,6 +121,7 @@ def main():
 	parser.add_argument('--stats', action='store_true', help='gathers statistics on benchmark instead of generating curve')
 
 	parser.add_argument('--collect', action='store_true', help='collects statistics without running the benchmark')
+	parser.add_argument('--prepopulate', action='store_true')
 	
 	args = parser.parse_args()
 	if args.obliterate:
@@ -133,7 +131,7 @@ def main():
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
 			for i in range(exp["trials"]):
 				exp["out_dir"] = create_trial_outdir(config_file, i)
-				generate_skew_curve(exp, skews, args.view, args.collect) 
+				generate_skew_curve(exp, skews, args.view, args.collect, args.prepopulate)
 	elif args.stats:
 		for config_file in CONFIG_LIST:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)

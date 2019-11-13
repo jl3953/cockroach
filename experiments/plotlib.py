@@ -9,8 +9,18 @@ DRIVER_NODE = "192.168.1.19"
 def extract_data(last_eight_lines):
 
 	def parse(header_line, data_line, suffix=""):
-		header = [w + suffix for w in re.split('_+', header_line.strip().strip('_'))]
+		if "elapsed" not in header_line:
+			return {}
+
 		fields = data_line.strip().split()
+		if "read" in fields[-1]:
+			suffix = "-r"
+		elif "write" in fields[-1]:
+			suffix = "-w"
+		else:
+			suffix = ""
+
+		header = [w + suffix for w in re.split('_+', header_line.strip().strip('_'))]
 		data = dict(zip(header, fields))
 		return data
 
@@ -45,11 +55,11 @@ def write_out_data(data, out_dir, outfile_name="gnuplot.csv"):
 		writer.writeheader()
 
 		for datum in data:
-			#try:
-			writer.writerow(datum)
-			#except BaseException:
-			#	print("failed on {0}".format(datum))
-			#	continue
+			try:
+				writer.writerow(datum)
+			except BaseException:
+				print("failed on {0}".format(datum))
+				continue
 
 	return filename
 
@@ -111,12 +121,12 @@ def accumulate_workloads_per_skew(config, dir_path):
 				print ("{0} missing some data lines".format(path))
 				return None, False
 
-			#try:
-			datum = extract_data(tail)
-			acc.append(datum)
-			#except BaseException:
-			#	print("failed to extract data: {0}".format(path))
-			#	return None, False
+			try: 
+				datum = extract_data(tail)
+				acc.append(datum)
+			except BaseException:
+				print("failed to extract data: {0}".format(path))
+				return None, False
 
 	final_datum = aggregate(acc)
 	return final_datum, True
