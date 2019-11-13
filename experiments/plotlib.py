@@ -3,6 +3,7 @@ import csv
 import os
 import lib
 import re
+import over_time
 
 DRIVER_NODE = "192.168.1.19"
 
@@ -176,6 +177,36 @@ def accumulate_greps_per_skew(config, dir_path):
 			bumps += int(line.strip())
 
 	return {"bumps": bumps}, True
+
+
+def gather_over_time(config):
+
+	def write_out_stats(stats, out):
+
+		with open(out, "w") as f:
+			writer = csv.DictWriter(f, delimiter='\t', fieldnames=stats[0].keys())
+
+			writer.writeheader()
+			for stat in stats:
+				writer.writerow(stat)
+
+		return out
+
+	out_dir = os.path.join(config["out_dir"])
+	print("jenndebug", out_dir)
+	dir_path = os.path.join(out_dir, "skew-0")
+
+	for i in range(len(config["workload_nodes"])):
+		path = os.path.join(dir_path, "bench_out_{0}.txt".format(i))
+		stats = over_time.parse_file(path)
+		sorted(stats, key=lambda stat: stat["elapsed-r"])
+		filename = write_out_stats(stats, os.path.join(out_dir, "stats_over_time_{0}.csv".format(i)))
+		print(filename)
+
+		csv_file = os.path.basename(os.path.dirname(out_dir)) + "_stats_{0}.csv".format(i)
+		print(csv_file)
+		cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
+		lib.call_remote(DRIVER_NODE, cmd, "gather_time_err") 
 
 
 def generate_csv_file(config, skews, accumulate_fn, suffix):

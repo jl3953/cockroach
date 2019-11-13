@@ -50,7 +50,7 @@ def gather_statistics(exp, skews, collect_only=False):
 	plotlib.plot_bumps(exp, skews)
 		
 
-def generate_skew_curve(exp, skews, view=False, collect=False, prepopulate=False):
+def generate_skew_curve(exp, skews, view=False, collect=False, prepopulate=False, take_over_time=False):
 	""" Warms up cluster and generates curve over skew space.
 
 		Args:
@@ -63,21 +63,26 @@ def generate_skew_curve(exp, skews, view=False, collect=False, prepopulate=False
 	"""
 
 	exps = lib.vary_zipf_skew(exp, skews)
-	# for e in exps:
-	# 	lib.cleanup_previous_experiment(exp)
-	# 	lib.init_experiment(exp)
+	for e in exps:
+		lib.cleanup_previous_experiment(exp)
+		lib.init_experiment(exp)
+		
+		# insert writes, or just warm up
+		if prepopulate:
+			lib.prepopulate_cluster(e)
+		else:
+			lib.warmup_cluster(e)
 
-	# 	# insert writes, or just warm up
-	# 	if prepopulate:
-	# 		lib.prepopulate_cluster(e)
-	# 	else:
-	# 		lib.warmup_cluster(e)
-
-	# 	if collect:
-	# 		lib.query_for_shards(DB_QUERY_NODE, e)
-	# 		lib.grep_for_term(e, "jenndebug bumped")
-	# 	if not view:
-	# 		lib.run_bench(e)
+		if collect:
+			lib.query_for_shards(DB_QUERY_NODE, e)
+			lib.grep_for_term(e, "jenndebug bumped")
+		if not view:
+			lib.run_bench(e)
+			
+	if take_over_time:
+		plotlib.gather_over_time(exp)
+		if len(exps) > 1:
+			print ("over_time takes only one skew!!")
 
 	if collect:
 		plotlib.plot_shards(exp, skews)
@@ -122,6 +127,7 @@ def main():
 
 	parser.add_argument('--collect', action='store_true', help='collects statistics without running the benchmark')
 	parser.add_argument('--prepopulate', action='store_true')
+	parser.add_argument('--over_time', action='store_true', help='collects stats over time')
 	
 	args = parser.parse_args()
 	if args.obliterate:
@@ -131,7 +137,7 @@ def main():
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
 			for i in range(exp["trials"]):
 				exp["out_dir"] = create_trial_outdir(config_file, i)
-				generate_skew_curve(exp, skews, args.view, args.collect, args.prepopulate)
+				generate_skew_curve(exp, skews, args.view, args.collect, args.prepopulate, args.over_time)
 	elif args.stats:
 		for config_file in CONFIG_LIST:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
