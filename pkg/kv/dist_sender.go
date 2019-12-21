@@ -15,6 +15,7 @@ import (
 	"fmt"
 	"sync/atomic"
 	"unsafe"
+	"runtime/debug"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/gossip"
@@ -667,6 +668,9 @@ func splitBatchAndCheckForRefreshSpans(
 func (ds *DistSender) Send(
 	ctx context.Context, ba roachpb.BatchRequest,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
+	log.Warningf(ctx, "jenndebug batch:[%+v]\n", ba)
+	debug.PrintStack()
+
 	ds.metrics.BatchCount.Inc(1)
 
 	tracing.AnnotateTrace()
