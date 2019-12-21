@@ -381,21 +381,21 @@ func (o *kvOp) run(ctx context.Context) error {
 		args[j+0] = argsInt[i]
 		args[j+1] = randomBlock(o.config, o.g.rand())
 	} //jenndebug
-	/*if rand.Intn(2) == 0 {
+	//if rand.Intn(2) == 0 {
 	//if true {
 	args[0] = 0
 	args[1] = randomBlock(o.config, o.g.rand())
-	args[2] = math.MaxInt64-1
+	args[2] = 214 //math.MaxInt64-1
 	args[3] = randomBlock(o.config, o.g.rand())
-	args[4] = math.MaxInt64-2
+	args[4] = 215 //math.MaxInt64-2
 	args[5] = randomBlock(o.config, o.g.rand())
-	args[6] = math.MaxInt64-4
+	args[6] = 1994 //math.MaxInt64-4
 	args[7] = randomBlock(o.config, o.g.rand())
-	args[8] = math.MaxInt64 - 6
+	args[8] = 2016 //math.MaxInt64 - 6
 	args[9] = randomBlock(o.config, o.g.rand())
-	args[10] = math.MaxInt64 - 8
+	args[10] = 2020 //math.MaxInt64 - 8
 	args[11] = randomBlock(o.config, o.g.rand())
-	} else {
+	/*} else {
 	args[10] = 0
 	args[11] = randomBlock(o.config, o.g.rand())
 	args[8] = math.MaxInt64-1
