@@ -326,6 +326,12 @@ func (o *kvOp) run(ctx context.Context) error {
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = argsInt[i]
 		}
+		args[0] = 0
+		args[1] = 214 //math.MaxInt64-1
+		args[2] = 215 //math.MaxInt64-2
+		args[3] = 1994 //math.MaxInt64-4
+		args[4] = 2016 //math.MaxInt64-6
+		args[5] = 2020 //math.MaxInt64-8
 
 		start := timeutil.Now()
 		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
@@ -383,18 +389,18 @@ func (o *kvOp) run(ctx context.Context) error {
 	} //jenndebug
 	//if rand.Intn(2) == 0 {
 	//if true {
-	args[0] = 0
-	args[1] = randomBlock(o.config, o.g.rand())
-	args[2] = 214 //math.MaxInt64-1
-	args[3] = randomBlock(o.config, o.g.rand())
-	args[4] = 215 //math.MaxInt64-2
-	args[5] = randomBlock(o.config, o.g.rand())
-	args[6] = 1994 //math.MaxInt64-4
-	args[7] = randomBlock(o.config, o.g.rand())
-	args[8] = 2016 //math.MaxInt64 - 6
-	args[9] = randomBlock(o.config, o.g.rand())
-	args[10] = 2020 //math.MaxInt64 - 8
-	args[11] = randomBlock(o.config, o.g.rand())
+	// args[0] = 0
+	// args[1] = randomBlock(o.config, o.g.rand())
+	// args[2] = 214 //math.MaxInt64-1
+	// args[3] = randomBlock(o.config, o.g.rand())
+	// args[4] = 215 //math.MaxInt64-2
+	// args[5] = randomBlock(o.config, o.g.rand())
+	// args[6] = 1994 //math.MaxInt64-4
+	// args[7] = randomBlock(o.config, o.g.rand())
+	// args[8] = 2016 //math.MaxInt64 - 6
+	// args[9] = randomBlock(o.config, o.g.rand())
+	// args[10] = 2020 //math.MaxInt64 - 8
+	// args[11] = randomBlock(o.config, o.g.rand())
 	/*} else {
 	args[10] = 0
 	args[11] = randomBlock(o.config, o.g.rand())

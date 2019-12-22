@@ -700,7 +700,11 @@ func (ds *DistSender) Send(
 		splitET = true
 	}
 	parts := splitBatchAndCheckForRefreshSpans(ba, splitET)
-	log.Warningf(ctx, "jenndebug parts:[%+v]\n", parts)
+	debugStr := ""
+	for _, part := range parts {
+		debugStr += fmt.Sprintf(", part: [%+v]", part)
+	}
+	log.Warningf(ctx, "jenndebug %s\n", debugStr)
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
 		// Such a batch should never need splitting.
