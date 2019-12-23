@@ -15,6 +15,7 @@ import (
 	"context"
 	"fmt"
 	"sync/atomic"
+	"strings"
 	"unsafe"
 	"runtime/debug"
 
@@ -634,7 +635,8 @@ func splitBatchAndCheckForRefreshSpans(
 		for _, requestUnion := range part {
 			// if it's a write from me
 			log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key.String())
-			if requestUnion.GetInner().Header().Key.String() == "/Table/53/1/0" {
+			if strings.Contains(requestUnion.GetInner().Header().Key.String(), "/Table/53/1/0") {
+				log.Warningf(context.Background(), "jenndebug move it\n")
 				hot = append(hot, requestUnion)
 			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok && len(hot) > 0 {
 				hot = append(hot, requestUnion)
