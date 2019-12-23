@@ -635,9 +635,8 @@ func splitBatchAndCheckForRefreshSpans(
 			// if it's a write from me
 			log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key.String())
 			if requestUnion.GetInner().Header().Key.String() == "/Table/53/1/0" {
-				log.Warningf(context.Background(), "jenndebug, moveit\n")
 				hot = append(hot, requestUnion)
-			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok {
+			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok && len(hot) > 0 {
 				hot = append(hot, requestUnion)
 			} else {
 				warm = append(warm, requestUnion)
@@ -647,12 +646,12 @@ func splitBatchAndCheckForRefreshSpans(
 
 	log.Warningf(context.Background(), "jenndebug warm:[%+v]\n", warm)
 	log.Warningf(context.Background(), "jenndebug hot:[%+v]\n", hot)
-	/*parts[0] = warm
-	if len(hot) > 0 {
+	if len(warm) > 0 && len(hot) > 0 {
+		parts[0] = warm
 		parts = append(parts, hot)
-	}*/
+		log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
+	}
 
-	log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
 	//jenndebug
 
 	// If the final part contains an EndTransaction, we need to check
