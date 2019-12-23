@@ -647,10 +647,10 @@ func splitBatchAndCheckForRefreshSpans(
 
 	log.Warningf(context.Background(), "jenndebug warm:[%+v]\n", warm)
 	log.Warningf(context.Background(), "jenndebug hot:[%+v]\n", hot)
-	parts[0] = warm
+	/*parts[0] = warm
 	if len(hot) > 0 {
 		parts = append(parts, hot)
-	}
+	}*/
 
 	log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
 	//jenndebug
