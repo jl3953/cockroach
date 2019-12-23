@@ -626,16 +626,7 @@ func splitBatchAndCheckForRefreshSpans(
 	parts := ba.Split(canSplitET)
 
 	// jenndebug
-	dbugStr := "original parts:["
-	for _, part := range parts {
-		dbugStr += ", part:["
-		for _, rqu := range part {
-			dbugStr += fmt.Sprintf(", %+v", rqu)
-		}
-		dbugStr += "]"
-	}
-	dbugStr += "]"
-	log.Warningf(context.Background(), "jenndebug %s\n", dbugStr)
+	log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
 
 	warm := make([]roachpb.RequestUnion, 0)
 	hot := make([]roachpb.RequestUnion, 0)
@@ -653,19 +644,15 @@ func splitBatchAndCheckForRefreshSpans(
 			}
 		}
 	}
-	//parts[0] = warm
-	//parts = append(parts, hot)
 
-	dbugStr = "changed parts:["
-	for _, part := range parts {
-		dbugStr += ", part:["
-		for _, rqu := range part {
-			dbugStr += fmt.Sprintf(", %+v", rqu)
-		}
-		dbugStr += "]"
+	log.Warningf(context.Background(), "jenndebug warm:[%+v]\n", warm)
+	log.Warningf(context.Background(), "jenndebug hot:[%+v]\n", hot)
+	parts[0] = warm
+	if len(hot) > 0 {
+		parts = append(parts, hot)
 	}
-	dbugStr += "]"
-	log.Warningf(context.Background(), "jenndebug %s\n", dbugStr)
+
+	log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
 	//jenndebug
 
 	// If the final part contains an EndTransaction, we need to check
