@@ -653,8 +653,8 @@ func splitBatchAndCheckForRefreshSpans(
 			}
 		}
 	}
-	parts[0] = warm
-	parts = append(parts, hot)
+	//parts[0] = warm
+	//parts = append(parts, hot)
 
 	dbugStr = "changed parts:["
 	for _, part := range parts {
