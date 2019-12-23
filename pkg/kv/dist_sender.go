@@ -634,7 +634,8 @@ func splitBatchAndCheckForRefreshSpans(
 		for _, requestUnion := range part {
 			// if it's a write from me
 			log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key)
-			if bytes.Contains(requestUnion.GetInner().Header().Key, []byte("/Table/53/1/0")) {
+			if bytes.ContainsAny(requestUnion.GetInner().Header().Key, "/Table/53/1/0") {
+				log.Warningf(context.Background(), "jenndebug, moveit\n")
 				hot = append(hot, requestUnion)
 			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok {
 				hot = append(hot, requestUnion)
