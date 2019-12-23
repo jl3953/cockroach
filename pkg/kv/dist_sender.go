@@ -624,7 +624,7 @@ func splitBatchAndCheckForRefreshSpans(
 	ba roachpb.BatchRequest, canSplitET bool,
 ) [][]roachpb.RequestUnion {
 	parts := ba.Split(canSplitET)
-	// jenndebug
+	/*// jenndebug
 	dbugStr := "original parts:["
 	for _, part := range parts {
 		dbugStr += ", part:["
@@ -665,7 +665,7 @@ func splitBatchAndCheckForRefreshSpans(
 	}
 	dbugStr += "]"
 	log.Warningf(context.Background(), "jenndebug %s\n", dbugStr)
-	//jenndebug
+	//jenndebug*/
 
 	// If the final part contains an EndTransaction, we need to check
 	// whether earlier split parts contain any refresh spans and properly
