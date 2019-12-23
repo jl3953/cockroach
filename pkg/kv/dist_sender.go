@@ -633,7 +633,7 @@ func splitBatchAndCheckForRefreshSpans(
 	for _, part := range parts {
 		for _, requestUnion := range part {
 			// if it's a write from me
-			if bytes.Equal(p.Key, []byte("0")) {
+			if bytes.Equal(requestUnion.GetInner().Header().Key, []byte("0")) {
 				hot = append(hot, requestUnion)
 			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok {
 				hot = append(hot, requestUnion)
