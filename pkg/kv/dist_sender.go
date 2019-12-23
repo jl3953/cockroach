@@ -11,6 +11,7 @@
 package kv
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"sync/atomic"
@@ -623,6 +624,49 @@ func splitBatchAndCheckForRefreshSpans(
 	ba roachpb.BatchRequest, canSplitET bool,
 ) [][]roachpb.RequestUnion {
 	parts := ba.Split(canSplitET)
+	// jenndebug
+	dbugStr := "original parts:["
+	for _, part := range parts {
+		dbugStr += ", part:["
+		for _, rqu := range part {
+			dbugStr += fmt.Sprintf(", %+v", rqu)
+		}
+		dbugStr += "]"
+	}
+	dbugStr += "]"
+	log.Warningf(context.Background(), "jenndebug %s\n", dbugStr)
+
+	warm := make([]roachpb.RequestUnion, 0)
+	hot := make([]roachpb.RequestUnion, 0)
+	for _, part := range parts {
+		for _, requestUnion := range part {
+			// if it's a write from me
+			if p, ok := requestUnion.GetInner().(*roachpb.PutRequest); ok {
+				if bytes.Equal(p.Key, []byte("0")) {
+					hot = append(hot, requestUnion)
+				} else {
+					warm = append(warm, requestUnion)
+				}
+			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok {
+				hot = append(hot, requestUnion)
+			}
+		}
+	}
+	parts[0] = warm
+	parts = append(parts, hot)
+
+	dbugStr = "changed parts:["
+	for _, part := range parts {
+		dbugStr += ", part:["
+		for _, rqu := range part {
+			dbugStr += fmt.Sprintf(", %+v", rqu)
+		}
+		dbugStr += "]"
+	}
+	dbugStr += "]"
+	log.Warningf(context.Background(), "jenndebug %s\n", dbugStr)
+	//jenndebug
+
 	// If the final part contains an EndTransaction, we need to check
 	// whether earlier split parts contain any refresh spans and properly
 	// set the NoRefreshSpans flag on the end transaction.
