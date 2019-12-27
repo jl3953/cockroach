@@ -309,6 +309,8 @@ func (s byInt) Swap(i, j int) {
 
 func (s byInt) Less (i, j int) bool {
 	return s[i] < s[j]
+	// reverse jenndebug
+	// return s[i] > s[j]
 }
 
 
