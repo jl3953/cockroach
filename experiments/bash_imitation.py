@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import subprocess
 
 import lib
 
@@ -21,3 +22,13 @@ def create_dir(location, dir_name):
 
 	return new_dir
 
+
+def git_current_commit_hash():
+
+	""" Returns current commit hash on current branch."""
+
+
+	hash_byte = subprocess.check_output("git rev-parse HEAD".split())
+	git_commit = hash_byte.decode("utf-8").strip()
+
+	return git_commit

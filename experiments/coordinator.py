@@ -8,6 +8,7 @@ import os
 import sys
 
 import bash_imitation
+import lib
 
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
@@ -69,6 +70,29 @@ def create_directories(location, suffix):
 
 
 
+def copy_and_create_metadata(location, config_file):
+
+	""" Copies config file as params.ini, creates a metadata file of
+	current git hash.
+
+	Args:
+		location (str): location in which all files are copied / created
+		config_file (str): config file to be copied.
+	
+	Return: 
+		None.
+	"""
+
+	# copy parameter file
+	cmd = "cp {0} {1}".format(config_file, os.path.join(location, "params.ini"))
+	lib.call_remote("localhost", cmd, "could not copy params file.")
+
+	# create git hash file
+	with open(os.path.join(location, "git_commit_hash.txt"), "w") as f:
+		git_commit_hash = bash_imitation.git_current_commit_hash()
+		f.write(git_commit_hash)
+
+
 def main():
 
 	parser = argparse.ArgumentParser(description="coordinator script for pipeline")
@@ -80,10 +104,13 @@ def main():
 	parser.add_argument("--existing_directory", help="existing directory to use")
 
 	args = parser.parse_args()
+	args.config = os.path.join(FPATH, args.config)
 
 	# make all test directories
 	human_tag = extract_human_tag(args.config)
-	create_directories(os.path.join(FPATH, ".."), human_tag)
+	overall_dir = create_directories(os.path.join(FPATH, ".."), human_tag)
+
+	copy_and_create_metadata(overall_dir, args.config)
 
 	return 0
 
