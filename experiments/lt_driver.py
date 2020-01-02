@@ -16,7 +16,7 @@ def parse_config_file(baseline_file, lt_file):
 	return exp, variation_config
 
 
-def find_optimal_concurrency(exp, variations, log_output_path, is_view_only):
+def find_optimal_concurrency(exp, variations, is_view_only):
 
 	""" Returns:
 	Max concurrency, csv data
@@ -93,26 +93,6 @@ def report_optimal_parameters(max_concurrency, args):
 
 	
 
-def move_log_output(baseline_file, log_output_path, driver_node):
-
-	""" Moves log files from original location to given location.
-
-	Args:
-		baseline_file (str): name of baseline config file.
-		log_output_path (str): path of new location.
-		driver_node (str)
-
-	Returns:
-		None.
-
-	"""
-
-	log_dir = exp_lib.find_log_dir(FPATH, baseline_file)
-	
-	cmd = "mv {0} lt_output; mv lt_output {1}".format(log_dir, log_output_path)
-	lib.call_remote(driver_node, cmd, "mv lt_output err")
-
-
 def run_single_trial(find_concurrency_args, report_params_args,
 		report_csv_args, is_view_only):
 
@@ -120,9 +100,7 @@ def run_single_trial(find_concurrency_args, report_params_args,
 	set_params, variations = parse_config_file(find_concurrency_args["baseline_file"], 
 			find_concurrency_args["lt_file"])
 	max_concurrency, csv_data = find_optimal_concurrency(set_params,
-			variations, find_concurrency_args["log_output_path"], is_view_only)
-	# move_log_output(find_concurrency_args["baseline_file"],
-	# 		find_concurrency_args["log_output_path"], find_concurrency_args["driver_node"])
+			variations, is_view_only)
 	report_csv_data(csv_data, report_csv_args)
 	report_optimal_parameters(max_concurrency, report_params_args)
 	print(max_concurrency)
@@ -133,7 +111,6 @@ def main():
 	parser = argparse.ArgumentParser(description="find latency throughput graph")
 	parser.add_argument('baseline_file', help="baseline_file, original param file")
 	parser.add_argument('lt_file', help="lt_file, for example lt.ini")
-	parser.add_argument('log_output_path', help='path of log output files')
 	parser.add_argument('params_output_path', help="path of output param files")
 	parser.add_argument('csv_output_path', help="path of output csv file")
 	parser.add_argument('--driver_node', default='192.168.1.1')
@@ -144,7 +121,6 @@ def main():
 	find_concurrency_args = {
 		"baseline_file": args.baseline_file,
 		"lt_file": args.lt_file,
-		"log_output_path": args.log_output_path,
 		"driver_node": args.driver_node,
 	}
 	report_csv_args = {

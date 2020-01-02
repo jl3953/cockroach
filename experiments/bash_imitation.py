@@ -32,3 +32,19 @@ def git_current_commit_hash():
 	git_commit = hash_byte.decode("utf-8").strip()
 
 	return git_commit
+
+
+def move_logs(src_logs, dest_logs):
+
+	""" Moves logs from src to dest.
+
+	Args:
+		src_logs (str)
+		dest_logs (str)
+
+	Returns:
+		None.
+	"""
+
+	lib.call_remote("localhost", "mv {0} {1}".format(src_logs, dest_logs),
+			"unable to move logs")
