@@ -209,7 +209,7 @@ def gather_over_time(config):
 		lib.call_remote(DRIVER_NODE, cmd, "gather_time_err") 
 
 
-def generate_csv_file(config, skews, accumulate_fn, suffix):
+def generate_csv_file(config, skews, accumulate_fn, suffix, driver_node=DRIVER_NODE):
 
 	""" Generates csv file from skews.
 	
@@ -238,7 +238,6 @@ def generate_csv_file(config, skews, accumulate_fn, suffix):
 	filename = write_out_data(data, out_dir, suffix+".csv")
 	print(filename)
 
-	driver_node = DRIVER_NODE # usually
 	csv_file = os.path.basename(os.path.dirname(out_dir)) + "_" + suffix + ".csv"
 	print(csv_file)
 	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
@@ -255,7 +254,7 @@ def plot_shards(config, skews):
 	generate_csv_file(config, skews, accumulate_shard_per_skew, "shard")
 
 
-def gnuplot(config, skews):
+def gnuplot(config, skews, driver_node):
 
-	generate_csv_file(config, skews, accumulate_workloads_per_skew, "skew")
+	generate_csv_file(config, skews, accumulate_workloads_per_skew, "skew", driver_node=driver_node)
 

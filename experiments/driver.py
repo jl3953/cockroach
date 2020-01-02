@@ -12,11 +12,12 @@ import copy
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
 CONFIG_LIST = [
-	"new_zipfian_read95.ini",
+	# "new_zipfian_read95.ini",
 	# "new_zipfian_write.ini"
 	# "new_zipfian_overload.ini"
 	# "baseline.ini",
-	# "read100.ini"
+	# "read100.ini",
+	"beep.ini",
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
 DB_QUERY_NODE = "192.168.1.2"
@@ -50,7 +51,7 @@ def gather_statistics(exp, skews, collect_only=False):
 	plotlib.plot_bumps(exp, skews)
 		
 
-def generate_skew_curve(exp, skews, view=False, collect=False, prepopulate=False, take_over_time=False):
+def generate_skew_curve(exp, skews, driver_node, view=False, collect=False, prepopulate=False, take_over_time=False):
 	""" Warms up cluster and generates curve over skew space.
 
 		Args:
@@ -88,7 +89,7 @@ def generate_skew_curve(exp, skews, view=False, collect=False, prepopulate=False
 		plotlib.plot_shards(exp, skews)
 		plotlib.plot_bumps(exp, skews)
 	if not view:
-		plotlib.gnuplot(exp, skews)
+		plotlib.gnuplot(exp, skews, driver_node)
 		
 
 def create_trial_outdir(config_filename, i):
@@ -119,6 +120,8 @@ def main():
 	parser.add_argument('--start', action='store_true', help='starts, or restarts, the cluster.')
 	parser.add_argument('--obliterate', action='store_true', help='kills cluster and cleans up, if specified')
 	parser.add_argument('--benchmark', action='store_true', help='runs specified benchmark, assumes db is already started')
+	parser.add_argument('--ini_files', nargs='*', help='.ini file to read from')
+	parser.add_argument('--driver_node')
 	parser.add_argument('--override', action='store_true', help='overrides parameters according to override.ini,'
 			' only valid when running benchmark')
 	parser.add_argument('--view', action='store_true', help='only runs warmup for short testing')
@@ -133,13 +136,18 @@ def main():
 	if args.obliterate:
 		lib.cleanup_previous_experiment(EXP)
 	elif args.benchmark:
-		for config_file in CONFIG_LIST:
+		if not args.driver_node or not args.ini_files:
+			print("missing --driver_node and/or --ini_files when used with --benchmark option")
+			parser.print_help()
+			return -1
+
+		for config_file in args.ini_files:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
 			for i in range(exp["trials"]):
 				exp["out_dir"] = create_trial_outdir(config_file, i)
-				generate_skew_curve(exp, skews, args.view, args.collect, args.prepopulate, args.over_time)
+				generate_skew_curve(exp, skews, args.driver_node, args.view, args.collect, args.prepopulate, args.over_time)
 	elif args.stats:
-		for config_file in CONFIG_LIST:
+		for config_file in args.ini_files:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
 			for i in range(exp["trials"]):
 				exp["out_dir"] = create_trial_outdir(config_file, i)
