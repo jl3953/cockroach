@@ -6,6 +6,16 @@ import json
 
 OVERRIDE_INI = "override.ini"
 
+def find_log_dir(fpath, config_file):
+
+	config = configparser.ConfigParser()
+	config.read(config_file)
+
+	base_dir = os.path.join(fpath, "..")
+	log_dir = os.path.join(base_dir, config["DEFAULT"]["LOGS_DIR"])
+	return log_dir
+
+
 def read_variation(variation_file):
 	config = configparser.ConfigParser()
 	config.read(variation_file)
