@@ -209,7 +209,9 @@ def gather_over_time(config):
 		lib.call_remote(DRIVER_NODE, cmd, "gather_time_err") 
 
 
-def generate_csv_file(config, skews, accumulate_fn, suffix, driver_node=DRIVER_NODE):
+def generate_csv_file(config, skews, accumulate_fn, suffix, driver_node=DRIVER_NODE,
+		csv_path="/usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot",
+		csv_file=None):
 
 	""" Generates csv file from skews.
 	
@@ -238,9 +240,10 @@ def generate_csv_file(config, skews, accumulate_fn, suffix, driver_node=DRIVER_N
 	filename = write_out_data(data, out_dir, suffix+".csv")
 	print(filename)
 
-	csv_file = os.path.basename(os.path.dirname(out_dir)) + "_" + suffix + ".csv"
+	if csv_file is None:
+		csv_file = os.path.basename(os.path.dirname(out_dir)) + "_" + suffix + ".csv"
 	print(csv_file)
-	cmd = "mv {0} /usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot/{1}".format(filename, csv_file)
+	cmd = "cp {0} {1}/{2}".format(filename, csv_path, csv_file)
 	lib.call_remote(driver_node, cmd, "i like to move it move it")
 
 
@@ -254,7 +257,10 @@ def plot_shards(config, skews):
 	generate_csv_file(config, skews, accumulate_shard_per_skew, "shard")
 
 
-def gnuplot(config, skews, driver_node):
+def gnuplot(config, skews, driver_node, 
+		csv_path="/usr/local/temp/go/src/github.com/cockroachdb/cockroach/gnuplot",
+		csv_file=None):
 
-	generate_csv_file(config, skews, accumulate_workloads_per_skew, "skew", driver_node=driver_node)
+	generate_csv_file(config, skews, accumulate_workloads_per_skew, "skew",
+			driver_node=driver_node, csv_path=csv_path, csv_file=csv_file)
 

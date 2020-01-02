@@ -51,7 +51,8 @@ def gather_statistics(exp, skews, collect_only=False):
 	plotlib.plot_bumps(exp, skews)
 		
 
-def generate_skew_curve(exp, skews, driver_node, view=False, collect=False, prepopulate=False, take_over_time=False):
+def generate_skew_curve(exp, skews, view=False, collect=False, prepopulate=False):
+
 	""" Warms up cluster and generates curve over skew space.
 
 		Args:
@@ -80,16 +81,22 @@ def generate_skew_curve(exp, skews, driver_node, view=False, collect=False, prep
 		if not view:
 			lib.run_bench(e)
 			
+
+def plot(exp, skews, driver_node, csv_path, csv_file, 
+		view=False, collect=False, take_over_time=False):
+
 	if take_over_time:
 		plotlib.gather_over_time(exp)
-		if len(exps) > 1:
+		if len(skews) > 1:
 			print ("over_time takes only one skew!!")
 
 	if collect:
 		plotlib.plot_shards(exp, skews)
 		plotlib.plot_bumps(exp, skews)
 	if not view:
-		plotlib.gnuplot(exp, skews, driver_node)
+		plotlib.gnuplot(exp, skews, driver_node, csv_path, csv_file)
+
+
 		
 
 def create_trial_outdir(config_filename, i):
@@ -122,6 +129,8 @@ def main():
 	parser.add_argument('--benchmark', action='store_true', help='runs specified benchmark, assumes db is already started')
 	parser.add_argument('--ini_files', nargs='*', help='.ini file to read from')
 	parser.add_argument('--driver_node')
+	parser.add_argument('--csv_path', help="where the generated csv file will go")
+	parser.add_argument('--csv_file', help="name of generated csv file")
 	parser.add_argument('--override', action='store_true', help='overrides parameters according to override.ini,'
 			' only valid when running benchmark')
 	parser.add_argument('--view', action='store_true', help='only runs warmup for short testing')
@@ -140,12 +149,18 @@ def main():
 			print("missing --driver_node and/or --ini_files when used with --benchmark option")
 			parser.print_help()
 			return -1
+		elif args.view is False and (not args.csv_path or not args.csv_file):
+			print ("when --view is False / not specified, must include --csv_path and --csv_file")
+			parser.print_help()
+			return -1
 
 		for config_file in args.ini_files:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
 			for i in range(exp["trials"]):
 				exp["out_dir"] = create_trial_outdir(config_file, i)
-				generate_skew_curve(exp, skews, args.driver_node, args.view, args.collect, args.prepopulate, args.over_time)
+				generate_skew_curve(exp, skews, args.view, args.collect, args.prepopulate)
+				plot(exp, skews, args.driver_node, args.csv_path, args.csv_file,
+						args.view, args.collect, args.over_time)
 	elif args.stats:
 		for config_file in args.ini_files:
 			exp, skews = exp_lib.create_experiment(FPATH, config_file, args.override)
