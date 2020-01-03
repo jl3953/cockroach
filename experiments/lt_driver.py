@@ -98,7 +98,6 @@ def report_optimal_parameters(max_concurrency, args):
 def run_single_trial(find_concurrency_args, report_params_args,
 		report_csv_args, is_view_only):
 
-	print(find_concurrency_args)
 	set_params, variations = parse_config_file(find_concurrency_args["baseline_file"], 
 			find_concurrency_args["lt_file"])
 	max_concurrency, csv_data = find_optimal_concurrency(set_params,
