@@ -30,7 +30,7 @@ def read_variation(variation_file):
 	return exp
 
 
-def override_params(exp, skews, config, fpath, override_file=OVERRIDE_INI):
+def override_params(exp, skews, config, fpath, override_file=None):
 
 	override = configparser.ConfigParser()
 	override.read(override_file)
@@ -94,7 +94,7 @@ def create_out_dir(fpath, logs_dirname, out_dirname):
 	return out_dir
 
 
-def create_experiment(fpath, config_filename, override=OVERRIDE_INI):
+def create_experiment(fpath, config_filename, override=None):
 
 	config = configparser.ConfigParser()
 	config.read(config_filename)

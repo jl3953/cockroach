@@ -15,7 +15,7 @@ import lib
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
 LT_EXECUTABLE = os.path.join(FPATH, "lt_driver.py")
-DRVIER_EXECUTABLE = os.path.join(FPATH, "driver.py")
+DRIVER_EXECUTABLE = os.path.join(FPATH, "driver.py")
 
 
 class Stage(enum.Enum):
