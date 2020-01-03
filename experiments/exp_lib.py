@@ -1,16 +1,15 @@
-#!/usr/bin/env python3
-
+#!/usr/bin/env python3 
 import configparser
 import os
 import json
 
-OVERRIDE_INI = "override.ini"
+OVERRIDE_INI = "override.ini" 
 
-def find_log_dir(fpath, config_file):
 
-	config = configparser.ConfigParser()
-	config.read(config_file)
-
+def find_log_dir(fpath, config_file): 
+	
+	config = configparser.ConfigParser() 
+	config.read(config_file) 
 	base_dir = os.path.join(fpath, "..")
 	log_dir = os.path.join(base_dir, config["DEFAULT"]["LOGS_DIR"])
 	return log_dir
@@ -31,10 +30,10 @@ def read_variation(variation_file):
 	return exp
 
 
-def override_params(exp, skews, config, fpath):
+def override_params(exp, skews, config, fpath, override_file=OVERRIDE_INI):
 
 	override = configparser.ConfigParser()
-	override.read(OVERRIDE_INI)
+	override.read(override_file)
 
 	if "DEFAULT" in override:
 		if "LOGS_DIR" in override["DEFAULT"] and "OUT_DIR" in override["DEFAULT"]:
@@ -95,7 +94,7 @@ def create_out_dir(fpath, logs_dirname, out_dirname):
 	return out_dir
 
 
-def create_experiment(fpath, config_filename, override=False):
+def create_experiment(fpath, config_filename, override=OVERRIDE_INI):
 
 	config = configparser.ConfigParser()
 	config.read(config_filename)
@@ -152,7 +151,7 @@ def create_experiment(fpath, config_filename, override=False):
 	skews = json.loads(config["benchmark"]["skews"])
 	
 	if override:
-		exp, skews = override_params(exp, skews, config, fpath)
+		exp, skews = override_params(exp, skews, config, fpath, override)
 	
 	return exp, skews
 

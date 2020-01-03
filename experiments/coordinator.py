@@ -15,12 +15,14 @@ import lib
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
 LT_EXECUTABLE = os.path.join(FPATH, "lt_driver.py")
+DRVIER_EXECUTABLE = os.path.join(FPATH, "driver.py")
 
 
 class Stage(enum.Enum):
 	CREATE_NEW_DIRS = "create_new_dirs"
 	METADATA = "metadata"
 	LATENCY_THROUGHPUT = "latency_throughput"
+	DRIVER = "driver"
 
 	def __str__(self):
 		return self.value
@@ -31,6 +33,8 @@ class Stage(enum.Enum):
 			return Stage.METADATA
 		elif stage == Stage.METADATA:
 			return Stage.LATENCY_THROUGHPUT
+		elif stage == Stage.LATENCY_THROUGHPUT:
+			return Stage.DRIVER
 
 
 def extract_human_tag(config_file):
@@ -136,16 +140,18 @@ def copy_and_create_metadata(location, config_file):
 		f.write("\nsubmodule_commit_hash: " + git_submodule_hash)
 
 
-def call_latency_throughput(location, baseline_file, lt_file, params_dir,
-		csv_dir, raw_out_dir):
+def latency_throughput(location, baseline_file, lt_file, params_dir,
+		params_file, csv_dir, raw_out_dir):
 
-	""" Calls the latency throughput script.
+	""" Calls the latency throughput script, moves its generated logs, and 
+	plots its csv files.
 
 	Args:
 		location (str): absolute path of location directory.
 		baseline_file (str): original params config file, abs path
 		lt_file (str): latency throughput params config, abs path
 		params_dir(str): directory in which output param file lives
+		params_file (str): file name of param file
 		csv_dir(str): directory in which csv file will live
 		raw_out_dir (str): dir in which generated logs live
 	
@@ -154,14 +160,27 @@ def call_latency_throughput(location, baseline_file, lt_file, params_dir,
 	"""
 
 	# call the script
-	cmd = "{0} {1} {2} {3} {4} --driver_node localhost".format(
-			LT_EXECUTABLE, baseline_file, lt_file, params_dir, csv_dir)
+	cmd = "{0} {1} {2} {3} {4} {5} --driver_node localhost".format(
+			LT_EXECUTABLE, baseline_file, lt_file, params_dir, params_file, csv_dir)
 	lib.call(cmd, "lt_driver script failed")
 
 	# move the generated logs
 	src_logs = exp_lib.find_log_dir(FPATH, baseline_file)
 	dest = os.path.join(raw_out_dir, "lt_logs")
 	bash_imitation.move_logs(src_logs, dest)
+
+	# gnuplot
+
+
+def driver(baseline_file, csv_dir, csv_file, override_file):
+
+	cmd = ("{0} --benchmark --driver_node localhost "
+			"--ini_files {1} "
+			"--csv_path {2} "
+			"--csv_file {3} "
+			"--override {4}").format(
+				DRIVER_EXECUTABLE, baseline_file, csv_dir, csv_file, override_file)
+	lib.call(cmd, "driver script failed")
 
 
 def main():
@@ -170,7 +189,7 @@ def main():
 	parser.add_argument("config", help=".ini file with config params, params.ini")
 	parser.add_argument("lt_config", help=".ini file with latency throughput params")
 	parser.add_argument("--stage", type=Stage, default=Stage.CREATE_NEW_DIRS, 
-			choices=[Stage.CREATE_NEW_DIRS, Stage.METADATA, Stage.LATENCY_THROUGHPUT],
+			choices=[str(member) for member in Stage],
 			help="which stage to start running at. Useful for testing.")
 	parser.add_argument("--run_single_stage", action="store_true",
 			help="if set, do not continue after specified stage. Useful for testing.")
@@ -208,10 +227,20 @@ def main():
 		stage = Stage.next(stage)
 
 	if stage == stage.LATENCY_THROUGHPUT:
-		call_latency_throughput(overall_dir, args.config, args.lt_config,
-				overall_dir, csv_dir, raw_out_dir)
+		latency_throughput(overall_dir, args.config, args.lt_config,
+				overall_dir, "override.ini", csv_dir, raw_out_dir)
+		move_lt_logs()
+		plot_lt_graphs()
+		if args.run_single_stage:
+			return 0
+		stage = Stage.next(stage)
+
+	if stage == stage.DRIVER:
+		driver(args.config, csv_dir, "driver.csv", os.path.join(overall_dir, "override.ini"))
+		# move_driver_logs()
 
 	return 0
+
 
 if __name__ == "__main__":
 	sys.exit(main())

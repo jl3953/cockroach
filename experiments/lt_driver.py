@@ -76,7 +76,8 @@ def report_csv_data(csv_data, args):
 
 def report_optimal_parameters(max_concurrency, args):
 
-	""" Outputs optimal concurrency to file storage.
+	""" Outputs optimal concurrency to file storage as
+	an override.ini file, readable by driver script.
 
 	Args:
 		max_concurrency (int)
@@ -87,9 +88,10 @@ def report_optimal_parameters(max_concurrency, args):
 
 	"""
 
-	filename = os.path.join(args["params_output_path"], "optimal_params.ini")
+	filename = os.path.join(args["params_output_path"], "override.ini")
 	with open(filename, "w") as f:
-		f.write("max_concurrency: " + str(max_concurrency) + "\n")
+		f.write("[benchmark]\n")
+		f.write("concurrency = " + str(max_concurrency) + "\n")
 
 	
 
@@ -112,6 +114,7 @@ def main():
 	parser.add_argument('baseline_file', help="baseline_file, original param file")
 	parser.add_argument('lt_file', help="lt_file, for example lt.ini")
 	parser.add_argument('params_output_path', help="path of output param files")
+	parser.add_argument('params_file', help="name of output param file")
 	parser.add_argument('csv_output_path', help="path of output csv file")
 	parser.add_argument('--driver_node', default='192.168.1.1')
 	parser.add_argument('--is_view_only', action='store_true', 
@@ -129,6 +132,7 @@ def main():
 
 	report_params_args = {
 		"params_output_path": args.params_output_path,
+		"params_file": args.params_file,
 	}
 
 	run_single_trial(find_concurrency_args, report_params_args, report_csv_args, 

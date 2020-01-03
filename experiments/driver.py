@@ -131,7 +131,7 @@ def main():
 	parser.add_argument('--driver_node')
 	parser.add_argument('--csv_path', help="where the generated csv file will go")
 	parser.add_argument('--csv_file', help="name of generated csv file")
-	parser.add_argument('--override', action='store_true', help='overrides parameters according to override.ini,'
+	parser.add_argument('--override', help='overrides parameters according provided .ini,'
 			' only valid when running benchmark')
 	parser.add_argument('--view', action='store_true', help='only runs warmup for short testing')
 	# parser.add_argument('--logs', action='store_true', help='parses benchmark logs')
