@@ -113,7 +113,6 @@ def main():
 	parser.add_argument('lt_file', help="lt_file, for example lt.ini")
 	parser.add_argument('params_output', help="abs path of output param file")
 	parser.add_argument('csv_output', help="abs path of output csv file")
-	parser.add_argument('--driver_node', default='192.168.1.1')
 	parser.add_argument('--is_view_only', action='store_true', 
 			help='only runs warmup for short testing')
 	args = parser.parse_args()
@@ -121,7 +120,6 @@ def main():
 	find_concurrency_args = {
 		"baseline_file": args.baseline_file,
 		"lt_file": args.lt_file,
-		"driver_node": args.driver_node,
 	}
 	report_csv_args = {
 		"filename": args.csv_output,

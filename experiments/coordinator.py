@@ -161,7 +161,7 @@ def call_latency_throughput(location, baseline_file, lt_file, params_file, csv_f
 	"""
 
 	# call lt script
-	cmd = "{0} {1} {2} {3} {4} --driver_node localhost".format(
+	cmd = "{0} {1} {2} {3} {4}".format(
 			LT_EXECUTABLE, baseline_file, lt_file, params_file, csv_file)
 	lib.call(cmd, "lt_driver script failed")
 
