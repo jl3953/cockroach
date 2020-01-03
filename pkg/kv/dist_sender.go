@@ -627,16 +627,16 @@ func splitBatchAndCheckForRefreshSpans(
 	parts := ba.Split(canSplitET)
 
 	// jenndebug
-	log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
+	// log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
 
 	warm := make([]roachpb.RequestUnion, 0)
 	hot := make([]roachpb.RequestUnion, 0)
 	for _, part := range parts {
 		for _, requestUnion := range part {
 			// if it's a write from me
-			log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key.String())
+			// log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key.String())
 			if strings.Contains(requestUnion.GetInner().Header().Key.String(), "/Table/53/1/0") {
-				log.Warningf(context.Background(), "jenndebug move it\n")
+				//log.Warningf(context.Background(), "jenndebug move it\n")
 				hot = append(hot, requestUnion)
 			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok && len(hot) > 0 {
 				hot = append(hot, requestUnion)
@@ -646,12 +646,12 @@ func splitBatchAndCheckForRefreshSpans(
 		}
 	}
 
-	log.Warningf(context.Background(), "jenndebug warm:[%+v]\n", warm)
-	log.Warningf(context.Background(), "jenndebug hot:[%+v]\n", hot)
+	// log.Warningf(context.Background(), "jenndebug warm:[%+v]\n", warm)
+	// log.Warningf(context.Background(), "jenndebug hot:[%+v]\n", hot)
 	if len(warm) > 0 && len(hot) > 0 {
 		parts[0] = warm
 		parts = append(parts, hot)
-		log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
+		// log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
 	}
 
 	//jenndebug
