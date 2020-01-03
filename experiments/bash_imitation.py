@@ -72,3 +72,23 @@ def move_logs(src_logs, dest_logs):
 
 	lib.call_remote("localhost", "mv {0} {1}".format(src_logs, dest_logs),
 			"unable to move logs")
+
+
+def gnuplot(gnuplot_script, input_csv, output_graph_dir):
+
+	""" Calls gnuplot script on input csv and dumps generated graphs
+	in output_graph_dir.
+
+	Args:
+		gnuplot_script (str): abs path of gnuplot script
+		input_csv (str): abs path of input csv file
+		output_graph_dir (str): abs path of directory where output graphs
+			are dumped.
+
+	Returns:
+		None.
+	"""
+
+	lib.call("gnuplot -c {0} {1} {2}".format(gnuplot_script, input_csv,
+				output_graph_dir), "gnuplot bash imitation failed")
+

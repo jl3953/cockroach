@@ -71,7 +71,7 @@ def report_csv_data(csv_data, args):
 
 	"""
 	data = sorted(csv_data, key=lambda i: i["concurrency"])
-	filename = plotlib.write_out_data(data, args["csv_output_path"], "lt.csv")
+	filename = plotlib.write_out_data(data, args["filename"])
 
 
 def report_optimal_parameters(max_concurrency, args):
@@ -88,8 +88,7 @@ def report_optimal_parameters(max_concurrency, args):
 
 	"""
 
-	filename = os.path.join(args["params_output_path"], "override.ini")
-	with open(filename, "w") as f:
+	with open(args["filename"], "w") as f:
 		f.write("[benchmark]\n")
 		f.write("concurrency = " + str(max_concurrency) + "\n")
 
@@ -112,9 +111,8 @@ def main():
 	parser = argparse.ArgumentParser(description="find latency throughput graph")
 	parser.add_argument('baseline_file', help="baseline_file, original param file")
 	parser.add_argument('lt_file', help="lt_file, for example lt.ini")
-	parser.add_argument('params_output_path', help="path of output param files")
-	parser.add_argument('params_file', help="name of output param file")
-	parser.add_argument('csv_output_path', help="path of output csv file")
+	parser.add_argument('params_output', help="abs path of output param file")
+	parser.add_argument('csv_output', help="abs path of output csv file")
 	parser.add_argument('--driver_node', default='192.168.1.1')
 	parser.add_argument('--is_view_only', action='store_true', 
 			help='only runs warmup for short testing')
@@ -126,12 +124,11 @@ def main():
 		"driver_node": args.driver_node,
 	}
 	report_csv_args = {
-		"csv_output_path": args.csv_output_path,
+		"filename": args.csv_output,
 	}
 
 	report_params_args = {
-		"params_output_path": args.params_output_path,
-		"params_file": args.params_file,
+		"filename": args.params_output,
 	}
 
 	run_single_trial(find_concurrency_args, report_params_args, report_csv_args, 

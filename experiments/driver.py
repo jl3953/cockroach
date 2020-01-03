@@ -97,8 +97,6 @@ def plot(exp, skews, driver_node, csv_path, csv_file,
 		plotlib.gnuplot(exp, skews, driver_node, csv_path, csv_file)
 
 
-		
-
 def create_trial_outdir(config_filename, i):
 
 	""" Appends number to log directory per trial.

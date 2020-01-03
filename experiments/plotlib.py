@@ -45,13 +45,19 @@ def extract_data(last_eight_lines):
 	return read_data
 
 
-def write_out_data(data, out_dir, outfile_name="gnuplot.csv"):
+	 
+def write_out_data_wrapper(data, out_dir, outfile_name="gnuplot.csv"):
+
+	filename = os.path.join(out_dir, outfile_name)
+	return write_out_data(data, filename)
+
+
+def write_out_data(data, outfile):
 
 	if len(data) <= 0:
 		return ""
 
-	filename = os.path.join(out_dir, outfile_name)
-	with open(filename, "w") as csvfile:
+	with open(outfile, "w") as csvfile:
 		writer = csv.DictWriter(csvfile, delimiter='\t', fieldnames=data[0].keys())
 		writer.writeheader()
 
@@ -62,7 +68,7 @@ def write_out_data(data, out_dir, outfile_name="gnuplot.csv"):
 				print("failed on {0}".format(datum))
 				continue
 
-	return filename
+	return outfile
 
 
 def aggregate(acc):
@@ -237,7 +243,7 @@ def generate_csv_file(config, skews, accumulate_fn, suffix, driver_node=DRIVER_N
 			print("failed on skew[{0}]".format(skews[i]))
 			continue
 
-	filename = write_out_data(data, out_dir, suffix+".csv")
+	filename = write_out_data_wrapper(data, out_dir, suffix+".csv")
 	print(filename)
 
 	if csv_file is None:
