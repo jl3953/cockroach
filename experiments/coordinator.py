@@ -205,11 +205,12 @@ def main():
 	parser = argparse.ArgumentParser(description="coordinator script for pipeline")
 	parser.add_argument("config", help=".ini file with config params, params.ini")
 	parser.add_argument("lt_config", help=".ini file with latency throughput params")
-	parser.add_argument("--stage", type=Stage, default=Stage.CREATE_NEW_DIRS, 
+	parser.add_argument("--start_stage", type=Stage, default=Stage.CREATE_NEW_DIRS, 
 			choices=[stage for stage in Stage],
 			help="which stage to start running at. Useful for testing.")
-	parser.add_argument("--run_single_stage", action="store_true",
-			help="if set, do not continue after specified stage. Useful for testing.")
+	parser.add_argument("--end_stage", type=Stage, default = Stage.DRIVER,
+			choices = [stage for stage in Stage],
+			help="which stage to stop running after. Useful for testing.")
 	parser.add_argument("--existing_directory",
 			help="existing directory to use. Useful for testing.")
 
@@ -217,13 +218,13 @@ def main():
 	args.config = os.path.join(FPATH, args.config) # replace with abs path
 	args.lt_config = os.path.join(FPATH, args.lt_config)
 
-	if args.stage is not Stage.CREATE_NEW_DIRS and not args.existing_directory:
+	if args.start_stage is not Stage.CREATE_NEW_DIRS and not args.existing_directory:
 		print("You must provide an existing test run directory with this stage.")
 		parser.print_help()
 		return -1
 
 	# Starting pipeline
-	stage = args.stage
+	stage = args.start_stage
 	overall_dir, graph_dir, raw_out_dir, csv_dir = None, None, None, None
 
 	# stage creating new directories
@@ -231,7 +232,7 @@ def main():
 		human_tag = extract_human_tag(args.config)
 		overall_dir, graph_dir, raw_out_dir, csv_dir = create_directories(
 				os.path.join(FPATH, ".."), human_tag)
-		if args.run_single_stage:
+		if stage == args.end_stage:
 			return 0
 		stage = Stage.next(stage)
 	else:
@@ -241,7 +242,7 @@ def main():
 	# stage metadata
 	if stage == Stage.METADATA:
 		copy_and_create_metadata(overall_dir, args.config)
-		if args.run_single_stage:
+		if stage == args.end_stage:
 			return 0
 		stage = Stage.next(stage)
 
@@ -261,7 +262,7 @@ def main():
 		move_logs(args.config, lt_logs)
 		bash_imitation.gnuplot(LT_GNUPLOT, lt_csv, graph_dir)
 	
-		if args.run_single_stage:
+		if stage == args.end_stage:
 			return 0
 		stage = Stage.next(stage)
 
@@ -271,8 +272,8 @@ def main():
 		# warning: driver script has too many dependencies on the csv_dir
 		# and csv_file being separated for me to bother right now. Implicitly
 		# assume that the abs path is just the joining of the dir and filename.
-		# driver(args.config, override_file, csv_dir, "driver.csv")
-		# move_logs(args.config, driver_logs)
+		driver(args.config, override_file, csv_dir, "driver.csv")
+		move_logs(args.config, driver_logs)
 		bash_imitation.gnuplot(DRIVER_GNUPLOT, driver_csv, graph_dir)
 
 	return 0
