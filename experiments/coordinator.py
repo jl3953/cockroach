@@ -9,6 +9,7 @@ import os
 import sys
 
 import bash_imitation
+import exp_lib
 import lib
 
 
@@ -127,8 +128,12 @@ def copy_and_create_metadata(location, config_file):
 
 	# create git hash file
 	with open(os.path.join(location, "git_commit_hash.txt"), "w") as f:
-		git_commit_hash = bash_imitation.git_current_commit_hash()
-		f.write(git_commit_hash)
+		git_commit_hash = bash_imitation.git_commit_hash()
+		f.write("commit_hash: " + git_commit_hash)
+
+		submodule = "vendor"
+		git_submodule_hash = bash_imitation.git_submodule_commit_hash(submodule)
+		f.write("\nsubmodule_commit_hash: " + git_submodule_hash)
 
 
 def call_latency_throughput(location, baseline_file, lt_file, params_dir,

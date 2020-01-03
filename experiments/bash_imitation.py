@@ -23,15 +23,39 @@ def create_dir(location, dir_name):
 	return new_dir
 
 
-def git_current_commit_hash():
+def git_commit_hash():
 
-	""" Returns current commit hash on current branch."""
+	""" Returns current commit hash on current branch.
+	
+	Args:
+		None.
+	
+	Returns:
+		Commit hash (str)
+	"""
 
 
 	hash_byte = subprocess.check_output("git rev-parse HEAD".split())
 	git_commit = hash_byte.decode("utf-8").strip()
 
 	return git_commit
+
+
+def git_submodule_commit_hash(submodule):
+
+	""" Returns current commit hash of submodule.
+
+	Args:
+		submodule (str): name of submodule
+	
+	Returns:
+		commit hash.
+	"""
+
+	hash_byte = subprocess.check_output("git rev-parse @:{0}".format(submodule).split())
+	commit = hash_byte.decode("utf-8").strip()
+
+	return commit
 
 
 def move_logs(src_logs, dest_logs):
