@@ -627,7 +627,7 @@ func splitBatchAndCheckForRefreshSpans(
 	parts := ba.Split(canSplitET)
 
 	// jenndebug
-	/* // log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
+	// log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
 
 	warm := make([]roachpb.RequestUnion, 0)
 	hot := make([]roachpb.RequestUnion, 0)
@@ -652,7 +652,7 @@ func splitBatchAndCheckForRefreshSpans(
 		parts[0] = warm
 		parts = append(parts, hot)
 		// log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
-	} */
+	}
 
 	//jenndebug
 
