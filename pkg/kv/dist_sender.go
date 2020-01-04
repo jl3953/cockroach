@@ -11,11 +11,10 @@
 package kv
 
 import (
-	//"bytes" //jenndebug
 	"context"
 	"fmt"
 	"sync/atomic"
-	"strings"
+	// "strings" // jenndebug comment out if not using protocol
 	"unsafe"
 	"runtime/debug"
 
