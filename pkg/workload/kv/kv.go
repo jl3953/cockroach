@@ -308,9 +308,9 @@ func (s byInt) Swap(i, j int) {
 }
 
 func (s byInt) Less (i, j int) bool {
-	//return s[i] < s[j]
+	return s[i] < s[j]
 	// reverse jenndebug
-	return s[i] > s[j]
+	// return s[i] > s[j]
 }
 
 
@@ -328,12 +328,14 @@ func (o *kvOp) run(ctx context.Context) error {
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = argsInt[i]
 		}
-		args[0] = 0
+		//jenndebug comment out if not testing
+		/* args[0] = 0
 		args[1] = 214 //math.MaxInt64-1
 		args[2] = 215 //math.MaxInt64-2
 		args[3] = 1994 //math.MaxInt64-4
 		args[4] = 2016 //math.MaxInt64-6
-		args[5] = 2020 //math.MaxInt64-8
+		args[5] = 2020 //math.MaxInt64-8 */
+		// jenndebug
 
 		start := timeutil.Now()
 		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
