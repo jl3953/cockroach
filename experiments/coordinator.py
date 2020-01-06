@@ -192,7 +192,7 @@ def move_logs(baseline_file, dest):
 	bash_imitation.move_logs(src_logs, dest)
 
 
-def calculate_and_output_write_override(param_files, override_file):
+def calculate_and_output_final_override(param_files, override_file):
 
 	""" Calculates the median concurrency (in param files) and outputs into
 	override_file.
@@ -214,7 +214,7 @@ def calculate_and_output_write_override(param_files, override_file):
 
 	with open(override_file, "w") as f:
 		f.write("[benchmark]\n")
-		f.write("concurrency = " + str(numpy.median(concurrencies)))
+		f.write("concurrency = " + str(int(numpy.median(concurrencies))))
 
 
 def driver(baseline_file, override_file, csv_dir, csv_file):
@@ -231,6 +231,8 @@ def driver(baseline_file, override_file, csv_dir, csv_file):
 
 
 def write_box_and_whiskers(output_csv, curve):
+
+	""" Writes out box and whiskers plot."""
 	
 	with open(output_csv, "w") as f:
 		writer = csv.DictWriter(f, fieldnames=curve[0].keys())
@@ -240,17 +242,27 @@ def write_box_and_whiskers(output_csv, curve):
 			write.writerow(box_and_whisker)
 
 
-def calculate_box_and_whiskers(output_csv, csvs, x_axis, y_axis):
+def calculate_box_and_whiskers(csvs, x_axis, y_axis):
 
+	""" Calculates box and whiskers plot.
+
+	Args:
+		csvs (list[str]): list of csv files.
+		x_axis (str): attribute that serves as x_axis
+		y_axis (str): attribute that serves as the y_axis
+
+	Returns:
+		None.
+	"""
 	
 	group_by_x = collections.defaultdict(lambda:[])
 	for csv_file in csvs:
 		with open(csv_file, "r") as f:
-			reader = csv.DictReader(f):
-				for row in reader:
-					x = float(row[x_axis])
-					point = float(row[y_axis])
-					group_by_x[x].append(point)
+			reader = csv.DictReader(f)
+			for row in reader:
+				x = float(row[x_axis])
+				point = float(row[y_axis])
+				group_by_x[x].append(point)
 
 	print("jenndebug bawp", bawp)
 
@@ -283,15 +295,18 @@ def calculate_and_plot_box_and_whiskers(csvs, csv_dir, graph_dir):
 		None.
 	"""
 
-	# box and whiskers plot (bawp)
-	tp_bawp = os.path.join(csv_dir, "tp_box_and_whiskers.csv")
+	# throughput box and whiskers plot (bawp)
+	tp_bawp_csv = os.path.join(csv_dir, "tp_box_and_whiskers.csv")
+	tp_bawp_png = os.path.join(csv_dir, "tp_box_and_whiskers.png")
 	tp_curve = calculate_box_and_whiskers(csvs, "skew", "op/sec(cum)")
 	write_box_and_whiskers(tp_bawp, tp_curve)
-	bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, tp_bawp, graph_dir)
+	bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, tp_bawp_png, tp_bawp_csv,
+			"throughput (txns/sec)")
 
-	p50_bawp = os.path.join(csv_dir, "p50_box_and_whiskers.csv")
-	calculate_box_and_whiskers(p50_bawp, csvs, "skew", "p50(ms)")
-	bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, p50_bawp, graph_dir)
+	# p50 box and whiskers plot
+	# p50_bawp_csv = os.path.join(csv_dir, "p50_box_and_whiskers.csv")
+	# calculate_box_and_whiskers(p50_bawp, csvs, "skew", "p50(ms)")
+	# bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, p50_bawp, graph_dir)
 
 
 def main():
@@ -351,18 +366,18 @@ def main():
 	if stage == stage.LATENCY_THROUGHPUT:
 
 		param_outputs = []
-		for trial in range(args.lt_trials):
-			param_output = os.path.join(overall_dir, "param_trial{0}.ini".format(trial))
+		for trial in range(1, args.lt_trials + 1):
+			param_output = os.path.join(overall_dir, "param_trial_{0}.ini".format(trial))
 			param_outputs.append(param_output)
-			lt_csv = os.path.join(csv_dir, "lt_trial{0}.csv".format(trial)) 
-			lt_logs = os.path.join(raw_out_dir, "lt_logs_trial{0}".format(trial))
+			lt_csv = os.path.join(csv_dir, "lt_trial_{0}.csv".format(trial)) 
+			lt_logs = os.path.join(raw_out_dir, "lt_logs_trial_{0}".format(trial))
 
 			call_latency_throughput(overall_dir, args.config, args.lt_config,
 					param_output, lt_csv)
 			move_logs(args.config, lt_logs)
 			bash_imitation.gnuplot(LT_GNUPLOT, lt_csv, graph_dir, trial)
 		
-		calculate_and_write_final_override(param_outputs, override_file)
+		calculate_and_output_final_override(param_outputs, override_file)
 		
 		if stage == args.end_stage:
 			return 0
@@ -372,9 +387,9 @@ def main():
 	if stage == stage.DRIVER:
 
 		csvs = []
-		for trial in range(args.driver_trials):
-			driver_logs = os.path.join(raw_out_dir, "driver_logs_trial{0}".format(trial))
-			driver_file = "driver_trial{0}.csv".format(trial)
+		for trial in range(1, args.driver_trials + 1):
+			driver_logs = os.path.join(raw_out_dir, "driver_logs_trial_{0}".format(trial))
+			driver_file = "driver_trial_{0}.csv".format(trial)
 			driver_csv = os.path.join(csv_dir, driver_file)
 			csvs.append(driver_csv)
 
