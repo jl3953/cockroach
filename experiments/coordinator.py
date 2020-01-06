@@ -22,7 +22,7 @@ LT_EXECUTABLE = os.path.join(FPATH, "lt_driver.py")
 DRIVER_EXECUTABLE = os.path.join(FPATH, "driver.py")
 LT_GNUPLOT = os.path.join(FPATH, "lt.gp")
 DRIVER_GNUPLOT = os.path.join(FPATH, "plot.gp")
-BOX_AND_WHISKERS = os.path.join(FPATH, "box_and_whiskers.gp")
+BOX_AND_WHISKERS_GNUPLOT = os.path.join(FPATH, "box_and_whiskers.gp")
 
 
 class Stage(enum.Enum):
@@ -235,11 +235,11 @@ def write_box_and_whiskers(output_csv, curve):
 	""" Writes out box and whiskers plot."""
 	
 	with open(output_csv, "w") as f:
-		writer = csv.DictWriter(f, fieldnames=curve[0].keys())
+		writer = csv.DictWriter(f, fieldnames=curve[0].keys(), delimiter="\t")
 		writer.writeheader()
 		
 		for box_and_whisker in curve:
-			write.writerow(box_and_whisker)
+			writer.writerow(box_and_whisker)
 
 
 def calculate_box_and_whiskers(csvs, x_axis, y_axis):
@@ -258,24 +258,24 @@ def calculate_box_and_whiskers(csvs, x_axis, y_axis):
 	group_by_x = collections.defaultdict(lambda:[])
 	for csv_file in csvs:
 		with open(csv_file, "r") as f:
-			reader = csv.DictReader(f)
+			reader = csv.DictReader(f, delimiter='\t')
 			for row in reader:
 				x = float(row[x_axis])
 				point = float(row[y_axis])
 				group_by_x[x].append(point)
 
-	print("jenndebug bawp", bawp)
+	print("jenndebug bawp", group_by_x)
 
 	plot = []
-	for x, points in group_by_x.iteritems():
+	for x, points in group_by_x.items():
 
 		box_and_whisker = {
 			x_axis: x,
 			"whisker_min": min(points),
-			"box_bottom": numpy.percentile(points, 25),
-			"box_middle": numpy.median(points),
-			"box_top": numpy.percentile(points, 75),
-			"whisker_max": max(points),
+			"box_min": numpy.percentile(points, 25),
+			"median": numpy.median(points),
+			"box_high": numpy.percentile(points, 75),
+			"whisker_high": max(points),
 		}
 		plot.append(box_and_whisker)
 
@@ -297,11 +297,12 @@ def calculate_and_plot_box_and_whiskers(csvs, csv_dir, graph_dir):
 
 	# throughput box and whiskers plot (bawp)
 	tp_bawp_csv = os.path.join(csv_dir, "tp_box_and_whiskers.csv")
-	tp_bawp_png = os.path.join(csv_dir, "tp_box_and_whiskers.png")
-	tp_curve = calculate_box_and_whiskers(csvs, "skew", "op/sec(cum)")
-	write_box_and_whiskers(tp_bawp, tp_curve)
+	tp_bawp_png = os.path.join(graph_dir, "tp_box_and_whiskers.png")
+	tp_curve = calculate_box_and_whiskers(csvs, "skew", "ops/sec(cum)")
+	print ("jenndebug", csv_dir)
+	write_box_and_whiskers(tp_bawp_csv, tp_curve)
 	bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, tp_bawp_png, tp_bawp_csv,
-			"throughput (txns/sec)")
+			"'throughput(txns/sec)'")
 
 	# p50 box and whiskers plot
 	# p50_bawp_csv = os.path.join(csv_dir, "p50_box_and_whiskers.csv")
@@ -400,7 +401,7 @@ def main():
 			move_logs(args.config, driver_logs)
 			bash_imitation.gnuplot(DRIVER_GNUPLOT, driver_csv, graph_dir, trial)
 
-		calculate_and_plot_box_and_whiskers(csvs, driver_csv_final)
+		calculate_and_plot_box_and_whiskers(csvs, csv_dir, graph_dir)
 
 	return 0
 
