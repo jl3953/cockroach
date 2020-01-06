@@ -74,7 +74,7 @@ def move_logs(src_logs, dest_logs):
 			"unable to move logs")
 
 
-def gnuplot(gnuplot_script, input_csv, output_graph_dir):
+def gnuplot(gnuplot_script, input_csv, output_graph_dir, trial=None):
 
 	""" Calls gnuplot script on input csv and dumps generated graphs
 	in output_graph_dir.
@@ -84,11 +84,16 @@ def gnuplot(gnuplot_script, input_csv, output_graph_dir):
 		input_csv (str): abs path of input csv file
 		output_graph_dir (str): abs path of directory where output graphs
 			are dumped.
+		trial (int): the trial that this plot belongs to.
 
 	Returns:
 		None.
 	"""
 
-	lib.call("gnuplot -c {0} {1} {2}".format(gnuplot_script, input_csv,
-				output_graph_dir), "gnuplot bash imitation failed")
+	if trial:
+		lib.call("gnuplot -c {0} {1} {2} {3}".format(gnuplot_script, input_csv,
+					output_graph_dir, trial), "gnuplot bash imitation trial failed")
+	else:
+		lib.call("gnuplot -c {0} {1} {2}".format(gnuplot_script, input_csv,
+					output_graph_dir), "gnuplot bash imitiation failed")
 

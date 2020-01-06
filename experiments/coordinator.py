@@ -3,10 +3,14 @@
 import argparse
 import copy
 import configparser
+import collections
+import csv
 import datetime
 import enum
+import json
 import os
 import sys
+import numpy
 
 import bash_imitation
 import exp_lib
@@ -18,6 +22,7 @@ LT_EXECUTABLE = os.path.join(FPATH, "lt_driver.py")
 DRIVER_EXECUTABLE = os.path.join(FPATH, "driver.py")
 LT_GNUPLOT = os.path.join(FPATH, "lt.gp")
 DRIVER_GNUPLOT = os.path.join(FPATH, "plot.gp")
+BOX_AND_WHISKERS = os.path.join(FPATH, "box_and_whiskers.gp")
 
 
 class Stage(enum.Enum):
@@ -187,6 +192,31 @@ def move_logs(baseline_file, dest):
 	bash_imitation.move_logs(src_logs, dest)
 
 
+def calculate_and_output_write_override(param_files, override_file):
+
+	""" Calculates the median concurrency (in param files) and outputs into
+	override_file.
+
+	Args:
+		param_files (list[str]): list of param files
+		override_file (str): output override file
+
+	Returns:
+		None.
+	"""
+
+	concurrencies = []
+	for param_file in param_files:
+		config = configparser.ConfigParser()
+		config.read(param_file)
+
+		concurrencies.append(json.loads(config["benchmark"]["concurrency"]))
+
+	with open(override_file, "w") as f:
+		f.write("[benchmark]\n")
+		f.write("concurrency = " + str(numpy.median(concurrencies)))
+
+
 def driver(baseline_file, override_file, csv_dir, csv_file):
 
 	""" Calls driver script."""
@@ -200,11 +230,79 @@ def driver(baseline_file, override_file, csv_dir, csv_file):
 	lib.call(cmd, "driver script failed")
 
 
+def write_box_and_whiskers(output_csv, curve):
+	
+	with open(output_csv, "w") as f:
+		writer = csv.DictWriter(f, fieldnames=curve[0].keys())
+		writer.writeheader()
+		
+		for box_and_whisker in curve:
+			write.writerow(box_and_whisker)
+
+
+def calculate_box_and_whiskers(output_csv, csvs, x_axis, y_axis):
+
+	
+	group_by_x = collections.defaultdict(lambda:[])
+	for csv_file in csvs:
+		with open(csv_file, "r") as f:
+			reader = csv.DictReader(f):
+				for row in reader:
+					x = float(row[x_axis])
+					point = float(row[y_axis])
+					group_by_x[x].append(point)
+
+	print("jenndebug bawp", bawp)
+
+	plot = []
+	for x, points in group_by_x.iteritems():
+
+		box_and_whisker = {
+			x_axis: x,
+			"whisker_min": min(points),
+			"box_bottom": numpy.percentile(points, 25),
+			"box_middle": numpy.median(points),
+			"box_top": numpy.percentile(points, 75),
+			"whisker_max": max(points),
+		}
+		plot.append(box_and_whisker)
+
+	sorted(plot, key=lambda box_and_whisker: box_and_whisker[x_axis])
+
+	return plot
+
+
+def calculate_and_plot_box_and_whiskers(csvs, csv_dir, graph_dir):
+
+	""" Calculates and plots box and whiskers plot for driver csv files.
+
+	Args:
+		csvs (list[str]): csv files (with p50, tp, etc.)
+
+	Returns:
+		None.
+	"""
+
+	# box and whiskers plot (bawp)
+	tp_bawp = os.path.join(csv_dir, "tp_box_and_whiskers.csv")
+	tp_curve = calculate_box_and_whiskers(csvs, "skew", "op/sec(cum)")
+	write_box_and_whiskers(tp_bawp, tp_curve)
+	bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, tp_bawp, graph_dir)
+
+	p50_bawp = os.path.join(csv_dir, "p50_box_and_whiskers.csv")
+	calculate_box_and_whiskers(p50_bawp, csvs, "skew", "p50(ms)")
+	bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, p50_bawp, graph_dir)
+
+
 def main():
 
 	parser = argparse.ArgumentParser(description="coordinator script for pipeline")
 	parser.add_argument("config", help=".ini file with config params, params.ini")
 	parser.add_argument("lt_config", help=".ini file with latency throughput params")
+	parser.add_argument("--lt_trials", type=int, default=1,
+			help="number of trials to run latency throughput.")
+	parser.add_argument("--driver_trials", type=int, default=1,
+			help="number of trials to run driver script.")
 	parser.add_argument("--start_stage", type=Stage, default=Stage.CREATE_NEW_DIRS, 
 			choices=[stage for stage in Stage],
 			help="which stage to start running at. Useful for testing.")
@@ -248,20 +346,24 @@ def main():
 
 	# file locations
 	override_file = os.path.join(overall_dir, "override.ini")
-	lt_csv = os.path.join(csv_dir, "lt.csv")
-	lt_logs = os.path.join(raw_out_dir, "lt_logs")
-	driver_logs = os.path.join(raw_out_dir, "driver_logs")
-	driver_csv = os.path.join(csv_dir, "driver.csv")
 
 	# stage latency throughput
 	if stage == stage.LATENCY_THROUGHPUT:
 
-		param_output = override_file
-		call_latency_throughput(overall_dir, args.config, args.lt_config,
-				param_output, lt_csv)
-		move_logs(args.config, lt_logs)
-		bash_imitation.gnuplot(LT_GNUPLOT, lt_csv, graph_dir)
-	
+		param_outputs = []
+		for trial in range(args.lt_trials):
+			param_output = os.path.join(overall_dir, "param_trial{0}.ini".format(trial))
+			param_outputs.append(param_output)
+			lt_csv = os.path.join(csv_dir, "lt_trial{0}.csv".format(trial)) 
+			lt_logs = os.path.join(raw_out_dir, "lt_logs_trial{0}".format(trial))
+
+			call_latency_throughput(overall_dir, args.config, args.lt_config,
+					param_output, lt_csv)
+			move_logs(args.config, lt_logs)
+			bash_imitation.gnuplot(LT_GNUPLOT, lt_csv, graph_dir, trial)
+		
+		calculate_and_write_final_override(param_outputs, override_file)
+		
 		if stage == args.end_stage:
 			return 0
 		stage = Stage.next(stage)
@@ -269,12 +371,21 @@ def main():
 	# stage driver
 	if stage == stage.DRIVER:
 
-		# warning: driver script has too many dependencies on the csv_dir
-		# and csv_file being separated for me to bother right now. Implicitly
-		# assume that the abs path is just the joining of the dir and filename.
-		driver(args.config, override_file, csv_dir, "driver.csv")
-		move_logs(args.config, driver_logs)
-		bash_imitation.gnuplot(DRIVER_GNUPLOT, driver_csv, graph_dir)
+		csvs = []
+		for trial in range(args.driver_trials):
+			driver_logs = os.path.join(raw_out_dir, "driver_logs_trial{0}".format(trial))
+			driver_file = "driver_trial{0}.csv".format(trial)
+			driver_csv = os.path.join(csv_dir, driver_file)
+			csvs.append(driver_csv)
+
+			# warning: driver script has too many dependencies on the csv_dir
+			# and csv_file being separated for me to bother right now. Implicitly
+			# assume that the abs path is just the joining of the dir and filename.
+			driver(args.config, override_file, csv_dir, driver_file)
+			move_logs(args.config, driver_logs)
+			bash_imitation.gnuplot(DRIVER_GNUPLOT, driver_csv, graph_dir, trial)
+
+		calculate_and_plot_box_and_whiskers(csvs, driver_csv_final)
 
 	return 0
 
