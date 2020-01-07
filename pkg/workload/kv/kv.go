@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
-	"time"
+	// "time"
 
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
