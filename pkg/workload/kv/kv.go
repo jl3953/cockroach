@@ -325,7 +325,7 @@ func (o *kvOp) run(ctx context.Context) error {
 			argsInt[i] = o.g.readKey()
 		}
 		sort.Sort(byInt(argsInt))
-		//jenndebug hot
+		/* //jenndebug hot
 		// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
 		for i := 0; i < len(argsInt); i++ {
 			if argsInt[i] == 0 || argsInt[i] == 1{
@@ -338,7 +338,7 @@ func (o *kvOp) run(ctx context.Context) error {
 			return nil
 		}
 		// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
-		//jenndebug hot
+		//jenndebug hot */
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = argsInt[i]
@@ -400,7 +400,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		argsInt[i] = o.g.writeKey()
 	}
 	sort.Sort(byInt(argsInt))
-	//jenndebug hot
+	/* //jenndebug hot
 	// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
 	for i := 0; i < len(argsInt); i++ {
 		if argsInt[i] == 0 || argsInt[i] == 1 {
@@ -413,7 +413,7 @@ func (o *kvOp) run(ctx context.Context) error {
 		return nil
 	}
 	// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
-	//jenndebug hot
+	//jenndebug hot */
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
 		j := i * argCount
