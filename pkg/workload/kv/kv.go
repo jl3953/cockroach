@@ -325,9 +325,14 @@ func (o *kvOp) run(ctx context.Context) error {
 		}
 		sort.Sort(byInt(argsInt))
 		args := make([]interface{}, o.config.batchSize)
+		fmt.Printf("jenndebug hot before replacement %+v", argsInt)
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = argsInt[i]
+			if args[i] == 0 { //jenndebug hot
+				args[i] = argsInt[len(argsInt) - 1]
+			} //jenndebug hot
 		}
+		fmt.Printf("jenndebug hot after replacement %+v", argsInt)
 		//jenndebug comment out if not testing
 		/* args[0] = 0
 		args[1] = 214 //math.MaxInt64-1
@@ -390,6 +395,9 @@ func (o *kvOp) run(ctx context.Context) error {
 		j := i * argCount
 		args[j+0] = argsInt[i]
 		args[j+1] = randomBlock(o.config, o.g.rand())
+		if args[j+0] == 0 { //jenndebug hot
+			args[j+0] = argsInt[len(argsInt) - 1]
+		} //jenndebug hot
 	} //jenndebug
 	//if rand.Intn(2) == 0 {
 	//if true {
