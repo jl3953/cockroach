@@ -627,14 +627,14 @@ func splitBatchAndCheckForRefreshSpans(
 	parts := ba.Split(canSplitET)
 
 	// jenndebug
-	log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
+	/* // log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
 
 	warm := make([]roachpb.RequestUnion, 0)
 	hot := make([]roachpb.RequestUnion, 0)
 	for _, part := range parts {
 		for _, requestUnion := range part {
 			// if it's a write from me
-			log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key.String())
+			// log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key.String())
 			if strings.Contains(requestUnion.GetInner().Header().Key.String(), "/Table/53/1/0") {
 				//log.Warningf(context.Background(), "jenndebug move it\n")
 				hot = append(hot, requestUnion)
@@ -652,7 +652,7 @@ func splitBatchAndCheckForRefreshSpans(
 		parts[0] = warm
 		parts = append(parts, hot)
 		// log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
-	}
+	}*/
 
 	//jenndebug
 
@@ -733,11 +733,11 @@ func (ds *DistSender) Send(
 		splitET = true
 	}
 	parts := splitBatchAndCheckForRefreshSpans(ba, splitET)
-	debugStr := ""
+	/*debugStr := ""
 	for _, part := range parts {
 		debugStr += fmt.Sprintf(", part: [%+v]", part)
 	}
-	log.Warningf(ctx, "jenndebug %s\n", debugStr)
+	log.Warningf(ctx, "jenndebug %s\n", debugStr)*/
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
 		// Such a batch should never need splitting.
