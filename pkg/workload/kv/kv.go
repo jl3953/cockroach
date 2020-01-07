@@ -23,6 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
+	"time"
 
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
@@ -332,6 +333,10 @@ func (o *kvOp) run(ctx context.Context) error {
 			}
 		}
 		sort.Sort(byInt(argsInt))
+		if argsInt[0] == 0 || argsInt[0] == 1 {
+			o.hists.Get(`read`).Record(0 * time.Millisecond)
+			return nil
+		}
 		// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
 		//jenndebug hot
 		args := make([]interface{}, o.config.batchSize)
@@ -403,6 +408,10 @@ func (o *kvOp) run(ctx context.Context) error {
 		}
 	}
 	sort.Sort(byInt(argsInt))
+	if argsInt[0] == 0 || argsInt[0] == 1 {
+		o.hists.Get(`write`).Record(0 * time.Millisecond)
+		return nil
+	}
 	// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
 	//jenndebug hot
 	args := make([]interface{}, argCount*o.config.batchSize)
