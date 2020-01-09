@@ -15,9 +15,8 @@ func generate_filename(prepend string, s float64) string {
 func main() {
 
 	accesses := 10000
-	max := uint64(1000000)
-	//skews := []float64{0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99, 1.1, 1.2}
-	skews := []float64{2.0}
+	max := uint64(100000000)
+	skews := []float64{0.5, 0.6, 0.7, 0.8, 0.9, 0.99, 1.1, 1.2, 1.3, 1.4, 1.5}
 
 	for _, s := range skews {
 		random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
