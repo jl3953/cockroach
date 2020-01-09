@@ -1,6 +1,7 @@
 set terminal png
 
 set xlabel "key in [0 to 10^9)"
+set logscale x
 
 set ylabel "pdf"
 set output "pdf0-0.3.png"
