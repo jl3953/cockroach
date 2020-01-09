@@ -818,6 +818,7 @@ func (ds *DistSender) Send(
 		reply.BatchResponse_Header = lastHeader
 	}
 
+	log.Warningf(ctx, "jenndebug reply [%+v], pErr [%+v]\n", reply, pErr)
 	return reply, pErr
 }
 
