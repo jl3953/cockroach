@@ -3,7 +3,6 @@
 import argparse
 import exp_lib
 import lib
-import logs
 import os
 import plotlib
 import configparser
