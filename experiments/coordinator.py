@@ -157,7 +157,7 @@ def copy_and_create_metadata(location, config_file):
 
 def call_latency_throughput(location, baseline_file, lt_file, params_file, csv_file):
 
-	""" Calls the latency throughput script and plots its csv files.
+	""" Calls the latency throughput script.
 
 	Args:
 		location (str): absolute path of location directory.
@@ -174,9 +174,6 @@ def call_latency_throughput(location, baseline_file, lt_file, params_file, csv_f
 	cmd = "{0} {1} {2} {3} {4}".format(
 			LT_EXECUTABLE, baseline_file, lt_file, params_file, csv_file)
 	lib.call(cmd, "lt_driver script failed")
-
-	# plot its csv
-	
 
 
 def move_logs(baseline_file, dest):
