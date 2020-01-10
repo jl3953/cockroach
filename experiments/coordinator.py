@@ -18,6 +18,7 @@ import lib
 
 
 FPATH = os.path.dirname(os.path.realpath(__file__))
+COPYALL_SH = os.path.join(FPATH, "copyall.sh")
 LT_EXECUTABLE = os.path.join(FPATH, "lt_driver.py")
 DRIVER_EXECUTABLE = os.path.join(FPATH, "driver.py")
 LT_GNUPLOT = os.path.join(FPATH, "lt.gp")
@@ -139,6 +140,10 @@ def copy_and_create_metadata(location, config_file):
 	# copy parameter file
 	cmd = "cp {0} {1}".format(config_file, os.path.join(location, "params.ini"))
 	lib.call(cmd, "could not copy params file.")
+
+	# copy "copyall.sh" script
+	cmd = "cp {0} {1}".format(COPYALL_SH, os.path.join(location, "copyall.sh"))
+	lib.call(cmd, "could not copy copyall.sh")
 
 	# create git hash file
 	with open(os.path.join(location, "git_commit_hash.txt"), "w") as f:
