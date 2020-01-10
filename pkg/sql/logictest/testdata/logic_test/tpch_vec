@@ -1,5 +1,7 @@
 # LogicTest: local-vec
 
+# Note that statistics are populated for TPCH Scale Factor 1.
+
 statement ok
 CREATE TABLE public.region
 (
@@ -7,6 +9,28 @@ CREATE TABLE public.region
     r_name char(25) NOT NULL,
     r_comment varchar(152)
 )
+
+statement ok
+ALTER TABLE public.region INJECT STATISTICS '[
+  {
+    "columns": ["r_regionkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 5,
+    "distinct_count": 5
+  },
+  {
+    "columns": ["r_name"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 5,
+    "distinct_count": 5
+  },
+  {
+    "columns": ["r_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 5,
+    "distinct_count": 5
+  }
+]'
 
 statement ok
 CREATE TABLE public.nation
@@ -18,6 +42,34 @@ CREATE TABLE public.nation
     INDEX n_rk (n_regionkey ASC),
     CONSTRAINT nation_fkey_region FOREIGN KEY (n_regionkey) references public.region (r_regionkey)
 )
+
+statement ok
+ALTER TABLE public.nation INJECT STATISTICS '[
+  {
+    "columns": ["n_nationkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 25,
+    "distinct_count": 25
+  },
+  {
+    "columns": ["n_name"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 25,
+    "distinct_count": 25
+  },
+  {
+    "columns": ["n_regionkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 25,
+    "distinct_count": 5
+  },
+  {
+    "columns": ["n_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 25,
+    "distinct_count": 25
+  }
+]'
 
 statement ok
 CREATE TABLE public.supplier
@@ -34,6 +86,52 @@ CREATE TABLE public.supplier
 )
 
 statement ok
+ALTER TABLE public.supplier INJECT STATISTICS '[
+  {
+    "columns": ["s_suppkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 10000,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["s_name"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 10000,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["s_address"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 10000,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["s_nationkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 10000,
+    "distinct_count": 25
+  },
+  {
+    "columns": ["s_phone"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 10000,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["s_acctbal"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 10000,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["s_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 10000,
+    "distinct_count": 10000
+  }
+]'
+
+statement ok
 CREATE TABLE public.part
 (
     p_partkey int PRIMARY KEY,
@@ -48,6 +146,64 @@ CREATE TABLE public.part
 )
 
 statement ok
+ALTER TABLE public.part INJECT STATISTICS '[
+  {
+    "columns": ["p_partkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 200000
+  },
+  {
+    "columns": ["p_name"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 200000
+  },
+  {
+    "columns": ["p_mfgr"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 5
+  },
+  {
+    "columns": ["p_brand"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 25
+  },
+  {
+    "columns": ["p_type"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 150
+  },
+  {
+    "columns": ["p_size"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 50
+  },
+  {
+    "columns": ["p_container"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 40
+  },
+  {
+    "columns": ["p_retailprice"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 20000
+  },
+  {
+    "columns": ["p_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 200000,
+    "distinct_count": 130000
+  }
+]'
+
+statement ok
 CREATE TABLE public.partsupp
 (
     ps_partkey int NOT NULL,
@@ -60,6 +216,40 @@ CREATE TABLE public.partsupp
     CONSTRAINT partsupp_fkey_part FOREIGN KEY (ps_partkey) references public.part (p_partkey),
     CONSTRAINT partsupp_fkey_supplier FOREIGN KEY (ps_suppkey) references public.supplier (s_suppkey)
 )
+
+statement ok
+ALTER TABLE public.partsupp INJECT STATISTICS '[
+  {
+    "columns": ["ps_partkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 800000,
+    "distinct_count": 200000
+  },
+  {
+    "columns": ["ps_suppkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 800000,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["ps_availqty"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 800000,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["ps_supplycost"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 800000,
+    "distinct_count": 100000
+  },
+  {
+    "columns": ["ps_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 800000,
+    "distinct_count": 800000
+  }
+]'
 
 statement ok
 CREATE TABLE public.customer
@@ -77,6 +267,58 @@ CREATE TABLE public.customer
 )
 
 statement ok
+ALTER TABLE public.customer INJECT STATISTICS '[
+  {
+    "columns": ["c_custkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 150000
+  },
+  {
+    "columns": ["c_name"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 150000
+  },
+  {
+    "columns": ["c_address"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 150000
+  },
+  {
+    "columns": ["c_nationkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 25
+  },
+  {
+    "columns": ["c_phone"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 150000
+  },
+  {
+    "columns": ["c_acctbal"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 150000
+  },
+  {
+    "columns": ["c_mktsegment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 5
+  },
+  {
+    "columns": ["c_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 150000,
+    "distinct_count": 150000
+  }
+]'
+
+statement ok
 CREATE TABLE public.orders
 (
     o_orderkey int PRIMARY KEY,
@@ -92,6 +334,64 @@ CREATE TABLE public.orders
     INDEX o_od (o_orderdate ASC),
     CONSTRAINT orders_fkey_customer FOREIGN KEY (o_custkey) references public.customer (c_custkey)
 )
+
+statement ok
+ALTER TABLE public.orders INJECT STATISTICS '[
+  {
+    "columns": ["o_orderkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 1500000
+  },
+  {
+    "columns": ["o_custkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 100000
+  },
+  {
+    "columns": ["o_orderstatus"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 3
+  },
+  {
+    "columns": ["o_totalprice"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 1500000
+  },
+  {
+    "columns": ["o_orderdate"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 2500
+  },
+  {
+    "columns": ["o_orderpriority"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 5
+  },
+  {
+    "columns": ["o_clerk"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 1000
+  },
+  {
+    "columns": ["o_shippriority"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 1
+  },
+  {
+    "columns": ["o_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 1500000,
+    "distinct_count": 1500000
+  }
+]'
 
 statement ok
 CREATE TABLE public.lineitem
@@ -126,270 +426,344 @@ CREATE TABLE public.lineitem
     CONSTRAINT lineitem_fkey_supplier FOREIGN KEY (l_suppkey) references public.supplier (s_suppkey)
 )
 
+statement ok
+ALTER TABLE public.lineitem INJECT STATISTICS '[
+  {
+    "columns": ["l_orderkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 1500000
+  },
+  {
+    "columns": ["l_partkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 200000
+  },
+  {
+    "columns": ["l_suppkey"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 10000
+  },
+  {
+    "columns": ["l_linenumber"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 7
+  },
+  {
+    "columns": ["l_quantity"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 50
+  },
+  {
+    "columns": ["l_extendedprice"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 1000000
+  },
+  {
+    "columns": ["l_discount"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 11
+  },
+  {
+    "columns": ["l_tax"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 9
+  },
+  {
+    "columns": ["l_returnflag"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 3
+  },
+  {
+    "columns": ["l_linestatus"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 2
+  },
+  {
+    "columns": ["l_shipdate"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 2500
+  },
+  {
+    "columns": ["l_commitdate"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 2500
+  },
+  {
+    "columns": ["l_receiptdate"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 2500
+  },
+  {
+    "columns": ["l_shipinstruct"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 4
+  },
+  {
+    "columns": ["l_shipmode"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 7
+  },
+  {
+    "columns": ["l_comment"],
+    "created_at": "2018-01-01 1:00:00.00000+00:00",
+    "row_count": 6001215,
+    "distinct_count": 4500000
+  }
+]'
 
 # Query 1
 query T
 EXPLAIN (VEC) SELECT l_returnflag, l_linestatus, sum(l_quantity) AS sum_qty, sum(l_extendedprice) AS sum_base_price, sum(l_extendedprice * (1 - l_discount)) AS sum_disc_price, sum(l_extendedprice * (1 - l_discount) * (1 + l_tax)) AS sum_charge, avg(l_quantity) AS avg_qty, avg(l_extendedprice) AS avg_price, avg(l_discount) AS avg_disc, count(*) AS count_order FROM lineitem WHERE l_shipdate <= DATE '1998-12-01' - INTERVAL '90' DAY GROUP BY l_returnflag, l_linestatus ORDER BY l_returnflag, l_linestatus
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.orderedAggregator
-                └── *exec.distinctChainOps
-                     └── *exec.sortedDistinctBytesOp
-                          └── exec.fnOp
-                               └── *exec.sortOp
-                                    └── *exec.allSpooler
-                                         └── *exec.simpleProjectOp
-                                              └── *exec.projMultFloat64Float64Op
-                                                   └── *exec.projPlusFloat64Float64ConstOp
-                                                        └── *exec.projMultFloat64Float64Op
-                                                             └── *exec.projMinusFloat64ConstFloat64Op
-                                                                  └── *exec.projMultFloat64Float64Op
-                                                                       └── *exec.projMinusFloat64ConstFloat64Op
-                                                                            └── *exec.selLEInt64Int64ConstOp
-                                                                                 └── *exec.CancelChecker
-                                                                                      └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.orderedAggregator
+      └ *exec.hashGrouper
+        └ *exec.projMultFloat64Float64Op
+          └ *exec.projPlusFloat64Float64ConstOp
+            └ *exec.projMultFloat64Float64Op
+              └ *exec.projMinusFloat64ConstFloat64Op
+                └ *exec.projMultFloat64Float64Op
+                  └ *exec.projMinusFloat64ConstFloat64Op
+                    └ *exec.selLEInt64Int64ConstOp
+                      └ *distsqlrun.colBatchScan
 
 # Query 2
 query T
 EXPLAIN (VEC) SELECT s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment FROM part, supplier, partsupp, nation, region WHERE p_partkey = ps_partkey AND s_suppkey = ps_suppkey AND p_size = 15 AND p_type LIKE '%BRASS' AND s_nationkey = n_nationkey AND n_regionkey = r_regionkey AND r_name = 'EUROPE' AND ps_supplycost = ( SELECT min(ps_supplycost) FROM partsupp, supplier, nation, region WHERE p_partkey = ps_partkey AND s_suppkey = ps_suppkey AND s_nationkey = n_nationkey AND n_regionkey = r_regionkey AND r_name = 'EUROPE') ORDER BY s_acctbal DESC, n_name, s_name, p_partkey LIMIT 100
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.limitOp
-                └── *exec.simpleProjectOp
-                     └── *exec.topKSorter
-                          └── *exec.selEQFloat64Float64Op
-                               └── *exec.orderedAggregator
-                                    └── *exec.hashGrouper
-                                         └── *exec.simpleProjectOp
-                                              └── *exec.hashJoinEqOp
-                                                   ├── *exec.hashJoinEqOp
-                                                   │    ├── *exec.simpleProjectOp
-                                                   │    │    └── *exec.CancelChecker
-                                                   │    │         └── *distsqlrun.colBatchScan
-                                                   │    └── *exec.hashJoinEqOp
-                                                   │         ├── *exec.simpleProjectOp
-                                                   │         │    └── *exec.CancelChecker
-                                                   │         │         └── *distsqlrun.colBatchScan
-                                                   │         └── *distsqlrun.columnarizer
-                                                   └── *exec.hashJoinEqOp
-                                                        ├── *exec.hashJoinEqOp
-                                                        │    ├── *exec.simpleProjectOp
-                                                        │    │    └── *exec.CancelChecker
-                                                        │    │         └── *distsqlrun.colBatchScan
-                                                        │    └── *exec.hashJoinEqOp
-                                                        │         ├── *exec.CancelChecker
-                                                        │         │    └── *distsqlrun.colBatchScan
-                                                        │         └── *distsqlrun.columnarizer
-                                                        └── *exec.simpleProjectOp
-                                                             └── *exec.selSuffixBytesBytesConstOp
-                                                                  └── *exec.selEQInt64Int64ConstOp
-                                                                       └── *exec.CancelChecker
-                                                                            └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.limitOp
+    └ *exec.topKSorter
+      └ *exec.selEQFloat64Float64Op
+        └ *exec.orderedAggregator
+          └ *exec.hashGrouper
+            └ *exec.hashJoinEqOp
+              ├ *exec.hashJoinEqOp
+              │ ├ *distsqlrun.colBatchScan
+              │ └ *distsqlrun.joinReader
+              │   └ *distsqlrun.joinReader
+              │     └ *exec.selEQBytesBytesConstOp
+              │       └ *distsqlrun.colBatchScan
+              └ *exec.hashJoinEqOp
+                ├ *exec.hashJoinEqOp
+                │ ├ *distsqlrun.colBatchScan
+                │ └ *exec.hashJoinEqOp
+                │   ├ *distsqlrun.colBatchScan
+                │   └ *exec.hashJoinEqOp
+                │     ├ *distsqlrun.colBatchScan
+                │     └ *exec.selEQBytesBytesConstOp
+                │       └ *distsqlrun.colBatchScan
+                └ *exec.selSuffixBytesBytesConstOp
+                  └ *exec.selEQInt64Int64ConstOp
+                    └ *distsqlrun.colBatchScan
 
 # Query 3
 query T
 EXPLAIN (VEC) SELECT l_orderkey, sum(l_extendedprice * (1 - l_discount)) AS revenue, o_orderdate, o_shippriority FROM customer, orders, lineitem WHERE c_mktsegment = 'BUILDING' AND c_custkey = o_custkey AND l_orderkey = o_orderkey AND o_orderDATE < DATE '1995-03-15' AND l_shipdate > DATE '1995-03-15' GROUP BY l_orderkey, o_orderdate, o_shippriority ORDER BY revenue DESC, o_orderdate LIMIT 10
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.limitOp
-                └── *exec.topKSorter
-                     └── *exec.orderedAggregator
-                          └── *exec.hashGrouper
-                               └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.limitOp
+    └ *exec.topKSorter
+      └ *exec.orderedAggregator
+        └ *exec.hashGrouper
+          └ *distsqlrun.joinReader
+            └ *exec.hashJoinEqOp
+              ├ *exec.selLTInt64Int64ConstOp
+              │ └ *distsqlrun.colBatchScan
+              └ *exec.selEQBytesBytesConstOp
+                └ *distsqlrun.colBatchScan
 
 # Query 4
 query T
 EXPLAIN (VEC) SELECT o_orderpriority, count(*) AS order_count FROM orders WHERE o_orderdate >= DATE '1993-07-01' AND o_orderdate < DATE '1993-07-01' + INTERVAL '3' MONTH AND EXISTS ( SELECT * FROM lineitem WHERE l_orderkey = o_orderkey AND l_commitDATE < l_receiptdate) GROUP BY o_orderpriority ORDER BY o_orderpriority
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.sortOp
-                └── *exec.allSpooler
-                     └── *exec.orderedAggregator
-                          └── *exec.hashGrouper
-                               └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.orderedAggregator
+      └ *exec.hashGrouper
+        └ *exec.hashJoinEqOp
+          ├ *distsqlrun.indexJoiner
+          │ └ *distsqlrun.colBatchScan
+          └ *exec.selLTInt64Int64Op
+            └ *distsqlrun.colBatchScan
 
 # Query 5
 query T
 EXPLAIN (VEC) SELECT n_name, sum(l_extendedprice * (1 - l_discount)) AS revenue FROM customer, orders, lineitem, supplier, nation, region WHERE c_custkey = o_custkey AND l_orderkey = o_orderkey AND l_suppkey = s_suppkey AND c_nationkey = s_nationkey AND s_nationkey = n_nationkey AND n_regionkey = r_regionkey AND r_name = 'ASIA' AND o_orderDATE >= DATE '1994-01-01' AND o_orderDATE < DATE '1994-01-01' + INTERVAL '1' YEAR GROUP BY n_name ORDER BY revenue DESC
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.sortOp
-                └── *exec.allSpooler
-                     └── *exec.orderedAggregator
-                          └── *exec.hashGrouper
-                               └── *exec.simpleProjectOp
-                                    └── *exec.projMultFloat64Float64Op
-                                         └── *exec.projMinusFloat64ConstFloat64Op
-                                              └── *exec.hashJoinEqOp
-                                                   ├── *exec.hashJoinEqOp
-                                                   │    ├── *exec.hashJoinEqOp
-                                                   │    │    ├── *exec.simpleProjectOp
-                                                   │    │    │    └── *exec.CancelChecker
-                                                   │    │    │         └── *distsqlrun.colBatchScan
-                                                   │    │    └── *exec.hashJoinEqOp
-                                                   │    │         ├── *exec.simpleProjectOp
-                                                   │    │         │    └── *exec.CancelChecker
-                                                   │    │         │         └── *distsqlrun.colBatchScan
-                                                   │    │         └── *distsqlrun.columnarizer
-                                                   │    └── *exec.simpleProjectOp
-                                                   │         └── *exec.selLTInt64Int64ConstOp
-                                                   │              └── *exec.selGEInt64Int64ConstOp
-                                                   │                   └── *exec.CancelChecker
-                                                   │                        └── *distsqlrun.colBatchScan
-                                                   └── *exec.simpleProjectOp
-                                                        └── *exec.CancelChecker
-                                                             └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.orderedAggregator
+      └ *exec.hashGrouper
+        └ *exec.projMultFloat64Float64Op
+          └ *exec.projMinusFloat64ConstFloat64Op
+            └ *exec.hashJoinEqOp
+              ├ *exec.hashJoinEqOp
+              │ ├ *exec.hashJoinEqOp
+              │ │ ├ *distsqlrun.colBatchScan
+              │ │ └ *distsqlrun.joinReader
+              │ │   └ *exec.hashJoinEqOp
+              │ │     ├ *distsqlrun.colBatchScan
+              │ │     └ *exec.selEQBytesBytesConstOp
+              │ │       └ *distsqlrun.colBatchScan
+              │ └ *distsqlrun.indexJoiner
+              │   └ *distsqlrun.colBatchScan
+              └ *distsqlrun.colBatchScan
 
 # Query 6
 query T
 EXPLAIN (VEC) SELECT sum(l_extendedprice * l_discount) AS revenue FROM lineitem WHERE l_shipdate >= DATE '1994-01-01' AND l_shipdate < DATE '1994-01-01' + INTERVAL '1' YEAR AND l_discount BETWEEN 0.06 - 0.01 AND 0.06 + 0.01 AND l_quantity < 24
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.orderedAggregator
-                └── *exec.oneShotOp
-                     └── *exec.distinctChainOps
-                          └── *exec.simpleProjectOp
-                               └── *exec.projMultFloat64Float64Op
-                                    └── *exec.selLTFloat64Float64ConstOp
-                                         └── *exec.selLTInt64Int64ConstOp
-                                              └── *exec.selGEInt64Int64ConstOp
-                                                   └── *exec.selLEFloat64Float64ConstOp
-                                                        └── *exec.selGEFloat64Float64ConstOp
-                                                             └── *exec.CancelChecker
-                                                                  └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.orderedAggregator
+    └ *exec.oneShotOp
+      └ *exec.distinctChainOps
+        └ *distsqlrun.indexJoiner
+          └ *distsqlrun.colBatchScan
 
 # Query 7
 query T
 EXPLAIN (VEC) SELECT supp_nation, cust_nation, l_year, sum(volume) AS revenue FROM ( SELECT n1.n_name AS supp_nation, n2.n_name AS cust_nation, EXTRACT(year FROM l_shipdate) AS l_year, l_extendedprice * (1 - l_discount) AS volume FROM supplier, lineitem, orders, customer, nation n1, nation n2 WHERE s_suppkey = l_suppkey AND o_orderkey = l_orderkey AND c_custkey = o_custkey AND s_nationkey = n1.n_nationkey AND c_nationkey = n2.n_nationkey AND ( (n1.n_name = 'FRANCE' AND n2.n_name = 'GERMANY') or (n1.n_name = 'GERMANY' AND n2.n_name = 'FRANCE')) AND l_shipdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31') AS shipping GROUP BY supp_nation, cust_nation, l_year ORDER BY supp_nation, cust_nation, l_year
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.orderedAggregator
-                └── *exec.distinctChainOps
-                     └── *exec.sortedDistinctBytesOp
-                          └── *exec.sortedDistinctBytesOp
-                               └── exec.fnOp
-                                    └── *exec.sortOp
-                                         └── *exec.allSpooler
-                                              └── *exec.simpleProjectOp
-                                                   └── *exec.projMultFloat64Float64Op
-                                                        └── *exec.projMinusFloat64ConstFloat64Op
-                                                             └── *exec.defaultBuiltinFuncOperator
-                                                                  └── *exec.constBytesOp
-                                                                       └── *exec.hashJoinEqOp
-                                                                            ├── *exec.hashJoinEqOp
-                                                                            │    ├── *exec.hashJoinEqOp
-                                                                            │    │    ├── *exec.hashJoinEqOp
-                                                                            │    │    │    ├── *exec.simpleProjectOp
-                                                                            │    │    │    │    └── *exec.CancelChecker
-                                                                            │    │    │    │         └── *distsqlrun.colBatchScan
-                                                                            │    │    │    └── *exec.simpleProjectOp
-                                                                            │    │    │         └── *exec.CancelChecker
-                                                                            │    │    │              └── *distsqlrun.colBatchScan
-                                                                            │    │    └── *exec.simpleProjectOp
-                                                                            │    │         └── *exec.boolVecToSelOp
-                                                                            │    │              └── *exec.selBoolOp
-                                                                            │    │                   └── *exec.caseOp
-                                                                            │    │                        └── *exec.bufferOp
-                                                                            │    │                             └── *exec.hashJoinEqOp
-                                                                            │    │                                  ├── *exec.simpleProjectOp
-                                                                            │    │                                  │    └── *exec.CancelChecker
-                                                                            │    │                                  │         └── *distsqlrun.colBatchScan
-                                                                            │    │                                  └── *exec.simpleProjectOp
-                                                                            │    │                                       └── *exec.CancelChecker
-                                                                            │    │                                            └── *distsqlrun.colBatchScan
-                                                                            │    └── *exec.simpleProjectOp
-                                                                            │         └── *exec.selLEInt64Int64ConstOp
-                                                                            │              └── *exec.selGEInt64Int64ConstOp
-                                                                            │                   └── *exec.CancelChecker
-                                                                            │                        └── *distsqlrun.colBatchScan
-                                                                            └── *exec.simpleProjectOp
-                                                                                 └── *exec.CancelChecker
-                                                                                      └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.orderedAggregator
+      └ *exec.hashGrouper
+        └ *exec.projMultFloat64Float64Op
+          └ *exec.projMinusFloat64ConstFloat64Op
+            └ *exec.defaultBuiltinFuncOperator
+              └ *exec.constBytesOp
+                └ *exec.hashJoinEqOp
+                  ├ *distsqlrun.joinReader
+                  │ └ *distsqlrun.joinReader
+                  │   └ *distsqlrun.joinReader
+                  │     └ *exec.caseOp
+                  │       ├ *exec.hashJoinEqOp
+                  │       │ ├ *distsqlrun.colBatchScan
+                  │       │ └ *distsqlrun.colBatchScan
+                  │       ├ *exec.constBoolOp
+                  │       │ └ *exec.andOp
+                  │       │   └ *exec.projEQBytesBytesConstOp
+                  │       │     └ *exec.projEQBytesBytesConstOp
+                  │       ├ *exec.constBoolOp
+                  │       │ └ *exec.andOp
+                  │       │   └ *exec.projEQBytesBytesConstOp
+                  │       │     └ *exec.projEQBytesBytesConstOp
+                  │       └ *exec.constBoolOp
+                  └ *distsqlrun.colBatchScan
 
 # Query 8
 query T
 EXPLAIN (VEC) SELECT o_year, sum(CASE WHEN nation = 'BRAZIL' THEN volume ELSE 0 END) / sum(volume) AS mkt_share FROM ( SELECT EXTRACT(year FROM o_orderdate) AS o_year, l_extendedprice * (1 - l_discount) AS volume, n2.n_name AS nation FROM part, supplier, lineitem, orders, customer, nation n1, nation n2, region WHERE p_partkey = l_partkey AND s_suppkey = l_suppkey AND l_orderkey = o_orderkey AND o_custkey = c_custkey AND c_nationkey = n1.n_nationkey AND n1.n_regionkey = r_regionkey AND r_name = 'AMERICA' AND s_nationkey = n2.n_nationkey AND o_orderdate BETWEEN DATE '1995-01-01' AND DATE '1996-12-31' AND p_type = 'ECONOMY ANODIZED STEEL') AS all_nations GROUP BY o_year ORDER BY o_year
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.simpleProjectOp
-                └── *exec.sortOp
-                     └── *exec.allSpooler
-                          └── *exec.simpleProjectOp
-                               └── *exec.projDivFloat64Float64Op
-                                    └── *exec.orderedAggregator
-                                         └── *exec.hashGrouper
-                                              └── *exec.simpleProjectOp
-                                                   └── *exec.caseOp
-                                                        └── *exec.bufferOp
-                                                             └── *exec.noopOperator
-                                                                  └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.projDivFloat64Float64Op
+      └ *exec.orderedAggregator
+        └ *exec.hashGrouper
+          └ *exec.caseOp
+            ├ *exec.projMultFloat64Float64Op
+            │ └ *exec.projMinusFloat64ConstFloat64Op
+            │   └ *exec.defaultBuiltinFuncOperator
+            │     └ *exec.constBytesOp
+            │       └ *exec.hashJoinEqOp
+            │         ├ *exec.hashJoinEqOp
+            │         │ ├ *exec.hashJoinEqOp
+            │         │ │ ├ *distsqlrun.colBatchScan
+            │         │ │ └ *exec.hashJoinEqOp
+            │         │ │   ├ *exec.hashJoinEqOp
+            │         │ │   │ ├ *distsqlrun.joinReader
+            │         │ │   │ │ └ *distsqlrun.joinReader
+            │         │ │   │ │   └ *exec.selEQBytesBytesConstOp
+            │         │ │   │ │     └ *distsqlrun.colBatchScan
+            │         │ │   │ └ *distsqlrun.colBatchScan
+            │         │ │   └ *exec.selLEInt64Int64ConstOp
+            │         │ │     └ *exec.selGEInt64Int64ConstOp
+            │         │ │       └ *distsqlrun.colBatchScan
+            │         │ └ *distsqlrun.colBatchScan
+            │         └ *exec.selEQBytesBytesConstOp
+            │           └ *distsqlrun.colBatchScan
+            ├ *exec.projEQBytesBytesConstOp
+            └ *exec.constFloat64Op
 
 # Query 9
 query T
 EXPLAIN (VEC) SELECT nation, o_year, sum(amount) AS sum_profit FROM ( SELECT n_name AS nation, EXTRACT(year FROM o_orderdate) AS o_year, l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity AS amount FROM part, supplier, lineitem, partsupp, orders, nation WHERE s_suppkey = l_suppkey AND ps_suppkey = l_suppkey AND ps_partkey = l_partkey AND p_partkey = l_partkey AND o_orderkey = l_orderkey AND s_nationkey = n_nationkey AND p_name LIKE '%green%') AS profit GROUP BY nation, o_year ORDER BY nation, o_year DESC
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.sortOp
-                └── *exec.allSpooler
-                     └── *exec.orderedAggregator
-                          └── *exec.hashGrouper
-                               └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.orderedAggregator
+      └ *exec.hashGrouper
+        └ *distsqlrun.joinReader
+          └ *exec.hashJoinEqOp
+            ├ *exec.hashJoinEqOp
+            │ ├ *distsqlrun.joinReader
+            │ │ └ *distsqlrun.joinReader
+            │ │   └ *distsqlrun.joinReader
+            │ │     └ *distsqlrun.colBatchScan
+            │ └ *distsqlrun.colBatchScan
+            └ *distsqlrun.colBatchScan
 
 # Query 10
 query T
 EXPLAIN (VEC) SELECT c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) AS revenue, c_acctbal, n_name, c_address, c_phone, c_comment FROM customer, orders, lineitem, nation WHERE c_custkey = o_custkey AND l_orderkey = o_orderkey AND o_orderDATE >= DATE '1993-10-01' AND o_orderDATE < DATE '1993-10-01' + INTERVAL '3' MONTH AND l_returnflag = 'R' AND c_nationkey = n_nationkey GROUP BY c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment ORDER BY revenue DESC LIMIT 20
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.limitOp
-                └── *exec.simpleProjectOp
-                     └── *exec.topKSorter
-                          └── *exec.orderedAggregator
-                               └── *exec.hashGrouper
-                                    └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.limitOp
+    └ *exec.topKSorter
+      └ *exec.orderedAggregator
+        └ *exec.hashGrouper
+          └ *distsqlrun.joinReader
+            └ *exec.hashJoinEqOp
+              ├ *exec.hashJoinEqOp
+              │ ├ *distsqlrun.colBatchScan
+              │ └ *distsqlrun.indexJoiner
+              │   └ *distsqlrun.colBatchScan
+              └ *distsqlrun.colBatchScan
 
 # Query 11
 query T
 EXPLAIN (VEC) SELECT ps_partkey, sum(ps_supplycost * ps_availqty::float) AS value FROM partsupp, supplier, nation WHERE ps_suppkey = s_suppkey AND s_nationkey = n_nationkey AND n_name = 'GERMANY' GROUP BY ps_partkey HAVING sum(ps_supplycost * ps_availqty::float) > ( SELECT sum(ps_supplycost * ps_availqty::float) * 0.0001 FROM partsupp, supplier, nation WHERE ps_suppkey = s_suppkey AND s_nationkey = n_nationkey AND n_name = 'GERMANY') ORDER BY value DESC
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.sortOp
-                └── *exec.allSpooler
-                     └── *exec.simpleProjectOp
-                          └── *exec.selGTFloat64Float64Op
-                               └── *exec.castOpNullAny
-                                    └── *exec.constNullOp
-                                         └── *exec.orderedAggregator
-                                              └── *exec.hashGrouper
-                                                   └── *exec.simpleProjectOp
-                                                        └── *exec.projMultFloat64Float64Op
-                                                             └── *exec.castOpInt64Float64
-                                                                  └── *exec.hashJoinEqOp
-                                                                       ├── *exec.simpleProjectOp
-                                                                       │    └── *exec.CancelChecker
-                                                                       │         └── *distsqlrun.colBatchScan
-                                                                       └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.selGTFloat64Float64Op
+      └ *exec.castOpNullAny
+        └ *exec.constNullOp
+          └ *exec.orderedAggregator
+            └ *exec.hashGrouper
+              └ *distsqlrun.joinReader
+                └ *distsqlrun.joinReader
+                  └ *distsqlrun.joinReader
+                    └ *exec.selEQBytesBytesConstOp
+                      └ *distsqlrun.colBatchScan
 
 # Query 12
 query error unable to vectorize execution plan: sum on int cols not supported
@@ -399,53 +773,40 @@ EXPLAIN (VEC) SELECT l_shipmode, sum(CASE WHEN o_orderpriority = '1-URGENT' or o
 query T
 EXPLAIN (VEC) SELECT c_count, count(*) AS custdist FROM ( SELECT c_custkey, count(o_orderkey) AS c_count FROM customer LEFT OUTER JOIN orders ON c_custkey = o_custkey AND o_comment NOT LIKE '%special%requests%' GROUP BY c_custkey) AS c_orders GROUP BY c_count ORDER BY custdist DESC, c_count DESC
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.sortOp
-                └── *exec.allSpooler
-                     └── *exec.orderedAggregator
-                          └── *exec.hashGrouper
-                               └── *exec.simpleProjectOp
-                                    └── *exec.orderedAggregator
-                                         └── *exec.hashGrouper
-                                              └── *exec.simpleProjectOp
-                                                   └── *exec.hashJoinEqOp
-                                                        ├── *exec.simpleProjectOp
-                                                        │    └── *exec.CancelChecker
-                                                        │         └── *distsqlrun.colBatchScan
-                                                        └── *exec.simpleProjectOp
-                                                             └── *exec.selNotRegexpBytesBytesConstOp
-                                                                  └── *exec.CancelChecker
-                                                                       └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.orderedAggregator
+      └ *exec.hashGrouper
+        └ *exec.orderedAggregator
+          └ *exec.hashGrouper
+            └ *exec.hashJoinEqOp
+              ├ *exec.selNotRegexpBytesBytesConstOp
+              │ └ *distsqlrun.colBatchScan
+              └ *distsqlrun.colBatchScan
 
 # Query 14
 query T
 EXPLAIN (VEC) SELECT 100.00 * sum(CASE WHEN p_type LIKE 'PROMO%' THEN l_extendedprice * (1 - l_discount) ELSE 0 END) / sum(l_extendedprice * (1 - l_discount)) AS promo_revenue FROM lineitem, part WHERE l_partkey = p_partkey AND l_shipdate >= DATE '1995-09-01' AND l_shipdate < DATE '1995-09-01' + INTERVAL '1' MONTH
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.simpleProjectOp
-                └── *exec.projDivFloat64Float64Op
-                     └── *exec.projMultFloat64Float64ConstOp
-                          └── *exec.orderedAggregator
-                               └── *exec.oneShotOp
-                                    └── *exec.distinctChainOps
-                                         └── *exec.simpleProjectOp
-                                              └── *exec.projMultFloat64Float64Op
-                                                   └── *exec.projMinusFloat64ConstFloat64Op
-                                                        └── *exec.caseOp
-                                                             └── *exec.bufferOp
-                                                                  └── *exec.hashJoinEqOp
-                                                                       ├── *exec.simpleProjectOp
-                                                                       │    └── *exec.CancelChecker
-                                                                       │         └── *distsqlrun.colBatchScan
-                                                                       └── *exec.simpleProjectOp
-                                                                            └── *exec.selLTInt64Int64ConstOp
-                                                                                 └── *exec.selGEInt64Int64ConstOp
-                                                                                      └── *exec.CancelChecker
-                                                                                           └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.projDivFloat64Float64Op
+    └ *exec.projMultFloat64Float64ConstOp
+      └ *exec.orderedAggregator
+        └ *exec.oneShotOp
+          └ *exec.distinctChainOps
+            └ *exec.projMultFloat64Float64Op
+              └ *exec.projMinusFloat64ConstFloat64Op
+                └ *exec.caseOp
+                  ├ *exec.hashJoinEqOp
+                  │ ├ *distsqlrun.colBatchScan
+                  │ └ *distsqlrun.indexJoiner
+                  │   └ *distsqlrun.colBatchScan
+                  ├ *exec.projMultFloat64Float64Op
+                  │ └ *exec.projMinusFloat64ConstFloat64Op
+                  │   └ *exec.projPrefixBytesBytesConstOp
+                  └ *exec.constFloat64Op
 
 # Query 15
 #-- TODO(yuzefovich): figure out how to execute this query consisting of three
@@ -460,46 +821,119 @@ EXPLAIN (VEC) SELECT p_brand, p_type, p_size, count(distinct ps_suppkey) AS supp
 query T
 EXPLAIN (VEC) SELECT sum(l_extendedprice) / 7.0 AS avg_yearly FROM lineitem, part WHERE p_partkey = l_partkey AND p_brand = 'Brand#23' AND p_container = 'MED BOX' AND l_quantity < ( SELECT 0.2 * avg(l_quantity) FROM lineitem WHERE l_partkey = p_partkey)
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.simpleProjectOp
-                └── *exec.projDivFloat64Float64ConstOp
-                     └── *exec.orderedAggregator
-                          └── *exec.oneShotOp
-                               └── *exec.distinctChainOps
-                                    └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.projDivFloat64Float64ConstOp
+    └ *exec.orderedAggregator
+      └ *exec.oneShotOp
+        └ *exec.distinctChainOps
+          └ *distsqlrun.joinReader
+            └ *distsqlrun.joinReader
+              └ *exec.projMultFloat64Float64ConstOp
+                └ *exec.orderedAggregator
+                  └ *exec.distinctChainOps
+                    └ *distsqlrun.joinReader
+                      └ *distsqlrun.joinReader
+                        └ *exec.selEQBytesBytesConstOp
+                          └ *exec.selEQBytesBytesConstOp
+                            └ *distsqlrun.colBatchScan
 
 # Query 18
 query T
 EXPLAIN (VEC) SELECT c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity) FROM customer, orders, lineitem WHERE o_orderkey IN ( SELECT l_orderkey FROM lineitem GROUP BY l_orderkey HAVING sum(l_quantity) > 300) AND c_custkey = o_custkey AND o_orderkey = l_orderkey GROUP BY c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice ORDER BY o_totalprice DESC, o_orderdate LIMIT 100
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.limitOp
-                └── *exec.simpleProjectOp
-                     └── *exec.topKSorter
-                          └── *exec.orderedAggregator
-                               └── *exec.distinctChainOps
-                                    └── exec.fnOp
-                                         └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.limitOp
+    └ *exec.topKSorter
+      └ *exec.orderedAggregator
+        └ *exec.hashGrouper
+          └ *distsqlrun.joinReader
+            └ *exec.hashJoinEqOp
+              ├ *exec.mergeJoinLeftSemiOp
+              │ ├ *distsqlrun.colBatchScan
+              │ └ *exec.selGTFloat64Float64ConstOp
+              │   └ *exec.orderedAggregator
+              │     └ *exec.distinctChainOps
+              │       └ *distsqlrun.colBatchScan
+              └ *distsqlrun.colBatchScan
 
 # Query 19
 query T
 EXPLAIN (VEC) SELECT sum(l_extendedprice* (1 - l_discount)) AS revenue FROM lineitem, part WHERE ( p_partkey = l_partkey AND p_brand = 'Brand#12' AND p_container IN ('SM CASE', 'SM BOX', 'SM PACK', 'SM PKG') AND l_quantity >= 1 AND l_quantity <= 1 + 10 AND p_size BETWEEN 1 AND 5 AND l_shipmode IN ('AIR', 'AIR REG') AND l_shipinstruct = 'DELIVER IN PERSON') OR ( p_partkey = l_partkey AND p_brand = 'Brand#23' AND p_container IN ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK') AND l_quantity >= 10 AND l_quantity <= 10 + 10 AND p_size BETWEEN 1 AND 10 AND l_shipmode IN ('AIR', 'AIR REG') AND l_shipinstruct = 'DELIVER IN PERSON') OR ( p_partkey = l_partkey AND p_brand = 'Brand#34' AND p_container IN ('LG CASE', 'LG BOX', 'LG PACK', 'LG PKG') AND l_quantity >= 20 AND l_quantity <= 20 + 10 AND p_size BETWEEN 1 AND 15 AND l_shipmode IN ('AIR', 'AIR REG') AND l_shipinstruct = 'DELIVER IN PERSON')
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.orderedAggregator
-                └── *exec.oneShotOp
-                     └── *exec.distinctChainOps
-                          └── *distsqlrun.columnarizer
+│
+└ Node 1
+  └ *exec.orderedAggregator
+    └ *exec.oneShotOp
+      └ *exec.distinctChainOps
+        └ *exec.projMultFloat64Float64Op
+          └ *exec.projMinusFloat64ConstFloat64Op
+            └ *exec.caseOp
+              ├ *exec.hashJoinEqOp
+              │ ├ *exec.selEQBytesBytesConstOp
+              │ │ └ *exec.selectInOpBytes
+              │ │   └ *distsqlrun.colBatchScan
+              │ └ *exec.selGEInt64Int64ConstOp
+              │   └ *distsqlrun.colBatchScan
+              ├ *exec.constBoolOp
+              │ └ *exec.caseOp
+              │   ├ *exec.constBoolOp
+              │   │ └ *exec.andOp
+              │   │   └ *exec.projLEInt64Int64ConstOp
+              │   │     └ *exec.andOp
+              │   │       └ *exec.projLEFloat64Float64ConstOp
+              │   │         └ *exec.andOp
+              │   │           └ *exec.projGEFloat64Float64ConstOp
+              │   │             └ *exec.andOp
+              │   │               └ *exec.projectInOpBytes
+              │   │                 └ *exec.projEQBytesBytesConstOp
+              │   ├ *exec.constBoolOp
+              │   │ └ *exec.andOp
+              │   │   └ *exec.projLEInt64Int64ConstOp
+              │   │     └ *exec.andOp
+              │   │       └ *exec.projLEFloat64Float64ConstOp
+              │   │         └ *exec.andOp
+              │   │           └ *exec.projGEFloat64Float64ConstOp
+              │   │             └ *exec.andOp
+              │   │               └ *exec.projectInOpBytes
+              │   │                 └ *exec.projEQBytesBytesConstOp
+              │   └ *exec.constBoolOp
+              ├ *exec.constBoolOp
+              │ └ *exec.andOp
+              │   └ *exec.projLEInt64Int64ConstOp
+              │     └ *exec.andOp
+              │       └ *exec.projLEFloat64Float64ConstOp
+              │         └ *exec.andOp
+              │           └ *exec.projGEFloat64Float64ConstOp
+              │             └ *exec.andOp
+              │               └ *exec.projectInOpBytes
+              │                 └ *exec.projEQBytesBytesConstOp
+              └ *exec.constBoolOp
 
 # Query 20
-query error unsorted distinct not supported
+query T
 EXPLAIN (VEC) SELECT s_name, s_address FROM supplier, nation WHERE s_suppkey IN ( SELECT ps_suppkey FROM partsupp WHERE ps_partkey IN ( SELECT p_partkey FROM part WHERE p_name LIKE 'forest%') AND ps_availqty > ( SELECT 0.5 * sum(l_quantity) FROM lineitem WHERE l_partkey = ps_partkey AND l_suppkey = ps_suppkey AND l_shipdate >= DATE '1994-01-01' AND l_shipdate < DATE '1994-01-01' + INTERVAL '1' YEAR)) AND s_nationkey = n_nationkey AND n_name = 'CANADA' ORDER BY s_name
+----
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.hashJoinEqOp
+      ├ *exec.hashJoinEqOp
+      │ ├ *distsqlrun.colBatchScan
+      │ └ *exec.hashJoinEqOp
+      │   ├ *exec.selGTInt64Float64Op
+      │   │ └ *exec.projMultFloat64Float64ConstOp
+      │   │   └ *exec.orderedAggregator
+      │   │     └ *exec.hashGrouper
+      │   │       └ *exec.hashJoinEqOp
+      │   │         ├ *distsqlrun.indexJoiner
+      │   │         │ └ *distsqlrun.colBatchScan
+      │   │         └ *distsqlrun.colBatchScan
+      │   └ *exec.selPrefixBytesBytesConstOp
+      │     └ *distsqlrun.colBatchScan
+      └ *exec.selEQBytesBytesConstOp
+        └ *distsqlrun.colBatchScan
 
 # Query 21
 query error can't plan non-inner hash join with on expressions
@@ -509,30 +943,17 @@ EXPLAIN (VEC) SELECT s_name, count(*) AS numwait FROM supplier, lineitem l1, ord
 query T
 EXPLAIN (VEC) SELECT cntrycode, count(*) AS numcust, sum(c_acctbal) AS totacctbal FROM ( SELECT substring(c_phone FROM 1 FOR 2) AS cntrycode, c_acctbal FROM customer WHERE substring(c_phone FROM 1 FOR 2) in ('13', '31', '23', '29', '30', '18', '17') AND c_acctbal > ( SELECT avg(c_acctbal) FROM customer WHERE c_acctbal > 0.00 AND substring(c_phone FROM 1 FOR 2) in ('13', '31', '23', '29', '30', '18', '17')) AND NOT EXISTS ( SELECT * FROM orders WHERE o_custkey = c_custkey)) AS custsale GROUP BY cntrycode ORDER BY cntrycode
 ----
- │
- └── Node 1
-      └── *distsqlrun.materializer
-           └── *exec.orderedAggregator
-                └── *exec.distinctChainOps
-                     └── exec.fnOp
-                          └── *exec.sortOp
-                               └── *exec.allSpooler
-                                    └── *exec.simpleProjectOp
-                                         └── *exec.substringFunctionOperator
-                                              └── *exec.constInt64Op
-                                                   └── *exec.constInt64Op
-                                                        └── *exec.mergeJoinLeftAntiOp
-                                                             ├── *exec.simpleProjectOp
-                                                             │    └── *exec.simpleProjectOp
-                                                             │         └── *exec.selGTFloat64Float64Op
-                                                             │              └── *exec.castOpNullAny
-                                                             │                   └── *exec.constNullOp
-                                                             │                        └── *exec.selectInOpBytes
-                                                             │                             └── *exec.substringFunctionOperator
-                                                             │                                  └── *exec.constInt64Op
-                                                             │                                       └── *exec.constInt64Op
-                                                             │                                            └── *exec.CancelChecker
-                                                             │                                                 └── *distsqlrun.colBatchScan
-                                                             └── *exec.simpleProjectOp
-                                                                  └── *exec.CancelChecker
-                                                                       └── *distsqlrun.colBatchScan
+│
+└ Node 1
+  └ *exec.sortOp
+    └ *exec.orderedAggregator
+      └ *exec.hashGrouper
+        └ *distsqlrun.joinReader
+          └ *exec.selGTFloat64Float64Op
+            └ *exec.castOpNullAny
+              └ *exec.constNullOp
+                └ *exec.selectInOpBytes
+                  └ *exec.substringFunctionOperator
+                    └ *exec.constInt64Op
+                      └ *exec.constInt64Op
+                        └ *distsqlrun.colBatchScan

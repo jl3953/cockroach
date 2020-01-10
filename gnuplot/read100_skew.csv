@@ -1,0 +1,2 @@
+skew	Number of reads that didn't return any results: 235851.-r	elapsed-w	errors-w	ops(total)-w	ops/sec(cum)-w	avg(ms)-w	p50(ms)-w	p95(ms)-w	p99(ms)-w	pMax(ms)-w	total-w	elapsed	errors	ops(total)	ops/sec(cum)	avg(ms)	p50(ms)	p95(ms)	p99(ms)	pMax(ms)	Number of reads that didn't return any results: 235345.-r	Number of reads that didn't return any results: 236038.-r	Number of reads that didn't return any results: 235135.-r
+0	0.0	0.0	0.0	942350.0	15705.4	14.25	16.675	27.3	37.7	80.75	0.0	0.0	0.0	942350.0	15705.4	14.25	16.675	27.3	37.7	80.75	0.0	0.0	0.0

@@ -81,20 +81,24 @@ func NewZipfGenerator(
 	defer z.zipfGenMu.mu.Unlock()
 
 	// Compute hidden parameters
+	// fmt.Printf("jenndebug okay computing from scratch takes heck of a long time\n")
 	zeta2, err := computeZetaFromScratch(2, theta)
 	if err != nil {
 		return nil, errors.Errorf("Could not compute zeta(2,theta): %s", err)
 	}
+	// fmt.Printf("jenndebug Eh! I'm computin here!\n")
 	var zetaN float64
 	zetaN, err = computeZetaFromScratch(iMax+1-iMin, theta)
 	if err != nil {
 		return nil, errors.Errorf("Could not compute zeta(%d,theta): %s", iMax, err)
 	}
+	// fmt.Printf("jenndebug what's the holdup?!\n")
 	z.alpha = 1.0 / (1.0 - theta)
 	z.zipfGenMu.eta = (1 - math.Pow(2.0/float64(z.zipfGenMu.iMax+1-z.iMin), 1.0-theta)) / (1.0 - zeta2/zetaN)
 	z.zipfGenMu.zetaN = zetaN
 	z.zeta2 = zeta2
 	z.halfPowTheta = 1.0 + math.Pow(0.5, z.theta)
+	// fmt.Printf("jenndebug finally\n")
 	return &z, nil
 }
 
@@ -125,6 +129,9 @@ func computeZetaFromScratch(n uint64, theta float64) (float64, error) {
 	return zeta, nil
 }
 
+func (z *ZipfGenerator) Uint64Jenn(_ *rand.Rand) uint64 {
+	return z.Uint64()
+}
 // Uint64 draws a new value between iMin and iMax, with probabilities
 // according to the Zipf distribution.
 func (z *ZipfGenerator) Uint64() uint64 {

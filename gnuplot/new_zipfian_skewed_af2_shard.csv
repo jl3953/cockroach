@@ -1,0 +1,2 @@
+skew	start_key	end_key	range_id	range_size_mb	lease_holder	lease_holder_locality	replicas	replica_localities
+2.0	0	1	22	0.023245	1	region=london	{1,2}	{region=london,region=tokyo}

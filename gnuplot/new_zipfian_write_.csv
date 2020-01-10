@@ -1,0 +1,2 @@
+skew	elapsed-r	errors-r	ops(total)-r	ops/sec(cum)-r	avg(ms)-r	p50(ms)-r	p95(ms)-r	p99(ms)-r	pMax(ms)-r	total-r	elapsed-w	errors-w	ops(total)-w	ops/sec(cum)-w	avg(ms)-w	p50(ms)-w	p95(ms)-w	p99(ms)-w	pMax(ms)-w	total-w	elapsed	errors	ops(total)	ops/sec(cum)	avg(ms)	p50(ms)	p95(ms)	p99(ms)	pMax(ms)
+0	0.0	0.0	10556.0	5271.8	18.95	15.175	50.3	74.44999999999999	209.725	0.0	0.0	0.0	420.0	209.70000000000002	472.47499999999997	507.5	595.575	654.3	671.1	0.0	0.0	0.0	10976.0	5481.6	36.325	15.625	69.725	553.65	671.1

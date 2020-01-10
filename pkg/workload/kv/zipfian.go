@@ -72,6 +72,10 @@ func newZipf(s float64, v float64, imax uint64) *zipf {
 	return z
 }
 
+func (z *zipf) Uint64Jenn(random *rand.Rand) uint64 {
+	return z.Uint64(random)
+}
+
 // Uint64 returns a value drawn from the Zipf distribution described
 // by the Zipf object.
 func (z *zipf) Uint64(random *rand.Rand) uint64 {

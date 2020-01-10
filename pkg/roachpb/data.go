@@ -770,7 +770,7 @@ func MakeTransaction(
 		maxTS = now.Add(maxOffsetNs, 0)
 	}
 
-	return Transaction{
+	result := Transaction{
 		TxnMeta: enginepb.TxnMeta{
 			Key:          baseKey,
 			ID:           u,
@@ -784,6 +784,8 @@ func MakeTransaction(
 		OrigTimestamp: now,
 		MaxTimestamp:  maxTS,
 	}
+	// log.Warningf(context.TODO(), "jenndebug txn_id:[%+v]", result.TxnMeta.ID)
+	return result
 }
 
 // MakeTxnCoordMeta creates a new transaction coordinator meta for the given
@@ -1244,6 +1246,7 @@ func PrepareTransactionForRetry(
 			now,
 			clock.MaxOffset().Nanoseconds(),
 		)
+		// log.Warningf(ctx, "jenndebug prepareTransactionForRetry txnid:[%+v]", txn.TxnMeta.ID)
 		// Use the priority communicated back by the server.
 		txn.Priority = errTxnPri
 	case *ReadWithinUncertaintyIntervalError:

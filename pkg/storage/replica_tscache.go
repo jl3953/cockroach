@@ -21,6 +21,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/util"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
 	"github.com/cockroachdb/cockroach/pkg/util/uuid"
+	// "github.com/cockroachdb/cockroach/pkg/util/log"
 )
 
 // setTimestampCacheLowWaterMark updates the low water mark of the timestamp
@@ -265,6 +266,7 @@ func (r *Replica) applyTimestampCache(
 						txn := ba.Txn.Clone()
 						bumped = txn.Timestamp.Forward(nextRTS) || bumped
 						ba.Txn = txn
+						//log.Warningf(ctx, "jenndebug bumped by read\n")
 					}
 				}
 			} else {
@@ -284,6 +286,7 @@ func (r *Replica) applyTimestampCache(
 						bumped = txn.Timestamp.Forward(nextWTS) || bumped
 						txn.WriteTooOld = true
 						ba.Txn = txn
+						// log.Warningf(ctx, "jenndebug bumped by write\n")
 					}
 				}
 			} else {

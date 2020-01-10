@@ -11,10 +11,13 @@
 package kv
 
 import (
+	//"bytes" //jenndebug
 	"context"
 	"fmt"
 	"sync/atomic"
+	// "strings" // jenndebug
 	"unsafe"
+	// "runtime/debug"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/gossip"
@@ -622,6 +625,37 @@ func splitBatchAndCheckForRefreshSpans(
 	ba roachpb.BatchRequest, canSplitET bool,
 ) [][]roachpb.RequestUnion {
 	parts := ba.Split(canSplitET)
+
+	// jenndebug
+	/* // log.Warningf(context.Background(), "jenndebug original parts:[%+v]\n", parts)
+
+	warm := make([]roachpb.RequestUnion, 0)
+	hot := make([]roachpb.RequestUnion, 0)
+	for _, part := range parts {
+		for _, requestUnion := range part {
+			// if it's a write from me
+			// log.Warningf(context.Background(), "jenndebug key:[%+v]\n", requestUnion.GetInner().Header().Key.String())
+			if strings.Contains(requestUnion.GetInner().Header().Key.String(), "/Table/53/1/0") {
+				//log.Warningf(context.Background(), "jenndebug move it\n")
+				hot = append(hot, requestUnion)
+			} else if _, ok := requestUnion.GetInner().(*roachpb.EndTransactionRequest); ok && len(hot) > 0 {
+				hot = append(hot, requestUnion)
+			} else {
+				warm = append(warm, requestUnion)
+			}
+		}
+	}
+
+	// log.Warningf(context.Background(), "jenndebug warm:[%+v]\n", warm)
+	// log.Warningf(context.Background(), "jenndebug hot:[%+v]\n", hot)
+	if len(warm) > 0 && len(hot) > 0 {
+		parts[0] = warm
+		parts = append(parts, hot)
+		// log.Warningf(context.Background(), "jenndebug changed parts:[%+v]\n", parts)
+	}*/
+
+	//jenndebug
+
 	// If the final part contains an EndTransaction, we need to check
 	// whether earlier split parts contain any refresh spans and properly
 	// set the NoRefreshSpans flag on the end transaction.
@@ -667,6 +701,9 @@ func splitBatchAndCheckForRefreshSpans(
 func (ds *DistSender) Send(
 	ctx context.Context, ba roachpb.BatchRequest,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
+	// log.Warningf(ctx, "jenndebug batch:[%+v]\n", ba)
+	// debug.PrintStack()
+
 	ds.metrics.BatchCount.Inc(1)
 
 	tracing.AnnotateTrace()
@@ -696,6 +733,11 @@ func (ds *DistSender) Send(
 		splitET = true
 	}
 	parts := splitBatchAndCheckForRefreshSpans(ba, splitET)
+	/*debugStr := ""
+	for _, part := range parts {
+		debugStr += fmt.Sprintf(", part: [%+v]", part)
+	}
+	log.Warningf(ctx, "jenndebug %s\n", debugStr)*/
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
 		// Such a batch should never need splitting.
@@ -776,6 +818,7 @@ func (ds *DistSender) Send(
 		reply.BatchResponse_Header = lastHeader
 	}
 
+	// log.Warningf(ctx, "jenndebug reply header [%+v], responses [%+v]\n", reply.BatchResponse_Header, reply.Responses)
 	return reply, pErr
 }
 
