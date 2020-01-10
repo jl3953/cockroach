@@ -23,6 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
+	// "time"
 
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
@@ -324,16 +325,20 @@ func (o *kvOp) run(ctx context.Context) error {
 			argsInt[i] = o.g.readKey()
 		}
 		sort.Sort(byInt(argsInt))
-		//jenndebug hot
-		/* // fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
+		/* //jenndebug hot
+		// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
 		for i := 0; i < len(argsInt); i++ {
-			if argsInt[i] == 0 {
+			if argsInt[i] == 0 || argsInt[i] == 1{
 				argsInt[i] = argsInt[0]
 			}
 		}
 		sort.Sort(byInt(argsInt))
-		// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt) */
-		//jenndebug hot
+		if argsInt[0] == 0 || argsInt[0] == 1 {
+			o.hists.Get(`read`).Record(0 * time.Millisecond)
+			return nil
+		}
+		// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
+		//jenndebug hot */
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = argsInt[i]
@@ -395,16 +400,20 @@ func (o *kvOp) run(ctx context.Context) error {
 		argsInt[i] = o.g.writeKey()
 	}
 	sort.Sort(byInt(argsInt))
-	//jenndebug hot
-	/* // fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
+	/* //jenndebug hot
+	// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
 	for i := 0; i < len(argsInt); i++ {
-		if argsInt[i] == 0 {
+		if argsInt[i] == 0 || argsInt[i] == 1 {
 			argsInt[i] = argsInt[0]
 		}
 	}
 	sort.Sort(byInt(argsInt))
-	// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt) */
-	//jenndebug hot
+	if argsInt[0] == 0 || argsInt[0] == 1 {
+		o.hists.Get(`write`).Record(0 * time.Millisecond)
+		return nil
+	}
+	// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
+	//jenndebug hot */
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
 		j := i * argCount
