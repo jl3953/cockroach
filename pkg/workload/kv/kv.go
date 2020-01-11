@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
-	"time"
+	//"time"
 
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
@@ -328,12 +328,12 @@ func correctTxnParams(batchSize int, generateKey generateKeyFunc, greatestHotKey
 	sort.Sort(byInt(argsInt))
 
 	//jenndebug hot replacing hot keys
-	for i := 0; i < len(argsInt); i++ {
+	/* for i := 0; i < len(argsInt); i++ {
 		if argsInt[i] <= greatestHotKey {
 			argsInt[i] = argsInt[0]
 		}
 	}
-	sort.Sort(byInt(argsInt))
+	sort.Sort(byInt(argsInt))*/
 
 	return argsInt
 }
@@ -345,10 +345,10 @@ func (o *kvOp) run(ctx context.Context) error {
 
 		argsInt := correctTxnParams(o.config.batchSize, o.g.readKey, o.config.hotkey)
 
-		if argsInt[0] <= o.config.hotkey { //jenndebug hot 
+		/*if argsInt[0] <= o.config.hotkey { //jenndebug hot 
 			o.hists.Get(`read`).Record(0 * time.Millisecond)
 			return nil
-		}
+		}*/
 
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
@@ -405,12 +405,12 @@ func (o *kvOp) run(ctx context.Context) error {
 	}
 	const argCount = 2
 
-	argsInt := correctTxnParams(o.config.batchSize, o.g.writeKey, o.config.hotkey)
+	argsInt := correctTxnParams(o.config.batchSize, o.g.writeKey, o.config.hotkey) 
 
-	if argsInt[0] <= o.config.hotkey {
+	/*if argsInt[0] <= o.config.hotkey { //jenndebug hot
 		o.hists.Get(`write`).Record(0 * time.Millisecond)
 		return nil
-	}
+	}*/
 
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
