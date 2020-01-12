@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
-	// "time"
+	"time" // jenndebug hot
 
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
@@ -66,6 +66,7 @@ type kv struct {
 	s				     float64
 	zipfVerbose				bool
 	useOriginal				bool
+	hotkey					int64
 }
 
 func init() {
@@ -124,6 +125,7 @@ var kvMeta = workload.Meta{
 		g.flags.Float64Var(&g.s, `s`, 1.1, `s parameter in the zipfian generator, default 1.1`)
 		g.flags.BoolVar(&g.zipfVerbose, `zipfVerbose`, false, `whether zipfian generator is verbose`)
 		g.flags.BoolVar(&g.useOriginal, `useOriginal`, true, `whether or not to use original fake zipfian generator.`)
+		g.flags.Int64Var(&g.hotkey, `hotkey`, 0, `the largest hot key on the hot shard.`)
 		return g
 	},
 }
@@ -314,31 +316,40 @@ func (s byInt) Less (i, j int) bool {
 	// return s[i] > s[j]
 }
 
+type generateKeyFunc func() int64
+
+func correctTxnParams(batchSize int, generateKey generateKeyFunc, greatestHotKey int64) []int64 {
+
+	// jenndebug sort the keys first
+	argsInt := make([]int64, batchSize)
+	for i := 0; i < batchSize; i++ {
+		argsInt[i] = generateKey()
+	}
+	sort.Sort(byInt(argsInt))
+
+	//jenndebug hot replacing hot keys
+	for i := 0; i < len(argsInt); i++ {
+		if argsInt[i] <= greatestHotKey {
+			argsInt[i] = argsInt[0]
+		}
+	}
+	sort.Sort(byInt(argsInt))
+
+	return argsInt
+}
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
 
 	if statementProbability < o.config.readPercent {
-		// jenndebug sort the keys first
-		argsInt := make([]int64, o.config.batchSize)
-		for i := 0; i < o.config.batchSize; i++ {
-			argsInt[i] = o.g.readKey()
-		}
-		sort.Sort(byInt(argsInt))
-		/* //jenndebug hot
-		// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
-		for i := 0; i < len(argsInt); i++ {
-			if argsInt[i] == 0 || argsInt[i] == 1{
-				argsInt[i] = argsInt[0]
-			}
-		}
-		sort.Sort(byInt(argsInt))
-		if argsInt[0] == 0 || argsInt[0] == 1 {
+
+		argsInt := correctTxnParams(o.config.batchSize, o.g.readKey, o.config.hotkey)
+
+		if argsInt[0] <= o.config.hotkey { //jenndebug hot 
 			o.hists.Get(`read`).Record(0 * time.Millisecond)
 			return nil
 		}
-		// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
-		//jenndebug hot */
+
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = argsInt[i]
@@ -394,26 +405,13 @@ func (o *kvOp) run(ctx context.Context) error {
 	}
 	const argCount = 2
 
-	// jenndebug sort the keys first
-	argsInt := make([]int64, o.config.batchSize)
-	for i := 0; i < o.config.batchSize; i++ {
-		argsInt[i] = o.g.writeKey()
-	}
-	sort.Sort(byInt(argsInt))
-	/* //jenndebug hot
-	// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
-	for i := 0; i < len(argsInt); i++ {
-		if argsInt[i] == 0 || argsInt[i] == 1 {
-			argsInt[i] = argsInt[0]
-		}
-	}
-	sort.Sort(byInt(argsInt))
-	if argsInt[0] == 0 || argsInt[0] == 1 {
+	argsInt := correctTxnParams(o.config.batchSize, o.g.writeKey, o.config.hotkey) 
+
+	if argsInt[0] <= o.config.hotkey { //jenndebug hot
 		o.hists.Get(`write`).Record(0 * time.Millisecond)
 		return nil
 	}
-	// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
-	//jenndebug hot */
+
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
 		j := i * argCount
