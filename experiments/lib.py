@@ -315,6 +315,9 @@ def parse_bench_args(bench_config, is_warmup=False, hot_key=None):
     if hot_key:
         args.append("--hotkey={}".format(hot_key))
 
+	if "keyspace" in bench_config:
+		args.append("--keyspace={}".format(bench_config["keyspace"])
+
     return " ".join(args)
 
 
