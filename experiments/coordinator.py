@@ -50,7 +50,7 @@ class Stage(enum.Enum):
 			return Stage.DRIVER
 		elif stage == Stage.DRIVER:
 			return Stage.COPY_OVER
-		elif stage == Stage.COPY_OVER
+		elif stage == Stage.COPY_OVER:
 			return Stage.END
 
 
