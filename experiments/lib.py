@@ -275,7 +275,7 @@ def vary_zipf_skew(config, skews):
             "Passed experiment that does not use Zipf distribution!")
 
 
-def parse_bench_args(bench_config, is_warmup=False):
+def parse_bench_args(bench_config, is_warmup=False, hot_key=None):
     args = []
     if "duration" in bench_config:
     	if is_warmup:
@@ -311,6 +311,12 @@ def parse_bench_args(bench_config, is_warmup=False):
             
             if "use_original_zipfian" in bench_config:
                 args.append("--useOriginal={}".format(bench_config["use_original_zipfian"]))
+				
+    if hot_key:
+        args.append("--hotkey={}".format(hot_key))
+		
+    if "keyspace" in bench_config:
+        args.append("--keyspace={}".format(bench_config["keyspace"]))
 
     return " ".join(args)
 
@@ -362,12 +368,12 @@ def extract_config_params(config):
 	return out_dir, nodes, b, name, urls, workload_nodes
 
 
-def run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False):
+def run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False, hot_key=None):
 	
 	i = 0
 	ps = []
 	for wn in workload_nodes:
-		args = parse_bench_args(b["run_args"], is_warmup=is_warmup)
+		args = parse_bench_args(b["run_args"], is_warmup=is_warmup, hot_key=hot_key)
 		cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
 		ip = wn["ip"]
 
@@ -402,10 +408,13 @@ def prepopulate_cluster(config):
 	b_copy["run_args"]["read_percent"] = 0
 
 	# populate with writes
-	run_workload(workload_nodes, b_copy, name, urls, out_dir, is_warmup=True)
+	hot_key = None
+	if "hot_key" in config:
+		hot_key = config["hot_key"]
+	run_workload(workload_nodes, b_copy, name, urls, out_dir, is_warmup=True, hot_key=hot_key)
 
 	# real warmup
-	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=True)
+	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=True, hot_key=hot_key)
 
 
 def warmup_cluster(config):
@@ -427,7 +436,10 @@ def warmup_cluster(config):
 	set_database_settings(nodes, config["should_create_partition"], config["hot_key"])
 
 	# run workload
-	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=True)
+	hot_key = None
+	if "hot_key" in config:
+		hot_key = config["hot_key"]
+	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=True, hot_key=hot_key)
 
 
 def run_bench(config):
@@ -447,5 +459,8 @@ def run_bench(config):
 		print("No cluster nodes!")
 		return
 
-	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False)
+	hot_key = None
+	if "hot_key" in config:
+		hot_key = config["hot_key"]
+	run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False, hot_key=hot_key)
    
