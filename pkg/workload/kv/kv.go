@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
-	//"time"
+	"time" // jenndebug hot
 
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
@@ -67,6 +67,7 @@ type kv struct {
 	zipfVerbose				bool
 	useOriginal				bool
 	hotkey					int64
+	keyspace				int64
 }
 
 func init() {
@@ -125,7 +126,8 @@ var kvMeta = workload.Meta{
 		g.flags.Float64Var(&g.s, `s`, 1.1, `s parameter in the zipfian generator, default 1.1`)
 		g.flags.BoolVar(&g.zipfVerbose, `zipfVerbose`, false, `whether zipfian generator is verbose`)
 		g.flags.BoolVar(&g.useOriginal, `useOriginal`, true, `whether or not to use original fake zipfian generator.`)
-		g.flags.Int64Var(&g.hotkey, `hotkey`, 0, `the largest hot key on the hot shard.`)
+		g.flags.Int64Var(&g.hotkey, `hotkey`, -1, `the largest hot key on the hot shard.`)
+		g.flags.Int64Var(&g.keyspace, `keyspace`, 1000000, `key range starting from 0`)
 		return g
 	},
 }
@@ -277,7 +279,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq, w.s, w.zipfVerbose, w.useOriginal)
+			op.g = newZipfianGenerator(seq, w.s, w.zipfVerbose, w.useOriginal, w.keyspace)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -328,12 +330,12 @@ func correctTxnParams(batchSize int, generateKey generateKeyFunc, greatestHotKey
 	sort.Sort(byInt(argsInt))
 
 	//jenndebug hot replacing hot keys
-	/* for i := 0; i < len(argsInt); i++ {
+	for i := 0; i < len(argsInt); i++ {
 		if argsInt[i] <= greatestHotKey {
 			argsInt[i] = argsInt[0]
 		}
 	}
-	sort.Sort(byInt(argsInt))*/
+	sort.Sort(byInt(argsInt))
 
 	return argsInt
 }
@@ -345,10 +347,10 @@ func (o *kvOp) run(ctx context.Context) error {
 
 		argsInt := correctTxnParams(o.config.batchSize, o.g.readKey, o.config.hotkey)
 
-		/*if argsInt[0] <= o.config.hotkey { //jenndebug hot 
+		if argsInt[0] <= o.config.hotkey { //jenndebug hot 
 			o.hists.Get(`read`).Record(0 * time.Millisecond)
 			return nil
-		}*/
+		}
 
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
@@ -407,10 +409,10 @@ func (o *kvOp) run(ctx context.Context) error {
 
 	argsInt := correctTxnParams(o.config.batchSize, o.g.writeKey, o.config.hotkey) 
 
-	/*if argsInt[0] <= o.config.hotkey { //jenndebug hot
+	if argsInt[0] <= o.config.hotkey { //jenndebug hot
 		o.hists.Get(`write`).Record(0 * time.Millisecond)
 		return nil
-	}*/
+	}
 
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
@@ -589,9 +591,9 @@ type zipfGenerator struct {
 
 // Creates a new zipfian generator.
 func newZipfianGenerator(seq *sequence, s float64, verbose bool, useOriginal bool,
-		) *zipfGenerator {
+		keyspace int64) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
-	max := uint64(1000000)
+	max := uint64(keyspace)
 	var hey zipfWrapper
 	if useOriginal {
 		hey = newZipf(s, 1, max)

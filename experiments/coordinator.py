@@ -34,6 +34,8 @@ class Stage(enum.Enum):
 	METADATA = "metadata"
 	LATENCY_THROUGHPUT = "latency_throughput"
 	DRIVER = "driver"
+	COPY_OVER = "copy_over"
+	END = "end"
 
 	def __str__(self):
 		return self.value
@@ -46,6 +48,10 @@ class Stage(enum.Enum):
 			return Stage.LATENCY_THROUGHPUT
 		elif stage == Stage.LATENCY_THROUGHPUT:
 			return Stage.DRIVER
+		elif stage == Stage.DRIVER:
+			return Stage.COPY_OVER
+		elif stage == Stage.COPY_OVER:
+			return Stage.END
 
 
 def extract_human_tag(config_file):
@@ -312,6 +318,22 @@ def calculate_and_plot_box_and_whiskers(csvs, csv_dir, graph_dir):
 	# bash_imitation.gnuplot(BOX_AND_WHISKERS_GNUPLOT, p50_bawp, graph_dir)
 
 
+def copy_to_permanent_storage(overall_dir):
+
+	""" Calls script within directory to copy all files in directory to permanent
+	storage.
+
+	Args:
+		overall_dir (str): overall directory where everything is located.
+
+	Return:
+		None.
+	"""
+
+	copy_executable = os.path.join(overall_dir, "copyall.sh")
+	lib.call("{0}".format(copy_executable))
+
+
 def main():
 
 	parser = argparse.ArgumentParser(description="coordinator script for pipeline")
@@ -324,7 +346,7 @@ def main():
 	parser.add_argument("--start_stage", type=Stage, default=Stage.CREATE_NEW_DIRS, 
 			choices=[stage for stage in Stage],
 			help="which stage to start running at. Useful for testing.")
-	parser.add_argument("--end_stage", type=Stage, default = Stage.DRIVER,
+	parser.add_argument("--end_stage", type=Stage, default = Stage.END,
 			choices = [stage for stage in Stage],
 			help="which stage to stop running after. Useful for testing.")
 	parser.add_argument("--existing_directory",
@@ -404,6 +426,19 @@ def main():
 			bash_imitation.gnuplot(DRIVER_GNUPLOT, driver_csv, graph_dir, trial)
 
 		calculate_and_plot_box_and_whiskers(csvs, csv_dir, graph_dir)
+		
+		if stage == args.end_stage:
+			return 0
+		stage = Stage.next(stage)
+
+	# copy over to permanent storage
+	if stage == stage.COPY_OVER:
+		copy_to_permanent_storage(overall_dir)
+
+		if stage == args.end_stage:
+			return 0
+		stage = Stage.next(stage)
+
 
 	return 0
 
