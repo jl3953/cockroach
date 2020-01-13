@@ -15,3 +15,11 @@ set output "protocol_1M.png"
 plot "hot1_1M.csv" using "skew":"median" title "mocked hot key, batch size = 6" with linespoint,\
 		 "keys5.csv" using "skew":"median" title "batch size=5" with linespoint,\
 		 "keys6.csv" using "skew":"median" title "batch size=6" with linespoint
+
+set title "Mocked protocol comparison, keyspace 1M"
+set output "protocol_comparison_1M_lower.png"
+plot "hot1_1M_lower.csv" using "skew":"median" title "hotkeys in [0, 1]" with linespoint,\
+		 "hot10_1M_lower.csv" using "skew":"median" title "hotkeys in [0, 10]" with linespoint,\
+		 "hot100_1M_lower.csv" using "skew":"median" title "hotkeys in [0, 100]" with linespoint,\
+		 "hot1k_1M_lower.csv" using "skew":"median" title "hotkeys in [0, 1k]" with linespoint
+
