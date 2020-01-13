@@ -4,7 +4,7 @@ set xlabel "key rank"
 set logscale x
 
 set ylabel "cdf"
-set output "cdf.png"
+set output "cdf-1M-batch6.png"
 set title "CDF for 1M keys"
 plot "cdf0.5.csv" using "key":"frequency" title "s=0.5" with linespoint,\
 		 "cdf0.6.csv" using "key":"frequency" title "s=0.6" with linespoint,\
