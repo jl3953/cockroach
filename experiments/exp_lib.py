@@ -148,6 +148,11 @@ def create_experiment(fpath, config_filename, override=None):
 	else:
 		exp["should_create_partition"] = False
 
+	if "keyspace" in config["benchmark"]:
+		exp["benchmark"]["run_args"]["keyspace"] = json.loads(config["benchmark"]["keyspace"])
+	else:
+		exp["benchmark"]["run_args"]["keyspace"] = 1000000
+
 	skews = json.loads(config["benchmark"]["skews"])
 	
 	if override:
