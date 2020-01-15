@@ -17,7 +17,7 @@ import (
 	"sync/atomic"
 	// "strings" // jenndebug
 	"unsafe"
-	// "runtime/debug" // jenndebug
+	"runtime/debug" // jenndebug
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/gossip"
@@ -702,7 +702,7 @@ func (ds *DistSender) Send(
 	ctx context.Context, ba roachpb.BatchRequest,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
 	log.Warningf(ctx, "jenndebug batch:[%+v]\n", ba)
-	// debug.PrintStack()
+	debug.PrintStack()
 
 	ds.metrics.BatchCount.Inc(1)
 
