@@ -14,6 +14,7 @@ import (
 	"context"
 	"fmt"
 	"time"
+	"runtime/debug"
 
 	"github.com/cockroachdb/cockroach/pkg/roachpb"
 	"github.com/cockroachdb/cockroach/pkg/storage/engine/enginepb"
@@ -486,6 +487,8 @@ func (txn *Txn) Run(ctx context.Context, b *Batch) error {
 	if err := b.prepare(); err != nil {
 		return err
 	}
+	log.Warningf(ctx, "jenndebug run b: [%+v]\n", b)
+	debug.PrintStack()
 	return sendAndFill(ctx, txn.Send, b)
 }
 
