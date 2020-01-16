@@ -325,7 +325,7 @@ func (b *Batch) appendReqs(args ...roachpb.Request) {
 		jenndebug += fmt.Sprintf("[%+v] ", args[i])
 		b.reqs[n+i].MustSetInner(args[i])
 	}
-	log.Warningf(context.Background(), "jenndebug args:[%s]\n", jenndebug)
+	log.Warningf(context.Background(), "jenndebug b:[%+v], args:[%s]\n", *b, jenndebug)
 	debug.PrintStack()
 }
 
