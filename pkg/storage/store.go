@@ -3030,7 +3030,6 @@ func (s *Store) Send(
 		}
 		br, pErr = repl.Send(ctx, ba)
 		if pErr == nil {
-			// log.Warningf(ctx, "jenndebug succeeded txn:[%v]", ba)
 			return br, nil
 		}
 
@@ -3087,7 +3086,6 @@ func (s *Store) Send(
 			// this is the code path with the requesting client waiting.
 			if pErr.Index != nil {
 
-				// log.Warningf(ctx, "jenndebug WriteIntentErr for txn ba:[%+v]", ba)
 				var pushType roachpb.PushTxnType
 				if ba.IsWrite() {
 					pushType = roachpb.PUSH_ABORT
@@ -3133,7 +3131,6 @@ func (s *Store) Send(
 						// Preserve the error index.
 						pErr.Index = index
 						duration := rand.Intn(50)
-						// log.Warningf(ctx, "jenndebug duration[%+v], txnid:[%+v]\n", duration, h.Txn)
 						time.Sleep(time.Duration(duration) * time.Millisecond)
 
 						return nil, pErr
@@ -3203,9 +3200,6 @@ func (s *Store) maybeWaitForPushee(
 	// If this is a push txn request, check the push queue first, which
 	// may cause this request to wait and either return a successful push
 	// txn response or else allow this request to proceed.
-	//jenndebug := rand.Intn(10000)
-	//log.Warningf(ctx, "jenndebug start wait %d", jenndebug)
-	//defer log.Warningf(ctx, "jenndebug end wait %d", jenndebug)
 	if ba.IsSinglePushTxnRequest() {
 		pushReq := ba.Requests[0].GetInner().(*roachpb.PushTxnRequest)
 		pushResp, pErr := repl.txnWaitQueue.MaybeWaitForPush(repl.AnnotateCtx(ctx), repl, pushReq)
@@ -3217,7 +3211,6 @@ func (s *Store) maybeWaitForPushee(
 			// and set the push type to ABORT.
 			pushReqCopy.Force = true
 			pushReqCopy.PushType = roachpb.PUSH_ABORT
-			// log.Warningf(ctx, "jenndebug deadlock, PushType = ABORT, pushReqCopy:[%v]", pushReqCopy)
 		} else if pErr != nil {
 			return nil, pErr
 		} else if pushResp != nil {
