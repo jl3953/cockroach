@@ -16,6 +16,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/roachpb"
 	"github.com/cockroachdb/cockroach/pkg/storage/engine/enginepb"
 	"github.com/cockroachdb/cockroach/pkg/util/hlc"
+	"github.com/cockroachdb/cockroach/pkg/util/log"
 	"github.com/pkg/errors"
 )
 
@@ -318,6 +319,7 @@ func (b *Batch) appendReqs(args ...roachpb.Request) {
 	n := len(b.reqs)
 	b.growReqs(len(args))
 	for i := range args {
+		log.Warningf(context.Background(), "jenndebug args: [%+v]\n", args[i])
 		b.reqs[n+i].MustSetInner(args[i])
 	}
 }
@@ -337,6 +339,7 @@ func (b *Batch) AddRawRequest(reqs ...roachpb.Request) {
 			*roachpb.DeleteRequest:
 			numRows = 1
 		}
+		log.Warningf(context.Background(), "jenndebug raw args: [%+v]\n", args)
 		b.appendReqs(args)
 		b.initResult(1 /* calls */, numRows, raw, nil)
 	}
