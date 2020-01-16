@@ -784,7 +784,6 @@ func MakeTransaction(
 		OrigTimestamp: now,
 		MaxTimestamp:  maxTS,
 	}
-	// log.Warningf(context.TODO(), "jenndebug txn_id:[%+v]", result.TxnMeta.ID)
 	return result
 }
 
@@ -1246,7 +1245,6 @@ func PrepareTransactionForRetry(
 			now,
 			clock.MaxOffset().Nanoseconds(),
 		)
-		// log.Warningf(ctx, "jenndebug prepareTransactionForRetry txnid:[%+v]", txn.TxnMeta.ID)
 		// Use the priority communicated back by the server.
 		txn.Priority = errTxnPri
 	case *ReadWithinUncertaintyIntervalError:
