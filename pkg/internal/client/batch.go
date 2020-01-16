@@ -12,6 +12,8 @@ package client
 
 import (
 	"context"
+	"fmt"
+	"runtime/debug"
 
 	"github.com/cockroachdb/cockroach/pkg/roachpb"
 	"github.com/cockroachdb/cockroach/pkg/storage/engine/enginepb"
@@ -318,10 +320,13 @@ func (b *Batch) growReqs(n int) {
 func (b *Batch) appendReqs(args ...roachpb.Request) {
 	n := len(b.reqs)
 	b.growReqs(len(args))
+	jenndebug := ""
 	for i := range args {
-		log.Warningf(context.Background(), "jenndebug args: [%+v]\n", args[i])
+		jenndebug += fmt.Sprintf("[%+v] ", args[i])
 		b.reqs[n+i].MustSetInner(args[i])
 	}
+	log.Warningf(context.Background(), "jenndebug args:[%s]\n", jenndebug)
+	debug.PrintStack()
 }
 
 // AddRawRequest adds the specified requests to the batch. No responses will
@@ -339,7 +344,7 @@ func (b *Batch) AddRawRequest(reqs ...roachpb.Request) {
 			*roachpb.DeleteRequest:
 			numRows = 1
 		}
-		log.Warningf(context.Background(), "jenndebug raw args: [%+v]\n", args)
+		log.Warningf(context.Background(), "jenndebug raw args: [%+v], type: [%+v]\n", args)
 		b.appendReqs(args)
 		b.initResult(1 /* calls */, numRows, raw, nil)
 	}

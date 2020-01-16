@@ -14,7 +14,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
-	"runtime/debug"
+	//"runtime/debug"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/roachpb"
@@ -628,8 +628,8 @@ func sendAndFill(ctx context.Context, send SenderFunc, b *Batch) error {
 	var ba roachpb.BatchRequest
 	ba.Requests = b.reqs
 	ba.Header = b.Header
-	log.Warningf(ctx, "jenndebug b:[%+v], ba:[%+v]\n", *b, ba)
-	debug.PrintStack()
+	// log.Warningf(ctx, "jenndebug b:[%+v], ba:[%+v]\n", *b, ba)
+	//debug.PrintStack()
 	b.response, b.pErr = send(ctx, ba)
 	b.fillResults(ctx)
 	if b.pErr == nil {
