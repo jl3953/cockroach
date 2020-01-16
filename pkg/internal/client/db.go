@@ -215,6 +215,7 @@ func (s *CrossRangeTxnWrapperSender) Send(
 		log.Fatalf(ctx, "CrossRangeTxnWrapperSender can't handle transactional requests")
 	}
 
+	log.Warningf(ctx, "jenndebug ba:[%+V]\n", ba)
 	br, pErr := s.wrapped.Send(ctx, ba)
 	if _, ok := pErr.GetDetail().(*roachpb.OpRequiresTxnError); !ok {
 		return br, pErr
@@ -346,6 +347,7 @@ func (db *DB) Put(ctx context.Context, key, value interface{}) error {
 func (db *DB) PutInline(ctx context.Context, key, value interface{}) error {
 	b := &Batch{}
 	b.PutInline(key, value)
+	log.Warningf(ctx, "jenndebug b:[%+v]\n", *b)
 	return getOneErr(db.Run(ctx, b), b)
 }
 
@@ -630,6 +632,7 @@ func sendAndFill(ctx context.Context, send SenderFunc, b *Batch) error {
 	if b.pErr == nil {
 		b.pErr = roachpb.NewError(b.resultErr())
 	}
+	log.Warningf(ctx, "jenndebug b:[%+v], ba:[%+v]\n", *b, ba)
 	return b.pErr.GoError()
 }
 
@@ -648,6 +651,7 @@ func (db *DB) Run(ctx context.Context, b *Batch) error {
 	if err := b.prepare(); err != nil {
 		return err
 	}
+	log.Warningf(ctx, "jenndebug b:[%+v]\n", *b)
 	return sendAndFill(ctx, db.send, b)
 }
 
@@ -682,6 +686,7 @@ func (db *DB) Txn(ctx context.Context, retryable func(context.Context, *Txn) err
 func (db *DB) send(
 	ctx context.Context, ba roachpb.BatchRequest,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
+	log.Warningf(ctx, "jenndebugh ba:[%+v]\n", ba)
 	return db.sendUsingSender(ctx, ba, db.NonTransactionalSender())
 }
 
@@ -700,6 +705,7 @@ func (db *DB) sendUsingSender(
 	}
 
 	tracing.AnnotateTrace()
+	log.Warningf(ctx, "jenndebug ba:[%+v]\n", ba)
 	br, pErr := sender.Send(ctx, ba)
 	if pErr != nil {
 		if log.V(1) {
