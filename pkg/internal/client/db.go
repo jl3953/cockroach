@@ -216,7 +216,7 @@ func (s *CrossRangeTxnWrapperSender) Send(
 		log.Fatalf(ctx, "CrossRangeTxnWrapperSender can't handle transactional requests")
 	}
 
-	log.Warningf(ctx, "jenndebug ba:[%+V]\n", ba)
+	log.Warningf(ctx, "jenndebug ba:[%+v]\n", ba)
 	br, pErr := s.wrapped.Send(ctx, ba)
 	if _, ok := pErr.GetDetail().(*roachpb.OpRequiresTxnError); !ok {
 		return br, pErr
@@ -653,7 +653,7 @@ func (db *DB) Run(ctx context.Context, b *Batch) error {
 	if err := b.prepare(); err != nil {
 		return err
 	}
-	log.Warningf(ctx, "jenndebug b:[%+v]\n", *b)
+	//log.Warningf(ctx, "jenndebug b:[%+v]\n", *b)
 	return sendAndFill(ctx, db.send, b)
 }
 

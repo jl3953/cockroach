@@ -858,10 +858,9 @@ func (nl *NodeLiveness) updateLivenessAttempt(
 	}
 
 	if err := nl.db.Txn(ctx, func(ctx context.Context, txn *client.Txn) error {
-		log.Warningf(ctx, "jenndebug txn: [%+v], update: [%+v], oldLiveness: [%+v]\n", *txn, update, oldLiveness)
 		b := txn.NewBatch()
 		key := keys.NodeLivenessKey(update.NodeID)
-		log.Warningf(ctx, "jenndebug key:[%+v], update.NodeID:[%+v]\n", key, update.NodeID)
+		log.Warningf(ctx, "jenndebug holyhell b:[%+v], key:[%+v], update.NodeID:[%+v]\n", *b, key, update.NodeID)
 		// The batch interface requires interface{}(nil), not *Liveness(nil).
 		if oldLiveness == nil {
 			b.CPut(key, &update.Liveness, nil)
