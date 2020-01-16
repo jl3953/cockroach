@@ -628,13 +628,13 @@ func sendAndFill(ctx context.Context, send SenderFunc, b *Batch) error {
 	var ba roachpb.BatchRequest
 	ba.Requests = b.reqs
 	ba.Header = b.Header
+	log.Warningf(ctx, "jenndebug b:[%+v], ba:[%+v]\n", *b, ba)
+	debug.PrintStack()
 	b.response, b.pErr = send(ctx, ba)
 	b.fillResults(ctx)
 	if b.pErr == nil {
 		b.pErr = roachpb.NewError(b.resultErr())
 	}
-	log.Warningf(ctx, "jenndebug b:[%+v], ba:[%+v]\n", *b, ba)
-	debug.PrintStack()
 	return b.pErr.GoError()
 }
 
@@ -707,8 +707,6 @@ func (db *DB) sendUsingSender(
 	}
 
 	tracing.AnnotateTrace()
-	log.Warningf(ctx, "jenndebug ba:[%+v]\n", ba)
-	debug.PrintStack()
 	br, pErr := sender.Send(ctx, ba)
 	if pErr != nil {
 		if log.V(1) {
