@@ -240,7 +240,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		}
 		fmt.Fprintf(&buf, `$%d`, i+1)
 	}
-	buf.WriteString(`)`)
+	buf.WriteString(`);`)
 	readStmtStr := buf.String()
 
 	// Write statement
@@ -389,6 +389,10 @@ func (o *kvOp) run(ctx context.Context) error {
 				return rowErr
 			}
 			rows.Close()
+
+			// jenndebug throwaway
+			_, _ = o.readStmt.QueryTx(ctx, tx, args...)
+
 			return nil
 		})
 		elapsed := timeutil.Since(start)
