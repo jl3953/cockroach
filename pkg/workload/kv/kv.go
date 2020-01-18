@@ -23,7 +23,7 @@ import (
 	"strconv"
 	"strings"
 	"sync/atomic"
-	"time" // jenndebug hot
+	//"time" // jenndebug hot
 
 	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
@@ -232,7 +232,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	}
 
 	// Read statement
-	var buf strings.Builder
+	/*var buf strings.Builder
 	buf.WriteString(`SELECT k, v FROM kv WHERE k IN (`)
 	for i := 0; i < w.batchSize; i++ {
 		if i > 0 {
@@ -241,10 +241,31 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		fmt.Fprintf(&buf, `$%d`, i+1)
 	}
 	buf.WriteString(`);`)
-	readStmtStr := buf.String()
+	readStmtStr := buf.String()*/
+
+	readStmts := make([]string, w.batchSize + 1)
+	for numKeys := 1; numKeys <= w.batchSize; numKeys++ {
+
+		// declare stringbuilder
+		var buf strings.Builder
+
+		// number of keys in the query
+		buf.WriteString(`SELECT k, v FROM kv WHERE k IN (`)
+		for i := 0; i < numKeys; i++ {
+			if i > 0 {
+				buf.WriteString(", ")
+			}
+
+			fmt.Fprintf(&buf,  `$%d`, i+1)
+		}
+		buf.WriteString(`);`)
+
+		// populate readStmts list
+		readStmts[numKeys] = buf.String()
+	}
 
 	// Write statement
-	buf.Reset()
+	/*buf.Reset()
 	buf.WriteString(`UPSERT INTO kv (k, v) VALUES`)
 	for i := 0; i < w.batchSize; i++ {
 	//for i := 0; i < 6; i++ { //jenndebug
@@ -254,7 +275,28 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		}
 		fmt.Fprintf(&buf, ` ($%d, $%d)`, j+1, j+2)
 	}
-	writeStmtStr := buf.String()
+	writeStmtStr := buf.String()*/
+
+	writeStmts := make([]string, w.batchSize + 1)
+	for numKeys := 1; numKeys <= w.batchSize; numKeys++ {
+
+		// declare stringbuilder
+		var buf strings.Builder
+
+		// number of keys in the query
+		buf.WriteString(`UPSERT INTO kv (k, v) VALUES`)
+		for i := 0; i < numKeys; i++ {
+			j := i * 2
+			if i > 0 {
+				buf.WriteString(", ")
+			}
+			fmt.Fprintf(&buf,  ` ($%d, $%d)`, j+1, j+2)
+		}
+
+		// populate writeStmts list
+		writeStmts[numKeys] = buf.String()
+	}
+
 
 	// Span statement
 	spanStmtStr := "SELECT count(v) FROM kv"
@@ -270,8 +312,16 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 			db: db,
 			mcp: mcp,
 		}
-		op.readStmt = op.sr.Define(readStmtStr)
-		op.writeStmt = op.sr.Define(writeStmtStr)
+		// op.readStmt = op.sr.Define(readStmtStr)
+		op.readStmts = make([]workload.StmtHandle, w.batchSize + 1)
+		for stmtIdx := 1; stmtIdx < len(readStmts); stmtIdx++ {
+			op.readStmts[stmtIdx] = op.sr.Define(readStmts[stmtIdx])
+		}
+		//op.writeStmt = op.sr.Define(writeStmtStr)
+		op.writeStmts = make([]workload.StmtHandle, w.batchSize + 1)
+		for stmtIdx := 1; stmtIdx < len(writeStmts); stmtIdx++ {
+			op.writeStmts[stmtIdx] = op.sr.Define(writeStmts[stmtIdx])
+		}
 		op.spanStmt = op.sr.Define(spanStmtStr)
 		if err := op.sr.Init(ctx, "kv", mcp, w.connFlags); err != nil {
 			return workload.QueryLoad{}, err
@@ -293,8 +343,8 @@ type kvOp struct {
 	config          *kv
 	hists           *histogram.Histograms
 	sr              workload.SQLRunner
-	readStmt        workload.StmtHandle
-	writeStmt       workload.StmtHandle
+	readStmts        []workload.StmtHandle
+	writeStmts       []workload.StmtHandle
 	spanStmt        workload.StmtHandle
 	g               keyGenerator
 	numEmptyResults *int64 // accessed atomically
@@ -330,14 +380,25 @@ func correctTxnParams(batchSize int, generateKey generateKeyFunc, greatestHotKey
 	sort.Sort(byInt(argsInt))
 
 	//jenndebug hot replacing hot keys
-	for i := 0; i < len(argsInt); i++ {
+	/* for i := 0; i < len(argsInt); i++ {
 		if argsInt[i] <= greatestHotKey {
 			argsInt[i] = argsInt[0]
 		}
 	}
-	sort.Sort(byInt(argsInt))
+	sort.Sort(byInt(argsInt))*/
 
 	return argsInt
+}
+
+func determineHotKeyBoundary(args []int64, greatestHotKey int64) int {
+
+	for i := 0; i < len(args); i++ {
+		if args[i] > greatestHotKey {
+			return i
+		}
+	}
+
+	return len(args)
 }
 
 func (o *kvOp) run(ctx context.Context) error {
@@ -346,24 +407,25 @@ func (o *kvOp) run(ctx context.Context) error {
 	if statementProbability < o.config.readPercent {
 
 		argsInt := correctTxnParams(o.config.batchSize, o.g.readKey, o.config.hotkey)
+		//jenndebug comment out if not testing
+		argsInt[0] = 0
+		argsInt[1] = 1 //math.MaxInt64-1
+		argsInt[2] = 215 //math.MaxInt64-2
+		argsInt[3] = 1994 //math.MaxInt64-4
+		argsInt[4] = 2016 //math.MaxInt64-6
+		argsInt[5] = 2020 //math.MaxInt64-8
+		// jenndebug
 
-		if argsInt[0] <= o.config.hotkey { //jenndebug hot 
+		numHotKeys := determineHotKeyBoundary(argsInt, o.config.hotkey)
+		/*if argsInt[0] <= o.config.hotkey { //jenndebug hot 
 			o.hists.Get(`read`).Record(0 * time.Millisecond)
 			return nil
-		}
+		}*/
 
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
 			args[i] = argsInt[i]
 		}
-		//jenndebug comment out if not testing
-		/* args[0] = 0
-		args[1] = 214 //math.MaxInt64-1
-		args[2] = 215 //math.MaxInt64-2
-		args[3] = 1994 //math.MaxInt64-4
-		args[4] = 2016 //math.MaxInt64-6
-		args[5] = 2020 //math.MaxInt64-8 */
-		// jenndebug
 
 		start := timeutil.Now()
 		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
@@ -374,24 +436,35 @@ func (o *kvOp) run(ctx context.Context) error {
 		}
 		// wrapping the single read statemnt in a txn
 		err = crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx), func() error {
-			rows, err := o.readStmt.QueryTx(ctx, tx, args...)
-			if err != nil {
-				return err
-			}
-			empty := true
-			for rows.Next() {
-				empty = false
-			}
-			if empty {
-				atomic.AddInt64(o.numEmptyResults, 1)
-			}
-			if rowErr := rows.Err(); rowErr != nil {
-				return rowErr
-			}
-			rows.Close()
 
-			// jenndebug throwaway
-			_, _ = o.readStmt.QueryTx(ctx, tx, args...)
+			// send out warm txns first, then send out hot
+			if numHotKeys < o.config.batchSize {
+				rows, err := o.readStmts[o.config.batchSize - numHotKeys].QueryTx(ctx, tx, args[numHotKeys:]...)
+				fmt.Printf("jenndebug read warm query:[%+v], args:[%+v]\n", o.readStmts[o.config.batchSize - numHotKeys].String(), args[numHotKeys:])
+
+				if err != nil {
+					return err
+				}
+
+				if rowErr := rows.Err(); rowErr != nil {
+					return rowErr
+				}
+				rows.Close()
+			}
+			if numHotKeys > 0 {
+				rows, err := o.readStmts[numHotKeys].QueryTx(ctx, tx, args[:numHotKeys]...)
+				fmt.Printf("jenndebug read hot query:[%+v], args:[%+v]\n", o.readStmts[numHotKeys].String(), args[:numHotKeys])
+
+				if err != nil {
+					return err
+				}
+
+				if rowErr := rows.Err(); rowErr != nil {
+					return rowErr
+				}
+				rows.Close()
+
+			}
 
 			return nil
 		})
@@ -411,12 +484,13 @@ func (o *kvOp) run(ctx context.Context) error {
 	}
 	const argCount = 2
 
-	argsInt := correctTxnParams(o.config.batchSize, o.g.writeKey, o.config.hotkey) 
+	argsInt := correctTxnParams(o.config.batchSize, o.g.writeKey, o.config.hotkey)
+	numHotKeys := determineHotKeyBoundary(argsInt, o.config.hotkey)
 
-	if argsInt[0] <= o.config.hotkey { //jenndebug hot
+	/* if argsInt[0] <= o.config.hotkey { //jenndebug hot
 		o.hists.Get(`write`).Record(0 * time.Millisecond)
 		return nil
-	}
+	}*/
 
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
@@ -459,7 +533,16 @@ func (o *kvOp) run(ctx context.Context) error {
 					AccessMode: pgx.ReadWrite,})
 	start := timeutil.Now()
 	err = crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx), func() error {
-		_, err := o.writeStmt.ExecTx(ctx, tx, args...)
+		// _, err := o.writeStmt.ExecTx(ctx, tx, args...)
+		var err error
+		if numHotKeys < o.config.batchSize {
+			_, err = o.writeStmts[o.config.batchSize - numHotKeys].ExecTx(ctx, tx, args[numHotKeys * 2:]...)
+			fmt.Printf("jenndebug write warm query:[%+v], args:[%+v]\n", o.writeStmts[o.config.batchSize - numHotKeys].String(), args[numHotKeys * 2:])
+		}
+		if numHotKeys > 0 {
+			_, err = o.writeStmts[numHotKeys].ExecTx(ctx, tx, args[:numHotKeys * 2]...)
+			fmt.Printf("jenndebug write hot query:[%+v], args:[%+v]\n", o.writeStmts[numHotKeys].String(), args[:numHotKeys * 2])
+		}
 		return err
 	})
 	elapsed := timeutil.Since(start)
