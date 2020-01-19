@@ -17,7 +17,7 @@ import (
 	"sync/atomic"
 	// "strings" // jenndebug
 	"unsafe"
-	// "runtime/debug"
+	"runtime/debug"
 
 	"github.com/cockroachdb/cockroach/pkg/base"
 	"github.com/cockroachdb/cockroach/pkg/gossip"
@@ -701,8 +701,8 @@ func splitBatchAndCheckForRefreshSpans(
 func (ds *DistSender) Send(
 	ctx context.Context, ba roachpb.BatchRequest,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
-	//log.Warningf(ctx, "jenndebug batch:[%+v], txn intent spans:[%+v], InFlightWrites:[%+v]\n", ba, ba.Txn.IntentSpans, ba.Txn.InFlightWrites)
-	// debug.PrintStack()
+	log.Warningf(ctx, "jenndebug batch:[%+v]\n", ba)
+	debug.PrintStack()
 
 	ds.metrics.BatchCount.Inc(1)
 
