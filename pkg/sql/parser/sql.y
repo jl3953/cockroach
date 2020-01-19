@@ -2646,6 +2646,7 @@ preparable_stmt:
 | truncate_stmt     // EXTEND WITH HELP: TRUNCATE
 | update_stmt       // EXTEND WITH HELP: UPDATE
 | upsert_stmt       // EXTEND WITH HELP: UPSERT
+| upserthot_stmt	// EXTEND WITH HELP: UPSERTHOT
 
 // These are statements that can be used as a data source using the special
 // syntax with brackets. These are a subset of preparable_stmt.
@@ -2660,6 +2661,7 @@ row_source_extension_stmt:
 | show_stmt         // help texts in sub-rule
 | update_stmt       // EXTEND WITH HELP: UPDATE
 | upsert_stmt       // EXTEND WITH HELP: UPSERT
+| upserthot_stmt	// EXTEND WITH HELP: UPSERTHOT
 
 explain_option_list:
   explain_option_name
