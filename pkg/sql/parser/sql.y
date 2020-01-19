@@ -568,7 +568,7 @@ func newNameFromStr(s string) *tree.Name {
 %token <str> TRACING
 
 %token <str> UNBOUNDED UNCOMMITTED UNION UNIQUE UNKNOWN UNLOGGED UNSPLIT
-%token <str> UPDATE UPSERT USE USER USERS USING UUID
+%token <str> UPDATE UPSERT UPSERTHOT USE USER USERS USING UUID
 
 %token <str> VALID VALIDATE VALUE VALUES VARBIT VARCHAR VARIADIC VIEW VARYING VIRTUAL
 
@@ -767,6 +767,7 @@ func newNameFromStr(s string) *tree.Name {
 %type <tree.Statement> truncate_stmt
 %type <tree.Statement> update_stmt
 %type <tree.Statement> upsert_stmt
+%type <tree.Statement> upserthot_stmt
 %type <tree.Statement> use_stmt
 
 %type <[]string> opt_incremental
@@ -2645,6 +2646,7 @@ preparable_stmt:
 | truncate_stmt     // EXTEND WITH HELP: TRUNCATE
 | update_stmt       // EXTEND WITH HELP: UPDATE
 | upsert_stmt       // EXTEND WITH HELP: UPSERT
+| upserthot_stmt	// EXTEND WITH HELP: UPSERTHOT
 
 // These are statements that can be used as a data source using the special
 // syntax with brackets. These are a subset of preparable_stmt.
@@ -2659,6 +2661,7 @@ row_source_extension_stmt:
 | show_stmt         // help texts in sub-rule
 | update_stmt       // EXTEND WITH HELP: UPDATE
 | upsert_stmt       // EXTEND WITH HELP: UPSERT
+| upserthot_stmt	// EXTEND WITH HELP: UPSERTHOT
 
 explain_option_list:
   explain_option_name
@@ -5536,6 +5539,20 @@ upsert_stmt:
     $$.val.(*tree.Insert).Returning = $6.retClause()
   }
 | opt_with_clause UPSERT error // SHOW HELP: UPSERT
+
+// %Help: UPSERTHOT - create or replace rows in a table, hotkeys sent in second roundtrip.
+// %Category: DML
+// %Text:
+// UPSERTHOT INTO <tablename> [AS <name>] [( <colnames...> )]
+		<selectclause>
+		[RETURNING <exprs...>]
+// %SeeAlso: INSERT, UPDATE, DELETE
+upserthot_stmt:
+	opt_with_clause UPSERTHOT INTO insert_target insert_rest returning_clause
+	{ 
+		return unimplemented(sqllex, "jenndebug upserthot 1")
+	}
+|	opt_with_clause UPSERT error // SHOW HELP: UPSERTHOT
 
 insert_target:
   table_name
@@ -9404,6 +9421,7 @@ unreserved_keyword:
 | UNSPLIT
 | UPDATE
 | UPSERT
+| UPSERTHOT
 | UUID
 | USE
 | USERS
