@@ -407,20 +407,16 @@ func (o *kvOp) run(ctx context.Context) error {
 	if statementProbability < o.config.readPercent {
 
 		argsInt := correctTxnParams(o.config.batchSize, o.g.readKey, o.config.hotkey)
-		//jenndebug comment out if not testing
+		/* //jenndebug comment out if not testing
 		argsInt[0] = 0
 		argsInt[1] = 1 //math.MaxInt64-1
 		argsInt[2] = 215 //math.MaxInt64-2
 		argsInt[3] = 1994 //math.MaxInt64-4
 		argsInt[4] = 2016 //math.MaxInt64-6
 		argsInt[5] = 2020 //math.MaxInt64-8
-		// jenndebug
+		// jenndebug*/
 
 		numHotKeys := determineHotKeyBoundary(argsInt, o.config.hotkey)
-		/*if argsInt[0] <= o.config.hotkey { //jenndebug hot 
-			o.hists.Get(`read`).Record(0 * time.Millisecond)
-			return nil
-		}*/
 
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
@@ -440,7 +436,6 @@ func (o *kvOp) run(ctx context.Context) error {
 			// send out warm txns first, then send out hot
 			if numHotKeys < o.config.batchSize {
 				rows, err := o.readStmts[o.config.batchSize - numHotKeys].QueryTx(ctx, tx, args[numHotKeys:]...)
-				fmt.Printf("jenndebug read warm query:[%+v], args:[%+v]\n", o.readStmts[o.config.batchSize - numHotKeys].String(), args[numHotKeys:])
 
 				if err != nil {
 					return err
@@ -453,7 +448,6 @@ func (o *kvOp) run(ctx context.Context) error {
 			}
 			if numHotKeys > 0 {
 				rows, err := o.readStmts[numHotKeys].QueryTx(ctx, tx, args[:numHotKeys]...)
-				fmt.Printf("jenndebug read hot query:[%+v], args:[%+v]\n", o.readStmts[numHotKeys].String(), args[:numHotKeys])
 
 				if err != nil {
 					return err
@@ -486,11 +480,6 @@ func (o *kvOp) run(ctx context.Context) error {
 
 	argsInt := correctTxnParams(o.config.batchSize, o.g.writeKey, o.config.hotkey)
 	numHotKeys := determineHotKeyBoundary(argsInt, o.config.hotkey)
-
-	/* if argsInt[0] <= o.config.hotkey { //jenndebug hot
-		o.hists.Get(`write`).Record(0 * time.Millisecond)
-		return nil
-	}*/
 
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
@@ -537,11 +526,9 @@ func (o *kvOp) run(ctx context.Context) error {
 		var err error
 		if numHotKeys < o.config.batchSize {
 			_, err = o.writeStmts[o.config.batchSize - numHotKeys].ExecTx(ctx, tx, args[numHotKeys * 2:]...)
-			fmt.Printf("jenndebug write warm query:[%+v], args:[%+v]\n", o.writeStmts[o.config.batchSize - numHotKeys].String(), args[numHotKeys * 2:])
 		}
 		if numHotKeys > 0 {
 			_, err = o.writeStmts[numHotKeys].ExecTx(ctx, tx, args[:numHotKeys * 2]...)
-			fmt.Printf("jenndebug write hot query:[%+v], args:[%+v]\n", o.writeStmts[numHotKeys].String(), args[:numHotKeys * 2])
 		}
 		return err
 	})

@@ -374,7 +374,7 @@ def run_workload(workload_nodes, b, name, urls, out_dir, is_warmup=False, hot_ke
 	ps = []
 	for wn in workload_nodes:
 		args = parse_bench_args(b["run_args"], is_warmup=is_warmup, hot_key=hot_key)
-		cmd = "{0} workload run {1} {2} {3} --concurrency=1".format(EXE, name, urls, args)
+		cmd = "{0} workload run {1} {2} {3}".format(EXE, name, urls, args)
 		ip = wn["ip"]
 
 		if is_warmup:
