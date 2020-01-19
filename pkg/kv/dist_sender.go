@@ -701,7 +701,7 @@ func splitBatchAndCheckForRefreshSpans(
 func (ds *DistSender) Send(
 	ctx context.Context, ba roachpb.BatchRequest,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
-	// log.Warningf(ctx, "jenndebug batch:[%+v]\n", ba)
+	log.Warningf(ctx, "jenndebug batch:[%+v]\n", ba)
 	// debug.PrintStack()
 
 	ds.metrics.BatchCount.Inc(1)
@@ -733,11 +733,11 @@ func (ds *DistSender) Send(
 		splitET = true
 	}
 	parts := splitBatchAndCheckForRefreshSpans(ba, splitET)
-	/*debugStr := ""
+	debugStr := ""
 	for _, part := range parts {
 		debugStr += fmt.Sprintf(", part: [%+v]", part)
 	}
-	log.Warningf(ctx, "jenndebug %s\n", debugStr)*/
+	log.Warningf(ctx, "jenndebug %s\n", debugStr)
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
 		// Such a batch should never need splitting.
