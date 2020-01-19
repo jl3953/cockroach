@@ -828,6 +828,7 @@ unreserved_keyword ::=
 	| 'UNSPLIT'
 	| 'UPDATE'
 	| 'UPSERT'
+	| 'UPSERTHOT'
 	| 'UUID'
 	| 'USE'
 	| 'USERS'

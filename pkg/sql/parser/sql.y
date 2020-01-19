@@ -2646,7 +2646,6 @@ preparable_stmt:
 | truncate_stmt     // EXTEND WITH HELP: TRUNCATE
 | update_stmt       // EXTEND WITH HELP: UPDATE
 | upsert_stmt       // EXTEND WITH HELP: UPSERT
-| upserthot_stmt	// EXTEND WITH HELP: UPSERTHOT
 
 // These are statements that can be used as a data source using the special
 // syntax with brackets. These are a subset of preparable_stmt.
@@ -2661,7 +2660,6 @@ row_source_extension_stmt:
 | show_stmt         // help texts in sub-rule
 | update_stmt       // EXTEND WITH HELP: UPDATE
 | upsert_stmt       // EXTEND WITH HELP: UPSERT
-| upserthot_stmt	// EXTEND WITH HELP: UPSERTHOT
 
 explain_option_list:
   explain_option_name
@@ -5540,19 +5538,18 @@ upsert_stmt:
   }
 | opt_with_clause UPSERT error // SHOW HELP: UPSERT
 
-// %Help: UPSERTHOT - create or replace rows in a table, hotkeys sent in second roundtrip.
+// %Help: UPSERTHOT - create or replace rows in a table, hotkeys in second wave
 // %Category: DML
 // %Text:
-// UPSERTHOT INTO <tablename> [AS <name>] [( <colnames...> )]
-		<selectclause>
-		[RETURNING <exprs...>]
+// UPSERTHOT INTO <table> [AS <name>] [( <colnames...> )]
+//		<selectclause>
+//		[RETURNING <exprs...>]
 // %SeeAlso: INSERT, UPDATE, DELETE
 upserthot_stmt:
 	opt_with_clause UPSERTHOT INTO insert_target insert_rest returning_clause
-	{ 
-		return unimplemented(sqllex, "jenndebug upserthot 1")
+	{	return unimplemented(sqllex, "jenndebug upserthot 1")
 	}
-|	opt_with_clause UPSERT error // SHOW HELP: UPSERTHOT
+| 	opt_with_clause UPSERTHOT error // SHOW HELP: UPSERTHOT
 
 insert_target:
   table_name
