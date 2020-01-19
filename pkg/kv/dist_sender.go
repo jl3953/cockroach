@@ -701,7 +701,7 @@ func splitBatchAndCheckForRefreshSpans(
 func (ds *DistSender) Send(
 	ctx context.Context, ba roachpb.BatchRequest,
 ) (*roachpb.BatchResponse, *roachpb.Error) {
-	log.Warningf(ctx, "jenndebug batch:[%+v], txn:[%+v]\n", ba, ba.Txn)
+	log.Warningf(ctx, "jenndebug batch:[%+v], txn intent spans:[%+v], InFlightWrites:[%+v]\n", ba, ba.Txn.IntentSpans, ba.Txn.InFlightWrites)
 	// debug.PrintStack()
 
 	ds.metrics.BatchCount.Inc(1)
