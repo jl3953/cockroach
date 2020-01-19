@@ -23,6 +23,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/util"
 	"github.com/cockroachdb/cockroach/pkg/util/errorutil/unimplemented"
 	"github.com/cockroachdb/cockroach/pkg/util/tracing"
+	"github.com/cockroachdb/cockroach/pkg/util/log"
 )
 
 var upsertNodePool = sync.Pool{
@@ -85,6 +86,7 @@ func (p *planner) newUpsertNode(
 			},
 		},
 	}
+	log.Warningf(ctx, "jenndebug source rows:[%+v], insertCols:[%+v]\n", sourceRows, resultCols)
 	defer func() {
 		// If anything below fails, we don't want to leak
 		// resources. Ensure the thing is always closed and put back to
