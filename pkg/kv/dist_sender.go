@@ -738,6 +738,9 @@ func (ds *DistSender) Send(
 		debugStr += fmt.Sprintf(", part: [%+v]", part)
 	}
 	log.Warningf(ctx, "jenndebug %s\n", debugStr)
+	if len(parts) > 1 {
+		log.Warningf(ctx, "jenndebug wut [%+v]\n", parts)
+	}
 	if len(parts) > 1 && ba.MaxSpanRequestKeys != 0 {
 		// We already verified above that the batch contains only scan requests of the same type.
 		// Such a batch should never need splitting.
