@@ -99,7 +99,7 @@ func CanModifySchema(stmt Statement) bool {
 func CanWriteData(stmt Statement) bool {
 	switch stmt.(type) {
 	// Normal write operations.
-	case *Insert, *Delete, *Update, *Truncate:
+	case *Insert, *InsertHot, *Delete, *Update, *Truncate:
 		return true
 	// Import operations.
 	case *CopyFrom, *Import, *Restore:
@@ -124,6 +124,8 @@ func IsStmtParallelized(stmt Statement) bool {
 	case *Delete:
 		return parallelizedRetClause(s.Returning)
 	case *Insert:
+		return parallelizedRetClause(s.Returning)
+	case *InsertHot:
 		return parallelizedRetClause(s.Returning)
 	case *Update:
 		return parallelizedRetClause(s.Returning)
@@ -457,6 +459,12 @@ func (n *Insert) StatementType() StatementType { return n.Returning.statementTyp
 
 // StatementTag returns a short string identifying the type of statement.
 func (*Insert) StatementTag() string { return "INSERT" }
+
+// StatementType implements the Statement interface.
+func (n *InsertHot) StatementType() StatementType { return n.Returning.statementType() }
+
+// StatementTag returns a short string identifying the type of statement.
+func (*InsertHot) StatementTag() string { return "INSERTHOT" }
 
 // StatementType implements the Statement interface.
 func (n *Import) StatementType() StatementType { return Rows }
@@ -905,6 +913,7 @@ func (n *Export) String() string                         { return AsString(n) }
 func (n *Grant) String() string                          { return AsString(n) }
 func (n *GrantRole) String() string                      { return AsString(n) }
 func (n *Insert) String() string                         { return AsString(n) }
+func (n *InsertHot) String() string                      { return AsString(n) }
 func (n *Import) String() string                         { return AsString(n) }
 func (n *ParenSelect) String() string                    { return AsString(n) }
 func (n *Prepare) String() string                        { return AsString(n) }

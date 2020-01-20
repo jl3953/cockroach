@@ -40,6 +40,7 @@ preparable_stmt ::=
 	| truncate_stmt
 	| update_stmt
 	| upsert_stmt
+	| upserthot_stmt
 
 copy_from_stmt ::=
 	'COPY' table_name opt_column_list 'FROM' 'STDIN'
@@ -197,6 +198,9 @@ update_stmt ::=
 
 upsert_stmt ::=
 	opt_with_clause 'UPSERT' 'INTO' insert_target insert_rest returning_clause
+
+upserthot_stmt ::=
+	opt_with_clause 'UPSERTHOT' 'INTO' insert_target insert_rest returning_clause
 
 table_name ::=
 	db_object_name
@@ -1931,6 +1935,7 @@ row_source_extension_stmt ::=
 	| show_stmt
 	| update_stmt
 	| upsert_stmt
+	| upserthot_stmt
 
 user_priority ::=
 	'LOW'

@@ -5549,7 +5549,12 @@ upsert_stmt:
 // %SeeAlso: INSERT, UPDATE, DELETE
 upserthot_stmt:
 	opt_with_clause UPSERTHOT INTO insert_target insert_rest returning_clause
-	{	return unimplemented(sqllex, "jenndebug upserthot 1")
+	{	
+		$$.val = $5.stmt()
+		$$.val.(*tree.InsertHot).With = $1.with()
+		$$.val.(*tree.InsertHot).Table = $4.tblExpr()
+		$$.val.(*tree.InsertHot).OnConflict = &tree.OnConflictHot{}
+		$$.val.(*tree.InsertHot).Returning = $6.retClause()
 	}
 | 	opt_with_clause UPSERTHOT error // SHOW HELP: UPSERTHOT
 

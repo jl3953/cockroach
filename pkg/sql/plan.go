@@ -482,6 +482,8 @@ func (p *planner) newPlan(
 		return p.Grant(ctx, n)
 	case *tree.Insert:
 		return p.Insert(ctx, n, desiredTypes)
+	case *tree.InsertHot:
+		return p.InsertHot(ctx, n, desiredTypes)
 	case *tree.ParenSelect:
 		return p.newPlan(ctx, n.Select, desiredTypes)
 	case *tree.Relocate:
