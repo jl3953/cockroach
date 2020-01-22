@@ -40,5 +40,14 @@ plot "cdf-100M_0.7.csv" using "key":"frequency" title "batch=1 key, s=0.7" with 
 		 "cdf-100M-dedup-batch6_1.2.csv" using "key":"frequency" title "batch=6 keys, dedup, s=1.2" with linespoint,\
 		 "cdf-100M-distinct-batch6_1.2.csv" using "key":"frequency" title "batch=6 keys, distinct, s=1.2" with linespoint
 
-
-
+set output "cdf-keyspace-comparison.png"
+set title "CDF comparisons across keyspaces"
+plot "cdf-1M-dedup-batch6_0.7.csv" using "key":"frequency" title "batch=6 keys, dedup, s=0.7, keyspace=1M" with linespoint,\
+		 "cdf-10M-dedup-batch6_0.7.csv" using "key":"frequency" title "batch=6 keys, dedup, s=0.7, keyspace=10M" with linespoint,\
+		 "cdf-100M-dedup-batch6_0.7.csv" using "key":"frequency" title "batch=6 keys, dedup, s=0.7, keyspace=100M" with linespoint,\
+		 "cdf-1M-dedup-batch6_1.0.csv" using "key":"frequency" title "batch=6 keys, dedup, s=1.0, keyspace=1M" with linespoint,\
+		 "cdf-10M-dedup-batch6_1.0.csv" using "key":"frequency" title "batch=6 keys, dedup, s=1.0, keyspace=10M" with linespoint,\
+		 "cdf-100M-dedup-batch6_1.0.csv" using "key":"frequency" title "batch=6 keys, dedup, s=1.0, keyspace=100M" with linespoint,\
+		 "cdf-1M-dedup-batch6_1.2.csv" using "key":"frequency" title "batch=6 keys, dedup, s=1.2, keyspace=1M" with linespoint,\
+		 "cdf-10M-dedup-batch6_1.2.csv" using "key":"frequency" title "batch=6 keys, dedup, s=1.2, keyspace=10M" with linespoint,\
+		 "cdf-100M-dedup-batch6_1.2.csv" using "key":"frequency" title "batch=6 keys, dedup, s=1.2, keyspace=100M" with linespoint,\
