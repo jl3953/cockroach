@@ -28,7 +28,6 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/sql/pgwire/pgerror"
 	"github.com/cockroachdb/cockroach/pkg/sql/sem/tree"
 	"github.com/cockroachdb/cockroach/pkg/sql/types"
-	//"github.com/cockroachdb/cockroach/pkg/util/log"
 	"github.com/cockroachdb/errors"
 )
 
@@ -98,7 +97,6 @@ var defaultNakedIntType = types.Int
 func (p *Parser) Parse(sql string) (Statements, error) {
 	stmt, err := p.parseWithDepth(1, sql, defaultNakedIntType)
 	// ctx := context.Background()
-	// log.Warningf(ctx, "jenndebug sql:[%s], stmt:[%+v]\n", sql, stmt)
 	return stmt, err
 }
 
