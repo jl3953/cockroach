@@ -24,7 +24,7 @@ plot "hot10k_100M.csv" using "skew":"median" title "hotkeys in [0, 10k]" with li
 		 "hot1M_100M.csv" using "skew":"median" title "hotkeys in [0, 1M]" with linespoint
 
 set title "Mocked protocol comparison over keyspaces, const hotkey cdf"
-set output "protocol_comparison_cdf.png"
+set output "protocol_comparison_cdf_incorrect.png"
 plot "hot10k_1M.csv" using "skew":"median" title "cdf=0.1, hk cutoff=1k, keyspace=1M" with linespoint,\
 		 "hot100k_10M.csv" using "skew":"median" title "cdf=0.1, hk cutoff=100k, keyspace=10M" with linespoint,\
 		 "hot100k_1M.csv" using "skew":"median" title "cdf=0.3, hk cutoff=100k, keyspace=1M" with linespoint,\
@@ -44,11 +44,13 @@ plot "hot1_1M_lower.csv" using "skew":"median" title "hotkeys in [0, 1]" with li
 		 "hot1k_1M_lower.csv" using "skew":"median" title "hotkeys in [0, 1k]" with linespoint
 
 set title "Mocked protocol, comparison across keyspace with const hotkey cutoff"
-set output "protocol_comparison_hotkey_cutoff.png"
+set output "protocol_comparison_hotkey_cutoff_10k.png"
 plot "hot10k_1M.csv" using "skew":"median" title "hk cutoff=10K, keyspace=1M" with linespoint,\
 		 "hot10k_10M.csv" using "skew":"median" title "hk cutoff=10k, keyspace=10M" with linespoint,\
-		 "hot10k_100M.csv" using "skew":"median" title "hk cutoff=100k, keyspace=100M" with linespoint,\
-		 "hot100k_1M.csv" using "skew":"median" title "hk cutoff=100k, keyspace=1M" with linespoint,\
+		 "hot10k_100M.csv" using "skew":"median" title "hk cutoff=10k, keyspace=100M" with linespoint
+
+set title "Mocked protocol, comparison across keyspace with const hotkey cutoff"
+set output "protocol_comparison_hotkey_cutoff_100k.png"
+plot "hot100k_1M.csv" using "skew":"median" title "hk cutoff=100k, keyspace=1M" with linespoint,\
 		 "hot100k_10M.csv" using "skew":"median" title "hk cutoff=100k, keyspace=10M" with linespoint,\
 		 "hot100k_100M.csv" using "skew":"median" title "hk cutoff=100k, keyspace=100M" with linespoint
-
