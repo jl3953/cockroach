@@ -103,8 +103,6 @@ func NewTxn(ctx context.Context, db *DB, gatewayNodeID roachpb.NodeID, typ TxnTy
 		now,
 		db.clock.MaxOffset().Nanoseconds(),
 	)
-	// log.Warningf(ctx, "jenndebug NewTxn(ctx, db, gatewayNodeID=[%+v], typ=[%+v]), txn.mu.ID=[%+v]",
-	// 		gatewayNodeID, typ, txn.TxnMeta.ID)
 
 	// Ensure the gateway node ID is marked as free from clock offset
 	// if this is a root transaction.
@@ -966,7 +964,6 @@ func (txn *Txn) GenerateForcedRetryableError(ctx context.Context, msg string) er
 			now,
 			txn.db.clock.MaxOffset().Nanoseconds(),
 		))
-	//log.Warningf(ctx, "jenndebug retry previousIds:[%+v]", txn.mu.previousIDs)
 	return result
 }
 
