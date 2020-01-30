@@ -13,6 +13,7 @@ package sql
 import (
 	"context"
 	"fmt"
+	"runtime/debug" // jenndebug
 	"sync"
 
 	"github.com/cockroachdb/cockroach/pkg/sql/pgwire/pgcode"
@@ -60,6 +61,8 @@ var _ autoCommitNode = &insertNode{}
 func (p *planner) Insert(
 	ctx context.Context, n *tree.Insert, desiredTypes []*types.T,
 ) (result planNode, resultErr error) {
+
+	debug.PrintStack() // jenndebug
 	// CTE analysis.
 	resetter, err := p.initWith(ctx, n.With)
 	if err != nil {
