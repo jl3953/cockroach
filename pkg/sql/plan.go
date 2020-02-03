@@ -12,6 +12,7 @@ package sql
 
 import (
 	"context"
+	"runtime/debug" // jenndebug
 
 	"github.com/cockroachdb/cockroach/pkg/roachpb"
 	"github.com/cockroachdb/cockroach/pkg/sql/delegate"
@@ -398,6 +399,7 @@ func (p *planner) newPlan(
 	ctx context.Context, stmt tree.Statement, desiredTypes []*types.T,
 ) (planNode, error) {
 	tracing.AnnotateTrace()
+	debug.PrintStack() // jenndebug
 
 	// This will set the system DB trigger for transactions containing
 	// schema-modifying statements that have no effect, such as
