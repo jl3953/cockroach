@@ -2,19 +2,19 @@ package sql
 
 import (
 	"context"
-	"fmt"
+	// "fmt"
 	// "sync"
 
 	// "github.com/cockroachdb/cockroach/pkg/sql/pgwire/pgcode"
 	// "github.com/cockroachdb/cockroach/pkg/sql/pgwire/pgerror"
-	// "github.com/cockroachdb/cockroach/pkg/sql/privilege"
-	// "github.com/cockroachdb/cockroach/pkg/sql/row"
+	"github.com/cockroachdb/cockroach/pkg/sql/privilege"
+	"github.com/cockroachdb/cockroach/pkg/sql/row"
 	// "github.com/cockroachdb/cockroach/pkg/sql/rowcontainer"
 	"github.com/cockroachdb/cockroach/pkg/sql/sem/tree"
-	// "github.com/cockroachdb/cockroach/pkg/sql/sqlbase"
+	"github.com/cockroachdb/cockroach/pkg/sql/sqlbase"
 	"github.com/cockroachdb/cockroach/pkg/sql/types"
 	// "github.com/cockroachdb/cockroach/pkg/util/errorutil/unimplemented"
-	// "github.com/cockroachdb/cockroach/pkg/util/tracing"
+	"github.com/cockroachdb/cockroach/pkg/util/tracing"
 )
 
 func (p *planner) InsertHot(
@@ -99,7 +99,7 @@ func (p *planner) InsertHot(
 
 	// Determine which columns we're inserting into
 	var insertCols []sqlbase.ColumnDescriptor
-	if nDefaultValues() {
+	if n.DefaultValues() {
 		// No target column, select all columns in the table, including
 		// hidden columns; these may have defaults too.
 		//
@@ -145,7 +145,7 @@ func (p *planner) InsertHot(
 	// because `defaultExprs` is expected to line up with the final set of
 	// columns being inserted into.
 	insertCols, defaultExprs, err :=
-		sqlbase.ProcessDefaultcolumns(insertCols, desc, &p.txCtx, p.EvalContext())
+		sqlbase.ProcessDefaultColumns(insertCols, desc, &p.txCtx, p.EvalContext())
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +166,7 @@ func (p *planner) InsertHot(
 	arityChecked := false
 	colNames := make(tree.NameList, len(insertCols))
 	for i := range insertCols {
-		colNames[i] = tree.name(insertCols[i].Name)
+		colNames[i] = tree.Name(insertCols[i].Name)
 	}
 	if n.DefaultValues() {
 		insertRows = newDefaultValuesClause(defaultExprs, colNames)
@@ -213,11 +213,11 @@ func (p *planner) InsertHot(
 		// already verified the arity of the operand is correct.
 		// Do it now.
 		numExprs := len(srcCols)
-		if err := checkNumExprs(isUpsert, numExprs, numInputcolumns, n.Columns != nil); err != nil {
+		if err := checkNumExprs(isUpsert, numExprs, numInputColumns, n.Columns != nil); err != nil {
 			return nil, err
 		}
 		if numExprs > maxInsertIdx {
-			return nil, sqlbase.CannotWriteToComputedColError(insesrtcols[maxInsertIdx].Name)
+			return nil, sqlbase.CannotWriteToComputedColError(insertCols[maxInsertIdx].Name)
 		}
 	}
 
@@ -251,7 +251,7 @@ func (p *planner) InsertHot(
 	// Since all columns are being returned, use the 1:1 mapping.
 	tabColIdxToRetIdx := make([]int, len(desc.Columns))
 	for i := range tabColIdxToRetIdx {
-		tabcolIdxtoRetIdx[i] = i
+		tabColIdxToRetIdx[i] = i
 	}
 
 	// At this point, everything is ready for either an insertNode or an upsertNode.
@@ -263,7 +263,7 @@ func (p *planner) InsertHot(
 		// The upsert path has a separate constructor.
 		node, err = p.newUpsertNode(
 			ctx, n, desc, ri, tn, alias, rows, rowsNeeded, columns,
-			defaultExprs, computExprs, computedCols, fkTables, desiredTypes)
+			defaultExprs, computeExprs, computedCols, fkTables, desiredTypes)
 		if err != nil {
 			return nil, err
 		}
@@ -285,14 +285,14 @@ func (p *planner) InsertHot(
 				},
 				defaultExprs: defaultExprs,
 				insertCols: ri.InsertCols,
-				tabColIndxToRetIdx: tabeColIdxToRetIdx,
+				tabColIdxToRetIdx: tabColIdxToRetIdx,
 			},
 		}
 		node = in
 	}
 
 	// Finally, handle RETURNING, if any.
-	r, err := p.Returning(ctx, node, n.Returning, desiredThypes, alias)
+	r, err := p.Returning(ctx, node, n.Returning, desiredTypes, alias)
 	if err != nil {
 		// We close explicitly here to release the node to the pool.
 		node.Close(ctx)
