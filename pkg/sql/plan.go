@@ -400,6 +400,7 @@ func (p *planner) newPlan(
 ) (planNode, error) {
 	tracing.AnnotateTrace()
 	debug.PrintStack() // jenndebug
+	log.Warningf(ctx, "jenndebug\n")
 
 	// This will set the system DB trigger for transactions containing
 	// schema-modifying statements that have no effect, such as
