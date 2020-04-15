@@ -16,7 +16,7 @@ CONFIG_LIST = [
 	# "new_zipfian_overload.ini"
 	# "baseline.ini",
 	# "read100.ini",
-	"beep.ini",
+	 "beep.ini",
 ]
 EXP, SKEWS = exp_lib.create_experiment(FPATH, CONFIG_LIST[0])
 DB_QUERY_NODE = "192.168.1.2"
