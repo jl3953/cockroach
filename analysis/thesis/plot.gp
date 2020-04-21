@@ -27,6 +27,7 @@ set output "protocol_comparison_baseline_1hot.png"
 plot "baseline.csv" using "skew":"median" title "baseline" with linespoint,\
 		 "hot1_1M.csv" using "skew":"median" title "hotkey in [0, 1]" with linespoint
 
+set yrange [0:10000]
 set title "Baseline"
 set output "baseline.png"
 plot "baseline.csv" using "skew":"median" title "baseline" with linespoint
