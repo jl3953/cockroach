@@ -1,6 +1,6 @@
 set terminal png
 
-set xlabel "s"
+set xlabel "zipfian constant (s)"
 set ylabel "throughput (txns/sec)"
 
 set yrange [0: 210000]
@@ -26,3 +26,7 @@ set title "Mocked protocol, keyspace=1M"
 set output "protocol_comparison_baseline_1hot.png"
 plot "baseline.csv" using "skew":"median" title "baseline" with linespoint,\
 		 "hot1_1M.csv" using "skew":"median" title "hotkey in [0, 1]" with linespoint
+
+set title "Baseline"
+set output "baseline.png"
+plot "baseline.csv" using "skew":"median" title "baseline" with linespoint
