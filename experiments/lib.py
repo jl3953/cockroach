@@ -252,10 +252,16 @@ def vary_zipf_skew(config, skews):
         "type" in config["benchmark"]["run_args"]["distribution"] and
         config["benchmark"]["run_args"]["distribution"]["type"] == "zipf"):
 
+		if len(skews) != len(concurrency):
+			raise ValueError("number of provided skews != number of provided concurrencies!!!")
+
         out_dir = config["out_dir"]
         exps = []
-        i = 0
-        for s in skews:
+
+		for i in range(len(skews)):
+			s = skews[i]
+			c = concurrency[i]
+
             e = copy.deepcopy(config)
             if "params" not in e["benchmark"]["run_args"]["distribution"]:
                 e["benchmark"]["run_args"]["distribution"]["params"] = {}
@@ -264,9 +270,9 @@ def vary_zipf_skew(config, skews):
                 print("WARNING: Overwriting skew param in experiment config!")
 
             e["benchmark"]["run_args"]["distribution"]["params"]["skew"] = s
+			e["benchmark"]["run_args"]["concurrency"] = c
             e["out_dir"] = os.path.join(out_dir, "skew-{0}".format(i))
             exps.append(e)
-            i += 1
 
         return exps
 

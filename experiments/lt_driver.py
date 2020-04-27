@@ -10,13 +10,14 @@ import plotlib
 FPATH = os.path.dirname(os.path.realpath(__file__))
 
 def parse_config_file(baseline_file, lt_file):
-	exp, _ = exp_lib.create_experiment(FPATH, baseline_file)
+	exp, skews = exp_lib.create_experiment(FPATH, baseline_file)
 	variation_config = exp_lib.read_variation(lt_file)
+	variation_config["skews"] = skews
 
 	return exp, variation_config
 
 
-def find_optimal_concurrency(exp, variations, is_view_only):
+def find_optimal_concurrency(exp, variations, skew, is_view_only):
 
 	""" Returns:
 	Max concurrency, csv data
@@ -33,7 +34,7 @@ def find_optimal_concurrency(exp, variations, is_view_only):
 			exp["benchmark"]["run_args"]["concurrency"] = concurrency
 			original_outdir = exp["out_dir"]
 			exp["out_dir"] += "_" + str(concurrency)
-			skew_list_with_one_item = [variations["variation"]["skew"]]
+			skew_list_with_one_item = [skew]
 			exps = lib.vary_zipf_skew(exp, skew_list_with_one_item)
 
 			for e in exps:
@@ -58,20 +59,22 @@ def find_optimal_concurrency(exp, variations, is_view_only):
 	return max_concurrency, data
 
 
-def report_csv_data(csv_data, args):
+def report_csv_data(csv_data, args, skew):
 
 	""" Outputs csv data to file storage.
 
 	Args:
 		csv_data
 		args (dict): metadata for path of csv file, driver nodes, etc.
+		skew (int)
 
 	Returns:
 		None.
 
 	"""
 	data = sorted(csv_data, key=lambda i: i["concurrency"])
-	filename = plotlib.write_out_data(data, args["filename"])
+	filename = args["filename"].split(".")[0] + str(skew) + args["filename"].split(".")[1]
+	_ = plotlib.write_out_data(data, filename)
 
 
 def report_optimal_parameters(max_concurrency, args):
@@ -99,10 +102,14 @@ def run_single_trial(find_concurrency_args, report_params_args,
 
 	set_params, variations = parse_config_file(find_concurrency_args["baseline_file"], 
 			find_concurrency_args["lt_file"])
-	max_concurrency, csv_data = find_optimal_concurrency(set_params,
-			variations, is_view_only)
-	report_csv_data(csv_data, report_csv_args)
-	report_optimal_parameters(max_concurrency, report_params_args)
+	max_concurrencies = []
+	for s in variations["skews"]:
+		max_concurrency, csv_data = find_optimal_concurrency(set_params,
+				variations, is_view_only)
+		report_csv_data(csv_data, report_csv_args, s)
+		max_concurrencies.append(max_concurrency)
+
+	report_optimal_parameters(max_concurrencies, report_params_args)
 	print(max_concurrency)
 
 

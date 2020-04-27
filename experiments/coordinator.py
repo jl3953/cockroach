@@ -222,7 +222,7 @@ def calculate_and_output_final_override(param_files, override_file):
 
 	with open(override_file, "w") as f:
 		f.write("[benchmark]\n")
-		f.write("concurrency = " + str(int(numpy.median(concurrencies))))
+		f.write("concurrency = " + str(int(numpy.median(concurrencies, axis=0))))
 
 
 def driver(baseline_file, override_file, csv_dir, csv_file):
