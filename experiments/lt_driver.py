@@ -31,7 +31,7 @@ def find_optimal_concurrency(exp, variations, skew, is_view_only):
 	max_concurrency = -1
 	while step_size > 0:
 		for concurrency in range(start, end, step_size):
-			exp["benchmark"]["run_args"]["concurrency"] = concurrency
+			exp["benchmark"]["run_args"]["concurrency"] = [concurrency]
 			original_outdir = exp["out_dir"]
 			exp["out_dir"] += "_" + str(concurrency)
 			skew_list_with_one_item = [skew]
@@ -73,8 +73,7 @@ def report_csv_data(csv_data, args, skew):
 
 	"""
 	data = sorted(csv_data, key=lambda i: i["concurrency"])
-	filename = args["filename"].split(".")[0] + str(skew) + args["filename"].split(".")[1]
-	_ = plotlib.write_out_data(data, filename)
+	_ = plotlib.write_out_data(data, args["filename"])
 
 
 def report_optimal_parameters(max_concurrency, args):
@@ -83,7 +82,7 @@ def report_optimal_parameters(max_concurrency, args):
 	an override.ini file, readable by driver script.
 
 	Args:
-		max_concurrency (int)
+		max_concurrency (list[int])
 		args (dict): metadata for path of file, etc.
 
 	Returns:
@@ -93,7 +92,8 @@ def report_optimal_parameters(max_concurrency, args):
 
 	with open(args["filename"], "w") as f:
 		f.write("[benchmark]\n")
-		f.write("concurrency = " + str(max_concurrency) + "\n")
+		write_out = [int(c) for c in max_concurrency]
+		f.write("concurrency = " + str(write_out) + "\n")
 
 	
 

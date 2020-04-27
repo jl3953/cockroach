@@ -257,6 +257,10 @@ def vary_zipf_skew(config, skews):
         for i in range(len(skews)):
             s = skews[i]
             
+            print("jendnebug boop", config)
+            print("jenndebug beep", config["benchmark"]["run_args"]["concurrency"])
+            c = config["benchmark"]["run_args"]["concurrency"][i]
+
             e = copy.deepcopy(config)
             if "params" not in e["benchmark"]["run_args"]["distribution"]:
                 e["benchmark"]["run_args"]["distribution"]["params"] = {}
@@ -265,6 +269,7 @@ def vary_zipf_skew(config, skews):
                 print("WARNING: Overwriting skew param in experiment config!")
 
             e["benchmark"]["run_args"]["distribution"]["params"]["skew"] = s
+            e["benchmark"]["run_args"]["concurrency"] = c
             e["out_dir"] = os.path.join(out_dir, "skew-{0}".format(i))
             exps.append(e)
 
