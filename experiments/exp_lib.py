@@ -64,7 +64,6 @@ def override_params(exp, skews, config, fpath, override_file=None):
 
 		run_args = exp_benchmark["run_args"]
 		if "concurrency" in override_benchmark:
-			print("jenndebug fuck", override_benchmark["concurrency"])
 			run_args["concurrency"] = json.loads(override_benchmark["concurrency"])
 		if "warmup_duration" in override_benchmark:
 			run_args["warmup_duration"] = int(override_benchmark["warmup_duration"])

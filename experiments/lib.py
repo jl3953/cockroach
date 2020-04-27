@@ -257,8 +257,6 @@ def vary_zipf_skew(config, skews):
         for i in range(len(skews)):
             s = skews[i]
             
-            print("jendnebug boop", config)
-            print("jenndebug beep", config["benchmark"]["run_args"]["concurrency"])
             c = config["benchmark"]["run_args"]["concurrency"][i]
 
             e = copy.deepcopy(config)

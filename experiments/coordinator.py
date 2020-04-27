@@ -218,9 +218,7 @@ def calculate_and_output_final_override(param_files, override_file):
 		config = configparser.ConfigParser()
 		config.read(param_file)
 
-		print("jenndebug nope", param_file, json.loads(config["benchmark"]["concurrency"]))
 		concurrencies.append(json.loads(config["benchmark"]["concurrency"]))
-	print("jenndebug hee", concurrencies)
 
 	with open(override_file, "w") as f:
 		f.write("[benchmark]\n")
