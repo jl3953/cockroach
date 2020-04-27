@@ -105,7 +105,7 @@ def run_single_trial(find_concurrency_args, report_params_args,
 	max_concurrencies = []
 	for s in variations["skews"]:
 		max_concurrency, csv_data = find_optimal_concurrency(set_params,
-				variations, is_view_only)
+				variations, s, is_view_only)
 		report_csv_data(csv_data, report_csv_args, s)
 		max_concurrencies.append(max_concurrency)
 

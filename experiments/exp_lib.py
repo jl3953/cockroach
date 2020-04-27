@@ -111,7 +111,7 @@ def create_experiment(fpath, config_filename, override=None):
 			"name": config["benchmark"]["name"],
 			"init_args": {},
 			"run_args": {
-				"concurrency": int(config["benchmark"]["concurrency"]),
+				"concurrency": json.loads(config["benchmark"]["concurrency"]),
 				"warmup_duration": int(config["benchmark"]["warmup_duration"]),
 				"duration": int(config["benchmark"]["duration"]),
 				"read_percent": int(config["benchmark"]["read_percent"]),
