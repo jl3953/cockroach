@@ -82,7 +82,7 @@ def report_optimal_parameters(max_concurrency, args):
 	an override.ini file, readable by driver script.
 
 	Args:
-		max_concurrency (list[int])
+		max_concurrency (int)
 		args (dict): metadata for path of file, etc.
 
 	Returns:
@@ -92,24 +92,19 @@ def report_optimal_parameters(max_concurrency, args):
 
 	with open(args["filename"], "w") as f:
 		f.write("[benchmark]\n")
-		write_out = [int(c) for c in max_concurrency]
-		f.write("concurrency = " + str(write_out) + "\n")
-
+		f.write("concurrency = " + str(max_concurrency) + "\n")
 	
 
 def run_single_trial(find_concurrency_args, report_params_args,
-		report_csv_args, is_view_only):
+		report_csv_args, skew, is_view_only):
 
 	set_params, variations = parse_config_file(find_concurrency_args["baseline_file"], 
 			find_concurrency_args["lt_file"])
-	max_concurrencies = []
-	for s in variations["skews"]:
-		max_concurrency, csv_data = find_optimal_concurrency(set_params,
-				variations, s, is_view_only)
-		report_csv_data(csv_data, report_csv_args, s)
-		max_concurrencies.append(max_concurrency)
+	max_concurrency, csv_data = find_optimal_concurrency(set_params,
+			variations, skew, is_view_only)
+	report_csv_data(csv_data, report_csv_args, skew)
 
-	report_optimal_parameters(max_concurrencies, report_params_args)
+	report_optimal_parameters(max_concurrency, report_params_args)
 	print(max_concurrency)
 
 
@@ -120,6 +115,7 @@ def main():
 	parser.add_argument('lt_file', help="lt_file, for example lt.ini")
 	parser.add_argument('params_output', help="abs path of output param file")
 	parser.add_argument('csv_output', help="abs path of output csv file")
+	parser.add_argument('skew', type=float, help="skew with which latency throughput is run")
 	parser.add_argument('--is_view_only', action='store_true', 
 			help='only runs warmup for short testing')
 	args = parser.parse_args()
@@ -136,8 +132,8 @@ def main():
 		"filename": args.params_output,
 	}
 
-	run_single_trial(find_concurrency_args, report_params_args, report_csv_args, 
-			args.is_view_only)
+	run_single_trial(find_concurrency_args, report_params_args, report_csv_args,
+			args.skew, args.is_view_only)
 
 
 if __name__ == "__main__":

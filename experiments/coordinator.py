@@ -71,6 +71,25 @@ def extract_human_tag(config_file):
 	return config["DEFAULT"]["LOGS_DIR"]
 
 
+def extract_skews(config_file):
+
+	""" Reads the skews from the config file.
+
+	Args:
+		config_file (str): .ini file
+
+	Returns:
+		list of skews
+	"""
+
+	config = configparser.ConfigParser()
+	config.read(config_file)
+
+	skews = json.loads(config["benchmark"]["skews"])
+
+	return skews
+
+
 def generate_testrun_name(suffix):
 
 	""" Creates a test run directory's name in the format
@@ -161,7 +180,7 @@ def copy_and_create_metadata(location, config_file):
 		f.write("\nsubmodule_commit_hash: " + git_submodule_hash)
 
 
-def call_latency_throughput(location, baseline_file, lt_file, params_file, csv_file):
+def call_latency_throughput(location, baseline_file, lt_file, params_file, csv_file, skew):
 
 	""" Calls the latency throughput script.
 
@@ -171,14 +190,15 @@ def call_latency_throughput(location, baseline_file, lt_file, params_file, csv_f
 		lt_file (str): latency throughput params config, abs path
 		params_file (str): abs path of param output file
 		csv_file (str): abs path of csv file
+		skew (double)
 	
 	Returns:
 		None.
 	"""
 
 	# call lt script
-	cmd = "{0} {1} {2} {3} {4}".format(
-			LT_EXECUTABLE, baseline_file, lt_file, params_file, csv_file)
+	cmd = "{0} {1} {2} {3} {4} {5}".format(
+			LT_EXECUTABLE, baseline_file, lt_file, params_file, csv_file, skew)
 	lib.call(cmd, "lt_driver script failed")
 
 
@@ -214,11 +234,17 @@ def calculate_and_output_final_override(param_files, override_file):
 	"""
 
 	concurrencies = []
-	for param_file in param_files:
-		config = configparser.ConfigParser()
-		config.read(param_file)
+	for param_file_list in param_files:
+		trial = []
+		for param_file in param_file_list:
+			config = configparser.ConfigParser()
+			config.read(param_file)
 
-		concurrencies.append(json.loads(config["benchmark"]["concurrency"]))
+			trial.append(json.loads(config["benchmark"]["concurrency"]))
+
+		concurrencies.append(trial)
+
+	print("jenndebug", concurrencies)
 
 	with open(override_file, "w") as f:
 		f.write("[benchmark]\n")
@@ -394,15 +420,20 @@ def main():
 
 		param_outputs = []
 		for trial in range(1, args.lt_trials + 1):
-			param_output = os.path.join(overall_dir, "param_trial_{0}.ini".format(trial))
-			param_outputs.append(param_output)
-			lt_csv = os.path.join(csv_dir, "lt_trial_{0}.csv".format(trial)) 
-			lt_logs = os.path.join(raw_out_dir, "lt_logs_trial_{0}".format(trial))
+			skews_for_trial = []
+			for s in extract_skews(args.config):
+				param_output = os.path.join(overall_dir, "param_trial_{0}_{1}.ini".format(trial, s))
+				# param_outputs.append(param_output)
+				skews_for_trial.append(param_output)
+				lt_csv = os.path.join(csv_dir, "lt_trial_{0}_{1}.csv".format(trial, s)) 
+				lt_logs = os.path.join(raw_out_dir, "lt_logs_trial_{0}_{1}".format(trial, s))
 
-			call_latency_throughput(overall_dir, args.config, args.lt_config,
-					param_output, lt_csv)
-			move_logs(args.config, lt_logs)
-			bash_imitation.gnuplot(LT_GNUPLOT, lt_csv, graph_dir, trial)
+				call_latency_throughput(overall_dir, args.config, args.lt_config,
+						param_output, lt_csv, s)
+				move_logs(args.config, lt_logs)
+				bash_imitation.gnuplot(LT_GNUPLOT, lt_csv, graph_dir, trial, s)
+
+			param_outputs.append(skews_for_trial)
 		
 		calculate_and_output_final_override(param_outputs, override_file)
 		
