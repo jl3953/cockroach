@@ -3,12 +3,12 @@ set terminal png
 set xlabel "zipfian constant (s)"
 set ylabel "throughput (txns/sec)"
 
-set title "Baseline"
+#set title "Baseline"
 set output "baseline.png"
 plot "baseline.csv" using "skew":"median" title "baseline" with linespoint
 
 set logscale y
-set title "Mocked protocol, keyspace=1M"
+#set title "Mocked protocol, keyspace=1M"
 set output "protocol_comparison_baseline_1hot.png"
 plot "baseline.csv" using "skew":"median" title "baseline" with linespoint,\
 		 "1.csv" using "skew":"median" title "hotkey subset: 2 keys" with linespoint
