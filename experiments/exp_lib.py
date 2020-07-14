@@ -64,7 +64,7 @@ def override_params(exp, skews, config, fpath, override_file=None):
 
 		run_args = exp_benchmark["run_args"]
 		if "concurrency" in override_benchmark:
-			run_args["concurrency"] = int(override_benchmark["concurrency"])
+			run_args["concurrency"] = json.loads(override_benchmark["concurrency"])
 		if "warmup_duration" in override_benchmark:
 			run_args["warmup_duration"] = int(override_benchmark["warmup_duration"])
 		if "duration" in override_benchmark:
@@ -111,7 +111,7 @@ def create_experiment(fpath, config_filename, override=None):
 			"name": config["benchmark"]["name"],
 			"init_args": {},
 			"run_args": {
-				"concurrency": int(config["benchmark"]["concurrency"]),
+				"concurrency": json.loads(config["benchmark"]["concurrency"]),
 				"warmup_duration": int(config["benchmark"]["warmup_duration"]),
 				"duration": int(config["benchmark"]["duration"]),
 				"read_percent": int(config["benchmark"]["read_percent"]),
@@ -147,6 +147,11 @@ def create_experiment(fpath, config_filename, override=None):
 		exp["should_create_partition"] = json.loads(config["cluster"]["should_create_partition"])
 	else:
 		exp["should_create_partition"] = False
+
+	if "keyspace" in config["benchmark"]:
+		exp["benchmark"]["run_args"]["keyspace"] = json.loads(config["benchmark"]["keyspace"])
+	else:
+		exp["benchmark"]["run_args"]["keyspace"] = 1000000
 
 	skews = json.loads(config["benchmark"]["skews"])
 	

@@ -346,12 +346,9 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 				case spanset.SpanReadOnly:
 					// Wait for writes at equal or lower timestamps.
 					it := tr[spanset.SpanReadWrite].MakeIter()
-					// start := timeutil.Now()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreLater); err != nil {
 						return err
 					}
-					// elapsed := timeutil.Since(start)
-					// log.Warningf(ctx, "jenndebug readspan elapsed:[%+v]\n", elapsed)
 				case spanset.SpanReadWrite:
 					// Wait for all other writes.
 					//
@@ -360,21 +357,14 @@ func (m *Manager) wait(ctx context.Context, lg *Guard, snap snapshot) error {
 					// latches first. We expect writes to take longer than reads
 					// to release their latches, so we wait on them first.
 					it := tr[spanset.SpanReadWrite].MakeIter()
-					// start_rw := timeutil.Now()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreNothing); err != nil {
 						return err
 					}
-					// elapsed_rw := timeutil.Since(start_rw)
 					// Wait for reads at equal or higher timestamps.
 					it = tr[spanset.SpanReadOnly].MakeIter()
-					// start_ro := timeutil.Now()
 					if err := m.iterAndWait(ctx, timer, &it, latch, ignoreEarlier); err != nil {
 						return err
 					}
-					// elapsed_ro := timeutil.Since(start_ro)
-					// elapsed := timeutil.Since(start_rw)
-					/* log.Warningf(ctx, "jenndebug rwspan elapsed:[%+v], elapsed_rw:[%+v], elapsed_ro:[%+v]\n",
-							elapsed, elapsed_rw, elapsed_ro)*/
 				default:
 					panic("unknown access")
 				}
