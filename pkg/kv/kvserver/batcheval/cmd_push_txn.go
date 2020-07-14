@@ -237,6 +237,8 @@ func PushTxn(
 	case args.Force:
 		reason = "forced push"
 		pusherWins = true
+		// log.Warningf(ctx, "jenndebug pusher txn:[%s], pushType:[%s], pushee txn:[%s], FORCED",
+		// 		args.PusherTxn.Short(), pushType, args.PusheeTxn.Short())
 	}
 
 	if log.V(1) && reason != "" {

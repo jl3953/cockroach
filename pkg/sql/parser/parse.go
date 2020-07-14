@@ -20,6 +20,7 @@
 package parser
 
 import (
+	//"context"
 	"fmt"
 	"strings"
 
@@ -27,6 +28,7 @@ import (
 	"github.com/cockroachdb/cockroach/pkg/sql/pgwire/pgerror"
 	"github.com/cockroachdb/cockroach/pkg/sql/sem/tree"
 	"github.com/cockroachdb/cockroach/pkg/sql/types"
+	//"github.com/cockroachdb/cockroach/pkg/util/log"
 	"github.com/cockroachdb/errors"
 )
 
@@ -94,7 +96,10 @@ var defaultNakedIntType = types.Int
 
 // Parse parses the sql and returns a list of statements.
 func (p *Parser) Parse(sql string) (Statements, error) {
-	return p.parseWithDepth(1, sql, defaultNakedIntType)
+	stmt, err := p.parseWithDepth(1, sql, defaultNakedIntType)
+	// ctx := context.Background()
+	// log.Warningf(ctx, "jenndebug sql:[%s], stmt:[%+v]\n", sql, stmt)
+	return stmt, err
 }
 
 // ParseWithInt parses a sql statement string and returns a list of

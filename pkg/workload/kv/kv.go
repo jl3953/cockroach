@@ -13,15 +13,19 @@ package kv
 import (
 	"context"
 	"crypto/sha1"
+	"database/sql"
 	"encoding/binary"
 	"fmt"
 	"hash"
 	"math"
 	"math/rand"
+	"sort"
 	"strconv"
 	"strings"
 	"sync/atomic"
+	// "time"
 
+	"github.com/cockroachdb/cockroach-go/crdb"
 	"github.com/cockroachdb/cockroach/pkg/util/timeutil"
 	"github.com/cockroachdb/cockroach/pkg/workload"
 	"github.com/cockroachdb/cockroach/pkg/workload/histogram"
@@ -73,6 +77,9 @@ type kv struct {
 	secondaryIndex                       bool
 	shards                               int
 	targetCompressionRatio               float64
+	s				     float64
+	zipfVerbose				bool
+	useOriginal				bool
 }
 
 func init() {
@@ -130,6 +137,9 @@ var kvMeta = workload.Meta{
 		g.flags.Float64Var(&g.targetCompressionRatio, `target-compression-ratio`, 1.0,
 			`Target compression ratio for data blocks. Must be >= 1.0`)
 		g.connFlags = workload.NewConnFlags(&g.flags)
+		g.flags.Float64Var(&g.s, `s`, 1.1, `s parameter in the zipfian generator, default 1.1`)
+		g.flags.BoolVar(&g.zipfVerbose, `zipfVerbose`, false, `whether zipfian generator is verbose`)
+		g.flags.BoolVar(&g.useOriginal, `useOriginal`, true, `whether or not to use original fake zipfian generator.`)
 		return g
 	},
 }
@@ -232,6 +242,16 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	if err != nil {
 		return workload.QueryLoad{}, err
 	}
+
+	// open db connections
+	db, err := sql.Open(`cockroach`, strings.Join(urls, ` `))
+	if err != nil {
+		return workload.QueryLoad{}, err
+	}
+	db.SetMaxOpenConns(w.connFlags.Concurrency + 1)
+	db.SetMaxIdleConns(w.connFlags.Concurrency + 1)
+	// end opening of db connections
+
 	cfg := workload.MultiConnPoolCfg{
 		MaxTotalConnections: w.connFlags.Concurrency + 1,
 	}
@@ -271,6 +291,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 	buf.Reset()
 	buf.WriteString(`UPSERT INTO kv (k, v) VALUES`)
 	for i := 0; i < w.batchSize; i++ {
+	//for i := 0; i < 6; i++ { //jenndebug
 		j := i * 2
 		if i > 0 {
 			buf.WriteString(", ")
@@ -290,6 +311,8 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 			config:          w,
 			hists:           reg.GetHandle(),
 			numEmptyResults: numEmptyResults,
+			db: db,
+			mcp: mcp,
 		}
 		op.readStmt = op.sr.Define(readStmtStr)
 		op.writeStmt = op.sr.Define(writeStmtStr)
@@ -300,7 +323,7 @@ func (w *kv) Ops(urls []string, reg *histogram.Registry) (workload.QueryLoad, er
 		if w.sequential {
 			op.g = newSequentialGenerator(seq)
 		} else if w.zipfian {
-			op.g = newZipfianGenerator(seq)
+			op.g = newZipfianGenerator(seq, w.s, w.zipfVerbose, w.useOriginal)
 		} else {
 			op.g = newHashGenerator(seq)
 		}
@@ -319,30 +342,93 @@ type kvOp struct {
 	spanStmt        workload.StmtHandle
 	g               keyGenerator
 	numEmptyResults *int64 // accessed atomically
+	db		*sql.DB
+	mcp		*workload.MultiConnPool
 }
+
+type byInt []int64
+
+func (s byInt) Len() int {
+	return len(s)
+}
+
+func (s byInt) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s byInt) Less (i, j int) bool {
+	// return s[i] < s[j]
+	// reverse jenndebug
+	return s[i] > s[j]
+}
+
 
 func (o *kvOp) run(ctx context.Context) error {
 	statementProbability := o.g.rand().Intn(100) // Determines what statement is executed.
+
 	if statementProbability < o.config.readPercent {
+		// jenndebug sort the keys first
+		argsInt := make([]int64, o.config.batchSize)
+		for i := 0; i < o.config.batchSize; i++ {
+			argsInt[i] = o.g.readKey()
+		}
+		sort.Sort(byInt(argsInt))
+		/* //jenndebug hot
+		// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
+		for i := 0; i < len(argsInt); i++ {
+			if argsInt[i] == 0 || argsInt[i] == 1{
+				argsInt[i] = argsInt[0]
+			}
+		}
+		sort.Sort(byInt(argsInt))
+		if argsInt[0] == 0 || argsInt[0] == 1 {
+			o.hists.Get(`read`).Record(0 * time.Millisecond)
+			return nil
+		}
+		// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
+		//jenndebug hot */
 		args := make([]interface{}, o.config.batchSize)
 		for i := 0; i < o.config.batchSize; i++ {
-			args[i] = o.g.readKey()
+			args[i] = argsInt[i]
 		}
+		//jenndebug comment out if not testing
+		/* args[0] = 0
+		args[1] = 214 //math.MaxInt64-1
+		args[2] = 215 //math.MaxInt64-2
+		args[3] = 1994 //math.MaxInt64-4
+		args[4] = 2016 //math.MaxInt64-6
+		args[5] = 2020 //math.MaxInt64-8 */
+		// jenndebug
+
 		start := timeutil.Now()
-		rows, err := o.readStmt.Query(ctx, args...)
+		tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
+						IsoLevel: pgx.Serializable,
+						AccessMode: pgx.ReadOnly,})
 		if err != nil {
 			return err
 		}
-		empty := true
-		for rows.Next() {
-			empty = false
-		}
-		if empty {
-			atomic.AddInt64(o.numEmptyResults, 1)
-		}
+		// wrapping the single read statemnt in a txn
+		err = crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx), func() error {
+			rows, err := o.readStmt.QueryTx(ctx, tx, args...)
+			if err != nil {
+				return err
+			}
+			empty := true
+			for rows.Next() {
+				empty = false
+			}
+			if empty {
+				atomic.AddInt64(o.numEmptyResults, 1)
+			}
+			if rowErr := rows.Err(); rowErr != nil {
+				return rowErr
+			}
+			rows.Close()
+			return nil
+		})
 		elapsed := timeutil.Since(start)
 		o.hists.Get(`read`).Record(elapsed)
-		return rows.Err()
+		return err
 	}
 	// Since we know the statement is not a read, we recalibrate
 	// statementProbability to only consider the other statements.
@@ -355,14 +441,71 @@ func (o *kvOp) run(ctx context.Context) error {
 		return err
 	}
 	const argCount = 2
+
+	// jenndebug sort the keys first
+	argsInt := make([]int64, o.config.batchSize)
+	for i := 0; i < o.config.batchSize; i++ {
+		argsInt[i] = o.g.writeKey()
+	}
+	sort.Sort(byInt(argsInt))
+	/* //jenndebug hot
+	// fmt.Printf("jenndebug hot before replacement %+v\n", argsInt)
+	for i := 0; i < len(argsInt); i++ {
+		if argsInt[i] == 0 || argsInt[i] == 1 {
+			argsInt[i] = argsInt[0]
+		}
+	}
+	sort.Sort(byInt(argsInt))
+	if argsInt[0] == 0 || argsInt[0] == 1 {
+		o.hists.Get(`write`).Record(0 * time.Millisecond)
+		return nil
+	}
+	// fmt.Printf("jenndebug hot after replacement %+v\n", argsInt)
+	//jenndebug hot */
 	args := make([]interface{}, argCount*o.config.batchSize)
 	for i := 0; i < o.config.batchSize; i++ {
 		j := i * argCount
-		args[j+0] = o.g.writeKey()
+		args[j+0] = argsInt[i]
 		args[j+1] = randomBlock(o.config, o.g.rand())
-	}
+	} //jenndebug
+	//if rand.Intn(2) == 0 {
+	//if true {
+	// args[0] = 0
+	// args[1] = randomBlock(o.config, o.g.rand())
+	// args[2] = 214 //math.MaxInt64-1
+	// args[3] = randomBlock(o.config, o.g.rand())
+	// args[4] = 215 //math.MaxInt64-2
+	// args[5] = randomBlock(o.config, o.g.rand())
+	// args[6] = 1994 //math.MaxInt64-4
+	// args[7] = randomBlock(o.config, o.g.rand())
+	// args[8] = 2016 //math.MaxInt64 - 6
+	// args[9] = randomBlock(o.config, o.g.rand())
+	// args[10] = 2020 //math.MaxInt64 - 8
+	// args[11] = randomBlock(o.config, o.g.rand())
+	/*} else {
+	args[10] = 0
+	args[11] = randomBlock(o.config, o.g.rand())
+	args[8] = math.MaxInt64-1
+	args[9] = randomBlock(o.config, o.g.rand())
+	args[6] = math.MaxInt64-2
+	args[7] = randomBlock(o.config, o.g.rand())
+	args[4] = math.MaxInt64-4
+	args[5] = randomBlock(o.config, o.g.rand())
+	args[2] = math.MaxInt64 - 6
+	args[3] = randomBlock(o.config, o.g.rand())
+	args[0] = math.MaxInt64 - 8
+	args[1] = randomBlock(o.config, o.g.rand())
+
+	}*/
+
+	tx, err := o.mcp.Get().BeginEx(ctx, &pgx.TxOptions{
+					IsoLevel: pgx.Serializable,
+					AccessMode: pgx.ReadWrite,})
 	start := timeutil.Now()
-	_, err := o.writeStmt.Exec(ctx, args...)
+	err = crdb.ExecuteInTx(ctx, (*workload.PgxTx)(tx), func() error {
+		_, err := o.writeStmt.ExecTx(ctx, tx, args...)
+		return err
+	})
 	elapsed := timeutil.Since(start)
 	o.hists.Get(`write`).Record(elapsed)
 	return err
@@ -484,19 +627,32 @@ func (g *sequentialGenerator) sequence() int64 {
 	return atomic.LoadInt64(&g.seq.val)
 }
 
+type zipfWrapper interface {
+	Uint64Jenn(*rand.Rand) uint64
+}
+
 type zipfGenerator struct {
 	seq    *sequence
 	random *rand.Rand
-	zipf   *zipf
+	zipf   zipfWrapper
 }
 
 // Creates a new zipfian generator.
-func newZipfianGenerator(seq *sequence) *zipfGenerator {
+func newZipfianGenerator(seq *sequence, s float64, verbose bool, useOriginal bool,
+		) *zipfGenerator {
 	random := rand.New(rand.NewSource(timeutil.Now().UnixNano()))
+	max := uint64(1000000)
+	var hey zipfWrapper
+	if useOriginal {
+		hey = newZipf(s, 1, max)
+	} else {
+		hey, _ = ycsb.NewZipfGenerator(random, 0, max, s, verbose)
+		//fmt.Printf("jenndebug here I am...\n")
+	}
 	return &zipfGenerator{
 		seq:    seq,
 		random: random,
-		zipf:   newZipf(1.1, 1, uint64(math.MaxInt64)),
+		zipf:   hey,
 	}
 }
 
@@ -504,7 +660,8 @@ func newZipfianGenerator(seq *sequence) *zipfGenerator {
 // zipfian distribution.
 func (g *zipfGenerator) zipfian(seed int64) int64 {
 	randomWithSeed := rand.New(rand.NewSource(seed))
-	return int64(g.zipf.Uint64(randomWithSeed))
+	// fmt.Printf("jenndebug zipfian\n")
+	return int64(g.zipf.Uint64Jenn(randomWithSeed))
 }
 
 // Get a zipf write key appropriately.

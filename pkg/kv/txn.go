@@ -1132,7 +1132,7 @@ func (txn *Txn) GenerateForcedRetryableError(ctx context.Context, msg string) er
 	now := txn.db.clock.Now()
 	txn.mu.sender.ManualRestart(ctx, txn.mu.userPriority, now)
 	txn.resetDeadlineLocked()
-	return roachpb.NewTransactionRetryWithProtoRefreshError(
+	result := roachpb.NewTransactionRetryWithProtoRefreshError(
 		msg,
 		txn.mu.ID,
 		roachpb.MakeTransaction(
@@ -1142,6 +1142,8 @@ func (txn *Txn) GenerateForcedRetryableError(ctx context.Context, msg string) er
 			now,
 			txn.db.clock.MaxOffset().Nanoseconds(),
 		))
+	//log.Warningf(ctx, "jenndebug retry previousIds:[%+v]", txn.mu.previousIDs)
+	return result
 }
 
 // PrepareRetryableError returns a

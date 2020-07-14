@@ -843,7 +843,7 @@ func MakeTransaction(
 	u := uuid.FastMakeV4()
 	maxTS := now.Add(maxOffsetNs, 0)
 
-	return Transaction{
+	result := Transaction{
 		TxnMeta: enginepb.TxnMeta{
 			Key:            baseKey,
 			ID:             u,
@@ -858,6 +858,8 @@ func MakeTransaction(
 		MaxTimestamp:            maxTS,
 		DeprecatedOrigTimestamp: now, // For compatibility with 19.2.
 	}
+	// log.Warningf(context.TODO(), "jenndebug txn_id:[%+v]", result.TxnMeta.ID)
+	return result
 }
 
 // LastActive returns the last timestamp at which client activity definitely
@@ -1338,6 +1340,7 @@ func PrepareTransactionForRetry(
 			now,
 			clock.MaxOffset().Nanoseconds(),
 		)
+		// log.Warningf(ctx, "jenndebug prepareTransactionForRetry txnid:[%+v]", txn.TxnMeta.ID)
 		// Use the priority communicated back by the server.
 		txn.Priority = errTxnPri
 	case *ReadWithinUncertaintyIntervalError:
